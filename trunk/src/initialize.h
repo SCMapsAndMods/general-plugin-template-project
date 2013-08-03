@@ -4,6 +4,7 @@
 #include "tools.h"
 #include "hooks/game_hooks.h"
 #include "hooks/apply_upgrade_flags.h"
+#include "hooks/bunker_hooks.h"
 #include "hooks/consume.h"
 #include "hooks/detector_check.h"
 #include "hooks/do_weapon_damage.h"
@@ -34,6 +35,9 @@ void Initialize() {
            offsets::Hook_ApplyUpgradeFlagsToNewUnit);
   jmpPatch(applyUpgradeFlagsToExistingUnitsWrapper,
            offsets::Hook_ApplyUpgradeFlagsToExistingUnits);
+
+  jmpPatch(unitCanAttackInsideBunkerWrapper,
+           offsets::Hook_UnitCanAttackInsideBunker);
 
   jmpPatch(unitIsConsumableWrapper,       offsets::Hook_UnitIsConsumable);
   jmpPatch(onConsumeUnitWrapper,          offsets::Hook_OnConsumeUnit);
