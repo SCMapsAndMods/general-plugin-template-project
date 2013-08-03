@@ -77,6 +77,8 @@
 		<Unit filename="definitions.h" />
 		<Unit filename="hooks/apply_upgrade_flags.cpp" />
 		<Unit filename="hooks/apply_upgrade_flags.h" />
+		<Unit filename="hooks/bunker_hooks.cpp" />
+		<Unit filename="hooks/bunker_hooks.h" />
 		<Unit filename="hooks/consume.cpp" />
 		<Unit filename="hooks/consume.h" />
 		<Unit filename="hooks/detector_check.cpp" />
