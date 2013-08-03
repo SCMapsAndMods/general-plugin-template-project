@@ -108,6 +108,12 @@ inline bool isBroodWarMode() {
   return (*IS_BROOD_WAR) != 0;
 }
 
+/// Checks whether @p playerB is recognized by @p playerA as an ally.
+/// Warning: The opposite may not necessarily be true!
+inline bool isAlliedTo(u8 playerA, u8 playerB) {
+  return 0 != playerAlliance[playerA].player[playerB];
+}
+
 /// Populates @p unitsFound with all units within the given bounds. This is much
 /// more efficient than manually looping through the entire unit table.
 ///

@@ -62,6 +62,12 @@ ActiveTile** const activeTileArray  = (ActiveTile**)  offsets::ActiveTileArray;
 UnitFinderData* const unitOrderingX = (UnitFinderData*) offsets::UnitOrderingX;
 UnitFinderData* const unitOrderingY = (UnitFinderData*) offsets::UnitOrderingY;
 
+//Player alliance status
+struct PlayerAllianceData {
+  u8 player[PLAYER_COUNT];
+};
+PlayerAllianceData* const playerAlliance = (PlayerAllianceData*) 0x0058D634;
+
 //-------- Internal constants --------//
 
 volatile const u32* const IS_GAME_PAUSED    = (u32*) offsets::Is_Game_Paused;
