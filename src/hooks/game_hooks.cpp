@@ -28,6 +28,15 @@ bool nextFrame() {
     // Alternative looping method
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
+      char buffer[500];
+      if (unit->id == UnitId::zergling) {
+        if (unit->ensnareTimer)
+          sprintf(buffer, "Ensnared zergling cool: %d", unit->groundWeaponCooldown);
+        else
+          sprintf(buffer, "Clean zergling cool: %d", unit->groundWeaponCooldown);
+
+        scbw::printText(buffer);
+      }
       //Write your code here
     }
 

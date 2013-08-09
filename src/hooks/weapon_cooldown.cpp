@@ -15,7 +15,7 @@ u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId) {
 		cooldown += increaseAmt * unit->acidSporeCount;
 	}
 
-	u32 cooldownModifier = (unit->stimTimer ? 1 : 0) - (unit->ensnareTimer ? 1 : 0)
+	int cooldownModifier = (unit->stimTimer ? 1 : 0) - (unit->ensnareTimer ? 1 : 0)
 		+ (unit->status & UnitStatus::CooldownUpgrade ? 1 : 0);
 	if (cooldownModifier > 0)
 		cooldown >>= 1;
