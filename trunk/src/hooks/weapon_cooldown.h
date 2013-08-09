@@ -9,9 +9,9 @@ u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId);
 
 //Inject with jmpPatch()
 static void __declspec(naked) getModifiedWeaponCooldownWrapper() {
-	CUnit *unit;
-	u8 weaponId;
-	u32 cooldown;
+	static CUnit *unit;
+	static u8 weaponId;
+	static u32 cooldown;
 	__asm {
 		PUSHAD
 		MOV ebp, esp

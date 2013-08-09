@@ -15,7 +15,6 @@
 				<Option createStaticLib="1" />
 				<Compiler>
 					<Add option="/MLd" />
-					<Add option="/Og" />
 					<Add option="/W3" />
 					<Add option="/Zi" />
 					<Add option="/DBUILD_DLL" />

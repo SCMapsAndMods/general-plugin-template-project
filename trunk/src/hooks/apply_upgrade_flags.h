@@ -11,7 +11,7 @@ void applyUpgradeFlagsToExistingUnitsHook(const u8 playerId, const u8 upgradeId)
 
 
 static void __declspec(naked) applyUpgradeFlagsToNewUnitWrapper() {
-  CUnit *unit;
+  static CUnit *unit;
   __asm {
     PUSHAD
     MOV EBP, ESP
@@ -27,8 +27,8 @@ static void __declspec(naked) applyUpgradeFlagsToNewUnitWrapper() {
 }
 
 static void __declspec(naked) applyUpgradeFlagsToExistingUnitsWrapper() {
-  CUnit *unit;
-  u8 upgradeId;
+  static CUnit *unit;
+  static u8 upgradeId;
   __asm {
     PUSHAD
     MOV EBP, ESP

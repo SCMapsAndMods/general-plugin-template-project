@@ -14,10 +14,10 @@ void doWeaponDamageHook(s32     damage,
 
 //Inject with JmpPatch
 static void __declspec(naked) doWeaponDamageWrapper() {
-  CUnit *target, *attacker;
-  s32 damage;
-  u32 attackingPlayer, dmgDivisor;
-  u8 weaponId, direction;
+  static CUnit *target, *attacker;
+  static s32 damage;
+  static u32 attackingPlayer, dmgDivisor;
+  static u8 weaponId, direction;
 
   __asm {
     PUSHAD
