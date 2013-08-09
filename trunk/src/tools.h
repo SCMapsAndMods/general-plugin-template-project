@@ -1,7 +1,6 @@
 //This header contains several functions used internally by GPTP.
 
 #pragma once
-#include <windows.h>
 #include "types.h"
 
 /// Injects a JMP to [target] at the [position], optionally overwriting [nops]
