@@ -21,7 +21,7 @@ void setRallyUnit(CUnit* unit, CUnit* target);
 
 //Inject with jmpPatch()
 static void __declspec(naked) orderNewUnitToRallyWrapper() {
-  CUnit *unit, *factory;
+  static CUnit *unit, *factory;
   __asm {
     PUSHAD
     MOV EBP, ESP
@@ -39,8 +39,8 @@ static void __declspec(naked) orderNewUnitToRallyWrapper() {
 
 //Inject with callPatch()
 static void __declspec(naked) setRallyPositionWrapper_Call() {
-  CUnit *unit;
-  u16 x, y;
+  static CUnit *unit;
+  static u16 x, y;
   __asm {
     PUSHAD
     MOV EBP, ESP
@@ -59,8 +59,8 @@ static void __declspec(naked) setRallyPositionWrapper_Call() {
 
 //Inject with jmpPatch()
 static void __declspec(naked) setRallyPositionWrapper_Jmp1() {
-  CUnit *unit;
-  u16 x, y;
+  static CUnit *unit;
+  static u16 x, y;
   __asm {
     PUSHAD
     MOV EBP, ESP
@@ -79,8 +79,8 @@ static void __declspec(naked) setRallyPositionWrapper_Jmp1() {
 
 //Inject with jmpPatch()
 static void __declspec(naked) setRallyPositionWrapper_Jmp2() {
-  CUnit *unit;
-  u16 x, y;
+  static CUnit *unit;
+  static u16 x, y;
   __asm {
     PUSHAD
     MOV EBP, ESP
@@ -99,7 +99,7 @@ static void __declspec(naked) setRallyPositionWrapper_Jmp2() {
 
 //Inject with callPatch()
 static void __declspec(naked) setRallyUnitWrapper_Call() {
-  CUnit *unit, *target;
+  static CUnit *unit, *target;
   __asm {
     PUSHAD
     MOV EBP, ESP
@@ -117,7 +117,7 @@ static void __declspec(naked) setRallyUnitWrapper_Call() {
 
 //Inject with jmpPatch()
 static void __declspec(naked) setRallyUnitWrapper_Jmp1() {
-  CUnit *unit, *target;
+  static CUnit *unit, *target;
   __asm {
     PUSHAD
     MOV EBP, ESP
@@ -135,7 +135,7 @@ static void __declspec(naked) setRallyUnitWrapper_Jmp1() {
 
 //Inject with jmpPatch()
 static void __declspec(naked) setRallyUnitWrapper_Jmp2() {
-  CUnit *unit, *target;
+  static CUnit *unit, *target;
   __asm {
     PUSHAD
     MOV EBP, ESP
