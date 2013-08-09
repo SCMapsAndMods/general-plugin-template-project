@@ -1,5 +1,4 @@
 #include "MPQDraftPlugin.h"
-#include <windows.h>
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>

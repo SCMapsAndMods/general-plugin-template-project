@@ -1,6 +1,7 @@
 //Contains definitions of basic data types.
 
 #pragma once
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 #ifdef _MSC_VER
