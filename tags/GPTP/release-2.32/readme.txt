@@ -1,4 +1,4 @@
-General Plugin Template Project v2.31
+General Plugin Template Project v2.32
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -9,50 +9,36 @@ WARNING: Most of the new functions have been untested. If there are any bugs,
 please report them in the GPTP thread: http://www.broodwarai.com/forums/viewtopic.php?f=5&t=923
 
 
-== Instructions for Using GPTP with Visual C++ ==
+== Instructions for Using GPTP ==
 
-1. Create a new Win32 DLL project in Visual C++. Create an empty project or
-   delete any headers and/or source files that VC++ generates for you.
+1. The core plugin functions (gameOn(), gameEnd(), nextFrame()) can be edited in
+   hooks/game_hooks.cpp.
 
-2. Download and copy all of the GPTP files into your project folder.
+2. The hooks/ directory contains many hook functions that control various
+   aspects of the StarCraft engine. These are disabled by default, but you can
+   enable them by adding the hooking code in initialize.h. Most of the time, you
+   will only have to interact with these two files.
 
-3. Import all C++ header and source files (*.h and *.cpp) to your project. You
-   don't need to import readme.txt, qdp.def or MakeID.hta; just make sure they
-   are there.
+3. As before, you can edit the plugin's name and ID in definitions.h.
 
-4. In the left pane, right-click your project name to open the project's
-   Build Options panel (or something similar).
+4. configure.h now provides a simple popup when you click "Configure" in
+   FireGraft or MPQDraft.
 
-5. In Compiler Options, enable the "Single-threaded Runtime Library" (/ML) or
-   the "Multi-Threaded Runtime Library" (/MT) option, whichever is available.
-
-6. In the Linker Options, set the output file to $(ProjectName).qdp and the
-   module definition file to qdp.def.
-
-7. Note: Unlike GPTP v2.0, you do NOT have to force the compiler to specifically
-   build qdp.cpp. Just make sure every CPP file is compiled.
-
-8. Now for the actual programming:
-
-  a. The core plugin functions (gameOn(), gameEnd(), nextFrame()) can be edited
-     in hooks/game_hooks.cpp.
-
-  b. The hooks/ directory contains many hook functions that control numerous
-     aspects of the StarCraft engine. These are disabled by default, but you can
-     enable them by adding the hooking code in initialize.h. Most of the time,
-     you will only have to interact with these two files.
-
-  c. As before, you can edit the plugin's name and ID in definitions.h.
-
-  d. configure.h now provides a simple popup when you click "Configure" in
-     FireGraft or MPQDraft.
-
-  e. Hooks are organized by category, and each hook is contained in two files,
-     named {hook type}.h and {hook type}.cpp. If you wish to make your plugin
-     smaller, you can remove the header/source file pair from the project.
+5. Hooks are organized by category, and each hook is contained in two files,
+   named {hook type}.h and {hook type}.cpp. If you wish to make your plugin
+   smaller, you can remove the header/source file pair from the project.
 
 
 == Changes ==
+
+v2.32
+ + GPTP now supports Visual C++ out of the box (again). Tested with VC++ Express
+   2005 and the Platform SDK.
+ + Added new hook for controlling which units can fire from inside bunkers.
+ + New API functions: scbw::isAlliedTo(), scbw::isGamePaused().
+ * GPTP now supports StarCraft: Brood War v1.16.1 only.
+ * Bug fixes:
+   * Fixed a bug that caused Ensnared units to attack faster.
 
 v2.31
  * Fixed a critical bug with doWeaponDamageHook().
