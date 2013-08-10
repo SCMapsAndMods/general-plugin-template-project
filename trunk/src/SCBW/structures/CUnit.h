@@ -281,10 +281,6 @@ struct CUnit {
   u8        isBlind;
   u8        maelstromTimer;
   u8        unusedTimer;        // ?? Might be afterburner timer or ultralisk roar timer
-
-/*  #if SC_VERSION == 1151
-    u8        unknownUnreferenced;    //++not available in 1.16.1
-  #endif*/
   u8        acidSporeCount;
   u8        acidSporeTime[9];
   u16       offsetIndex3by3;

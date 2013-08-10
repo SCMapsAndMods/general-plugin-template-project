@@ -6,12 +6,3 @@
 
 //What is the plugin's name (and version)?
 #define PLUGIN_NAME "General Plugin Template Project v2.31"
-
-//What version of StarCraft is this for?
-//Valid format: 1.16.1 -> 1161, 1.15.1 -> 1151, 1.08 -> 1080, etc.
-#define SC_VERSION 1161
-	/*
-	 *  Supported Versions:
-	 *  v1151
-	 *  v1161
-	 */
