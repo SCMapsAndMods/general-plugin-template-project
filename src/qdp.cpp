@@ -31,11 +31,11 @@ class MPQDraftPluginInterface : public IMPQDraftPlugin {
     return true;
   }
   BOOL WINAPI CanPatchExecutable(LPCSTR exefilename) {
-	return TRUE;
+    return TRUE;
   }
   BOOL WINAPI Configure(HWND parentwindow) {
     //Goes here when they hit Configure
-	Configuration(parentwindow);
+    Configuration(parentwindow);
     return TRUE;
   }
   BOOL WINAPI ReadyForPatch() {
@@ -43,7 +43,8 @@ class MPQDraftPluginInterface : public IMPQDraftPlugin {
     return TRUE;
   }
   BOOL WINAPI GetModules(MPQDRAFTPLUGINMODULE* pluginmodules,LPDWORD nummodules) {
-    //Weird shit, i doubt you'll use it
+    //Used for loading "modules" (files inside the MPQ) from the plugin.
+    //Probably not necessary for most plugins.
     if (!nummodules) {
       return false;
       mBox("NumModules null?");
@@ -53,12 +54,7 @@ class MPQDraftPluginInterface : public IMPQDraftPlugin {
   }
   BOOL WINAPI InitializePlugin(IMPQDraftServer* server) {
     //When Starcraft opens, this gets called in its own thread
-
-	#ifdef DEBUG
-		myfile.open("test.txt");
-	#endif
-
-	Initialize();
+    Initialize();
     return true;
   }
   BOOL WINAPI TerminatePlugin() {

@@ -10,10 +10,6 @@
 
 #pragma once
 #include "../types.h"
-#ifdef DEBUG
-	#include <fstream>
-	static std::ofstream myfile;
-#endif
 
 static u8 game_on = 0;
 
@@ -40,12 +36,7 @@ static void __declspec(naked) onGameStart() { // From BWAPI by Kovarex, slightly
 
 	{
 		game_on = 1;
-		#ifdef DEBUG
-			myfile << "game_on\n";
-			ASSERT(gameOn());
-		#else
-			gameOn();
-		#endif
+    gameOn();
 	}
 	__asm {
 		POPAD
@@ -61,12 +52,7 @@ static void __declspec(naked) onGameEnd() { // From BWAPI by Kovarex, slightly m
 	__asm PUSHAD;
 	{
 		game_on = 0;
-		#ifdef DEBUG
-			myfile << "game_end\n";
-			ASSERT(gameEnd());
-		#else
-			gameEnd();
-		#endif
+    gameEnd();
 	}
 	__asm {
 		POPAD
@@ -85,12 +71,7 @@ static void __declspec(naked) nextFrameHook() { // From BWAPI by Kovarex, slight
 		MOV EBP, ESP
 	}
 	{
-    #ifdef DEBUG
-      myfile << "nextFrame\n";
-      ASSERT(nextFrame());
-    #else
-      nextFrame();
-    #endif
+    nextFrame();
 	}
 	__asm {
 		POPAD
