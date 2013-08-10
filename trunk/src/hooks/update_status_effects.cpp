@@ -5,12 +5,8 @@
 
 
 //Helper functions that should be used only in this file
-static void removeStasisField(CUnit *unit);
-static void removeLockdown(CUnit *unit);
-static void removeMaelstrom(CUnit *unit);
 static void runIrradiateDamageLoop(CUnit *unit);
 static void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount);
-static u32 getUnitOverlayAdjustment(const CUnit* const unit);
 static u8 getAcidSporeOverlayAdjustment(const CUnit* const unit);
 
 
@@ -134,21 +130,13 @@ static void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount) {
   if (unit->defensiveMatrixTimer && !(unit->status & UnitStatus::Burrowed)) {
     if (unit->subunit)
       unit = unit->subunit;
-    scbw::createOverlay(unit->sprite, getUnitOverlayAdjustment(unit) + ImageId::DefensiveMatrixHit_Small);
+    scbw::createOverlay(unit->sprite,
+                        scbw::getUnitOverlayAdjustment(unit) + ImageId::DefensiveMatrixHit_Small);
   }
-}
-
-//This code seems to be used in multiple places of StarCraft.exe
-static u32 getUnitOverlayAdjustment(const CUnit* const unit) {
-  if (Unit::BaseProperty[unit->id] & UnitProperty::MediumOverlay)
-    return 1;
-  else if (Unit::BaseProperty[unit->id] & UnitProperty::LargeOverlay)
-    return 2;
-  else
-    return 0;
 }
 
 static u8 getAcidSporeOverlayAdjustment(const CUnit* const unit) {
   u8 adjustment = unit->acidSporeCount >> 1;
-  return (adjustment < 3 ? adjustment : 3) + 4 * getUnitOverlayAdjustment(unit);
+  return (adjustment < 3 ? adjustment : 3)
+          + 4 * scbw::getUnitOverlayAdjustment(unit);
 }

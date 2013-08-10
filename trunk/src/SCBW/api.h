@@ -103,6 +103,11 @@ inline bool isCheatEnabled(u32 cheatFlag) {
   return ((*CHEAT_STATE) & cheatFlag) != 0;
 }
 
+/// Checks whether the game is paused.
+inline bool isGamePaused() {
+  return (*IS_GAME_PAUSED) != 0;
+}
+
 /// Checks whether the game is in Brood War mode.
 inline bool isBroodWarMode() {
   return (*IS_BROOD_WAR) != 0;

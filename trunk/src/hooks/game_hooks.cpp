@@ -10,7 +10,7 @@ bool firstRun = true;
 
 /// This hook is called every frame; most of your plugin's logic goes here.
 bool nextFrame() {
-	if (!*IS_GAME_PAUSED) { //If the game is not paused
+	if (!scbw::isGamePaused()) { //If the game is not paused
 
 		if (firstRun) {
 			scbw::printText("Hello, world!");
