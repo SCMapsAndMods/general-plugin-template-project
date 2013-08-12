@@ -29,6 +29,35 @@ bool nextFrame() {
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
+
+      //노라드 II와 발키리를 락다운, 스테이시스, 옵티컬, 인스네어, 이레디, 플레이그에 대해 무적으로 만듦
+      //hooks/update_status_effects.cpp를 참고
+      if (unit->id == UnitId::norad_ii || unit->id == UnitId::valkyrie) {
+        if (unit->lockdownTimer) unit->removeLockdown();
+        if (unit->stasisTimer) unit->removeStasisField();
+        if (unit->isBlind) unit->isBlind = 0;
+
+        //인스네어 제거
+        if (unit->ensnareTimer) {
+          unit->ensnareTimer = 0;
+          scbw::removeOverlays(unit, ImageId::EnsnareOverlay_Small, ImageId::EnsnareOverlay_Large);
+          unit->updateSpeed();
+        }
+
+        //이레디에이트 제거
+        if (unit->irradiateTimer) {
+          unit->irradiateTimer = 0;
+          scbw::removeOverlays(unit, ImageId::Irradiate_Small, ImageId::Irradiate_Large);
+          unit->irradiatedBy = NULL;
+          unit->irradiatePlayerId = 8;
+        }
+
+        //플레이그 제거
+        if (unit->plagueTimer) {
+          unit->plagueTimer = 0;
+          scbw::removeOverlays(unit, ImageId::PlagueOverlay_Small, ImageId::PlagueOverlay_Large);
+        }
+      }
     }
 
 		// Loop through the bullet table.
@@ -50,6 +79,7 @@ bool nextFrame() {
 
 bool gameOn() {
 	firstRun = true;
+  setMaxSightRange<50>();   //최대 시야를 50으로 늘림
 	return true;
 }
 
