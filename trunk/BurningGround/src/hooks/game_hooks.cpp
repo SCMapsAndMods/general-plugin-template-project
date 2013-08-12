@@ -1,4 +1,4 @@
-/// This is where the magic happens; program your plug-in's core behavior here.
+ï»¿/// This is where the magic happens; program your plug-in's core behavior here.
 
 #include "game_hooks.h"
 #include "../SCBW/api.h"
@@ -31,21 +31,21 @@ bool nextFrame() {
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
 
-      //³ë¶óµå II¿Í ¹ßÅ°¸®¸¦ ¶ô´Ù¿î, ½ºÅ×ÀÌ½Ã½º, ¿ÉÆ¼ÄÃ, ÀÎ½º³×¾î, ÀÌ·¹µð, ÇÃ·¹ÀÌ±×¿¡ ´ëÇØ ¹«ÀûÀ¸·Î ¸¸µê
-      //hooks/update_status_effects.cpp¸¦ Âü°í
+      //ë…¸ë¼ë“œ IIì™€ ë°œí‚¤ë¦¬ë¥¼ ë½ë‹¤ìš´, ìŠ¤í…Œì´ì‹œìŠ¤, ì˜µí‹°ì»¬, ì¸ìŠ¤ë„¤ì–´, ì´ë ˆë””, í”Œë ˆì´ê·¸ì— ëŒ€í•´ ë¬´ì ìœ¼ë¡œ ë§Œë“¦
+      //hooks/update_status_effects.cppë¥¼ ì°¸ê³ 
       if (unit->id == UnitId::norad_ii || unit->id == UnitId::valkyrie) {
         if (unit->lockdownTimer) unit->removeLockdown();
         if (unit->stasisTimer) unit->removeStasisField();
         if (unit->isBlind) unit->isBlind = 0;
 
-        //ÀÎ½º³×¾î Á¦°Å
+        //ì¸ìŠ¤ë„¤ì–´ ì œê±°
         if (unit->ensnareTimer) {
           unit->ensnareTimer = 0;
           scbw::removeOverlays(unit, ImageId::EnsnareOverlay_Small, ImageId::EnsnareOverlay_Large);
           unit->updateSpeed();
         }
 
-        //ÀÌ·¹µð¿¡ÀÌÆ® Á¦°Å
+        //ì´ë ˆë””ì—ì´íŠ¸ ì œê±°
         if (unit->irradiateTimer) {
           unit->irradiateTimer = 0;
           scbw::removeOverlays(unit, ImageId::Irradiate_Small, ImageId::Irradiate_Large);
@@ -53,7 +53,7 @@ bool nextFrame() {
           unit->irradiatePlayerId = 8;
         }
 
-        //ÇÃ·¹ÀÌ±× Á¦°Å
+        //í”Œë ˆì´ê·¸ ì œê±°
         if (unit->plagueTimer) {
           unit->plagueTimer = 0;
           scbw::removeOverlays(unit, ImageId::PlagueOverlay_Small, ImageId::PlagueOverlay_Large);
@@ -61,16 +61,16 @@ bool nextFrame() {
       }
 
 
-      //Áü ·¹ÀÌ³Ê ¸¶¸°¿¡ Æ¯¼ö °ø°Ý Ãß°¡
+      //ì§ ë ˆì´ë„ˆ ë§ˆë¦°ì— íŠ¹ìˆ˜ ê³µê²© ì¶”ê°€
       if (unit->id == UnitId::jim_raynor_marine && unit->spellCooldown == 0) {
-        //°ø°Ý ´ë»óÀÌ °Ç¹°ÀÎÁö È®ÀÎ
+        //ê³µê²© ëŒ€ìƒì´ ê±´ë¬¼ì¸ì§€ í™•ì¸
         if (unit->orderTarget.unit && unit->orderTarget.unit->status & UnitStatus::GroundedBuilding) {
-          //°ø°Ý ÁßÀÎÁö È®ÀÎ
+          //ê³µê²© ì¤‘ì¸ì§€ í™•ì¸
           const u8 currentAnim = unit->sprite->mainGraphic->animation;
           if (currentAnim == IscriptAnimation::Unused2
               || currentAnim == IscriptAnimation::GndAttkInit
               || currentAnim == IscriptAnimation::GndAttkRpt) {
-            scbw::fireUnitWeapon(unit, WeaponId::FragmentationGrenade); //¹«±â ID == 4
+            scbw::fireUnitWeapon(unit, WeaponId::FragmentationGrenade); //ë¬´ê¸° ID == 4
             unit->playIscriptAnim(IscriptAnimation::Unused2);
             unit->spellCooldown = 30;
             unit->groundWeaponCooldown = 30;
@@ -78,16 +78,16 @@ bool nextFrame() {
         }
       }
 
-      //Áü ·¹ÀÌ³Ê ¹úÃ³¿¡ Æ¯¼ö °ø°Ý Ãß°¡
+      //ì§ ë ˆì´ë„ˆ ë²Œì²˜ì— íŠ¹ìˆ˜ ê³µê²© ì¶”ê°€
       if (unit->id == UnitId::jim_raynor_vulture && unit->spellCooldown == 0) {
-        //°ø°Ý ´ë»óÀÌ °Ç¹°ÀÎÁö È®ÀÎ
+        //ê³µê²© ëŒ€ìƒì´ ê±´ë¬¼ì¸ì§€ í™•ì¸
         if (unit->orderTarget.unit && unit->orderTarget.unit->status & UnitStatus::GroundedBuilding) {
-          //°ø°Ý ÁßÀÎÁö È®ÀÎ
+          //ê³µê²© ì¤‘ì¸ì§€ í™•ì¸
           const u8 currentAnim = unit->sprite->mainGraphic->animation;
           if (currentAnim == IscriptAnimation::CastSpell
               || currentAnim == IscriptAnimation::GndAttkInit
               || currentAnim == IscriptAnimation::GndAttkRpt) {
-            scbw::fireUnitWeapon(unit, 128);                            //¹«±â ID == 128
+            scbw::fireUnitWeapon(unit, 128);                            //ë¬´ê¸° ID == 128
             unit->playIscriptAnim(IscriptAnimation::CastSpell);
             unit->spellCooldown = 30;
             unit->groundWeaponCooldown = 30;
@@ -96,39 +96,39 @@ bool nextFrame() {
       }
 
 
-      //±îÄ¡³¯°³ Æ÷Å¾ÀÌ º¡Ä¿¿¡ ¾È ºÙ¾î ÀÖÀ¸¸é ÀÚÆø
+      //ê¹Œì¹˜ë‚ ê°œ í¬íƒ‘ì´ ë²™ì»¤ì— ì•ˆ ë¶™ì–´ ìžˆìœ¼ë©´ ìží­
       if (unit->id == UnitId::physics_lab && unit->connectedUnit == NULL)
         unit->mainOrderId = OrderId::Die;
 
-      //º¡Ä¿¿¡ Æ÷Å¾ ´Þ±â ¹× È¸¼ö ±â´É Ãß°¡
+      //ë²™ì»¤ì— í¬íƒ‘ ë‹¬ê¸° ë° íšŒìˆ˜ ê¸°ëŠ¥ ì¶”ê°€
       if (unit->id == UnitId::bunker) {
-        //±îÄ¡³¯°³ Æ÷Å¾ ´Þ±â
+        //ê¹Œì¹˜ë‚ ê°œ í¬íƒ‘ ë‹¬ê¸°
         if (unit->mainOrderId == OrderId::CarrierStop) {
           unit->currentButtonSet = 119;
-          unit->building.addonBuildType = UnitId::physics_lab;          //±îÄ¡³¯°³ Æ÷Å¾ ID
+          unit->building.addonBuildType = UnitId::physics_lab;          //ê¹Œì¹˜ë‚ ê°œ í¬íƒ‘ ID
           unit->mainOrderId = OrderId::PlaceAddon;
           unit->orderTarget.pt.x = unit->position.x;
           unit->orderTarget.pt.y = unit->position.y;
           if (unit->building.addon)
-            unit->building.addon->connectedUnit = unit;                 //»ý¼ºµÈ Æ÷Å¾ À¯´Ö°ú ¿¬°á
+            unit->building.addon->connectedUnit = unit;                 //ìƒì„±ëœ í¬íƒ‘ ìœ ë‹›ê³¼ ì—°ê²°
         }
 
-        //È¸¼ö
+        //íšŒìˆ˜
         if (unit->mainOrderId == OrderId::ReaverStop) {
           unit->currentButtonSet = UnitId::None;
-          //¹Ì³×¶ö 75% µÇ¹Þ±â
+          //ë¯¸ë„¤ëž„ 75% ë˜ë°›ê¸°
           resources->playerMin[unit->playerId] += Unit::MineralCost[unit->id] * 0.75;
-          //¾È¿¡ ÀÖ´Â ¸ðµç À¯´Ö ³»¸²
+          //ì•ˆì— ìžˆëŠ” ëª¨ë“  ìœ ë‹› ë‚´ë¦¼
           unit->orderTo(OrderId::Unload, unit);
-          //ÄÁÆ®·Ñ ºÒ°¡´É
+          //ì»¨íŠ¸ë¡¤ ë¶ˆê°€ëŠ¥
           unit->status |= UnitStatus::Disabled & UnitStatus::CanNotReceiveOrders;
-          //°°ÀÌ ´Þ·ÁÀÖ´Â ¾Öµå¿Â(Æ÷Å¾)µµ ÀÚÆø
+          //ê°™ì´ ë‹¬ë ¤ìžˆëŠ” ì• ë“œì˜¨(í¬íƒ‘)ë„ ìží­
           if (unit->building.addon) {
             CUnit* addon = unit->building.addon;
             addon->mainOrderId = OrderId::Die;
             resources->playerMin[addon->playerId] += Unit::MineralCost[addon->id] * 0.75;
           }
-          //ÀÚÆø ½Ã°£
+          //ìží­ ì‹œê°„
           unit->removeTimer = 40;
         }
       }
@@ -154,7 +154,7 @@ bool nextFrame() {
 
 bool gameOn() {
 	firstRun = true;
-  setMaxSightRange<50>();   //ÃÖ´ë ½Ã¾ß¸¦ 50À¸·Î ´Ã¸²
+  setMaxSightRange<50>();   //ìµœëŒ€ ì‹œì•¼ë¥¼ 50ìœ¼ë¡œ ëŠ˜ë¦¼
 	return true;
 }
 
