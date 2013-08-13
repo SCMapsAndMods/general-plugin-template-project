@@ -5,6 +5,7 @@
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/ExtendSightLimit.h"
+#include "../SCBW/utilities.h"
 #include <cstdio>
 
 bool firstRun = true;
@@ -14,7 +15,6 @@ bool nextFrame() {
   if (!scbw::isGamePaused()) { //If the game is not paused
 
     if (firstRun) {
-      scbw::printText("Hello, world!");
       firstRun = false;
     }
 
@@ -117,7 +117,7 @@ bool nextFrame() {
         if (unit->mainOrderId == OrderId::ReaverStop) {
           unit->currentButtonSet = UnitId::None;
           //미네랄 75% 되받기
-          resources->playerMin[unit->playerId] += Unit::MineralCost[unit->id] * 0.75;
+          resources->playerMin[unit->playerId] += (int) (Unit::MineralCost[unit->id] * 0.75);
           //안에 있는 모든 유닛 내림
           unit->orderTo(OrderId::Unload, unit);
           //컨트롤 불가능
@@ -126,14 +126,95 @@ bool nextFrame() {
           if (unit->building.addon) {
             CUnit* addon = unit->building.addon;
             addon->mainOrderId = OrderId::Die;
-            resources->playerMin[addon->playerId] += Unit::MineralCost[addon->id] * 0.75;
+            resources->playerMin[addon->playerId] += (int) (Unit::MineralCost[addon->id] * 0.75);
           }
-          //자폭 시간
+          //회수 시간
           unit->removeTimer = 40;
         }
       }
 
-    }
+
+      //커맨드 센터를 궤도 사령부나 행성 요새로 업글
+      if (unit->id == UnitId::command_center
+          && unit->secondaryOrderId == OrderId::Train) {
+        //생산 예약된 유닛의 ID 확인
+        const u16 currentTrainingUnitId = unit->buildQueue[0];
+        if (currentTrainingUnitId == UnitId::lair
+            || currentTrainingUnitId == UnitId::hive) {
+          unit->mainOrderId = OrderId::Morph2;
+          unit->displayedUnitId = currentTrainingUnitId;
+          unit->secondaryOrderId = OrderId::Nothing2;
+        }
+      }
+
+
+      //누클리어 사일로에 핵이 장전되어 있을 시 이미지 변화
+      if (unit->id == UnitId::nuclear_silo
+          && (unit->status & UnitStatus::Completed)) {
+        CImage* const unitGraphic = unit->sprite->mainGraphic;
+        if (unit->building.silo.hasNuke && unitGraphic->frameSet == 0)
+          scbw::playFrame(unitGraphic, 2);
+        else if (!unit->building.silo.hasNuke && unitGraphic->frameSet == 2)
+          scbw::playFrame(unitGraphic, 0);
+      }
+
+
+      //테란 유닛의 킬수에 따른 계급 증가
+      if (!(unit->status & UnitStatus::IsBuilding)
+          && Unit::GroupFlags[unit->id].isTerran) {
+        if (unit->killCount >= 20) unit->rankIncrease = 15;
+        else if (unit->killCount >= 15) unit->rankIncrease = 10;
+        else if (unit->killCount >= 10) unit->rankIncrease = 6;
+        else if (unit->killCount >= 5) unit->rankIncrease = 4;
+      }
+
+
+      //배틀크루저에 자체 디펜시브 스킬 추가
+      if (unit->id == UnitId::battlecruiser
+          && unit->mainOrderId == OrderId::CarrierStop) {
+        unit->orderTo(OrderId::DefensiveMatrix, unit);
+      }
+
+
+      //토르를 실은 수송 유닛의 이미지 변화
+      if (unit->id == 56) { //쿠쿨자 가디언을 토르로 사용
+        CUnit* const transport = unit->connectedUnit;
+        if (transport != NULL
+            && (transport->id == UnitId::dropship|| transport->id == 8 || transport->id == 57)
+            && !(transport->mainOrderId == OrderId::Unload
+                 || transport->mainOrderId == OrderId::MoveUnload)
+            && transport->sprite->mainGraphic->frameSet < 17)
+        {
+          scbw::playFrame(transport->sprite->mainGraphic, 17);
+        }
+      }
+
+
+      //넥서스에 시간 증폭 스킬 추가
+      if (unit->id == UnitId::nexus
+          && unit->mainOrderId == OrderId::PlaceScanner) {
+        CUnit* const target = unit->orderTarget.unit;
+        if (target != NULL
+            && (target->status & (UnitStatus::GroundedBuilding | UnitStatus::Completed))
+            && target->playerId == unit->playerId
+            && !(target->id == UnitId::photon_cannon        //시증을 걸 수 없는 건물
+                 || target->id == UnitId::pylon
+                 || target->id == UnitId::shield_battery
+                 || target->id == UnitId::assimilator)
+            && target->id >= 154 && target->id <= 172) {
+          scbw::createOverlay(unit->sprite, 269);
+          target->unusedTimer = 50;                         //시간 증폭 지속 시간 타이머
+          unit->mainOrderId = OrderId::Nothing2;
+          unit->orderTarget.unit = NULL;
+          //에너지 사용
+          if (!scbw::isCheatEnabled(CheatFlags::TheGathering))
+            unit->energy -= Tech::EnergyCost[TechId::ScannerSweep] * 256;
+        }
+        else {
+          unit->orderTo(OrderId::CastFeedback, unit);       //자기 자신에게 피드백을 쓰게 해서 오류 메시지 출력
+        }
+      }
+    } //end of for loop
 
     // Loop through the bullet table.
     // Warning: There is no guarantee that the current bullet is actually a

@@ -29,8 +29,8 @@ inline void setAnywhereLocation() {
   location = &locationTable[63];
   location->topLeftX = 0;
   location->topLeftY = 0;
-  location->bottomRightX = map_dimensions->width * 32;
-  location->bottomRightY = map_dimensions->height * 32;
+  location->bottomRightX = mapSize->width * 32;
+  location->bottomRightY = mapSize->height * 32;
   location->flags = 63;
 }
 
