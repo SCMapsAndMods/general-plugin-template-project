@@ -373,6 +373,15 @@ bool nextFrame() {
            unit->unusedTimer = 22;
       }
 
+
+      //스팀팩 사용 시작 및 종료시 그래픽 효과 추가
+      if (unit->status & UnitStatus::Completed) {
+        if (unit->stimTimer == 40)
+          scbw::createOverlay(unit->sprite, 975);
+        else if (unit->stimTimer == 1)
+          scbw::createOverlay(unit->sprite, 63);
+      }
+
     } //end of for loop
 
     // Loop through the bullet table.
