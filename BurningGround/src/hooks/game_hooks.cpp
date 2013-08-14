@@ -10,6 +10,63 @@
 
 bool firstRun = true;
 
+//유닛이 걸어다닐 수 있으며 충돌 크기가 있는지 확인
+bool unitIsGroundWalkable(const CUnit* const unit) {
+  using UnitStatus::GroundedBuilding;
+  using UnitStatus::InAir;
+  using UnitStatus::IgnoreTileCollision;
+  using UnitStatus::NoCollide;
+  using UnitStatus::IsGathering;
+  using UnitStatus::Disabled;
+  using UnitStatus::CanNotReceiveOrders;
+
+  return unit->status & UnitStatus::Completed
+         && !(unit->status & (GroundedBuilding | InAir | NoCollide | IsGathering | Disabled | CanNotReceiveOrders | IgnoreTileCollision))
+         && !(Unit::BaseProperty[unit->id] & UnitProperty::Subunit);
+}
+
+//비켜서기 기능 (search된 유닛을 위해 unit이 비켜줌)
+void stepAsideForOthers(CUnit* const unit) {
+  const int RADIUS = 37;  //탐색 거리
+  CUnit* closestSearch = NULL;
+  int closestDistance = RADIUS;
+
+  if (!unitIsGroundWalkable(unit)) return;
+  if (unit->mainOrderId != OrderId::PlayerGuard
+      && unit->mainOrderId != OrderId::Medic)
+      return;
+
+  //가장 가까운 유닛 찾기
+  const int unitX = unit->getX(), unitY = unit->getY();
+  for (CUnit* search = *firstVisibleUnit; search; search = search->next) {
+    if (unit->playerId == search->playerId && unit != search
+        && unitIsGroundWalkable(search)
+        && search->sprite->mainGraphic->animation == IscriptAnimation::Walking) {
+      int distance = scbw::getDistanceFast(unitX, unitY, search->getX(), search->getY());
+      if (distance <= closestDistance) {
+        closestDistance = distance;
+        closestSearch = search;
+      }
+    }
+  }
+  if (closestSearch == NULL) return;
+
+  //비켜주기
+  u16 moveX = unit->orderTarget.pt.x, moveY = unit->orderTarget.pt.y;
+  if (unitX > closestSearch->getX()) moveX += 10;
+  else moveX -= 10;
+  if (unitY > closestSearch->getY()) moveX += 10;
+  else moveY -= 10;
+
+  if (unit->id == UnitId::sarah_kerrigan)
+    unit->unusedTimer = 4;                                  //???
+
+  if (unit->id == UnitId::medic)
+    unit->orderTo(OrderId::HealMove, moveX, moveY);
+  else
+    unit->orderTo(OrderId::Move, moveX, moveY);
+}
+
 /// This hook is called every frame; most of your plugin's logic goes here.
 bool nextFrame() {
   if (!scbw::isGamePaused()) { //If the game is not paused
@@ -30,6 +87,9 @@ bool nextFrame() {
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
+
+      //지상 유닛 비켜주기
+      stepAsideForOthers(unit);
 
       //노라드 II와 발키리를 락다운, 스테이시스, 옵티컬, 인스네어, 이레디, 플레이그에 대해 무적으로 만듦
       //hooks/update_status_effects.cpp를 참고
@@ -214,6 +274,81 @@ bool nextFrame() {
           unit->orderTo(OrderId::CastFeedback, unit);       //자기 자신에게 피드백을 쓰게 해서 오류 메시지 출력
         }
       }
+
+      //시간 증폭이 걸린 건물의 업글 및 유닛 생산 가속
+      if (unit->status & (UnitStatus::GroundedBuilding | UnitStatus::Completed)
+          && Unit::GroupFlags[unit->id].isProtoss
+          && unit->unusedTimer > 0) {
+        //시증 효과는 항상 생성
+        if (!scbw::hasOverlay(unit, 264)
+            || unit->sprite->underlay->frameSet >= 17)
+          scbw::createOverlay(unit->sprite, 264);
+        //실제 효과는 건물에 파일런 동력이 공급될 때만 (2프레임당 1번)
+        if (!(unit->status & UnitStatus::DoodadStatesThing)
+            && unit->cycleCounter % 2) {
+          //엄그레이드 및 테크 가속
+          if (unit->building.upgradeResearchTime > 0)
+            unit->building.upgradeResearchTime--;
+          //유닛 생산 가속
+          CUnit* const trainingUnit = unit->currentBuildUnit;
+          if (trainingUnit && trainingUnit->remainingBuildTime > 1) {
+            trainingUnit->remainingBuildTime--;
+            trainingUnit->hitPoints = 102400;               //400HP로 강제 지정
+          }
+        }
+      }
+
+
+      //핵 미사일에 그래픽 효과 추가
+      //pastelmind: 이거 iscript.bin으로 돌리는 게 좋을 것 같은데?
+      if (unit->id == UnitId::nuclear_missile
+          && unit->status & UnitStatus::Completed
+          && unit->sprite->mainGraphic->animation == IscriptAnimation::Walking
+          && !scbw::hasOverlay(unit, 27)) {
+        scbw::createOverlay(unit->sprite, 27);
+      }
+
+
+      //바이킹 변신 관련, 공격 애니메이션이 따로 놀 때 수정
+      //pastelmind: 이거 DatEdit에서 건드리면 고칠 수 있을 텐데...?
+      if (unit->id == UnitId::edmund_duke
+          && unit->status & UnitStatus::Completed
+          && unit->subunit
+          && unit->sprite->mainGraphic->animation == IscriptAnimation::Walking) {
+        CImage* const subunitImage = unit->subunit->sprite->mainGraphic;
+        if (subunitImage->animation == IscriptAnimation::GndAttkInit
+            || subunitImage->animation == IscriptAnimation::GndAttkRpt)
+          unit->mainOrderId = OrderId::Stop;
+      }
+
+
+      //배럭, 팩토리, 스타포트가 애드온으로 이동 시 애드온 타입 자동 변경
+      //@TODO: 확실한 로직 물어보기
+      if (unit->mainOrderId == OrderId::Follow) {
+        CUnit* const targetAddon = unit->orderTarget.unit;
+        if (targetAddon && targetAddon->playerId == 11
+            && (targetAddon->id == UnitId::machine_shop
+                || targetAddon->id == UnitId::covert_ops
+                || targetAddon->id == UnitId::control_tower)
+            ) {
+          u16 changeId;
+          switch (unit->id) {
+            case UnitId::barracks:
+              changeId = UnitId::covert_ops; break;
+            case UnitId::factory:
+              changeId = UnitId::machine_shop; break;
+            case UnitId::starport:
+              changeId = UnitId::control_tower; break;
+            default:
+              changeId = UnitId::None;
+          }
+          if (changeId != UnitId::None) {
+            targetAddon->id = changeId;
+            targetAddon->currentButtonSet = changeId;
+          }
+        }
+      }
+
     } //end of for loop
 
     // Loop through the bullet table.
