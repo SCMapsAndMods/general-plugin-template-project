@@ -14,7 +14,9 @@ static u8 getAcidSporeOverlayAdjustment(const CUnit* const unit);
 //Original function address: 0x00492F70 (SCBW 1.16.1)
 //Note: this function is called every 8 ticks (when unit->cycleCounter reaches 8 == 0)
 void updateStatusEffectsHook(CUnit *unit) {
-  //Default StarCraft logic
+  //For several different uses in Burning Ground
+  if (unit->unusedTimer)
+    unit->unusedTimer--;
 
   if (unit->stasisTimer) {
     unit->stasisTimer--;
