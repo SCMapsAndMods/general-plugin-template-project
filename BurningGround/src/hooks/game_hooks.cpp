@@ -349,6 +349,30 @@ bool nextFrame() {
         }
       }
 
+
+      //짐 레이너 마린의 클로킹?
+      if (unit->id == UnitId::jim_raynor_marine) {
+        CImage* const mainImg = unit->sprite->mainGraphic;
+        if (mainImg->animation == IscriptAnimation::Walking) {
+          if (unit->secondaryOrderId != OrderId::Cloak && unit->unusedTimer == 0) {
+            scbw::createOverlay(unit->sprite, 978);
+            unit->status |= UnitStatus::CloakingForFree;
+            unit->secondaryOrderId = OrderId::Cloak;
+          }
+        }
+        else {
+          if (unit->secondaryOrderId == OrderId::Cloak) {
+            scbw::createOverlay(unit->sprite, 978);
+            unit->status &= ~(UnitStatus::CloakingForFree);
+            unit->secondaryOrderId = OrderId::Decloak;
+          }
+        }
+        if (mainImg->animation == IscriptAnimation::GndAttkInit
+            || mainImg->animation == IscriptAnimation::GndAttkRpt
+            || mainImg->animation == IscriptAnimation::Unused2)
+           unit->unusedTimer = 22;
+      }
+
     } //end of for loop
 
     // Loop through the bullet table.
