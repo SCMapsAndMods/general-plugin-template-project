@@ -27,7 +27,7 @@ bool unitIsGroundWalkable(const CUnit* const unit) {
 
 //비켜서기 기능 (search된 유닛을 위해 unit이 비켜줌)
 void stepAsideForOthers(CUnit* const unit) {
-  const int RADIUS = 37;  //탐색 거리
+  const int RADIUS = 50;  //탐색 거리
   CUnit* closestSearch = NULL;
   int closestDistance = RADIUS;
 
@@ -52,10 +52,10 @@ void stepAsideForOthers(CUnit* const unit) {
   if (closestSearch == NULL) return;
 
   //비켜주기
-  u16 moveX = unit->orderTarget.pt.x, moveY = unit->orderTarget.pt.y;
+  u16 moveX = unitX, moveY = unitY;
   if (unitX > closestSearch->getX()) moveX += 10;
   else moveX -= 10;
-  if (unitY > closestSearch->getY()) moveX += 10;
+  if (unitY > closestSearch->getY()) moveY += 10;
   else moveY -= 10;
 
   if (unit->id == UnitId::sarah_kerrigan)
