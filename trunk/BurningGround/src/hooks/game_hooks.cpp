@@ -175,6 +175,41 @@ bool nextFrame() {
       }
 
 
+      //서플라이 디포 내리기/올리기 (위에 다른 유닛이 없을 때만 올릴 수 있음)
+      if (unit->id == UnitId::supply_depot && unit->mainOrderId == OrderId::Stop) {
+        unit->mainOrderId = OrderId::Guard;
+        //올리기
+        if (unit->status & UnitStatus::NoCollide) {
+          //위에 다른 지상 유닛이 겹쳐 있는지 확인
+          bool isCollide = false;
+          for (CUnit *collideUnit = *firstVisibleUnit; collideUnit; collideUnit = collideUnit->next) {
+            if (!(collideUnit->status & (UnitStatus::Burrowed | UnitStatus::InAir))
+                && !(Unit::BaseProperty[collideUnit->id] & UnitProperty::Subunit)
+                && unit->getLeft() <= collideUnit->getRight()
+                && unit->getRight() >= collideUnit->getLeft()
+                && unit->getTop() <= collideUnit->getBottom()
+                && unit->getBottom() >= collideUnit->getTop()) {
+              isCollide = true;
+              break;
+            }
+          }
+          if (!isCollide) {
+            scbw::playIscriptAnim(unit->sprite->mainGraphic, IscriptAnimation::UnBurrow);
+            unit->status &= ~(UnitStatus::NoCollide);
+            unit->sprite->elevationLevel = Unit::Elevation[unit->id];
+            unit->currentButtonSet = UnitId::supply_depot;  //서플의 버튼셋
+          }
+        }
+        //내리기
+        else {
+          scbw::playIscriptAnim(unit->sprite->mainGraphic, IscriptAnimation::Burrow);
+          unit->status |= UnitStatus::NoCollide;
+          unit->sprite->elevationLevel = 0;
+          unit->currentButtonSet = 103; //내려진 서플의 버튼셋
+        }
+      }
+
+
       //노라드 II와 발키리를 락다운, 스테이시스, 옵티컬, 인스네어, 이레디, 플레이그에 대해 무적으로 만듦
       //hooks/update_status_effects.cpp를 참고
       if (unit->id == UnitId::norad_ii || unit->id == UnitId::valkyrie) {
