@@ -442,24 +442,38 @@ bool nextFrame() {
 
 
       //배럭, 팩토리, 스타포트가 애드온으로 이동 시 애드온 타입 자동 변경
-      //@TODO: 확실한 로직 물어보기
-      if (unit->mainOrderId == OrderId::Follow) {
+      if (Unit::BaseProperty[unit->id] & UnitProperty::Building
+          && unit->mainOrderId == OrderId::Follow) {
         CUnit* const targetAddon = unit->orderTarget.unit;
-        if (targetAddon && targetAddon->playerId == 11
-            && (targetAddon->id == UnitId::machine_shop
-                || targetAddon->id == UnitId::covert_ops
-                || targetAddon->id == UnitId::control_tower)
-            ) {
-          u16 changeId;
-          switch (unit->id) {
-            case UnitId::barracks:
-              changeId = UnitId::covert_ops; break;
-            case UnitId::factory:
-              changeId = UnitId::machine_shop; break;
-            case UnitId::starport:
-              changeId = UnitId::control_tower; break;
-            default:
-              changeId = UnitId::None;
+        u16 changeId = UnitId::None;
+        if (targetAddon && targetAddon->playerId == 11) {
+          //도미니언 건물
+          if (targetAddon->id == UnitId::Special_IonCannon
+              || targetAddon->id == UnitId::machine_shop
+              || targetAddon->id == UnitId::control_tower) {
+            switch (unit->id) {
+              case UnitId::barracks:
+                changeId = UnitId::Special_IonCannon; break;
+              case UnitId::factory:
+                changeId = UnitId::machine_shop; break;
+              case UnitId::starport:
+                changeId = UnitId::control_tower; break;
+              default: break;
+            }
+          }
+          //켈모리안 건물
+          else if (targetAddon->id == UnitId::covert_ops
+            || targetAddon->id == UnitId::Special_IndependentStarport
+            || targetAddon->id == UnitId::UnusedIndependentJumpGate) {
+            switch (unit->id) {
+              case UnitId::spawning_pool:
+                changeId = UnitId::covert_ops; break;
+              case UnitId::ultralisk_cavern:
+                changeId = UnitId::Special_IndependentStarport; break;
+              case UnitId::UnusedIndependentCommandCenter:
+                changeId = UnitId::UnusedIndependentJumpGate; break;
+              default: break;
+            }
           }
           if (changeId != UnitId::None) {
             targetAddon->id = changeId;
