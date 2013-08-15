@@ -67,6 +67,31 @@ void stepAsideForOthers(CUnit* const unit) {
     unit->orderTo(OrderId::Move, moveX, moveY);
 }
 
+
+//자동 수리를 할 수 있는 유닛인지 확인
+bool unitCanRepair(const CUnit *unit) {
+  return unit->id == UnitId::scv
+         || unit->id == UnitId::science_vessel
+         || unit->id == UnitId::magellan
+         || unit->id == UnitId::drone;
+}
+
+//수리를 받을 수 있는 유닛인지 확인
+bool unitCanBeRepaired(const CUnit *unit) {
+  using Unit::BaseProperty;
+  using Unit::GroupFlags;
+  using Unit::MaxHitPoints;
+
+  if (unit->status & UnitStatus::Completed
+      && unit->hitPoints < (MaxHitPoints[unit->id] * 256)) {
+    if (BaseProperty[unit->id] & UnitProperty::Mechanical && GroupFlags[unit->id].isTerran)
+      return true;
+    else if (unit->status & (UnitStatus::GroundedBuilding | UnitStatus::InAir))
+      return true;
+  }
+  return false;
+}
+
 /// This hook is called every frame; most of your plugin's logic goes here.
 bool nextFrame() {
   if (!scbw::isGamePaused()) { //If the game is not paused
@@ -90,6 +115,65 @@ bool nextFrame() {
 
       //지상 유닛 비켜주기
       stepAsideForOthers(unit);
+
+
+      //자동 수리 기능
+      if (unitCanRepair(unit)) {
+        //자동 수리 켜기
+        if (unit->mainOrderId == OrderId::HoldPosition2 && !unit->unused_0x106) {
+          unit->unused_0x106 = 1;
+          scbw::createOverlay(unit->sprite, 976);
+        }
+        //자동 수리 끄기
+        if (unit->mainOrderId == OrderId::Stop && unit->unused_0x106) {
+          unit->unused_0x106 = 0;
+          scbw::removeOverlays(unit, 976);
+          if (unit->connectedUnit) unit->connectedUnit = NULL;
+        }
+        //여기부터는 무슨 로직인지 잘 모르겠음.
+        //따라다니는 유닛을 우선적으로 치료한다...?
+        if (unit->mainOrderId == OrderId::Move
+          || unit->mainOrderId == OrderId::AttackMove
+          || unit->mainOrderId == OrderId:: Harvest1
+          || unit->mainOrderId == OrderId:: AttackUnit)
+            if(unit->connectedUnit)
+              unit->connectedUnit = NULL;
+        if (unit->mainOrderId == OrderId::PlayerGuard && unit->unused_0x106)
+          unit->mainOrderId = OrderId::HoldPosition2;
+        if (unit->mainOrderId == OrderId::Follow && unit->unused_0x106 && unit->orderTarget.unit) {
+          if (unit->connectedUnit == NULL)
+            unit->connectedUnit = unit->orderTarget.unit;
+          if (unit->connectedUnit && unit->connectedUnit != unit->orderTarget.unit)
+            unit->connectedUnit = unit->orderTarget.unit;
+        }
+        if (unit->mainOrderId == OrderId::HoldPosition2 && unit->connectedUnit) {
+          unit->mainOrderId = OrderId::Follow;
+          unit->orderTarget.unit = unit->connectedUnit;
+        }
+        //실제로 치료할 대상을 탐색
+        CUnit *bestRepairTarget = NULL;
+        int bestDistance = 150; //최대 거리
+        const u16 unitX = unit->getX(), unitY = unit->getY();
+        if (unit->unused_0x106) {
+          if (unit->mainOrderId == OrderId::HoldPosition2
+            || unit->mainOrderId == OrderId::AttackMove
+            || unit->mainOrderId == OrderId::Follow) {
+            for (CUnit* repairTarget = *firstVisibleUnit; repairTarget; repairTarget = repairTarget->next) {
+              if (unit != repairTarget && unit->playerId == repairTarget->playerId
+                  && unitCanBeRepaired(repairTarget)) {
+                const int distance = scbw::getDistanceFast(unitX, unitY, repairTarget->getX(), repairTarget->getY());
+                if (distance < bestDistance) {
+                  bestRepairTarget = repairTarget;
+                  bestDistance = distance;
+                }
+              }
+            }
+          }
+        }
+        if (bestRepairTarget)
+          unit->orderTo(OrderId::Repair1, bestRepairTarget);
+      }
+
 
       //노라드 II와 발키리를 락다운, 스테이시스, 옵티컬, 인스네어, 이레디, 플레이그에 대해 무적으로 만듦
       //hooks/update_status_effects.cpp를 참고
