@@ -188,7 +188,8 @@ bool nextFrame() {
                 && unit->getLeft() <= collideUnit->getRight()
                 && unit->getRight() >= collideUnit->getLeft()
                 && unit->getTop() <= collideUnit->getBottom()
-                && unit->getBottom() >= collideUnit->getTop()) {
+                && unit->getBottom() >= collideUnit->getTop()
+                && unit != collideUnit) {
               isCollide = true;
               break;
             }
@@ -355,20 +356,6 @@ bool nextFrame() {
       }
 
 
-      //토르를 실은 수송 유닛의 이미지 변화
-      if (unit->id == 56) { //쿠쿨자 가디언을 토르로 사용
-        CUnit* const transport = unit->connectedUnit;
-        if (transport != NULL
-            && (transport->id == UnitId::dropship|| transport->id == 8 || transport->id == 57)
-            && !(transport->mainOrderId == OrderId::Unload
-                 || transport->mainOrderId == OrderId::MoveUnload)
-            && transport->sprite->mainGraphic->frameSet < 17)
-        {
-          scbw::playFrame(transport->sprite->mainGraphic, 17);
-        }
-      }
-
-
       //넥서스에 시간 증폭 스킬 추가
       if (unit->id == UnitId::nexus
           && unit->mainOrderId == OrderId::PlaceScanner) {
@@ -516,6 +503,23 @@ bool nextFrame() {
       }
 
     } //end of for loop
+
+    // Loop through hidden units
+    for (CUnit *hiddenUnit = *firstHiddenUnit; hiddenUnit; hiddenUnit = hiddenUnit->next) {
+      //토르를 실은 수송 유닛의 이미지 변화
+      //쿠쿨자 가디언을 토르로 사용
+      if (hiddenUnit->id == 56 && hiddenUnit->status & UnitStatus::InTransport) {
+        CUnit* const transport = hiddenUnit->connectedUnit;
+        if (transport != NULL
+            && (transport->id == UnitId::dropship || transport->id == 8 || transport->id == 57)
+            && !(transport->mainOrderId == OrderId::Unload
+                 || transport->mainOrderId == OrderId::MoveUnload)
+            && transport->sprite->mainGraphic->frameSet < 17)
+        {
+          scbw::playFrame(transport->sprite->mainGraphic, 17);
+        }
+      }
+    } //end of hidden unit loop
 
     // Loop through the bullet table.
     // Warning: There is no guarantee that the current bullet is actually a
