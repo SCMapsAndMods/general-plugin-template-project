@@ -195,7 +195,7 @@ bool nextFrame() {
             }
           }
           if (!isCollide) {
-            scbw::playIscriptAnim(unit->sprite->mainGraphic, IscriptAnimation::UnBurrow);
+            scbw::playIscriptAnim(unit->sprite->mainGraphic, IscriptAnimation::Landing);
             unit->status &= ~(UnitStatus::NoCollide);
             unit->sprite->elevationLevel = Unit::Elevation[unit->id];
             unit->currentButtonSet = UnitId::supply_depot;  //서플의 버튼셋
@@ -203,7 +203,7 @@ bool nextFrame() {
         }
         //내리기
         else {
-          scbw::playIscriptAnim(unit->sprite->mainGraphic, IscriptAnimation::Burrow);
+          scbw::playIscriptAnim(unit->sprite->mainGraphic, IscriptAnimation::LiftOff);
           unit->status |= UnitStatus::NoCollide;
           unit->sprite->elevationLevel = 0;
           unit->currentButtonSet = 103; //내려진 서플의 버튼셋
