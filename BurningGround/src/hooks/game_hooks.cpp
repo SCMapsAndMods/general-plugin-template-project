@@ -284,14 +284,13 @@ bool nextFrame() {
       if (unit->id == UnitId::bunker) {
         //까치날개 포탑 달기
         if (unit->mainOrderId == OrderId::CarrierStop) {
-          unit->currentButtonSet = 119;
           unit->building.addonBuildType = UnitId::physics_lab;          //까치날개 포탑 ID
-          unit->mainOrderId = OrderId::PlaceAddon;
-          unit->orderTarget.pt.x = unit->position.x;
-          unit->orderTarget.pt.y = unit->position.y;
-          if (unit->building.addon)
-            unit->building.addon->connectedUnit = unit;                 //생성된 포탑 유닛과 연결
+          unit->orderTo(OrderId::PlaceAddon, unit->position.x, unit->position.y);
         }
+        //포탑이 생성되었을 경우 버튼셋 변경
+        if (unit->mainOrderId == OrderId::PlaceAddon && unit->building.addon
+            && unit->currentButtonSet != 119)
+          unit->currentButtonSet = 119;
 
         //회수
         if (unit->mainOrderId == OrderId::ReaverStop) {
