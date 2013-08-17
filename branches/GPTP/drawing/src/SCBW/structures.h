@@ -8,6 +8,8 @@
 #include "structures/CSprite.h"
 #include "structures/CImage.h"
 #include "structures/COrder.h"
+#include "structures/Font.h"
+#include "structures/Bitmap.h"
 
 #pragma pack(1)
 

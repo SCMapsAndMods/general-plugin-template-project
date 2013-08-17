@@ -62,6 +62,10 @@ ActiveTile** const activeTileArray  = (ActiveTile**)  0x006D1260;
 UnitFinderData* const unitOrderingX = (UnitFinderData*) 0x0066FF78;
 UnitFinderData* const unitOrderingY = (UnitFinderData*) 0x006769B8;
 
+// Font & Drawing
+Font**  const fontBase          = (Font**)  0x006CE0F4;
+Bitmap* const gameScreenBuffer  = (Bitmap*) 0x006CEFF0;
+
 //Player alliance status
 struct PlayerAllianceData {
   u8 player[PLAYER_COUNT];
