@@ -18,49 +18,49 @@
 #define WEAPON_TYPE_COUNT     130
 #define FLINGY_TYPE_COUNT     209
 
-CUnit*      const unitTable       = (CUnit*)(offsets::UnitTable);
-CBullet*    const bulletTable     = (CBullet*)(offsets::BulletTable);
-UNITDEATHS* const deathTable      = (UNITDEATHS*)(offsets::UnitDeaths);
+CUnit*      const unitTable       = (CUnit*)(0x0059CCA8);
+CBullet*    const bulletTable     = (CBullet*)(0x0064B2E8);
+UNITDEATHS* const deathTable      = (UNITDEATHS*)(0x0058A364);
 UNITDEATHS* const unit_deaths     = &deathTable[0];
 
 //From resources.cpp
-RESOURCES*  const resourceTable   = (RESOURCES*)(offsets::Resources);
+RESOURCES*  const resourceTable   = (RESOURCES*)(0x0057F0F0);
 RESOURCES*  const resources       = &resourceTable[0];
 
 //From player.cpp
-PLAYER*     const playerTable     = (PLAYER*)(offsets::PlayerTable);
+PLAYER*     const playerTable     = (PLAYER*)(0x0057EEE0);
 
 //From locations.cpp
-MapSize*    const mapSize         = (MapSize*)  offsets::MapSize;
-LOCATION*   const locationTable   = (LOCATION*)(offsets::LocationTable);
+MapSize*    const mapSize         = (MapSize*) 0x0057F1D4;
+LOCATION*   const locationTable   = (LOCATION*)(0x0058DC60);
 
 //From buttons.cpp
 BUTTON*     const button          = 0;  //???
 BUTTON_SET* const buttonSet       = 0;  //???
 
 //From triggers.cpp
-ActionPointer*  const actionTable = (ActionPointer*)(offsets::ActionTable);
+ActionPointer*  const actionTable = (ActionPointer*)(0x00512800);
 
 //This was in the InitializePlugin() code in qdp.cpp.
 //Not sure what this does, so I'm leaving it as a comment.
 //actionTable[59] = &EnableDebugModeAction;
 
 /// The first nodes in StarCraft's internal linked lists (taken from BWAPI's Offsets.h)
-CUnit**    const firstVisibleUnit  = (CUnit**)offsets::FirstVisibleUnit;
+CUnit**    const firstVisibleUnit  = (CUnit**) 0x00628430;
 /// Includes units in transports/bunkers, workers inside gas buildings, nukes in
 /// silos, queens inside command centers, and units in production.
-CUnit**    const firstHiddenUnit    = (CUnit**)   offsets::FirstHiddenUnit;
-CUnit**    const firstScannerSweep  = (CUnit**)   offsets::FirstScannerSweep;
+CUnit**    const firstHiddenUnit    = (CUnit**)   0x006283EC;
+CUnit**    const firstScannerSweep  = (CUnit**)   0x006283F4;
 /// Array of size 12.
-CUnit**    const firstPlayerUnit    = (CUnit**)   offsets::FirstPlayerUnit;
-CBullet**  const firstBullet        = (CBullet**) offsets::FirstBullet;
+CUnit**    const firstPlayerUnit    = (CUnit**)   0x006283F8;
+CBullet**  const firstBullet        = (CBullet**) 0x0064DEC4;
 
 //Contains various info on the tiles.
-ActiveTile** const activeTileArray  = (ActiveTile**)  offsets::ActiveTileArray;
+ActiveTile** const activeTileArray  = (ActiveTile**)  0x006D1260;
 
 // Stores an ordered list of all units currently in the game.
-UnitFinderData* const unitOrderingX = (UnitFinderData*) offsets::UnitOrderingX;
-UnitFinderData* const unitOrderingY = (UnitFinderData*) offsets::UnitOrderingY;
+UnitFinderData* const unitOrderingX = (UnitFinderData*) 0x0066FF78;
+UnitFinderData* const unitOrderingY = (UnitFinderData*) 0x006769B8;
 
 //Player alliance status
 struct PlayerAllianceData {
@@ -70,12 +70,12 @@ PlayerAllianceData* const playerAlliance = (PlayerAllianceData*) 0x0058D634;
 
 //-------- Internal constants --------//
 
-volatile const u32* const IS_GAME_PAUSED    = (u32*) offsets::Is_Game_Paused;
-volatile const u8*  const IS_BROOD_WAR      = (u8*)  offsets::Is_Brood_War;
-volatile const u32* const CHEAT_STATE       = (u32*) offsets::Cheat_State;
-volatile const u32* const unitOrderingCount = (u32*) offsets::UnitOrderingCount;
-volatile const s32* const maxUnitWidth      = (s32*) offsets::MaxUnitWidth;
-volatile const s32* const maxUnitHeight     = (s32*) offsets::MaxUnitHeight;
+volatile const u32* const IS_GAME_PAUSED    = (u32*) 0x006509C4;
+volatile const u8*  const IS_BROOD_WAR      = (u8*)  0x0058F440;
+volatile const u32* const CHEAT_STATE       = (u32*) 0x006D5A6C;
+volatile const u32* const unitOrderingCount = (u32*) 0x0066FF74;
+volatile const s32* const maxUnitWidth      = (s32*) 0x006BEE68;
+volatile const s32* const maxUnitHeight     = (s32*) 0x006BB930;
 
 //-------- DAT Files --------//
 
@@ -91,7 +91,7 @@ struct DatLoad {
 };
 
 namespace Unit {
-const DatLoad* const unitsDat      = (const DatLoad*)(offsets::UnitsDat);
+const DatLoad* const unitsDat      = (const DatLoad*)(0x00513C30);
 
 const u8* const   Graphic             = (const u8*)  unitsDat[0].address;
 const u16* const  SubUnit             = (const u16*) unitsDat[1].address;
@@ -126,7 +126,7 @@ const u8* const   BroodwarOnly        = (const u8*)  unitsDat[52].address;
 }
 
 namespace Flingy {
-const DatLoad* const flingyDat    = (const DatLoad*)(offsets::FlingyDat);
+const DatLoad* const flingyDat    = (const DatLoad*)(0x00515A38);
 
 const u16* const  SpriteID        = (const u16*) flingyDat[0].address;
 const u32* const  TopSpeed        = (const u32*) flingyDat[1].address;
@@ -137,7 +137,7 @@ const u8* const   MovementControl = (const u8*)  flingyDat[6].address;
 }
 
 namespace Weapon {
-const DatLoad* const weaponsDat     = (const DatLoad*)(offsets::WeaponsDat);
+const DatLoad* const weaponsDat     = (const DatLoad*)(0x00513868);
 
 const u16* const Label              = (const u16*) weaponsDat[0].address;
 const u32* const Graphic            = (const u32*) weaponsDat[1].address;
@@ -163,7 +163,7 @@ const u8* const  Yoffset            = (const u8*)  weaponsDat[21].address;
 }
 
 namespace Upgrade {
-const DatLoad* const upgradesDat    = (const DatLoad*)(offsets::UpgradesDat);
+const DatLoad* const upgradesDat    = (const DatLoad*)(0x005136E0);
 
 const u16* const  MineralCostBase   = (const u16*)  upgradesDat[0].address;
 const u16* const  MineralCostFactor = (const u16*)  upgradesDat[1].address;
@@ -177,7 +177,7 @@ const u8* const   MaxRepeats        = (const u8*)   upgradesDat[10].address;
 }
 
 namespace Tech {
-const DatLoad* const techdataDat  = (const DatLoad*)(offsets::TechdataDat);
+const DatLoad* const techdataDat  = (const DatLoad*)(0x005137D8);
 
 const u16* const MineralCost      = (const u16*) techdataDat[0].address;
 const u16* const GasCost          = (const u16*) techdataDat[1].address;
