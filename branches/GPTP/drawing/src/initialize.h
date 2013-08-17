@@ -8,6 +8,7 @@
 #include "hooks/consume.h"
 #include "hooks/detector_check.h"
 #include "hooks/do_weapon_damage.h"
+#include "hooks/drawing_hooks.h"
 #include "hooks/energy_regeneration.h"
 #include "hooks/max_unit_energy.h"
 #include "hooks/rally_point.h"
@@ -45,6 +46,8 @@ void Initialize() {
   jmpPatch(unitCanDetectWrapper,          offsets::Hook_UnitCanDetect);
 
   jmpPatch(doWeaponDamageWrapper,         offsets::Func_DoWeaponDamage);
+
+  jmpPatch(customDrawingWrapper,          offsets::Hook_ScreenUpdateProc);
 
   jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
 
