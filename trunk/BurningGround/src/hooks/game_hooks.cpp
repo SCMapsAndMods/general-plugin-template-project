@@ -211,9 +211,9 @@ bool nextFrame() {
       }
 
 
-      //노라드 II와 발키리를 락다운, 스테이시스, 옵티컬, 인스네어, 이레디, 플레이그에 대해 무적으로 만듦
+      //노라드 II와 영웅 아칸을 락다운, 스테이시스, 옵티컬, 인스네어, 이레디, 플레이그에 대해 무적으로 만듦
       //hooks/update_status_effects.cpp를 참고
-      if (unit->id == UnitId::norad_ii || unit->id == UnitId::valkyrie) {
+      if (unit->id == UnitId::norad_ii || unit->id == UnitId::tassadar_zeratul) {
         if (unit->lockdownTimer) unit->removeLockdown();
         if (unit->stasisTimer) unit->removeStasisField();
         if (unit->isBlind) unit->isBlind = 0;
@@ -493,6 +493,30 @@ bool nextFrame() {
       }
 
 
+      //앨런 쉐자르의 스텔스
+      if (unit->id == UnitId::alan_schezar) {
+        CImage* const mainImg = unit->sprite->mainGraphic;
+        if (mainImg->animation == IscriptAnimation::WalkingToIdle) {
+          if (unit->secondaryOrderId != OrderId::Cloak && unit->unusedTimer == 0) {
+            scbw::createOverlay(unit->sprite, 970);
+            unit->status |= UnitStatus::CloakingForFree;
+            unit->secondaryOrderId = OrderId::Cloak;
+          }
+        }
+        else {
+          if (unit->secondaryOrderId == OrderId::Cloak) {
+            scbw::createOverlay(unit->sprite, 970);
+            unit->status &= ~(UnitStatus::CloakingForFree);
+            unit->secondaryOrderId = OrderId::Decloak;
+          }
+        }
+        if (mainImg->animation == IscriptAnimation::GndAttkInit
+            || mainImg->animation == IscriptAnimation::GndAttkRpt
+            || mainImg->animation == IscriptAnimation::Walking)
+           unit->unusedTimer = 22;
+      }
+
+
       //스팀팩 사용 시작 및 종료시 그래픽 효과 추가
       if (unit->status & UnitStatus::Completed) {
         if (unit->stimTimer == 40)
@@ -510,7 +534,8 @@ bool nextFrame() {
         int loadedBigUnit = -1;
         //토르나 워메크가 타고 있는지 확인
         for (int i = 0; i < 8; ++i) {
-          const CUnit* const loadedUnit = &unitTable[transport->loadedUnitIndex[i] - 1];
+          const u16 loadedUnitInd = transport->loadedUnitIndex[i] % 2048;
+          const CUnit* const loadedUnit = &unitTable[loadedUnitInd - 1];
           if (loadedUnit->status & UnitStatus::InTransport) {
             if (loadedUnit->id == UNIT_THOR || loadedUnit->id == UNIT_WARMECH) {
               loadedBigUnit = loadedUnit->id;
