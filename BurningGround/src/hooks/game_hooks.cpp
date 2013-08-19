@@ -339,7 +339,7 @@ bool nextFrame() {
 
 
       //테란 유닛의 킬수에 따른 계급 증가
-      if (!(unit->status & UnitStatus::IsBuilding)
+      if (!(Unit::BaseProperty[unit->id] & UnitProperty::Building)
           && Unit::GroupFlags[unit->id].isTerran) {
         if (unit->killCount >= 20) unit->rankIncrease = 15;
         else if (unit->killCount >= 15) unit->rankIncrease = 10;
@@ -391,7 +391,7 @@ bool nextFrame() {
         //실제 효과는 건물에 파일런 동력이 공급될 때만 (2프레임당 1번)
         if (!(unit->status & UnitStatus::DoodadStatesThing)
             && unit->cycleCounter % 2) {
-          //엄그레이드 및 테크 가속
+          //업그레이드 및 테크 가속
           if (unit->building.upgradeResearchTime > 0)
             unit->building.upgradeResearchTime--;
           //유닛 생산 가속
@@ -501,24 +501,33 @@ bool nextFrame() {
           scbw::createOverlay(unit->sprite, 63);
       }
 
-    } //end of for loop
 
-    // Loop through hidden units
-    for (CUnit *hiddenUnit = *firstHiddenUnit; hiddenUnit; hiddenUnit = hiddenUnit->next) {
       //토르를 실은 수송 유닛의 이미지 변화
-      //쿠쿨자 가디언을 토르로 사용
-      if (hiddenUnit->id == 56 && hiddenUnit->status & UnitStatus::InTransport) {
-        CUnit* const transport = hiddenUnit->connectedUnit;
-        if (transport != NULL
-            && (transport->id == UnitId::dropship || transport->id == 8 || transport->id == 57)
-            && !(transport->mainOrderId == OrderId::Unload
-                 || transport->mainOrderId == OrderId::MoveUnload)
-            && transport->sprite->mainGraphic->frameSet < 17)
-        {
-          scbw::playFrame(transport->sprite->mainGraphic, 17);
+      //쿠쿨자 가디언을 토르(56), 악튜러스 멩스크를 워메크(27)로 사용
+      if (unit->id == UnitId::dropship || unit->id == 8 || unit->id == 57) {
+        const u16 UNIT_THOR = 56, UNIT_WARMECH = 27;
+        const CUnit* const transport = unit;
+        u16 loadedBigUnit = -1;
+        //토르나 워메크가 타고 있는지 확인
+        for (int i = 0; i < 8; ++i) {
+          const CUnit* const loadedUnit = &unitTable[transport->loadedUnitIndex[i]];
+          if (loadedUnit && loadedUnit->status & UnitStatus::InTransport) {
+            if (loadedUnit->id == UNIT_THOR || loadedUnit->id == UNIT_WARMECH) {
+              loadedBigUnit = loadedUnit->id;
+              break;
+            }
+          }
         }
+        //프레임셋 설정
+        if (loadedBigUnit == -1)
+          scbw::playFrame(transport->sprite->mainGraphic, 0);     //playfram 0
+        if (loadedBigUnit == UNIT_THOR)
+          scbw::playFrame(transport->sprite->mainGraphic, 0x11);  //playfram 0x11
+        else if (loadedBigUnit == UNIT_WARMECH)
+          scbw::playFrame(transport->sprite->mainGraphic, 0x22);  //playfram 0x22
       }
-    } //end of hidden unit loop
+
+    } //end of for loop
 
     // Loop through the bullet table.
     // Warning: There is no guarantee that the current bullet is actually a
