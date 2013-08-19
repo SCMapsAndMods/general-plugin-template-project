@@ -510,7 +510,7 @@ bool nextFrame() {
         u16 loadedBigUnit = -1;
         //토르나 워메크가 타고 있는지 확인
         for (int i = 0; i < 8; ++i) {
-          const CUnit* const loadedUnit = &unitTable[transport->loadedUnitIndex[i]];
+          const CUnit* const loadedUnit = &unitTable[transport->loadedUnitIndex[i] - 1];
           if (loadedUnit && loadedUnit->status & UnitStatus::InTransport) {
             if (loadedUnit->id == UNIT_THOR || loadedUnit->id == UNIT_WARMECH) {
               loadedBigUnit = loadedUnit->id;
@@ -521,7 +521,7 @@ bool nextFrame() {
         //프레임셋 설정
         if (loadedBigUnit == -1)
           scbw::playFrame(transport->sprite->mainGraphic, 0);     //playfram 0
-        if (loadedBigUnit == UNIT_THOR)
+        else if (loadedBigUnit == UNIT_THOR)
           scbw::playFrame(transport->sprite->mainGraphic, 0x11);  //playfram 0x11
         else if (loadedBigUnit == UNIT_WARMECH)
           scbw::playFrame(transport->sprite->mainGraphic, 0x22);  //playfram 0x22
