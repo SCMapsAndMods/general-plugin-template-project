@@ -507,11 +507,11 @@ bool nextFrame() {
       if (unit->id == UnitId::dropship || unit->id == 8 || unit->id == 57) {
         const u16 UNIT_THOR = 56, UNIT_WARMECH = 27;
         const CUnit* const transport = unit;
-        u16 loadedBigUnit = -1;
+        int loadedBigUnit = -1;
         //토르나 워메크가 타고 있는지 확인
         for (int i = 0; i < 8; ++i) {
           const CUnit* const loadedUnit = &unitTable[transport->loadedUnitIndex[i] - 1];
-          if (loadedUnit && loadedUnit->status & UnitStatus::InTransport) {
+          if (loadedUnit->status & UnitStatus::InTransport) {
             if (loadedUnit->id == UNIT_THOR || loadedUnit->id == UNIT_WARMECH) {
               loadedBigUnit = loadedUnit->id;
               break;
