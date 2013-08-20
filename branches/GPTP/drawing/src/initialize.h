@@ -47,7 +47,7 @@ void Initialize() {
 
   jmpPatch(doWeaponDamageWrapper,         offsets::Func_DoWeaponDamage);
 
-  jmpPatch(customDrawingWrapper,          offsets::Hook_ScreenUpdateProc);
+  memoryPatch4((void*)offsets::InjectScreenUpdateAddr, (u32)DrawHook);
 
   jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
 

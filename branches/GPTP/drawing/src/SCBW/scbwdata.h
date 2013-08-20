@@ -65,6 +65,9 @@ UnitFinderData* const unitOrderingY = (UnitFinderData*) 0x006769B8;
 // Font & Drawing
 Font**  const fontBase          = (Font**)  0x006CE0F4;
 Bitmap* const gameScreenBuffer  = (Bitmap*) 0x006CEFF0;
+u8*     const refreshRegions    = (u8*)     0x006CEFF8;
+typedef void (__stdcall *DrawGameProc)(Bitmap *surface, Bounds *bounds);
+static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
 
 //Player alliance status
 struct PlayerAllianceData {

@@ -1,23 +1,30 @@
 #pragma once
-#include "../types.h"
+#include "../SCBW/scbwdata.h"
 
 namespace offsets {
-  const u32 Hook_ScreenUpdateProc = 0x004BD627;
+  const u32 InjectScreenUpdateAddr  = 0x004BD68D;
 }
 
 void customDrawing();
 
-//Inject w/ jmpPatch
-static void __declspec(naked) customDrawingWrapper() {
-  __asm {
-    PUSHAD
-    MOV EBP, ESP
+//----------------------------------------------- DRAW HOOK --------------------------------------------------
+static bool wantRefresh = false;
+static void __stdcall DrawHook(Bitmap *surface, Bounds *bounds)
+{
+  if (wantRefresh) {
+    wantRefresh = false;
+    memset(refreshRegions, 1, 1200);
   }
+
+  oldDrawGameProc(surface, bounds);
 
   customDrawing();
 
-  __asm {
-    POPAD
-    RETN 8
-  }
+  //if ( BW::BWDATA::GameScreenBuffer->isValid() )
+  //{
+  //  unsigned int numShapes = BWAPI::BroodwarImpl.drawShapes();
+  //  
+  //  if ( numShapes )
+  //    wantRefresh = true;
+  //}
 }
