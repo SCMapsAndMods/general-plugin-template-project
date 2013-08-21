@@ -1,11 +1,14 @@
 #pragma once
 #include "../SCBW/scbwdata.h"
+#include <string>
 
 namespace offsets {
   const u32 InjectScreenUpdateAddr  = 0x004BD68D;
 }
 
-void customDrawing();
+void addString(const std::string& str);
+void flushString();
+int customDrawing();
 
 //----------------------------------------------- DRAW HOOK --------------------------------------------------
 static bool wantRefresh = false;
@@ -18,8 +21,6 @@ static void __stdcall DrawHook(Bitmap *surface, Bounds *bounds)
 
   oldDrawGameProc(surface, bounds);
 
-  customDrawing();
-
   //if ( BW::BWDATA::GameScreenBuffer->isValid() )
   //{
   //  unsigned int numShapes = BWAPI::BroodwarImpl.drawShapes();
@@ -27,4 +28,6 @@ static void __stdcall DrawHook(Bitmap *surface, Bounds *bounds)
   //  if ( numShapes )
   //    wantRefresh = true;
   //}
+  if (customDrawing() > 0)
+    wantRefresh = true;
 }
