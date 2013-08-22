@@ -44,17 +44,17 @@ inline void callPatch(const void* target, DWORD position, unsigned int nops = 0)
   callPatch(target, (void*)position, nops);
 }
 
-/// Patches the specified address with a 4-byte value.
-void memoryPatch4(void* const address, const u32 value);
+/// Patches the specified address with the given data using memcpy().
+template <typename T>
+void memoryPatch(const u32 address, const T& data) {
+  memoryPatch(address, (u8*)&data, sizeof(T));
+}
 
-/// Patches the specified address with a 2-byte value.
-void memoryPatch2(void* const address, const u16 value);
-
-/// Patches the specified address with a 1-byte value.
-void memoryPatch1(void* const address, const u8 value);
-
-/// Inject an array of bytes, using the given length.
-void memoryPatch(void* const address, const u8* data, const size_t length);
+/// Inject an array of bytes, using the given size.
+void memoryPatch(void* const address, const u8* data, const size_t size);
+inline void memoryPatch(const u32 address, const u8* data, const size_t size) {
+  memoryPatch((void*)address, data, size);
+}
 
 /// Displays a simple non-modal message box.
 inline void mBox(const char* str) {
