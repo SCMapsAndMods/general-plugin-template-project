@@ -367,6 +367,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\graphics.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SCBW\enumerations\ImageId.h"
 				>
 			</File>
@@ -404,6 +408,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\scbwdata.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\Shape.h"
 				>
 			</File>
 			<File
