@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\graphics.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\max_unit_energy.cpp"
 				>
 			</File>
@@ -242,6 +246,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\recharge_shields.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\Shape.cpp"
 				>
 			</File>
 			<File
@@ -308,6 +316,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\structures\CImage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\ColorId.h"
 				>
 			</File>
 			<File

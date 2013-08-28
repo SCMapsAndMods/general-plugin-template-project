@@ -1,22 +1,31 @@
 #pragma once
 #include <string>
 #include "../types.h"
+#include "ColorId.h"
 
 namespace graphics {
 
-//Should move to graphics.cpp
-const int MAX_SHAPES  = 10000;
-const int MAX_STRINGS = 2000;
+void resetAllGraphics();
 
-enum CoordType { SCREEN, MAP };
+void drawTextOnScreen(int x, int y, const std::string& str);
+void drawTextOnMap(int x, int y, const std::string& str);
 
-void drawText(int x, int y, const std::string* str, CoordType target = SCREEN);
-void drawDot(int x, int y, u8 color, CoordType target = SCREEN);
-void drawLine(int x1, int y1, int x2, int y2, u8 color, CoordType target = SCREEN);
-void drawBox(int x1, int y1, int x2, int y2, u8 color, CoordType target = SCREEN);
-void drawRect(int x1, int y1, int width, int height, u8 color, CoordType target = SCREEN);
-void drawCircle(int x1, int y1, int radius, u8 color, CoordType target = SCREEN);
-void drawFilledBox(int x1, int y1, int x2, int y2, u8 color, CoordType target = SCREEN);
-void drawFilledCircle(int x1, int y1, int radius, u8 color, CoordType target = SCREEN);
+void drawDotOnScreen(int x, int y, ColorId color);
+void drawDotOnMap(int x, int y, ColorId color);
+
+void drawLineOnScreen(int x1, int y1, int x2, int y2, ColorId color);
+void drawLineOnMap(int x1, int y1, int x2, int y2, ColorId color);
+
+void drawBoxOnScreen(int left, int top, int right, int bottom, ColorId color);
+void drawBoxOnMap(int left, int top, int right, int bottom, ColorId color);
+
+void drawCircleOnScreen(int x, int y, int radius, ColorId color);
+void drawCircleOnMap(int x, int y, int radius, ColorId color);
+
+void drawFilledBoxOnScreen(int left, int top, int right, int bottom, ColorId color);
+void drawFilledBoxOnMap(int left, int top, int right, int bottom, ColorId color);
+
+void drawFilledCircleOnScreen(int x, int y, int radius, ColorId color);
+void drawFilledCircleOnMap(int x, int y, int radius, ColorId color);
 
 } //graphics
