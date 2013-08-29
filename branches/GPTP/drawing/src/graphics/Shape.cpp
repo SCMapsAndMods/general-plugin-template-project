@@ -1,6 +1,9 @@
 #include "Shape.h"
+#include "graphics_errors.h"
 
 namespace graphics {
+
+//-------- Registering shapes --------//
 
 void Shape::setText(int x, int y, int stringIndex) {
   this->type = TEXT;
@@ -58,5 +61,22 @@ void Shape::setFilledCircle(int x, int y, int radius, ColorId color) {
   this->radius = radius;
   this->color = color;
 };
+
+//-------- Drawing --------//
+
+void Shape::draw() {
+  switch (this->type) {
+    case TEXT:
+    case DOT:
+    case LINE:
+    case BOX:
+    case CIRCLE:
+    case FILLED_BOX:
+    case FILLED_CIRCLE:
+    default:
+      setError(ERR_UKNOWN_SHAPE);
+      break;
+  }
+}
 
 } //graphics

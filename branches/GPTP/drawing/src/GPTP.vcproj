@@ -229,6 +229,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\graphics_errors.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\max_unit_energy.cpp"
 				>
 			</File>
@@ -380,6 +384,10 @@
 			</File>
 			<File
 				RelativePath=".\graphics\graphics.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\graphics_errors.h"
 				>
 			</File>
 			<File

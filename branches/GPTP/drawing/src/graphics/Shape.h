@@ -16,6 +16,7 @@ class Shape {
     void setCircle(int x, int y, int radius, ColorId color);
     void setFilledBox(int left, int top, int right, int bottom, ColorId color);
     void setFilledCircle(int x, int y, int radius, ColorId color);
+    void draw();
 
   private:
     enum ShapeType {

@@ -1,4 +1,5 @@
 #include "graphics.h"
+#include "graphics_errors.h"
 #include "Shape.h"
 #include "../SCBW/scbwdata.h"
 
@@ -16,40 +17,73 @@ int stringCount = 0;
 void resetAllGraphics() {
   shapeCount = 0;
   stringCount = 0;
+  clearErrors();
 }
 
 void drawTextOnScreen(int x, int y, const std::string& str) {
+  if (stringCount >= MAX_STRINGS) {
+    setError(ERR_TOO_MANY_STRINGS);
+    return;
+  }
+  if (shapeCount >= MAX_SHAPES) {
+    setError(ERR_TOO_MANY_SHAPES);
+    return;
+  }
   strings[stringCount] = str;
   shapes[shapeCount++].setText(x, y, stringCount++);
 }
 //void drawTextOnMap(int x, int y, const std::string& str);
 
 void drawDotOnScreen(int x, int y, ColorId color) {
+  if (shapeCount >= MAX_SHAPES) {
+    setError(ERR_TOO_MANY_SHAPES);
+    return;
+  }
   shapes[shapeCount++].setDot(x, y, color);
 }
 //void drawDotOnMap(int x, int y, ColorId color);
 
 void drawLineOnScreen(int x1, int y1, int x2, int y2, ColorId color) {
+  if (shapeCount >= MAX_SHAPES) {
+    setError(ERR_TOO_MANY_SHAPES);
+    return;
+  }
   shapes[shapeCount++].setLine(x1, y1, x2, y2, color);
 }
 //void drawLineOnMap(int x1, int y1, int x2, int y2, ColorId color);
 
 void drawBoxOnScreen(int left, int top, int right, int bottom, ColorId color) {
+  if (shapeCount >= MAX_SHAPES) {
+    setError(ERR_TOO_MANY_SHAPES);
+    return;
+  }
   shapes[shapeCount++].setBox(left, top, right, bottom, color);
 }
 //void drawBoxOnMap(int left, int top, int right, int bottom, ColorId color);
 
 void drawCircleOnScreen(int x, int y, int radius, ColorId color) {
+  if (shapeCount >= MAX_SHAPES) {
+    setError(ERR_TOO_MANY_SHAPES);
+    return;
+  }
   shapes[shapeCount++].setCircle(x, y, radius, color);
 }
 //void drawCircleOnMap(int x, int y, int radius, ColorId color);
 
 void drawFilledBoxOnScreen(int left, int top, int right, int bottom, ColorId color) {
+  if (shapeCount >= MAX_SHAPES) {
+    setError(ERR_TOO_MANY_SHAPES);
+    return;
+  }
   shapes[shapeCount++].setFilledBox(left, top, right, bottom, color);
 }
 //void drawFilledBoxOnMap(int left, int top, int right, int bottom, ColorId color);
 
 void drawFilledCircleOnScreen(int x, int y, int radius, ColorId color) {
+  if (shapeCount >= MAX_SHAPES) {
+    setError(ERR_TOO_MANY_SHAPES);
+    return;
+  }
   shapes[shapeCount++].setFilledCircle(x, y, radius, color);
 }
 //void drawFilledCircleOnMap(int x, int y, int radius, ColorId color);
