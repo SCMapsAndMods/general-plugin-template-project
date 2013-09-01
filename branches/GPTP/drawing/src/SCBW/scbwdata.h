@@ -55,6 +55,10 @@ CUnit**    const firstScannerSweep  = (CUnit**)   0x006283F4;
 CUnit**    const firstPlayerUnit    = (CUnit**)   0x006283F8;
 CBullet**  const firstBullet        = (CBullet**) 0x0064DEC4;
 
+// Units that are selected by the current player (or the player viewing the replay).
+CUnit* const* const clientSelectionGroup = (CUnit**) 0x00597208;  //Array of size 12
+const u8* const clientSelectionCount = (u8*) 0x0059723D;
+
 //Contains various info on the tiles.
 ActiveTile** const activeTileArray  = (ActiveTile**)  0x006D1260;
 

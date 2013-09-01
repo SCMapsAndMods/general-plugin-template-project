@@ -31,20 +31,34 @@ bool nextFrame() {
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
-      //char buffer[10];
-      //sprintf_s(buffer, 10, "%d HP", unit->hitPoints >> 8);
-      //int yOffset = 10 + scbw::getUnitOverlayAdjustment(unit) * 10;
-      //graphics::drawTextOnMap(unit->getX(), unit->getY() - yOffset, std::string(buffer));
+    }
 
-      if (unit->orderTarget.unit) {
-        CUnit *target = unit->orderTarget.unit;
-        graphics::drawLineOnMap(unit->getX(), unit->getY(), target->getX(), target->getY(), graphics::RED);
+    for (int i = 0; i < 12 && i < *clientSelectionCount; ++i) {
+      CUnit *selectedUnit = clientSelectionGroup[i];
+      char buffer[10];
+      sprintf_s(buffer, 10, "%d HP", selectedUnit->hitPoints >> 8);
+      int yOffset = 10 + scbw::getUnitOverlayAdjustment(selectedUnit) * 10;
+      graphics::drawTextOnMap(selectedUnit->getX(), selectedUnit->getY() - yOffset, std::string(buffer));
+
+      if (selectedUnit->orderTarget.unit) {
+        CUnit *target = selectedUnit->orderTarget.unit;
+        graphics::drawLineOnMap(selectedUnit->getX(), selectedUnit->getY(),
+                                target->getX(), target->getY(), graphics::RED);
         graphics::drawCircleOnMap(target->getX(), target->getY(), 8, graphics::RED);
       }
-      else if (unit->orderTarget.pt.x != 0 && unit->orderTarget.pt.y != 0) {
-        graphics::drawLineOnMap(unit->getX(), unit->getY(), unit->orderTarget.pt.x, unit->orderTarget.pt.y, graphics::YELLOW);
-        graphics::drawFilledCircleOnMap(unit->orderTarget.pt.x, unit->orderTarget.pt.y, 16, graphics::YELLOW);
+      else {
+        const int targX = selectedUnit->orderTarget.pt.x, targY = selectedUnit->orderTarget.pt.y;
+        if (targX != 0 && targY != 0) {
+          graphics::drawLineOnMap(selectedUnit->getX(), selectedUnit->getY(),
+                                  targX, targY, graphics::YELLOW);
+          graphics::drawFilledCircleOnMap(targX, targY, 5, graphics::YELLOW);
+        }
       }
+
+      //Show Siege Tank attack radius
+      if (selectedUnit->id == UnitId::siege_tank_s)
+        graphics::drawCircleOnMap(selectedUnit->getX(), selectedUnit->getY(),
+                                  12 * 32 + 32, graphics::CYAN);
     }
 
 		// Loop through the bullet table.
