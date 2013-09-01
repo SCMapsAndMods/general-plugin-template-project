@@ -5,6 +5,8 @@
 
 namespace graphics {
 
+/// Resets all previous graphics and clears error messages. This should be
+/// called every frame in game_hooks.cpp. 
 void resetAllGraphics();
 
 void drawTextOnScreen(int x, int y, const std::string& str);

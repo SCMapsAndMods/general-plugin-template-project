@@ -176,11 +176,11 @@ void Bitmap::drawLine(int x1, int y1, int x2, int y2, ColorId color) {
   //Use Bresenham's line algorithm
   //Code taken from http://members.chello.at/~easyfilter/bresenham.html
   else {
-    const int dx = abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
-    const int dy = abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
+    const int dx =  abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
+    const int dy = -abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
     int err = dx + dy;
 
-    int x = x1, y = y2;
+    int x = x1, y = y1;
     this->drawDot(x, y, color);
     while (x != x2 || y != y2) {
       const int e2 = err * 2;

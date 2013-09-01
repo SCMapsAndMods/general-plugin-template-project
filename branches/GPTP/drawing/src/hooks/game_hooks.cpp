@@ -31,6 +31,9 @@ bool nextFrame() {
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
+      //char buffer[10];
+      //sprintf_s(buffer, 10, "%d HP", unit->hitPoints >> 8);
+      //graphics::drawTextOnMap
     }
 
 		// Loop through the bullet table.

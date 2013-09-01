@@ -7,7 +7,7 @@ namespace graphics {
 int errorFlags;
 
 void setError(GraphicsErrorId error) {
-  errorFlags &= error;
+  errorFlags |= error;
 }
 
 void clearErrors() {

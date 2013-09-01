@@ -85,6 +85,7 @@ void Shape::draw() {
     case BOX:
       gameScreenBuffer->drawBox(this->p1.x, this->p1.y, this->p2.x, this->p2.y,
                                 this->color);
+      break;
     case CIRCLE:
       setError(ERR_UKNOWN_SHAPE);
       break;
