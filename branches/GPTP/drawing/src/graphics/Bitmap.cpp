@@ -60,10 +60,6 @@ bool Bitmap::blitString(const char *pszStr, int x, int y, u8 size) {
     return false;
 
   // verify if drawing should be done
-  assert(x + fnt->getTextWidth(pszStr) >= 0);
-  assert(y + fnt->getTextHeight(pszStr) >= 0);
-  assert(x < this->getWidth());
-  assert(y < this->getHeight());
   if (x + fnt->getTextWidth(pszStr)  < 0 ||
       y + fnt->getTextHeight(pszStr) < 0 ||
       x >= this->getWidth() || y >= this->getHeight())
@@ -253,6 +249,41 @@ void Bitmap::drawFilledBox(int left, int top, int right, int bottom,
 
   for (int y = top; y <= bottom; ++y)
     this->drawHorizontalLineUnsafe(left, right, y, color);
+}
+
+
+//-------- Circle drawing --------//
+
+void Bitmap::drawCircle(int x, int y, int radius, ColorId color) {
+  if (radius <= 0) return;
+
+  //Bresenham's circle algorithm
+  //Code taken from http://members.chello.at/easyfilter/bresenham.html  
+  int px = -radius, py = 0, err = 2 - 2 * radius; /* II. Quadrant */ 
+  do {
+    this->drawDot(x - px, y + py, color); /*   I. Quadrant */
+    this->drawDot(x - py, y - px, color); /*  II. Quadrant */
+    this->drawDot(x + px, y - py, color); /* III. Quadrant */
+    this->drawDot(x + py, y + px, color); /*  IV. Quadrant */
+    const int r = err;
+    if (r <= py) err += ++py * 2 + 1;            /* e_xy+e_y < 0 */
+    if (r > px || err > py) err += ++px * 2 + 1; /* e_xy+e_x > 0 or no 2nd y-step */
+  } while (px < 0);
+}
+
+void Bitmap::drawFilledCircle(int x, int y, int radius, ColorId color) {
+  if (radius <= 0) return;
+  
+  //Bresenham's circle algorithm, modified
+  //Code taken from http://members.chello.at/easyfilter/bresenham.html  
+  int px = -radius, py = 0, err = 2 - 2 * radius; /* II. Quadrant */ 
+  do {
+    this->drawHorizontalLine(x + px, x - px, y + py, color);  //Quadrants 1, 2
+    this->drawHorizontalLine(x + px, x - px, y - py, color);  //Quadrants 3, 4
+    const int r = err;
+    if (r <= py) err += ++py * 2 + 1;            /* e_xy+e_y < 0 */
+    if (r > px || err > py) err += ++px * 2 + 1; /* e_xy+e_x > 0 or no 2nd y-step */
+  } while (px < 0);
 }
 
 

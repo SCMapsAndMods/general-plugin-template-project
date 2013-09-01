@@ -66,7 +66,9 @@ UnitFinderData* const unitOrderingY = (UnitFinderData*) 0x006769B8;
 namespace graphics { class Font; class Bitmap; }
 graphics::Font**  const fontBase          = (graphics::Font**)  0x006CE0F4;
 graphics::Bitmap* const gameScreenBuffer  = (graphics::Bitmap*) 0x006CEFF0;
-u8*     const refreshRegions    = (u8*)     0x006CEFF8;
+u8*   const refreshRegions  = (u8*)   0x006CEFF8;
+u32*  const screenX         = (u32*)  0x00628448;
+u32*  const screenY         = (u32*)  0x00628470;
 typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
 static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
 

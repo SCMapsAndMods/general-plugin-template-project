@@ -33,7 +33,18 @@ bool nextFrame() {
       //Write your code here
       //char buffer[10];
       //sprintf_s(buffer, 10, "%d HP", unit->hitPoints >> 8);
-      //graphics::drawTextOnMap
+      //int yOffset = 10 + scbw::getUnitOverlayAdjustment(unit) * 10;
+      //graphics::drawTextOnMap(unit->getX(), unit->getY() - yOffset, std::string(buffer));
+
+      if (unit->orderTarget.unit) {
+        CUnit *target = unit->orderTarget.unit;
+        graphics::drawLineOnMap(unit->getX(), unit->getY(), target->getX(), target->getY(), graphics::RED);
+        graphics::drawCircleOnMap(target->getX(), target->getY(), 8, graphics::RED);
+      }
+      else if (unit->orderTarget.pt.x != 0 && unit->orderTarget.pt.y != 0) {
+        graphics::drawLineOnMap(unit->getX(), unit->getY(), unit->orderTarget.pt.x, unit->orderTarget.pt.y, graphics::YELLOW);
+        graphics::drawFilledCircleOnMap(unit->orderTarget.pt.x, unit->orderTarget.pt.y, 16, graphics::YELLOW);
+      }
     }
 
 		// Loop through the bullet table.

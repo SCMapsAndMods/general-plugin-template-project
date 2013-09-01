@@ -87,13 +87,17 @@ void Shape::draw() {
                                 this->color);
       break;
     case CIRCLE:
-      setError(ERR_UKNOWN_SHAPE);
+      gameScreenBuffer->drawCircle(this->p1.x, this->p1.y, this->radius,
+                                   this->color);
       break;
     case FILLED_BOX:
       gameScreenBuffer->drawFilledBox(this->p1.x, this->p1.y,
                                       this->p2.x, this->p2.y, this->color);
       break;
     case FILLED_CIRCLE:
+      gameScreenBuffer->drawFilledCircle(this->p1.x, this->p1.y, this->radius,
+                                         this->color);
+      break;
     default:
       setError(ERR_UKNOWN_SHAPE);
       break;
