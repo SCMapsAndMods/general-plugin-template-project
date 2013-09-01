@@ -1,7 +1,7 @@
 /// This is where the magic happens; program your plug-in's core behavior here.
 
 #include "game_hooks.h"
-#include "drawing_hooks.h"
+#include "../graphics/graphics.h"
 #include "../SCBW/api.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/ExtendSightLimit.h"
@@ -12,7 +12,7 @@ bool firstRun = true;
 /// This hook is called every frame; most of your plugin's logic goes here.
 bool nextFrame() {
 	if (!scbw::isGamePaused()) { //If the game is not paused
-    flushString();
+    graphics::resetAllGraphics();
 
 		if (firstRun) {
 			scbw::printText("Hello, world!");
@@ -30,9 +30,6 @@ bool nextFrame() {
     // Alternative looping method
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
-      if (unit->id == UnitId::scv) {
-        addString(std::string("There is an SCV"));
-      }
       //Write your code here
     }
 

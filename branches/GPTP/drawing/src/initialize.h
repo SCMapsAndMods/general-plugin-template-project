@@ -8,7 +8,6 @@
 #include "hooks/consume.h"
 #include "hooks/detector_check.h"
 #include "hooks/do_weapon_damage.h"
-#include "hooks/drawing_hooks.h"
 #include "hooks/energy_regeneration.h"
 #include "hooks/max_unit_energy.h"
 #include "hooks/rally_point.h"
@@ -21,6 +20,7 @@
 #include "hooks/update_unit_timers.h"
 #include "hooks/weapon_cooldown.h"
 #include "hooks/weapon_range.h"
+#include "graphics/draw_hook.h"
 
 /// This function is called when the plugin is loaded into StarCraft.
 /// You can enable/disable each group of hooks by commenting them.
@@ -46,8 +46,6 @@ void Initialize() {
   jmpPatch(unitCanDetectWrapper,          offsets::Hook_UnitCanDetect);
 
   jmpPatch(doWeaponDamageWrapper,         offsets::Func_DoWeaponDamage);
-
-  memoryPatch4((void*)offsets::InjectScreenUpdateAddr, (u32)DrawHook);
 
   jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
 
@@ -89,4 +87,6 @@ void Initialize() {
 
   jmpPatch(getSeekRangeWrapper,           offsets::Hook_GetSeekRange);
   jmpPatch(getMaxWeaponRangeWrapper,      offsets::Hook_GetMaxWeaponRange);
+
+  InjectDrawHook();
 }

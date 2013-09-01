@@ -1,7 +1,9 @@
 //Based on BWAPI's BW/Font.h
 #pragma once
-#include "../../types.h"
+#include "../types.h"
 #pragma pack(1)
+
+namespace graphics {
 
 class FontChar {
   public:
@@ -34,5 +36,7 @@ class Font {
     u8  xMax, yMax;
     FontChar* chrs[1];
 };
+
+}
 
 #pragma pack()

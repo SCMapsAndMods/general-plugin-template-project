@@ -1,5 +1,7 @@
+#include <cassert>
 #include "graphics.h"
 #include "graphics_errors.h"
+#include "graphics_misc.h"
 #include "Shape.h"
 #include "../SCBW/scbwdata.h"
 
@@ -87,5 +89,17 @@ void drawFilledCircleOnScreen(int x, int y, int radius, ColorId color) {
   shapes[shapeCount++].setFilledCircle(x, y, radius, color);
 }
 //void drawFilledCircleOnMap(int x, int y, int radius, ColorId color);
+
+const std::string& getStringFromIndex(int stringIndex) {
+  assert(0 <= stringIndex && stringIndex < MAX_STRINGS);
+  return strings[stringIndex];
+}
+
+int drawAllShapes() {
+  int drawnShapeCount = 0;
+  for (int i = 0; i < shapeCount; ++i)
+    shapes[i].draw();
+  return shapeCount;  //TODO: Fix this
+}
 
 } //graphics

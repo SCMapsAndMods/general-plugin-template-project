@@ -1,8 +1,11 @@
 //Based on BWAPI's BW/Bitmap.cpp
 #include "Bitmap.h"
 #include "Font.h"
-#include "../scbwdata.h"
+#include "../SCBW/scbwdata.h"
 #include <cassert>
+#include <algorithm>
+
+namespace graphics {
 
 u16 Bitmap::getWidth() const {
   assert(this);
@@ -151,3 +154,134 @@ bool Bitmap::blitString(const char *pszStr, int x, int y, u8 size) {
   }
   return true;
 }
+
+
+//-------- Dot and line drawing --------//
+
+void Bitmap::drawDot(int x, int y, ColorId color) {
+  if (x < 0 || x >= this->getWidth()) return;
+  if (y < 0 || y >= this->getHeight()) return;
+  this->drawDotUnsafe(x, y, color);
+}
+
+void Bitmap::drawLine(int x1, int y1, int x2, int y2, ColorId color) {
+  //If horizontal
+  if (y1 == y2)
+    this->drawHorizontalLine(x1, x2, y1, color);
+
+  //If vertical
+  else if (x1 == x2)
+    this->drawVerticalLine(x1, y1, y2, color);
+
+  //Use Bresenham's line algorithm
+  //Code taken from http://members.chello.at/~easyfilter/bresenham.html
+  else {
+    const int dx = abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
+    const int dy = abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
+    int err = dx + dy;
+
+    int x = x1, y = y2;
+    this->drawDot(x, y, color);
+    while (x != x2 || y != y2) {
+      const int e2 = err * 2;
+      if (e2 >= dy) { err += dy; x += sx; }
+      if (e2 <= dx) { err += dx; y += sy; }
+      this->drawDot(x, y, color);
+    }
+  }
+}
+
+void Bitmap::drawHorizontalLine(int x1, int x2, int y, ColorId color) {
+  if (y < 0 || y >= this->getHeight()) return;
+  if (x1 > x2) std::swap(x1, x2);
+  if (x2 < 0 || x1 >= this->getWidth()) return;
+
+  x1 = std::max(x1, 0);
+  x2 = std::min(x2, this->getWidth() - 1);
+  this->drawHorizontalLineUnsafe(x1, x2, y, color);
+}
+
+void Bitmap::drawVerticalLine(int x, int y1, int y2, ColorId color) {
+  if (x < 0 || x >= this->getWidth()) return;
+  if (y1 > y2) std::swap(y1, y2);
+  if (y2 < 0 || y1 >= this->getHeight()) return;
+
+  y1 = std::max(y1, 0);
+  y2 = std::min(y2, this->getHeight() - 1);
+  this->drawVerticalLineUnsafe(x, y1, y2, color);
+}
+
+
+//-------- Box drawing --------//
+
+void Bitmap::drawBox(int left, int top, int right, int bottom, ColorId color) {
+  if (left > right) std::swap(left, right);
+  if (right < 0 || left >= this->getWidth()) return;
+
+  if (top > bottom) std::swap(top, bottom);
+  if (bottom < 0 || top >= this->getHeight()) return;
+
+  //Draw horizontal part
+  const int xMin = std::max(left, 0);
+  const int xMax = std::min(right, this->getWidth() - 1);
+  if (top >= 0)
+    this->drawHorizontalLineUnsafe(xMin, xMax, top, color);
+  if (bottom < this->getHeight())
+    this->drawHorizontalLineUnsafe(xMin, xMax, bottom, color);
+
+  //Draw vertical part
+  const int yMin = std::max(top, 0);
+  const int yMax = std::min(bottom, this->getHeight() - 1);
+  if (left >= 0)
+    this->drawVerticalLineUnsafe(left, yMin, yMax, color);
+  if (right < this->getWidth())
+    this->drawVerticalLineUnsafe(right, yMin, yMax, color);
+}
+
+void Bitmap::drawFilledBox(int left, int top, int right, int bottom,
+                           ColorId color) {
+  if (left > right) std::swap(left, right);
+  if (right < 0 || left >= this->getWidth()) return;
+
+  if (top > bottom) std::swap(top, bottom);
+  if (bottom < 0 || top >= this->getHeight()) return;
+
+  left    = std::max(left, 0);
+  right   = std::min(right, this->getWidth() - 1);
+  top     = std::max(top, 0);
+  bottom  = std::min(bottom, this->getHeight() - 1);
+
+  for (int y = top; y <= bottom; ++y)
+    this->drawHorizontalLineUnsafe(left, right, y, color);
+}
+
+
+//-------- Unsafe functions for fast drawing --------//
+
+void Bitmap::drawDotUnsafe(int x, int y, ColorId color) {
+  assert(0 <= x && x < this->getWidth());
+  assert(0 <= y && y < this->getHeight());
+
+  this->data[y * this->getWidth() + x] = color;
+}
+
+void Bitmap::drawHorizontalLineUnsafe(int x1, int x2, int y, ColorId color) {
+  assert(0 <= x1 && x1 < this->getWidth());
+  assert(0 <= x2 && x2 < this->getWidth());
+  assert(0 <= y && y < this->getHeight());
+  assert(x1 <= x2);
+
+  memset(&this->data[y * this->getWidth() + x1], color, x2 - x1 + 1);
+}
+
+void Bitmap::drawVerticalLineUnsafe(int x, int y1, int y2, ColorId color) {
+  assert(0 <= x && x < this->getWidth());
+  assert(0 <= y1 && y1 < this->getHeight());
+  assert(0 <= y2 && y2 < this->getHeight());
+  assert(y1 <= y2);
+
+  for (int y = y1; y <= y2; ++y)
+    this->drawDotUnsafe(x, y, color);
+}
+
+} //graphics

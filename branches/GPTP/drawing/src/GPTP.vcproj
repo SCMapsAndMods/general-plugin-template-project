@@ -185,7 +185,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\structures\Bitmap.cpp"
+				RelativePath=".\graphics\Bitmap.cpp"
 				>
 			</File>
 			<File
@@ -209,7 +209,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\drawing_hooks.cpp"
+				RelativePath=".\graphics\draw_hook.cpp"
 				>
 			</File>
 			<File
@@ -217,7 +217,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\structures\Font.cpp"
+				RelativePath=".\graphics\Font.cpp"
 				>
 			</File>
 			<File
@@ -307,7 +307,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\structures\Bitmap.h"
+				RelativePath=".\graphics\Bitmap.h"
 				>
 			</File>
 			<File
@@ -359,7 +359,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\drawing_hooks.h"
+				RelativePath=".\graphics\draw_hook.h"
 				>
 			</File>
 			<File
@@ -375,7 +375,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\structures\Font.h"
+				RelativePath=".\graphics\Font.h"
 				>
 			</File>
 			<File
@@ -388,6 +388,10 @@
 			</File>
 			<File
 				RelativePath=".\graphics\graphics_errors.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\graphics_misc.h"
 				>
 			</File>
 			<File

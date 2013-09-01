@@ -1,4 +1,6 @@
 #include "graphics_errors.h"
+#include "Bitmap.h"
+#include "../SCBW/scbwdata.h"
 
 namespace graphics {
 
@@ -17,14 +19,15 @@ void drawErrorMessages() {
 #ifndef NDEBUG
 
   if (errorFlags & ERR_TOO_MANY_SHAPES) {
-    //TODO: fill content
+    gameScreenBuffer->blitString("Error: Too many shapes!", 10, 10, 2);
   }
 
   if (errorFlags & ERR_TOO_MANY_STRINGS) {
-    //TODO: fill content
+    gameScreenBuffer->blitString("Error: Too many strings!", 10, 40, 2);
   }
 
   if (errorFlags & ERR_UKNOWN_SHAPE) {
+    gameScreenBuffer->blitString("Error: Unknown shape found.", 10, 70, 2);
   }
 
 #endif

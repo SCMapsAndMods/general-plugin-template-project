@@ -1,7 +1,9 @@
 //Based on BWAPI's BW/Font.cpp
 #include "Font.h"
-#include "../scbwdata.h"
+#include "../SCBW/scbwdata.h"
 #include <cassert>
+
+namespace graphics {
 
 FontChar* Font::getChar(char c) const {
   assert(this);
@@ -102,3 +104,5 @@ int FontChar::pixelOffset(int index) const {
   assert(this);
   return this->data[index] >> 3;
 }
+
+} //graphics

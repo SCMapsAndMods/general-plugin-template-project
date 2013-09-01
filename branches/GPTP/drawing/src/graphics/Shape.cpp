@@ -1,5 +1,8 @@
 #include "Shape.h"
+#include "graphics_misc.h"
 #include "graphics_errors.h"
+#include "Bitmap.h"
+#include "../SCBW/scbwdata.h"
 
 namespace graphics {
 
@@ -67,11 +70,28 @@ void Shape::setFilledCircle(int x, int y, int radius, ColorId color) {
 void Shape::draw() {
   switch (this->type) {
     case TEXT:
+      //TODO: Add ability to change font size
+      gameScreenBuffer->blitString(
+        getStringFromIndex(this->stringIndex).c_str(),
+        this->p1.x, this->p1.y, 1);
+      break;
     case DOT:
+      gameScreenBuffer->drawDot(this->p1.x, this->p1.y, this->color);
+      break;
     case LINE:
+      gameScreenBuffer->drawLine(this->p1.x, this->p1.y, this->p2.x, this->p2.y,
+                                 this->color);
+      break;
     case BOX:
+      gameScreenBuffer->drawBox(this->p1.x, this->p1.y, this->p2.x, this->p2.y,
+                                this->color);
     case CIRCLE:
+      setError(ERR_UKNOWN_SHAPE);
+      break;
     case FILLED_BOX:
+      gameScreenBuffer->drawFilledBox(this->p1.x, this->p1.y,
+                                      this->p2.x, this->p2.y, this->color);
+      break;
     case FILLED_CIRCLE:
     default:
       setError(ERR_UKNOWN_SHAPE);

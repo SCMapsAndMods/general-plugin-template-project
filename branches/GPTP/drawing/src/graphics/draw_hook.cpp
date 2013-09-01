@@ -1,18 +1,11 @@
-#pragma once
+#include "draw_hook.h"
 #include "../SCBW/scbwdata.h"
-#include <string>
+#include "../tools.h"
+#include "graphics_misc.h"
 
-namespace offsets {
-  const u32 InjectScreenUpdateAddr  = 0x004BD68D;
-}
-
-void addString(const std::string& str);
-void flushString();
-int customDrawing();
-
-//----------------------------------------------- DRAW HOOK --------------------------------------------------
+//-------- Draw hook taken from BWAPI --------//
 static bool wantRefresh = false;
-static void __stdcall DrawHook(Bitmap *surface, Bounds *bounds)
+static void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds)
 {
   if (wantRefresh) {
     wantRefresh = false;
@@ -28,6 +21,10 @@ static void __stdcall DrawHook(Bitmap *surface, Bounds *bounds)
   //  if ( numShapes )
   //    wantRefresh = true;
   //}
-  if (customDrawing() > 0)
+  if (graphics::drawAllShapes() > 0)
     wantRefresh = true;
+}
+
+void InjectDrawHook() {
+  memoryPatch4((void*)0x004BD68D, (u32)DrawHook);
 }
