@@ -61,6 +61,19 @@ bool nextFrame() {
                                   12 * 32 + 32, graphics::CYAN);
     }
 
+    if (*clientSelectionCount == 1) {
+      CUnit *unit = clientSelectionGroup[0];
+      char buffer[1000];
+
+      graphics::drawBoxOnScreen(10, 10, 170, 160, graphics::BLACK);
+      graphics::drawFilledBoxOnScreen(11, 11, 169, 159, graphics::GREY);
+      graphics::drawTextOnScreen(20, 20, std::string("UNIT STATUS:"));
+
+      sprintf_s(buffer, 1000, "Position: (%d, %d)\nHP: %d\nShield: %d\nGround cooldown: %d\nAir cooldown: %d",
+        unit->getX(), unit->getY(), unit->hitPoints >> 8, unit->shields >> 8, unit->groundWeaponCooldown, unit->airWeaponCooldown);
+      graphics::drawTextOnScreen(30, 40, std::string(buffer));
+    }
+
 		// Loop through the bullet table.
     // Warning: There is no guarantee that the current bullet is actually a
     // bullet rather than an unused space in memory

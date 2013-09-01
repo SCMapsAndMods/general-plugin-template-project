@@ -76,8 +76,10 @@ int Font::getTextHeight(const char *pszStr, int size) {
 // ---------------- FontChar ----------------
 
 int FontChar::getWidth() const {
-  assert(this);
-  return this->width;
+  if (this != NULL)
+    return this->width;
+  else
+    return 0;
 }
 
 int FontChar::getHeight() const {
