@@ -55,12 +55,26 @@ CUnit**    const firstScannerSweep  = (CUnit**)   0x006283F4;
 CUnit**    const firstPlayerUnit    = (CUnit**)   0x006283F8;
 CBullet**  const firstBullet        = (CBullet**) 0x0064DEC4;
 
+// Units that are selected by the current player (or the player viewing the replay).
+CUnit* const* const clientSelectionGroup = (CUnit**) 0x00597208;  //Array of size 12
+const u8* const clientSelectionCount = (u8*) 0x0059723D;
+
 //Contains various info on the tiles.
 ActiveTile** const activeTileArray  = (ActiveTile**)  0x006D1260;
 
 // Stores an ordered list of all units currently in the game.
 UnitFinderData* const unitOrderingX = (UnitFinderData*) 0x0066FF78;
 UnitFinderData* const unitOrderingY = (UnitFinderData*) 0x006769B8;
+
+// Font & Drawing
+namespace graphics { class Font; class Bitmap; }
+graphics::Font**  const fontBase          = (graphics::Font**)  0x006CE0F4;
+graphics::Bitmap* const gameScreenBuffer  = (graphics::Bitmap*) 0x006CEFF0;
+u8*   const refreshRegions  = (u8*)   0x006CEFF8;
+u32*  const screenX         = (u32*)  0x00628448;
+u32*  const screenY         = (u32*)  0x00628470;
+typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
+static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
 
 //Player alliance status
 struct PlayerAllianceData {

@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\Bitmap.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\bunker_hooks.cpp"
 				>
 			</File>
@@ -205,11 +209,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\draw_hook.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\energy_regeneration.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\Font.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\game_hooks.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\graphics.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\graphics_errors.cpp"
 				>
 			</File>
 			<File
@@ -230,6 +250,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\recharge_shields.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\Shape.cpp"
 				>
 			</File>
 			<File
@@ -283,6 +307,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\Bitmap.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\bunker_hooks.h"
 				>
 			</File>
@@ -292,6 +320,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\structures\CImage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\ColorId.h"
 				>
 			</File>
 			<File
@@ -327,6 +359,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\draw_hook.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\energy_regeneration.h"
 				>
 			</File>
@@ -339,7 +375,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\Font.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\game_hooks.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\graphics.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\graphics_errors.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\graphics_misc.h"
 				>
 			</File>
 			<File
@@ -380,6 +432,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\scbwdata.h"
+				>
+			</File>
+			<File
+				RelativePath=".\graphics\Shape.h"
 				>
 			</File>
 			<File
