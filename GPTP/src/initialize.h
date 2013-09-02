@@ -20,6 +20,7 @@
 #include "hooks/update_unit_timers.h"
 #include "hooks/weapon_cooldown.h"
 #include "hooks/weapon_range.h"
+#include "graphics/draw_hook.h"
 
 /// This function is called when the plugin is loaded into StarCraft.
 /// You can enable/disable each group of hooks by commenting them.
@@ -86,4 +87,6 @@ void Initialize() {
 
   jmpPatch(getSeekRangeWrapper,           offsets::Hook_GetSeekRange);
   jmpPatch(getMaxWeaponRangeWrapper,      offsets::Hook_GetMaxWeaponRange);
+
+  InjectDrawHook();
 }
