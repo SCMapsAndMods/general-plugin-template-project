@@ -23,7 +23,7 @@ void resetAllGraphics() {
 }
 
 
-void drawTextOnScreen(int x, int y, const std::string& str) {
+void drawTextOnScreen(int x, int y, const std::string& str, FontSize fontSize) {
   if (stringCount >= MAX_STRINGS) {
     setError(ERR_TOO_MANY_STRINGS);
     return;
@@ -33,11 +33,11 @@ void drawTextOnScreen(int x, int y, const std::string& str) {
     return;
   }
   strings[stringCount] = str;
-  shapes[shapeCount++].setText(x, y, stringCount++);
+  shapes[shapeCount++].setText(x, y, stringCount++, fontSize);
 }
 
-void drawTextOnMap(int x, int y, const std::string& str) {
-  drawTextOnScreen(x - (*screenX), y - (*screenY), str);
+void drawTextOnMap(int x, int y, const std::string& str, FontSize fontSize) {
+  drawTextOnScreen(x - (*screenX), y - (*screenY), str, fontSize);
 }
 
 
