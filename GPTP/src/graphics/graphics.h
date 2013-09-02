@@ -1,7 +1,10 @@
+/// Graphics module for GPTP, adapted from BWAPI.
+
 #pragma once
 #include <string>
 #include "../types.h"
 #include "ColorId.h"
+#include "FontSize.h"
 
 namespace graphics {
 
@@ -9,8 +12,10 @@ namespace graphics {
 /// called every frame in game_hooks.cpp. 
 void resetAllGraphics();
 
-void drawTextOnScreen(int x, int y, const std::string& str);
-void drawTextOnMap(int x, int y, const std::string& str);
+void drawTextOnScreen(int x, int y, const std::string& str,
+                      FontSize fontSize = FONT_MEDIUM);
+void drawTextOnMap(int x, int y, const std::string& str,
+                   FontSize fontSize = FONT_MEDIUM);
 
 void drawDotOnScreen(int x, int y, ColorId color);
 void drawDotOnMap(int x, int y, ColorId color);

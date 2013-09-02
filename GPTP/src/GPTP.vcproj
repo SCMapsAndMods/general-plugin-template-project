@@ -379,6 +379,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\graphics\FontSize.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\game_hooks.h"
 				>
 			</File>

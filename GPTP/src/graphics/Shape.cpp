@@ -8,11 +8,12 @@ namespace graphics {
 
 //-------- Registering shapes --------//
 
-void Shape::setText(int x, int y, int stringIndex) {
+void Shape::setText(int x, int y, int stringIndex, FontSize fontSize) {
   this->type = TEXT;
   this->p1.x = x;
   this->p1.y = y;
   this->stringIndex = stringIndex;
+  this->fontSize = fontSize;
 }
 
 void Shape::setDot(int x, int y, ColorId color) {
@@ -67,13 +68,13 @@ void Shape::setFilledCircle(int x, int y, int radius, ColorId color) {
 
 //-------- Drawing --------//
 
-void Shape::draw() {
+void Shape::draw() const {
   switch (this->type) {
     case TEXT:
       //TODO: Add ability to change font size
       gameScreenBuffer->blitString(
         getStringFromIndex(this->stringIndex).c_str(),
-        this->p1.x, this->p1.y, 1);
+        this->p1.x, this->p1.y, this->fontSize);
       break;
     case DOT:
       gameScreenBuffer->drawDot(this->p1.x, this->p1.y, this->color);
