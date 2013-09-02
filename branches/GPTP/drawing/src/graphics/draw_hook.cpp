@@ -26,5 +26,5 @@ static void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds)
 }
 
 void InjectDrawHook() {
-  memoryPatch4((void*)0x004BD68D, (u32)DrawHook);
+  memoryPatch(0x004BD68D, &DrawHook);
 }
