@@ -6,16 +6,15 @@
 namespace graphics {
 
 FontChar* Font::getChar(char c) const {
-  assert(this);
   u8 ch = (u8)c;
-  if (this->low <= ch && ch <= this->high
+  if (this != NULL
+      && this->low <= ch && ch <= this->high
       && this->chrs[ch - this->low] != (FontChar*)this)
     return this->chrs[ch - this->low];
   return NULL;
 }
 
 int Font::getCharWidth(char c) const {
-  assert(this);
   switch (c) {
     case '\t':
       return this->maxWidth() * 2;
@@ -42,8 +41,7 @@ int Font::getTextWidth(const char *pszStr) const {
 // ----------------- GET WIDTH ---------------------
 int Font::getTextHeight(const char *pszStr) const {
   // verify valid size index
-  assert(this);
-  if (!pszStr) return 0;
+  if (!pszStr || this == NULL) return 0;
 
   int size = this->yMax;
   for (; *pszStr; ++pszStr) {
@@ -54,23 +52,27 @@ int Font::getTextHeight(const char *pszStr) const {
 }
 
 int Font::maxWidth() const {
-  assert(this);
-  return this->xMax;
+  if (this != NULL)
+    return this->xMax;
+  return 0;
 }
 
 int Font::maxHeight() const {
-  assert(this);
-  return this->yMax;
+  if (this != NULL)
+    return this->yMax;
+  return 0;
 }
 
 int Font::getTextWidth(const char *pszStr, int size) {
-  assert(0 <= size && size <= 3);
-  return fontBase[size]->getTextWidth(pszStr);
+  if (0 <= size && size <= 3)
+    return fontBase[size]->getTextWidth(pszStr);
+  return 0;
 }
 
 int Font::getTextHeight(const char *pszStr, int size) {
-  assert(0 <= size && size <= 3);
-  return fontBase[size]->getTextHeight(pszStr);
+  if (0 <= size && size <= 3)
+    return fontBase[size]->getTextHeight(pszStr);
+  return 0;
 }
 
 // ---------------- FontChar ----------------
@@ -78,32 +80,34 @@ int Font::getTextHeight(const char *pszStr, int size) {
 int FontChar::getWidth() const {
   if (this != NULL)
     return this->width;
-  else
-    return 0;
+  return 0;
 }
 
 int FontChar::getHeight() const {
-  assert(this);
-  return this->height;
+  if (this != NULL)
+    return this->height;
+  return 0;
 }
 
 int FontChar::getX() const {
-  assert(this);
-  return this->x;
+  if (this != NULL)
+    return this->x;
+  return 0;
 }
 
 int FontChar::getY() const {
-  assert(this);
-  return this->y;
+  if (this != NULL)
+    return this->y;
+  return 0;
 }
 
 int FontChar::colorMask(int index) const {
-  assert(this);
+  assert(this != NULL);
   return this->data[index] & 7;
 }
 
 int FontChar::pixelOffset(int index) const {
-  assert(this);
+  assert(this != NULL);
   return this->data[index] >> 3;
 }
 

@@ -9,14 +9,17 @@
 #include "structures.h"
 
 #pragma pack(1)
-#define PLAYER_COUNT          12
-#define UNIT_ARRAY_LENGTH     1700
-#define BULLET_ARRAY_LENGTH   100
-#define UNIT_TYPE_COUNT       228
-#define TECH_TYPE_COUNT       44
-#define UPGRADE_TYPE_COUNT    61
-#define WEAPON_TYPE_COUNT     130
-#define FLINGY_TYPE_COUNT     209
+
+#define SCBW_DATA(type, name, offset) type const name = (type)offset;
+
+const int PLAYER_COUNT        = 12;
+const int UNIT_ARRAY_LENGTH   = 1700;
+const int BULLET_ARRAY_LENGTH = 100;
+const int UNIT_TYPE_COUNT     = 228;
+const int TECH_TYPE_COUNT     = 44;
+const int UPGRADE_TYPE_COUNT  = 61;
+const int WEAPON_TYPE_COUNT   = 130;
+const int FLINGY_TYPE_COUNT   = 209;
 
 CUnit*      const unitTable       = (CUnit*)(0x0059CCA8);
 CBullet*    const bulletTable     = (CBullet*)(0x0064B2E8);
@@ -90,6 +93,8 @@ volatile const u32* const CHEAT_STATE       = (u32*) 0x006D5A6C;
 volatile const u32* const unitOrderingCount = (u32*) 0x0066FF74;
 volatile const s32* const maxUnitWidth      = (s32*) 0x006BEE68;
 volatile const s32* const maxUnitHeight     = (s32*) 0x006BB930;
+SCBW_DATA(const u32*, IS_IN_REPLAY,   0x006D0F14);
+SCBW_DATA(const s32*, currentPlayer,  0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
 
 //-------- DAT Files --------//
 
@@ -223,4 +228,5 @@ static _bwUpgrs* MaximumUpgBw = (_bwUpgrs*) 0x0058F24A; //Use with BwUpgrade::En
 static _bwUpgrs* CurrentUpgBw = (_bwUpgrs*) 0x0058F32C; //Use with BwUpgrade::Enum
 }
 
+#undef SCBW_DATA
 #pragma pack()
