@@ -33,47 +33,6 @@ bool nextFrame() {
       //Write your code here
     }
 
-    for (int i = 0; i < 12 && i < *clientSelectionCount; ++i) {
-      CUnit *selectedUnit = clientSelectionGroup[i];
-      char buffer[10];
-      sprintf_s(buffer, 10, "%d HP", selectedUnit->hitPoints >> 8);
-      int yOffset = 10 + scbw::getUnitOverlayAdjustment(selectedUnit) * 10;
-      graphics::drawTextOnMap(selectedUnit->getX(), selectedUnit->getY() - yOffset, std::string(buffer));
-
-      if (selectedUnit->orderTarget.unit) {
-        CUnit *target = selectedUnit->orderTarget.unit;
-        graphics::drawLineOnMap(selectedUnit->getX(), selectedUnit->getY(),
-                                target->getX(), target->getY(), graphics::RED);
-        graphics::drawCircleOnMap(target->getX(), target->getY(), 8, graphics::RED);
-      }
-      else {
-        const int targX = selectedUnit->orderTarget.pt.x, targY = selectedUnit->orderTarget.pt.y;
-        if (targX != 0 && targY != 0) {
-          graphics::drawLineOnMap(selectedUnit->getX(), selectedUnit->getY(),
-                                  targX, targY, graphics::YELLOW);
-          graphics::drawFilledCircleOnMap(targX, targY, 5, graphics::YELLOW);
-        }
-      }
-
-      //Show Siege Tank attack radius
-      if (selectedUnit->id == UnitId::siege_tank_s)
-        graphics::drawCircleOnMap(selectedUnit->getX(), selectedUnit->getY(),
-                                  12 * 32 + 32, graphics::CYAN);
-    }
-
-    if (*clientSelectionCount == 1) {
-      CUnit *unit = clientSelectionGroup[0];
-      char buffer[1000];
-
-      graphics::drawBoxOnScreen(10, 10, 170, 160, graphics::BLACK);
-      graphics::drawFilledBoxOnScreen(11, 11, 169, 159, graphics::GREY);
-      graphics::drawTextOnScreen(20, 20, std::string("UNIT STATUS:"));
-
-      sprintf_s(buffer, 1000, "Position: (%d, %d)\nHP: %d\nShield: %d\nGround cooldown: %d\nAir cooldown: %d",
-        unit->getX(), unit->getY(), unit->hitPoints >> 8, unit->shields >> 8, unit->groundWeaponCooldown, unit->airWeaponCooldown);
-      graphics::drawTextOnScreen(30, 40, std::string(buffer));
-    }
-
 		// Loop through the bullet table.
     // Warning: There is no guarantee that the current bullet is actually a
     // bullet rather than an unused space in memory
