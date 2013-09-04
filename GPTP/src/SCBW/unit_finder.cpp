@@ -9,8 +9,8 @@ void findUnitsInBounds(int left, int top, int right, int bottom,
   u32 finderFlags[UNIT_ARRAY_LENGTH + 1] = {0}; //1701 elements
 
   int r = right, b = bottom;
-  bool isWidthExtended  = right - left + 1 < *maxUnitWidth;
-  bool isHeightExtended = top - bottom + 1 < *maxUnitHeight;
+  bool isWidthExtended  = right - left - 1 < *maxUnitWidth;
+  bool isHeightExtended = top - bottom - 1 < *maxUnitHeight;
 
   // Check if the location is smaller than the largest unit
   if (isWidthExtended)
@@ -32,10 +32,10 @@ void findUnitsInBounds(int left, int top, int right, int bottom,
   finderVal.searchValue = top;
   UnitFinderData *pTop    = std::lower_bound<UnitFinderData*>(unitOrderingY, p_yend, finderVal);
 
-  finderVal.searchValue = r + 1;
+  finderVal.searchValue = r - 1;
   UnitFinderData *pRight  = std::upper_bound<UnitFinderData*>(pLeft, p_xend, finderVal);
 
-  finderVal.searchValue = b + 1;
+  finderVal.searchValue = b - 1;
   UnitFinderData *pBottom = std::upper_bound<UnitFinderData*>(pTop, p_yend, finderVal);
 
   // Iterate the X entries of the finder

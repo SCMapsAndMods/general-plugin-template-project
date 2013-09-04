@@ -149,7 +149,7 @@ u32 CUnit::getDistanceToTarget(const CUnit *target) const {
       dy = 0;
   }
 
-  return scbw::getDistanceFast(0, dx, 0, dy);
+  return scbw::getDistanceFast(0, 0, dx, dy);
 }
 
 void CUnit::updateSpeed() {
