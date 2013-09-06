@@ -25,6 +25,6 @@ static void __declspec(naked) cloakNearbyUnitsWrapper() {
   }
 }
 
-static void cloakNearbyUnitsInjector() {
+static void injectCloakNearbyUnitsHook() {
   jmpPatch(cloakNearbyUnitsWrapper, 0x00491C20);
 }

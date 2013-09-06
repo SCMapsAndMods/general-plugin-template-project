@@ -41,7 +41,7 @@ void Initialize() {
   jmpPatch(unitCanAttackInsideBunkerWrapper,
            offsets::Hook_UnitCanAttackInsideBunker);
 
-  cloakNearbyUnitsInjector();
+  injectCloakNearbyUnitsHook();
 
   jmpPatch(unitIsConsumableWrapper,       offsets::Hook_UnitIsConsumable);
   jmpPatch(onConsumeUnitWrapper,          offsets::Hook_OnConsumeUnit);
