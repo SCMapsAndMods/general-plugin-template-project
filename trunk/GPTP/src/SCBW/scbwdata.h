@@ -73,7 +73,7 @@ UnitFinderData* const unitOrderingY = (UnitFinderData*) 0x006769B8;
 namespace graphics { class Font; class Bitmap; }
 graphics::Font**  const fontBase          = (graphics::Font**)  0x006CE0F4;
 graphics::Bitmap* const gameScreenBuffer  = (graphics::Bitmap*) 0x006CEFF0;
-u8*   const refreshRegions  = (u8*)   0x006CEFF8;
+u8*   const refreshRegions  = (u8*)   0x006CEFF8; //640 x 480 divided into 1200 squares of 16x16
 u32*  const screenX         = (u32*)  0x00628448;
 u32*  const screenY         = (u32*)  0x00628470;
 typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
