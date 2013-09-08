@@ -78,6 +78,7 @@ u32*  const screenX         = (u32*)  0x00628448;
 u32*  const screenY         = (u32*)  0x00628470;
 typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
 static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
+SCBW_DATA(const POINT*, mouse, 0x006CDDC4);
 
 //Player alliance status
 struct PlayerAllianceData {

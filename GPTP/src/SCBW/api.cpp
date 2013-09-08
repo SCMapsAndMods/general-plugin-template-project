@@ -219,4 +219,24 @@ u32 getGroundHeightAtPos(s32 x, s32 y) {
   return height;
 }
 
+void refreshScreen(int left, int top, int right, int bottom) {
+  left >>= 4; top >>= 4; right >>= 4; bottom >>= 4;
+
+  if (left > right) std::swap(left, right);
+  if (top > bottom) std::swap(top, bottom);
+
+  //Rect out of bounds
+  if (left >= 40 || right < 0 || top >= 30 || bottom < 0) return;
+
+  left  = std::max(left,  0); right   = std::min(right,   40 - 1);
+  top   = std::max(top,   0); bottom  = std::min(bottom,  30 - 1);
+
+  for (int y = top; y <= bottom; ++y)
+    memset(&refreshRegions[40 * y + left], 1, right - left + 1);
+}
+
+void refreshScreen() {
+  memset(refreshRegions, 1, 1200);
+}
+
 } //scbw
