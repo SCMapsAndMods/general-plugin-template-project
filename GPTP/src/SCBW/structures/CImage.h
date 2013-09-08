@@ -2,11 +2,21 @@
 
 #pragma once
 #include "Position.h"
+#include "../enumerations.h"
 #pragma pack(1)
 
 struct CSprite;
 
 struct CImage {
+//Utility method definitions added by pastelmind
+
+
+/// Makes the image play the specified Iscript animation entry.
+  void playIscriptAnim(IscriptAnimation::Enum animation);
+
+
+////////////////////////////////////////////////////////////////
+//Actual data structure
   CImage      *previous;
   CImage      *next;
   u16         id;

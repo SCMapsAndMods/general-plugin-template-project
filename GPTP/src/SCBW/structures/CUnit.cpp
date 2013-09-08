@@ -163,13 +163,9 @@ void CUnit::updateSpeed() {
   }
 }
 
-void CUnit::playIscriptAnim(u8 animation) {
+void CUnit::playIscriptAnim(IscriptAnimation::Enum animation) {
   assert(this);
-  assert(this->sprite);
-
-  // Based on StarCraft.exe's internal code
-  for (CImage *i = this->sprite->underlay; i; i = i->next)
-    scbw::playIscriptAnim(i, animation);
+  this->sprite->playIscriptAnim(animation);
 }
 
 void CUnit::removeLockdown() {
