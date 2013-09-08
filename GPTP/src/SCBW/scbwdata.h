@@ -94,8 +94,10 @@ volatile const u32* const CHEAT_STATE       = (u32*) 0x006D5A6C;
 volatile const u32* const unitOrderingCount = (u32*) 0x0066FF74;
 volatile const s32* const maxUnitWidth      = (s32*) 0x006BEE68;
 volatile const s32* const maxUnitHeight     = (s32*) 0x006BB930;
-SCBW_DATA(const u32*, IS_IN_REPLAY,   0x006D0F14);
-SCBW_DATA(const s32*, currentPlayer,  0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
+SCBW_DATA(const u32*, IS_IN_REPLAY,     0x006D0F14);
+SCBW_DATA(const s32*, currentPlayer,    0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
+SCBW_DATA(const u32*, IS_IN_GAME_LOOP,  0x006D11C8);
+SCBW_DATA(u32*,       lastRandomNumber, 0x0051CA14);
 
 //-------- DAT Files --------//
 

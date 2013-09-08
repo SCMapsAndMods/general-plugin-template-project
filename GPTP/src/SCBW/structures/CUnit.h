@@ -162,17 +162,17 @@ struct CUnit {
     } vulture;
 
     struct {
-      CUnit*  inHangerChild;    // 0   first child inside the hanger
-      CUnit*  outHangerChild;   // 4   first child outside the hanger
-      u8      inHangerCount;    // 8   number inside the hanger
-      u8      outHangerCount;   // 9   number outside the hanger
+      CUnit*  inHangarChild;    // 0   first child inside the hanger
+      CUnit*  outHangarChild;   // 4   first child outside the hanger
+      u8      inHangarCount;    // 8   number inside the hanger
+      u8      outHangarCount;   // 9   number outside the hanger
     } carrier; // also applies to reaver
 
     struct {
       CUnit*  parent;   // 0
       CUnit*  prev;     // 4
       CUnit*  next;     // 8
-      u8      inHanger;  // C
+      u8      isOutsideHangar; // C
     } interceptor;  // also applies to scarab
 
     struct {
@@ -202,7 +202,7 @@ struct CUnit {
           u8        resourceBelongsToAI;
         } resource;  /** When the unit is resource container */
         struct { CUnit* exit; } nydus; /** connected nydius canal */
-        struct { CSprite* nukeDot; } ghost;
+        struct { CUnit* nukeMissile; } ghost; //Tentative
         struct { CSprite* pylonAura; } pylon;
         struct{
           CUnit* nuke;  // attached nuke
