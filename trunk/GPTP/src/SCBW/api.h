@@ -117,4 +117,10 @@ void refreshScreen(int left, int top, int right, int bottom);
 /// Refreshes the entire screen.
 void refreshScreen();
 
+/// Generates a pseudorandom number between min and max, inclusive. This is
+/// identical to the function used internally by StarCraft, and is guaranteed to
+/// generate the same sequence in a replay.
+/// NOTE: The RNG has a maximum range of 0 - 32767.
+u32 randBetween(u32 min, u32 max);
+
 } //scbw

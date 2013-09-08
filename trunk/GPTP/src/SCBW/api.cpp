@@ -226,4 +226,15 @@ void refreshScreen() {
   memset(refreshRegions, 1, 1200);
 }
 
+u32 randBetween(u32 min, u32 max) {
+  assert(min <= max);
+  if (*IS_IN_GAME_LOOP) {
+    *lastRandomNumber = 22695477 * (*lastRandomNumber) + 1;
+    u32 randomNumber = (*lastRandomNumber >> 16) % 32768;  //Make a number between 0 and 32767
+    return min + ((max - min + 1) * randomNumber >> 15);
+  }
+  else
+    return min;
+}
+
 } //scbw
