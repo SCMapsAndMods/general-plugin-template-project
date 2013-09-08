@@ -1,5 +1,5 @@
 #include "draw_hook.h"
-#include "../SCBW/scbwdata.h"
+#include "../SCBW/api.h"
 #include "../tools.h"
 #include "graphics_misc.h"
 
@@ -9,7 +9,7 @@ static void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds)
 {
   if (wantRefresh) {
     wantRefresh = false;
-    memset(refreshRegions, 1, 1200);
+    scbw::refreshScreen();
   }
 
   oldDrawGameProc(surface, bounds);

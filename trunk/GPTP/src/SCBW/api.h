@@ -119,4 +119,10 @@ inline bool isAlliedTo(u8 playerA, u8 playerB) {
   return 0 != playerAlliance[playerA].player[playerB];
 }
 
+/// Refreshes the screen position within the given rectangle area in pixels.
+void refreshScreen(int left, int top, int right, int bottom);
+
+/// Refreshes the entire screen.
+void refreshScreen();
+
 } //scbw
