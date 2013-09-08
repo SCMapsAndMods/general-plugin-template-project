@@ -22,7 +22,6 @@ const u32 Func_CreateOverlay        = 0x00498EA0;
 const u32 Func_SetUnitHp            = 0x00467340;
 const u32 Func_DamageUnitHp         = 0x004797B0;
 const u32 Func_FireUnitWeapon       = 0x00479C90;
-const u32 Func_PlayIscriptAnim      = 0x004D8470; //AKA playImageIscript()
 const u32 Func_CreateUnitAtPos      = 0x004CD360; //AKA createUnitXY()
 const u32 Func_OrderToUnit          = 0x004752B0; //AKA AssignOrderWithTarget(); Primarily for use with orderNewUnitToRally(), but may have other uses.
 const u32 Func_OrderToPos           = 0x00475260; //AKA orderTarget(); Primarily for use with orderNewUnitToRally(), but may have other uses.

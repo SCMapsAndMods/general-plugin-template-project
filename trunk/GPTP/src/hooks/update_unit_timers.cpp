@@ -32,7 +32,7 @@ void updateUnitTimersHook(CUnit* unit) {
       if (unit->shields > maxShields)
         unit->shields = maxShields;
       if (unit->sprite->flags & 8) {  //If the unit is currently selected, redraw its graphics
-        for (CImage *i = unit->sprite->underlay; i; i = i->next)
+        for (CImage *i = unit->sprite->imageHead; i; i = i->next)
           if (i->paletteType == 11)
             i->flags |= 1;
       }

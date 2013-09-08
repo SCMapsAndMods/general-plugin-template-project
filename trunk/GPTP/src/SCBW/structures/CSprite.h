@@ -2,11 +2,22 @@
 
 #pragma once
 #include "Position.h"
+#include "../enumerations.h"
 #pragma pack(1)
 
 struct CImage;
 
 struct CSprite {
+//Utility method definitions added by pastelmind
+
+
+/// Makes the sprite play the specified Iscript animation entry.
+  void playIscriptAnim(IscriptAnimation::Enum animation);
+
+
+////////////////////////////////////////////////////////////////
+//Actual data structure
+
   /*0x00*/ CSprite   *prev;
   /*0x04*/ CSprite   *next;
   /*0x08*/ u16       spriteID;
@@ -28,8 +39,8 @@ struct CSprite {
   /*0x10*/ u32       index;
   /*0x14*/ Position  position;
   /*0x18*/ CImage    *mainGraphic;    // officially "pImagePrimary"
-  /*0x1C*/ CImage    *underlay;       // officially "pImageHead"
-  /*0x20*/ CImage    *overlay;        // officially "pImageTail"
+  /*0x1C*/ CImage    *imageHead;      // officially "pImageHead"
+  /*0x20*/ CImage    *imageTail;      // officially "pImageTail"
 
   ////////////////////////////////////////////////////////////////////
   // Official Broodwar methods (from beta), ignore these

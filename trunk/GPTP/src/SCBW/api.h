@@ -53,14 +53,6 @@ u32 getUnitOverlayAdjustment(const CUnit* const unit);
 ///                     WEAPON_TYPE_COUNT, the function returns without error.
 void fireUnitWeapon(CUnit* unit, u8 weaponId);
 
-/// Makes the given image play the specified Iscript animation entry.
-///
-/// @param  image       The image to play the animation. If NULL, the function
-///                     returns without error.
-/// @param  animation   ID of the Iscript animation to play. See
-///                     IscriptAnimation::Enum for a list of animations.
-void playIscriptAnim(CImage* image, u8 animation);
-
 /// Attempts to create a unit at the specified coordinates. If the unit cannot
 /// be created (e.g. there is no space), this function displays an error message
 /// and returns NULL instead. This function is the same one used for creating

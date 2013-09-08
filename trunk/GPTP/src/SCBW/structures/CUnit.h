@@ -2,6 +2,7 @@
 
 #pragma once
 #include "Target.h"
+#include "../enumerations.h"
 #pragma pack(1)
 
 struct CSprite;
@@ -49,10 +50,7 @@ struct CUnit {
   void updateSpeed();
 
   /// Makes the unit's sprite play the specified Iscript animation entry.
-  ///
-  /// @param  animation   ID of the Iscript animation to play. See
-  ///                     IscriptAnimation::Enum for a list of animations.
-  void playIscriptAnim(u8 animation);
+  void playIscriptAnim(IscriptAnimation::Enum animation);
 
   /// Removes status effects from the unit (including the image overlays) and
   /// updates its button set.

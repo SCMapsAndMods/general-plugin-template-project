@@ -97,14 +97,14 @@ void removeOverlays(CUnit *unit, DWORD imageIdStart, DWORD imageIdEnd) {
 
 // Logically equivalent to function @ 0x004E5C90
 bool hasOverlay(const CUnit* const unit, const u32 imageId) {
-  CImage *image = unit->sprite->underlay;
+  CImage *image = unit->sprite->imageHead;
   while (image) {
     if (image->id == imageId)
       return true;
     image = image->next;
   }
   if (unit->subunit) {
-    image = unit->subunit->sprite->underlay;
+    image = unit->subunit->sprite->imageHead;
     while (image) {
       if (image->id == imageId)
         return true;
@@ -132,19 +132,6 @@ void fireUnitWeapon(CUnit* unit, u8 weaponId) {
     PUSH _weaponId
     MOV ESI, unit
     CALL offsets::Func_FireUnitWeapon
-    POPAD
-  }
-}
-
-void playIscriptAnim(CImage* image, u8 animation) {
-  if (!image) return;
-  u32 animation_ = animation;
-
-  __asm {
-    PUSHAD
-    PUSH animation_
-    MOV ECX, image
-    CALL offsets::Func_PlayIscriptAnim
     POPAD
   }
 }
