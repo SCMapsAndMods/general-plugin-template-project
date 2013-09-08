@@ -39,7 +39,7 @@ void unitDestructorSpecialHook(CUnit *unit) {
   }
 
   //Is a scarab or interceptor
-  if (unit->id == UnitId::scarab || unit->id == UnitId::interceptor) {
+  if (unit->id == UnitId::ProtossScarab || unit->id == UnitId::interceptor) {
     if (unit->status & UnitStatus::Completed) {
       if (unit->interceptor.parent) {
         if (unit->interceptor.next)
@@ -52,9 +52,9 @@ void unitDestructorSpecialHook(CUnit *unit) {
         }
         
         if (unit->interceptor.isOutsideHangar)
-          unit->interceptor.parent->carrier.outHangerCount--;
+          unit->interceptor.parent->carrier.outHangarCount--;
         else
-          unit->interceptor.parent->carrier.inHangerCount--;
+          unit->interceptor.parent->carrier.inHangarCount--;
 
         if (unit->interceptor.prev)
           unit->interceptor.prev->interceptor.next = unit->interceptor.next;
@@ -121,7 +121,7 @@ void killAllHangarUnits(CUnit *unit) {
     childOutside->interceptor.next = NULL;
 
     //Kill interceptors only (Scarabs will defuse anyway)
-    if (childOutside->id != UnitId::scarab) {
+    if (childOutside->id != UnitId::ProtossScarab) {
       const u16 deathTimer = scbw::randBetween(15, 45);
       if (childOutside->removeTimer == 0
           || childOutside->removeTimer > deathTimer)
@@ -129,5 +129,5 @@ void killAllHangarUnits(CUnit *unit) {
     }
   }
 
-  unit->carrier.outHangerChild = NULL;
+  unit->carrier.outHangarChild = NULL;
 }
