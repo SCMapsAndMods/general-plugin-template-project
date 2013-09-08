@@ -141,7 +141,7 @@ struct CUnit {
   u8        secondaryOrderTimer;
   u8        aiActionFlag;       // Used internally by the AI
   u8        userActionFlags;    // some flags that change when the user interacts with the unit
-                                // 2 = issued an order, 3 = interrupted an order, 4 = self destructing
+                                // 2 = issued an order, 3 = interrupted an order, 4 = hide self before death
   u16       currentButtonSet;   // The u16 is a guess, used to be u8
   u8        isCloaked;          // 1 for cloaked
   u8        movementState;      // A value based on conditions related to pathing, see Path.h for info
