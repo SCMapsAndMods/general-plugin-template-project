@@ -169,6 +169,10 @@ void Bitmap::drawLine(int x1, int y1, int x2, int y2, ColorId color) {
   else if (x1 == x2)
     this->drawVerticalLine(x1, y1, y2, color);
 
+  //Trivial check
+  if (this->isLineTriviallyIgnorable(x1, y1, x2, y2))
+    return;
+
   //Use Bresenham's line algorithm
   //Code taken from http://members.chello.at/~easyfilter/bresenham.html
   else {
@@ -313,6 +317,46 @@ void Bitmap::drawVerticalLineUnsafe(int x, int y1, int y2, ColorId color) {
 
   for (int y = y1; y <= y2; ++y)
     this->drawDotUnsafe(x, y, color);
+}
+
+
+//-------- Line clipping --------//
+
+int Bitmap::computeOutcode(int x, int y) {
+  const int OUTCODE_INSIDE  = 0;  //0000
+  const int OUTCODE_LEFT    = 1;  //0001
+  const int OUTCODE_RIGHT   = 2;  //0010
+  const int OUTCODE_TOP     = 4;  //0100
+  const int OUTCODE_BOTTOM  = 8;  //1000
+  
+  if (x < 0) {
+    if (y < 0)
+      return OUTCODE_LEFT | OUTCODE_TOP;
+    else if (y >= this->getHeight())
+      return OUTCODE_LEFT | OUTCODE_BOTTOM;
+    else
+      return OUTCODE_LEFT;
+  }
+  else if (x >= this->getWidth()) {
+    if (y < 0)
+      return OUTCODE_RIGHT | OUTCODE_TOP;
+    else if (y >= this->getHeight())
+      return OUTCODE_RIGHT | OUTCODE_BOTTOM;
+    else
+      return OUTCODE_RIGHT;
+  }
+  else {
+    if (y < 0)
+      return OUTCODE_TOP;
+    else if (y >= this->getHeight())
+      return OUTCODE_BOTTOM;
+    else
+      return OUTCODE_INSIDE;
+  }
+}
+
+bool Bitmap::isLineTriviallyIgnorable(int x1, int y1, int x2, int y2) {
+  return (this->computeOutcode(x1, y1) & this->computeOutcode(x2, y2)) != 0;
 }
 
 } //graphics
