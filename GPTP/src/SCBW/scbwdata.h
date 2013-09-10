@@ -34,7 +34,7 @@ RESOURCES*  const resources       = &resourceTable[0];
 PLAYER*     const playerTable     = (PLAYER*)(0x0057EEE0);
 
 //From locations.cpp
-MapSize*    const mapSize         = (MapSize*) 0x0057F1D4;
+MapSize*    const mapTileSize     = (MapSize*) 0x0057F1D4;
 LOCATION*   const locationTable   = (LOCATION*)(0x0058DC60);
 
 //From buttons.cpp
@@ -57,6 +57,7 @@ CUnit**    const firstScannerSweep  = (CUnit**)   0x006283F4;
 /// Array of size 12.
 CUnit**    const firstPlayerUnit    = (CUnit**)   0x006283F8;
 CBullet**  const firstBullet        = (CBullet**) 0x0064DEC4;
+SCBW_DATA(CUnit**, firstPsiFieldProvider, 0x0063FF54);
 
 // Units that are selected by the current player (or the player viewing the replay).
 CUnit* const* const clientSelectionGroup = (CUnit**) 0x00597208;  //Array of size 12
@@ -78,7 +79,19 @@ u32*  const screenX         = (u32*)  0x00628448;
 u32*  const screenY         = (u32*)  0x00628470;
 typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
 static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
-SCBW_DATA(const POINT*, mouse, 0x006CDDC4);
+SCBW_DATA(const Point32*, mouse, 0x006CDDC4);
+SCBW_DATA(Layers*, screenLayers, 0x006CEF50);
+
+SCBW_DATA(CImage**, firstUnusedImage, 0x0057EB68);
+SCBW_DATA(CImage**, lastUnusedImage, 0x0057EB70);
+const CListExtern<CImage, &CImage::link> unusedImages(0x0057EB68, 0x0057EB70);
+const CListExtern<CSprite, &CSprite::link> unusedSprites(0x0063FE30, 0x0063FE34);
+
+struct SpriteTileData {
+  CSprite* arr1[256];
+  CSprite* arr2[256];
+};
+SCBW_DATA(SpriteTileData*, spritesOnTile, 0x00629288);
 
 //Player alliance status
 struct PlayerAllianceData {
@@ -98,6 +111,7 @@ SCBW_DATA(const u32*, IS_IN_REPLAY,     0x006D0F14);
 SCBW_DATA(const s32*, currentPlayer,    0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
 SCBW_DATA(const u32*, IS_IN_GAME_LOOP,  0x006D11C8);
 SCBW_DATA(u32*,       lastRandomNumber, 0x0051CA14);
+SCBW_DATA(u32*, CAN_UPDATE_POWERED_STATUS, 0x0063FF44);
 
 //-------- DAT Files --------//
 

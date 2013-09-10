@@ -1,7 +1,8 @@
 //Based on BWAPI's BW/CSprite.h
 
 #pragma once
-#include "Position.h"
+#include "common.h"
+#include "CList.h"
 #include "../enumerations.h"
 #pragma pack(1)
 
@@ -18,8 +19,7 @@ struct CSprite {
 ////////////////////////////////////////////////////////////////
 //Actual data structure
 
-  /*0x00*/ CSprite   *prev;
-  /*0x04*/ CSprite   *next;
+  /*0x00*/ CLink<CSprite> link;
   /*0x08*/ u16       spriteID;
   /*0x0A*/ u8        playerID;          // officially "creator"
   /*0x0B*/ u8        selectionIndex;    // 0 <= selectionIndex <= 11. Index in the selection area at bottom of screen.
@@ -37,7 +37,7 @@ struct CSprite {
                      */
   /*0x0F*/ u8        selectionTimer;
   /*0x10*/ u32       index;
-  /*0x14*/ Position  position;
+  /*0x14*/ Point16   position;
   /*0x18*/ CImage    *mainGraphic;    // officially "pImagePrimary"
   /*0x1C*/ CImage    *imageHead;      // officially "pImageHead"
   /*0x20*/ CImage    *imageTail;      // officially "pImageTail"

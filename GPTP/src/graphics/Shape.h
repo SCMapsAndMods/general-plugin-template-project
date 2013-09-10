@@ -1,5 +1,5 @@
 #pragma once
-#include "../types.h"
+#include "../SCBW/structures/common.h"
 #include "ColorId.h"
 #include "FontSize.h"
 #include <string>
@@ -31,8 +31,8 @@ class Shape {
       FILLED_BOX,
       FILLED_CIRCLE
     } type;
-    POINT p1;
-    POINT p2;
+    Point32 p1;
+    Point32 p2;
     int radius;
     ColorId color;
     FontSize fontSize;

@@ -1,7 +1,8 @@
 //Based on BWAPI's BW/CBullet.h
 
 #pragma once
-#include "Position.h"
+#include "common.h"
+#include "CList.h"
 #include "../enumerations.h"
 #pragma pack(1)
 
@@ -17,8 +18,7 @@ struct CImage {
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure
-  CImage      *previous;
-  CImage      *next;
+  CLink<CImage> link;
   u16         id;
   u8          paletteType;      //++Drawing function (values are the same as DataEdit)
                                 // officially "ubRLE"
@@ -54,9 +54,9 @@ struct CImage {
   u8          wait;
   u16         frameSet;
   u16         frameIndex;
-  Position    mapPosition;
-  Position    screenPosition;
-  UNK         unknown3[8];
+  Point16     mapPosition;
+  Point16     screenPosition;
+  Box16       grpSize;
   u32         grpOffset;
   void*       coloringData;        //?
   void*       renderFunction;

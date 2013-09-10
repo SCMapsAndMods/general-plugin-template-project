@@ -101,14 +101,14 @@ bool hasOverlay(const CUnit* const unit, const u32 imageId) {
   while (image) {
     if (image->id == imageId)
       return true;
-    image = image->next;
+    image = image->link.next;
   }
   if (unit->subunit) {
     image = unit->subunit->sprite->imageHead;
     while (image) {
       if (image->id == imageId)
         return true;
-      image = image->next;
+      image = image->link.next;
     }
   }
   return false;

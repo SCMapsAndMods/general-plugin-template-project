@@ -16,8 +16,8 @@ struct CBullet {
   /*0x08*/ u32          unknown_0x08; //usually holds 1 (exists?)
   /*0x0C*/ CSprite      *sprite; // sprite pointer
   /*0x10*/ Target       moveTarget; //address? animation related? changes a during the same bullet
-  /*0x18*/ Position     targetPosition;
-  /*0x1C*/ Position     targetPosition2; //usually same as targetPosition
+  /*0x18*/ Point16      targetPosition;
+  /*0x1C*/ Point16      targetPosition2; //usually same as targetPosition
   /*0x20*/ u8           movementFlags; //usually holds 0x09 for probes, 0x0b for dragoons, 0x11 for mutas
   /*0x21*/ u8           direction1; //not sure how this and direction2 differ from currentDirection and velocityDirection
   /*0x22*/ u8           flingyTurnRadius;
@@ -25,12 +25,12 @@ struct CBullet {
   /*0x24*/ u16          type;
   /*0x26*/ u8           unknown_0x26;
   /*0x27*/ u8           flingyMoveControl;
-  /*0x28*/ Position     position;
-  /*0x2C*/ POINT        halt; // (xHalt >> 4) == xHalt
+  /*0x28*/ Point16      position;
+  /*0x2C*/ Point32      halt; // (xHalt >> 4) == xHalt
   /*0x34*/ s32          flingyTopSpeed;
   /*0x38*/ s32          unknown_0x38; //increasing counter or timer
   /*0x3C*/ s32          unknown_0x3C; //increasing counter or timer, often the same value as unknown_0x38
-  /*0x40*/ POINT        current_speed;
+  /*0x40*/ Point32      current_speed;
   /*0x48*/ u16          flingyAcceleration;
   /*0x4A*/ u8           currentDirection;
   /*0x4B*/ u8           velocityDirection; //seems to always be the same as currentDirection
