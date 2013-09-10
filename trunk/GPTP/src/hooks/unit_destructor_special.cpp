@@ -1,9 +1,98 @@
 #include "unit_destructor_special.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
+#include <algorithm>
 
 //Helper function definitions. Do NOT modify!
 void killAllHangarUnits(CUnit *unit);
+
+//AKA ImageDestructor() (0x004D4CE0)
+void freeImage(CImage *image) {
+  if (!(screenLayers->game.hasBeenRefreshed))
+    scbw::refreshScreen(image->screenPosition.x,
+                        image->screenPosition.y,
+                        image->screenPosition.x + image->grpSize.right,
+                        image->screenPosition.y + image->grpSize.bottom
+                        );
+
+  CSprite* const parent = image->parentSprite;
+  if (parent->imageHead == image)
+    parent->imageHead = image->link.next;
+  if (parent->imageTail == image)
+    parent->imageTail = image->link.prev;
+
+  if (image->link.prev)
+    image->link.prev->link.next = image->link.next;
+  if (image->link.next)
+    image->link.next->link.prev = image->link.prev;
+
+  image->link.prev = NULL;
+  image->link.next = NULL;
+  image->grpOffset = NULL;
+
+  unusedImages.insertAfterHead(image);
+}
+
+//AKA SpriteDestructor() (0x00497B40)
+void freeSprite(CSprite *sprite) {
+  CImage *image = sprite->imageHead;
+  while (image) {
+    CImage *nextImage = image->link.next;
+    freeImage(image);
+    image = nextImage;
+  }
+
+  int y = sprite->position.y / 32;
+  y = std::min(std::max(y, 0), mapTileSize->height - 1);
+  if (spritesOnTile->arr1[y] == sprite)
+    spritesOnTile->arr1[y] = sprite->link.prev;
+  if (spritesOnTile->arr2[y] == sprite)
+    spritesOnTile->arr2[y] = sprite->link.next;
+
+  if (sprite->link.prev)
+    sprite->link.prev->link.next = sprite->link.next;
+  if (sprite->link.next)
+    sprite->link.next->link.prev = sprite->link.prev;
+
+  sprite->link.prev = NULL;
+  sprite->link.next = NULL;
+
+  unusedSprites.insertAfterHead(sprite);
+}
+
+void removeFromPsiProvider(CUnit *psiProvider) {
+  if (psiProvider->psi_link.prev)
+    psiProvider->psi_link.prev->psi_link.next = psiProvider->psi_link.next;
+  if (psiProvider->psi_link.next)
+    psiProvider->psi_link.next->psi_link.prev = psiProvider->psi_link.prev;
+
+  if (psiProvider == *firstPsiFieldProvider)
+    *firstPsiFieldProvider = psiProvider->psi_link.next;
+
+  psiProvider->psi_link.prev = NULL;
+  psiProvider->psi_link.next = NULL;
+}
+
+void freeResourceContainer(CUnit *resource) {
+  resource->building.resource.gatherQueueCount = 0;
+
+  CUnit *worker = resource->building.resource.nextGatherer;
+  while (worker) {
+    if (worker->worker.harvest_link.prev)
+      worker->worker.harvest_link.prev->worker.harvest_link.next = worker->worker.harvest_link.next;
+    else
+      resource->building.resource.nextGatherer = worker->worker.harvest_link.next;
+
+    if (worker->worker.harvest_link.next)
+      worker->worker.harvest_link.next->worker.harvest_link.prev = worker->worker.harvest_link.prev;
+
+    CUnit *nextWorker = worker->worker.harvest_link.next;
+    worker->worker.harvestTarget = NULL;
+    worker->worker.harvest_link.prev = NULL;
+    worker->worker.harvest_link.next = NULL;
+    worker = nextWorker;
+  }
+}
 
 
 void unitDestructorSpecialHook(CUnit *unit) {
@@ -34,7 +123,7 @@ void unitDestructorSpecialHook(CUnit *unit) {
       || (unit->id == UnitId::refinery || unit->id == UnitId::assimilator || unit->id == UnitId::extractor)
          && unit->status & UnitStatus::Completed
       ) {
-    //TODO: add content
+    freeResourceContainer(unit);
     return;
   }
 
@@ -86,7 +175,13 @@ void unitDestructorSpecialHook(CUnit *unit) {
   }
 
   if (unit->id == UnitId::pylon) {
-    //TODO: fill
+    if (unit->building.pylonAura) {
+      freeSprite(unit->building.pylonAura);
+      unit->building.pylonAura = NULL;
+    }
+    removeFromPsiProvider(unit);
+    *CAN_UPDATE_POWERED_STATUS = 1;
+    return;
   }
 
   if (unit->id == UnitId::nydus_canal) {

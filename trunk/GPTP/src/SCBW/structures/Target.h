@@ -1,7 +1,7 @@
 //Based on BWAPI's BW/Target.h
 
 #pragma once
-#include "Position.h"
+#include "common.h"
 #pragma pack(1)
 
 struct CUnit;
@@ -12,7 +12,7 @@ struct CUnit;
  */
 struct Target
 {
-  Position      pt;       // official name
+  Point16       pt;       // official name
   CUnit         *unit;
 };
 

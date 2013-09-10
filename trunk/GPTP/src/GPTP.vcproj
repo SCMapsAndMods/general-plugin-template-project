@@ -343,11 +343,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SCBW\structures\CList.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\cloak_nearby_units.h"
 				>
 			</File>
 			<File
 				RelativePath=".\graphics\ColorId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\common.h"
 				>
 			</File>
 			<File
@@ -431,6 +439,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SCBW\structures\Layer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\max_unit_energy.h"
 				>
 			</File>
@@ -444,10 +456,6 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\OrderId.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SCBW\structures\Position.h"
 				>
 			</File>
 			<File

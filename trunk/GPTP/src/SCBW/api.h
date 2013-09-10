@@ -87,7 +87,7 @@ u32 getGroundHeightAtPos(s32 x, s32 y);
 
 /// Returns the pointer to the active tile data at (x, y).
 inline ActiveTile& getActiveTileAt(s32 x, s32 y) {
-  return (*activeTileArray)[(x / 32) + mapSize->width * (y / 32)];
+  return (*activeTileArray)[(x / 32) + mapTileSize->width * (y / 32)];
 }
 
 /// Checks whether the given cheat flag is enabled.

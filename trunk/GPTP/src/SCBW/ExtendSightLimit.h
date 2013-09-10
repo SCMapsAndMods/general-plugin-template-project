@@ -41,11 +41,11 @@ void setMaxSightRange() {
 
   memoryPatch4((void*)offsets::SightStructArrayRef, (u32)sightData);
 
-  const u16 mapWidth = mapSize->width;
+  const u16 mapTileWidth = mapTileSize->width;
   const u32 sightRangeParam = MAX_SIGHT_RANGE + 1;
   __asm {
     PUSHAD
-    MOVZX EAX, mapWidth
+    MOVZX EAX, mapTileWidth
     PUSH EAX
     MOV EAX, sightRangeParam
     LEA ECX, sightData

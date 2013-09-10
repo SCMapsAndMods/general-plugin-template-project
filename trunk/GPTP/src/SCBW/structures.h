@@ -8,6 +8,7 @@
 #include "structures/CSprite.h"
 #include "structures/CImage.h"
 #include "structures/COrder.h"
+#include "structures/Layer.h"
 
 #pragma pack(1)
 
@@ -138,7 +139,7 @@ struct CONDITION {
   u8        flags;
 };
 
-typedef BOOL (__fastcall *ConditionPointer)(CONDITION*);
+typedef Bool32 (__fastcall *ConditionPointer)(CONDITION*);
 
 struct ACTION {
   u32        location;
@@ -153,7 +154,7 @@ struct ACTION {
   u8        flags;
 };
 
-typedef BOOL (__fastcall *ActionPointer)(ACTION*);
+typedef Bool32 (__fastcall *ActionPointer)(ACTION*);
 
 //Based on BWAPI's Offsets.h
 struct ActiveTile {

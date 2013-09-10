@@ -2,6 +2,7 @@
 
 #pragma once
 #include "Target.h"
+#include "CList.h"
 #include "../enumerations.h"
 #pragma pack(1)
 
@@ -77,9 +78,9 @@ struct CUnit {
   s32       hitPoints;
   CSprite   *sprite;
   Target    moveTarget;         ///< The position or unit to move to. It is NOT an order target.
-  Position  nextMovementWaypoint; ///< The next way point in the path the unit is following to get to its destination.
+  Point16   nextMovementWaypoint; ///< The next way point in the path the unit is following to get to its destination.
                                   ///< Equal to moveToPos for air units since they don't need to navigate around buildings.
-  Position  nextTargetWaypoint; ///< The desired position
+  Point16   nextTargetWaypoint; ///< The desired position
   u8        movementFlags;
   u8        currentDirection1;
   u8        flingyTurnSpeed;    //AKA flingy turn radius
@@ -87,7 +88,7 @@ struct CUnit {
   u16       flingyId;
   UNK unknown2;
   u8        flingyMovementType;
-  Position  position;
+  Point16   position;
   u32       xHalt;
   u32       yHalt;
   u32       flingyTopSpeed;     //top speed
@@ -194,16 +195,16 @@ struct CUnit {
       u16     _padding_0E;          // E    // possible alignment
       union {
         struct {
-          u16       resourceCount;  // amount of resources
-          u8        resourceIscript;
-          u8        gatherQueueCount;
-          CUnit*    nextGatherer;   // 14  // pointer to the next workerunit waiting in line to gather
-          u8        resourceGroup;  // 18
-          u8        resourceBelongsToAI;
+/*10*/    u16       resourceCount;  // amount of resources
+/*12*/    u8        resourceIscript;
+/*13*/    u8        gatherQueueCount;
+/*14*/    CUnit*    nextGatherer;   // 14  // pointer to the next workerunit waiting in line to gather
+/*18*/    u8        resourceGroup;  // 18
+/*19*/    u8        resourceBelongsToAI;
         } resource;  /** When the unit is resource container */
         struct { CUnit* exit; } nydus; /** connected nydius canal */
         struct { CUnit* nukeMissile; } ghost; //Tentative
-        struct { CSprite* pylonAura; } pylon;
+        CSprite* pylonAura;
         struct{
           CUnit* nuke;  // attached nuke
           u32 hasNuke;     // 14
@@ -230,8 +231,7 @@ struct CUnit {
       u8      isCarryingSomething;    // E
       u8      resourceCarryCount;     // F
       CUnit*  harvestTarget;          // 10
-      CUnit*  prevHarvestUnit;        // 14   // When there is a gather conflict
-      CUnit*  nextHarvestUnit;        // 18
+      CLink<CUnit> harvest_link;      // 14   // When there is a gather conflict
     } worker;
   };
 
@@ -248,10 +248,7 @@ struct CUnit {
   CUnit*    nextBurrowedUnit;
   union {
     Target rally;               // This is not present in BWAPI's CUnit.h, but it seems pretty obvious that it is a Target struct.
-    struct {
-      CUnit* previousPsiProvider;
-      CUnit* nextPsiProvider;
-    } pylon;
+    CLink<CUnit> psi_link;
   };
   u32       path;               //?
   u8        pathingCollisionInterval;  // unknown
