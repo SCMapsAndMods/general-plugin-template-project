@@ -21,6 +21,10 @@ struct CSprite {
   /// array and never truly destroyed.
   void free();
 
+  /// AKA fixSpritePosition @ 0x00497A10
+  /// Moves the sprite to the new position.
+  void setPosition(u16 x, u16 y);
+
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure

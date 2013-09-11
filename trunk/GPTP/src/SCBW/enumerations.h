@@ -52,7 +52,7 @@ enum Enum {
   AnimatedIdle        = 0x00000100,
   Cloakable           = 0x00000200,
   TwoUnitsIn1Egg      = 0x00000400,
-  NeutralAccessories  = 0x00000800,
+  NeutralAccessories  = 0x00000800, //AKA "Single entity" (prevents multi-select, set on all pickup items)
   ResourceDepot       = 0x00001000,
   ResourceContainer   = 0x00002000,
   RoboticUnit         = 0x00004000,
@@ -64,7 +64,7 @@ enum Enum {
   Burrowable          = 0x00100000,
   Spellcaster         = 0x00200000,
   PermanentCloak      = 0x00400000,
-  NPCOrAccessories    = 0x00800000,
+  NPCOrAccessories    = 0x00800000, //AKA "Pickup item" (data disc, crystals, mineral chunks, gas tanks, etc.)
   MorphFromOtherUnit  = 0x01000000,
   MediumOverlay       = 0x02000000, //Used to determine overlay for various spells and effects
   LargeOverlay        = 0x04000000, //Used to determine overlay for various spells and effects

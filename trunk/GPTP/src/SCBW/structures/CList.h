@@ -34,8 +34,10 @@ class CListExtern {
     CListExtern(u32 head_, u32 tail_) : head(*(T**)head_), tail(*(T**)tail_) {};
 
     void insertAfterHead(T *t) const;
+    void unlink(T *t) const;
 };
 
+/// Inserts @p t into the linked list.
 template <class T, CLink<T> T::*link>
 void CListExtern<T, link>::insertAfterHead(T *t) const {
   if (head) {
@@ -51,6 +53,23 @@ void CListExtern<T, link>::insertAfterHead(T *t) const {
     head = t;
     tail = t;
   }
+}
+
+/// Unlinks @p t from the linked list.
+template <class T, CLink<T> T::*link>
+void CListExtern<T, link>::unlink(T *t) const {
+  if (head == t)
+    head = (t->*link).next;
+  if (tail == t)
+    tail = (t->*link).prev;
+
+  if ((t->*link).prev)
+    ((t->*link).prev->*link).next = (t->*link).next;
+  if ((t->*link).next)
+    ((t->*link).next->*link).prev = (t->*link).prev;
+
+  (t->*link).prev = NULL;
+  (t->*link).next = NULL;
 }
 
 

@@ -88,10 +88,10 @@ const CListExtern<CImage, &CImage::link> unusedImages(0x0057EB68, 0x0057EB70);
 const CListExtern<CSprite, &CSprite::link> unusedSprites(0x0063FE30, 0x0063FE34);
 
 struct SpriteTileData {
-  CSprite* arr1[256];
-  CSprite* arr2[256];
+  CSprite* tails[256];
+  CSprite* heads[256];
 };
-SCBW_DATA(SpriteTileData*, spritesOnTile, 0x00629288);
+SCBW_DATA(SpriteTileData*, spritesOnTileRow, 0x00629288);
 
 //Player alliance status
 struct PlayerAllianceData {

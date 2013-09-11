@@ -1,9 +1,17 @@
 #include "psi_field.h"
 #include "../SCBW/scbwdata.h"
+#include "../SCBW/api.h"
 
 namespace hooks {
 
+//Unit type check (used in unit destructor)
+bool canMakePsiField(u16 unitId) {
+  if (unitId == UnitId::pylon || unitId == UnitId::shuttle)
+    return true;
+  return false;
+}
 
+//Actual check whether a unit can build
 bool canMakePsiField(CUnit *unit) {
   //NOT default StarCraft behavior
 
@@ -13,7 +21,7 @@ bool canMakePsiField(CUnit *unit) {
   if (unit->id == UnitId::shuttle) {
     for (int i = 0; i < 8; ++i) {
       if (unit->loadedUnitIndex[i] == 0) continue;
-      const int unitIndex = (unit->loadedUnitIndex[i] - 1) % 2048;
+      const int unitIndex = unit->loadedUnitIndex[i] % 2048 - 1;
       const CUnit *loadedUnit = &unitTable[unitIndex];
 
       if (loadedUnit->mainOrderId != OrderId::Die
@@ -92,6 +100,7 @@ void removePsiField(CUnit *unit) {
     unit->building.pylonAura = NULL;
   }
   removeFromPsiProviderList(unit);
+  *canUpdatePoweredStatus = true;
 }
 
 //-------- Update psi field position --------//
@@ -112,23 +121,45 @@ void updatePsiFieldPosition(const CUnit *unit) {
 
   CSprite *psiField = unit->building.pylonAura;
   if (unit->sprite->position != psiField->position) {
-    for (CImage *i = psiField->imageHead; i; i = i->link.next)
-      i->flags |= 1;  //Redraw image
+    //for (CImage *i = psiField->imageHead; i; i = i->link.next)
+    //  i->flags |= 1;  //Redraw image
 
-    psiField->position = unit->sprite->position;
+    psiField->setPosition(unit->getX(), unit->getY());
     refreshSpriteData(psiField);
+    *canUpdatePoweredStatus = true;
   }
 }
 
 //-------- Update psi field provider --------//
 
 void updatePsiFieldProvider(CUnit *unit) {
-  if (canMakePsiField(unit)) {
-    addPsiField(unit);
-    updatePsiFieldPosition(unit);
+  if (!unit || unit->mainOrderId == OrderId::Die) return;
+
+  //Exclude unit types that cannot make psi fields, including: workers,
+  //factories, resource containers, ghosts, nydus canals, silos, hatcheries, and powerups
+  if (Unit::BaseProperty[unit->id] & (UnitProperty::Worker | UnitProperty::ResourceContainer | UnitProperty::NPCOrAccessories)
+      || Unit::GroupFlags[unit->id].isFactory
+      || unit->id == UnitId::ghost
+      || unit->id == UnitId::sarah_kerrigan
+      || unit->id == UnitId::Hero_AlexeiStukov
+      || unit->id == UnitId::Hero_SamirDuran
+      || unit->id == UnitId::Hero_InfestedDuran
+      || unit->id == UnitId::nydus_canal
+      || unit->id == UnitId::nuclear_silo
+      || unit->id == UnitId::hatchery 
+      || unit->id == UnitId::lair
+      || unit->id == UnitId::hive)
+    return;
+
+
+  if (unit->status & UnitStatus::Completed) {
+    if (canMakePsiField(unit)) {
+      addPsiField(unit);
+      updatePsiFieldPosition(unit);
+    }
+    else
+      removePsiField(unit);
   }
-  else
-    removePsiField(unit);
 }
 
 
