@@ -1,24 +1,7 @@
-#include "../SCBW/structures.h"
-#include "../tools.h"
+#pragma once
 
-void unitDestructorSpecialHook(CUnit *unit);
+namespace hooks {
 
-static void __declspec(naked) unitDestructorSpecialWrapper() {
-  CUnit *unit;
-  __asm {
-    PUSHAD
-    MOV EBP, ESP
-    MOV unit, EAX
-  }
+void unitDestructorSpecialInject();
 
-  unitDestructorSpecialHook(unit);
-
-  __asm {
-    POPAD
-    RETN
-  }
-}
-
-static void unitDestructorSpecialInject() {
-  callPatch(unitDestructorSpecialWrapper, 0x004A075F);
-}
+} //hooks

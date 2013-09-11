@@ -22,6 +22,7 @@
 #include "hooks/weapon_cooldown.h"
 #include "hooks/weapon_range.h"
 #include "hooks/unit_destructor_special.h"
+#include "hooks/psi_field.h"
 #include "graphics/draw_hook.h"
 
 /// This function is called when the plugin is loaded into StarCraft.
@@ -92,7 +93,8 @@ void Initialize() {
   jmpPatch(getSeekRangeWrapper,           offsets::Hook_GetSeekRange);
   jmpPatch(getMaxWeaponRangeWrapper,      offsets::Hook_GetMaxWeaponRange);
 
-  unitDestructorSpecialInject();
+  hooks::unitDestructorSpecialInject();
+  hooks::psiFieldHookInject();
 
   InjectDrawHook();
 }

@@ -1,13 +1,62 @@
+//All functions in this file are heavily involved with memory management.
+//Do NOT modify anything unless you really know what you are doing.
+
 #include "unit_destructor_special.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
-#include "../SCBW/psi_field.h"
+#include "psi_field.h"
+#include "../tools.h"
 #include <algorithm>
 
-//Helper function definitions. Do NOT modify!
-void killAllHangarUnits(CUnit *unit);
-void freeResourceContainer(CUnit *resource);
+namespace hooks {
 
+void killAllHangarUnits(CUnit *unit) {
+  while (unit->carrier.inHangarCount--) {
+    CUnit *childInside = unit->carrier.inHangarChild;
+    unit->carrier.inHangarChild = childInside->interceptor.prev;
+    childInside->interceptor.parent = NULL;
+    childInside->remove();
+  }
+
+  while (unit->carrier.outHangarCount--) {
+    CUnit *childOutside = unit->carrier.outHangarChild;
+    unit->carrier.outHangarChild = childOutside->interceptor.prev;
+    childOutside->interceptor.parent = NULL;
+    childOutside->interceptor.prev = NULL;
+    childOutside->interceptor.next = NULL;
+
+    //Kill interceptors only (Scarabs will defuse anyway)
+    if (childOutside->id != UnitId::ProtossScarab) {
+      const u16 deathTimer = scbw::randBetween(15, 45);
+      if (childOutside->removeTimer == 0
+          || childOutside->removeTimer > deathTimer)
+        childOutside->removeTimer = deathTimer;
+    }
+  }
+
+  unit->carrier.outHangarChild = NULL;
+}
+
+void freeResourceContainer(CUnit *resource) {
+  resource->building.resource.gatherQueueCount = 0;
+
+  CUnit *worker = resource->building.resource.nextGatherer;
+  while (worker) {
+    if (worker->worker.harvest_link.prev)
+      worker->worker.harvest_link.prev->worker.harvest_link.next = worker->worker.harvest_link.next;
+    else
+      resource->building.resource.nextGatherer = worker->worker.harvest_link.next;
+
+    if (worker->worker.harvest_link.next)
+      worker->worker.harvest_link.next->worker.harvest_link.prev = worker->worker.harvest_link.prev;
+
+    CUnit *nextWorker = worker->worker.harvest_link.next;
+    worker->worker.harvestTarget = NULL;
+    worker->worker.harvest_link.prev = NULL;
+    worker->worker.harvest_link.next = NULL;
+    worker = nextWorker;
+  }
+}
 
 void unitDestructorSpecialHook(CUnit *unit) {
   //Destroy interceptors and scarabs
@@ -88,8 +137,8 @@ void unitDestructorSpecialHook(CUnit *unit) {
     return;
   }
 
-  if (unit->id == UnitId::pylon) {
-    scbw::removePsiField(unit);
+  if (hooks::canMakePsiField(unit)) {
+    hooks::removePsiField(unit);
     *canUpdatePoweredStatus = 1;
     return;
   }
@@ -106,54 +155,26 @@ void unitDestructorSpecialHook(CUnit *unit) {
   
 }
 
+//-------- Actual hooking --------//
 
-
-/**** Helper function definitions. Do not change anything below this! ****/
-
-void killAllHangarUnits(CUnit *unit) {
-  while (unit->carrier.inHangarCount--) {
-    CUnit *childInside = unit->carrier.inHangarChild;
-    unit->carrier.inHangarChild = childInside->interceptor.prev;
-    childInside->interceptor.parent = NULL;
-    childInside->remove();
+void __declspec(naked) unitDestructorSpecialWrapper() {
+  CUnit *unit;
+  __asm {
+    PUSHAD
+    MOV EBP, ESP
+    MOV unit, EAX
   }
 
-  while (unit->carrier.outHangarCount--) {
-    CUnit *childOutside = unit->carrier.outHangarChild;
-    unit->carrier.outHangarChild = childOutside->interceptor.prev;
-    childOutside->interceptor.parent = NULL;
-    childOutside->interceptor.prev = NULL;
-    childOutside->interceptor.next = NULL;
+  unitDestructorSpecialHook(unit);
 
-    //Kill interceptors only (Scarabs will defuse anyway)
-    if (childOutside->id != UnitId::ProtossScarab) {
-      const u16 deathTimer = scbw::randBetween(15, 45);
-      if (childOutside->removeTimer == 0
-          || childOutside->removeTimer > deathTimer)
-        childOutside->removeTimer = deathTimer;
-    }
-  }
-
-  unit->carrier.outHangarChild = NULL;
-}
-
-void freeResourceContainer(CUnit *resource) {
-  resource->building.resource.gatherQueueCount = 0;
-
-  CUnit *worker = resource->building.resource.nextGatherer;
-  while (worker) {
-    if (worker->worker.harvest_link.prev)
-      worker->worker.harvest_link.prev->worker.harvest_link.next = worker->worker.harvest_link.next;
-    else
-      resource->building.resource.nextGatherer = worker->worker.harvest_link.next;
-
-    if (worker->worker.harvest_link.next)
-      worker->worker.harvest_link.next->worker.harvest_link.prev = worker->worker.harvest_link.prev;
-
-    CUnit *nextWorker = worker->worker.harvest_link.next;
-    worker->worker.harvestTarget = NULL;
-    worker->worker.harvest_link.prev = NULL;
-    worker->worker.harvest_link.next = NULL;
-    worker = nextWorker;
+  __asm {
+    POPAD
+    RETN
   }
 }
+
+void unitDestructorSpecialInject() {
+  callPatch(unitDestructorSpecialWrapper, 0x004A075F);
+}
+
+} //hooks
