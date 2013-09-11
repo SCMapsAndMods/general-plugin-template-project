@@ -12,8 +12,14 @@ struct CImage {
 //Utility method definitions added by pastelmind
 
 
-/// Makes the image play the specified Iscript animation entry.
+  /// Makes the image play the specified Iscript animation entry.
   void playIscriptAnim(IscriptAnimation::Enum animation);
+
+  /// AKA ImageDestructor() @ 0x004D4CE0
+  /// Removes the image from the linked list of valid images. This is different
+  /// from a class destructor, since CImage objects are stored in a static array
+  /// and never truly destroyed.
+  void free();
 
 
 ////////////////////////////////////////////////////////////////

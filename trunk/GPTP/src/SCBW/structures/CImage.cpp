@@ -1,4 +1,7 @@
 #include "CImage.h"
+#include "CSprite.h"
+#include "../api.h"
+#include "../scbwdata.h"
 #include <cassert>
 
 void CImage::playIscriptAnim(IscriptAnimation::Enum animation) {
@@ -13,4 +16,31 @@ void CImage::playIscriptAnim(IscriptAnimation::Enum animation) {
     CALL Func_PlayIscriptAnim
     POPAD
   }
+}
+
+void CImage::free() {
+  assert(this);
+  if (!(screenLayers->game.hasBeenRefreshed))
+    scbw::refreshScreen(this->screenPosition.x,
+                        this->screenPosition.y,
+                        this->screenPosition.x + this->grpSize.right,
+                        this->screenPosition.y + this->grpSize.bottom
+                        );
+
+  CSprite* const parent = this->parentSprite;
+  if (parent->imageHead == this)
+    parent->imageHead = this->link.next;
+  if (parent->imageTail == this)
+    parent->imageTail = this->link.prev;
+
+  if (this->link.prev)
+    this->link.prev->link.next = this->link.next;
+  if (this->link.next)
+    this->link.next->link.prev = this->link.prev;
+
+  this->link.prev = NULL;
+  this->link.next = NULL;
+  this->grpOffset = NULL;
+
+  unusedImages.insertAfterHead(this);
 }

@@ -15,6 +15,12 @@ struct CSprite {
 /// Makes the sprite play the specified Iscript animation entry.
   void playIscriptAnim(IscriptAnimation::Enum animation);
 
+  /// AKA SpriteDestructor() @ 0x00497B40
+  /// Removes the sprite from the linked list of valid images. This is different
+  /// from a class destructor, since CSprite objects are stored in a static
+  /// array and never truly destroyed.
+  void free();
+
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure
