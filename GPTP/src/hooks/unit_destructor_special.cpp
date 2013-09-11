@@ -1,11 +1,11 @@
 #include "unit_destructor_special.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
+#include "../SCBW/psi_field.h"
 #include <algorithm>
 
 //Helper function definitions. Do NOT modify!
 void killAllHangarUnits(CUnit *unit);
-void removeFromPsiProvider(CUnit *psiProvider);
 void freeResourceContainer(CUnit *resource);
 
 
@@ -89,11 +89,7 @@ void unitDestructorSpecialHook(CUnit *unit) {
   }
 
   if (unit->id == UnitId::pylon) {
-    if (unit->building.pylonAura) {
-      unit->building.pylonAura->free();
-      unit->building.pylonAura = NULL;
-    }
-    removeFromPsiProvider(unit);
+    scbw::removePsiField(unit);
     *canUpdatePoweredStatus = 1;
     return;
   }
@@ -139,20 +135,6 @@ void killAllHangarUnits(CUnit *unit) {
   }
 
   unit->carrier.outHangarChild = NULL;
-}
-
-
-void removeFromPsiProvider(CUnit *psiProvider) {
-  if (psiProvider->psi_link.prev)
-    psiProvider->psi_link.prev->psi_link.next = psiProvider->psi_link.next;
-  if (psiProvider->psi_link.next)
-    psiProvider->psi_link.next->psi_link.prev = psiProvider->psi_link.prev;
-
-  if (psiProvider == *firstPsiFieldProvider)
-    *firstPsiFieldProvider = psiProvider->psi_link.next;
-
-  psiProvider->psi_link.prev = NULL;
-  psiProvider->psi_link.next = NULL;
 }
 
 void freeResourceContainer(CUnit *resource) {

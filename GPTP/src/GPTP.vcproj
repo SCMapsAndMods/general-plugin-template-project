@@ -249,6 +249,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SCBW\psi_field.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\qdp.cpp"
 				>
 			</File>
@@ -456,6 +460,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\OrderId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\psi_field.h"
 				>
 			</File>
 			<File
