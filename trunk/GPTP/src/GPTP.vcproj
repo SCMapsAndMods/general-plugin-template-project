@@ -249,7 +249,29 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\psi_field.cpp"
+				RelativePath=".\hooks\psi_field.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\hooks\psi_field_select.cpp"
 				>
 			</File>
 			<File
@@ -463,7 +485,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\psi_field.h"
+				RelativePath=".\hooks\psi_field.h"
 				>
 			</File>
 			<File

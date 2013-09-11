@@ -155,7 +155,7 @@ struct CUnit {
   UNK unknown14[2];
   u16       remainingBuildTime;
   u16       previousHp;         // The HP of the unit before it changed (example Drone->Hatchery, the Drone's HP will be stored here)
-  u16       loadedUnitIndex[8];
+  u16       loadedUnitIndex[8]; // To get the actual index in the unit table, use (index - 1) % 2048.
 
   union {   //0x0C0
     struct {

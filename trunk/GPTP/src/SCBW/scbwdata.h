@@ -108,7 +108,8 @@ SCBW_DATA(const u32*,     unitOrderingCount, 0x0066FF74);
 SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,   0x006BEE68);
 SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,  0x006BB930);
 SCBW_DATA(const Bool32*,  IS_IN_REPLAY,     0x006D0F14);
-SCBW_DATA(const s32*,     CURRENT_PLAYER,   0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
+SCBW_DATA(const s32*,     LOCAL_NATION_ID,  0x00512684);  //AKA g_LocalNationID; Actually stores the player ID.
+SCBW_DATA(const s32*,     LOCAL_HUMAN_ID,   0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
 SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,  0x006D11C8);
 SCBW_DATA(u32*,           lastRandomNumber, 0x0051CA14);
 SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);

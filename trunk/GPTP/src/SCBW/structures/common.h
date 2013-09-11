@@ -7,6 +7,13 @@
 struct Point16 {
   u16 x;
   u16 y;
+
+  bool operator ==(const Point16 &rhs) const {
+    return x == rhs.x && y == rhs.y;
+  }
+  bool operator !=(const Point16 &rhs) const {
+    return !(*this == rhs);
+  }
 };
 
 struct Point32 {
