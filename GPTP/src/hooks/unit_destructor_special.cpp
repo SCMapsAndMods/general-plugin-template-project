@@ -2,7 +2,6 @@
 //Do NOT modify anything unless you really know what you are doing.
 
 #include "unit_destructor_special.h"
-#include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 #include "psi_field.h"
 #include "../tools.h"
@@ -137,9 +136,8 @@ void unitDestructorSpecialHook(CUnit *unit) {
     return;
   }
 
-  if (hooks::canMakePsiField(unit)) {
-    hooks::removePsiField(unit);
-    *canUpdatePoweredStatus = 1;
+  if (hooks::canMakePsiField(unit->id)) {
+    hooks::removePsiField(unit);    
     return;
   }
 

@@ -28,18 +28,10 @@ void CImage::free() {
                         );
 
   CSprite* const parent = this->parentSprite;
-  if (parent->imageHead == this)
-    parent->imageHead = this->link.next;
-  if (parent->imageTail == this)
-    parent->imageTail = this->link.prev;
+  const CListExtern<CImage, &CImage::link>
+    imageList(&(parent->imageHead), &(parent->imageTail));
 
-  if (this->link.prev)
-    this->link.prev->link.next = this->link.next;
-  if (this->link.next)
-    this->link.next->link.prev = this->link.prev;
-
-  this->link.prev = NULL;
-  this->link.next = NULL;
+  imageList.unlink(this);
   this->grpOffset = NULL;
 
   unusedImages.insertAfterHead(this);

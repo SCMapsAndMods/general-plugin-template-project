@@ -9,8 +9,11 @@
 
 namespace hooks {
 
-/// Used by multiple hooks. You can edit this function in psi_field.cpp.
+/// Used by psi_field_select.cpp. You can edit this function in psi_field.cpp.
 bool canMakePsiField(CUnit *unit);
+
+/// Used by unit_destructor_sepcial.cpp. You can edit this function in psi_field.cpp.
+bool canMakePsiField(u16 unitId);
 
 /// This function must be called once per each unit in nextFrame().
 void updatePsiFieldProvider(CUnit *unit);

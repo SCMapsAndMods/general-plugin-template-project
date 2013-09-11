@@ -3,7 +3,6 @@
 
 #include "psi_field.h"
 #include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
 #include "../tools.h"
 
 namespace hooks {
@@ -71,6 +70,7 @@ void __declspec(naked) showAllPsiFieldsOnSelectWrapper() {
 void __declspec(naked) hideAllPsiFieldsOnUnselectWrapper() {
   static CUnit *unit;
   __asm {
+    POP EDI   ;//Clean up part of the stack
     PUSHAD
     MOV unit, ESI
   }
