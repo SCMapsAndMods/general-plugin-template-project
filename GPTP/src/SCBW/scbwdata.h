@@ -101,17 +101,17 @@ PlayerAllianceData* const playerAlliance = (PlayerAllianceData*) 0x0058D634;
 
 //-------- Internal constants --------//
 
-volatile const u32* const IS_GAME_PAUSED    = (u32*) 0x006509C4;
-volatile const u8*  const IS_BROOD_WAR      = (u8*)  0x0058F440;
-volatile const u32* const CHEAT_STATE       = (u32*) 0x006D5A6C;
-volatile const u32* const unitOrderingCount = (u32*) 0x0066FF74;
-volatile const s32* const maxUnitWidth      = (s32*) 0x006BEE68;
-volatile const s32* const maxUnitHeight     = (s32*) 0x006BB930;
-SCBW_DATA(const u32*, IS_IN_REPLAY,     0x006D0F14);
-SCBW_DATA(const s32*, currentPlayer,    0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
-SCBW_DATA(const u32*, IS_IN_GAME_LOOP,  0x006D11C8);
-SCBW_DATA(u32*,       lastRandomNumber, 0x0051CA14);
-SCBW_DATA(u32*, CAN_UPDATE_POWERED_STATUS, 0x0063FF44);
+SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,   0x006509C4);
+SCBW_DATA(const Bool8*,   IS_BROOD_WAR,     0x0058F440);
+SCBW_DATA(const u32*,     CHEAT_STATE,      0x006D5A6C);
+SCBW_DATA(const u32*,     unitOrderingCount, 0x0066FF74);
+SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,   0x006BEE68);
+SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,  0x006BB930);
+SCBW_DATA(const Bool32*,  IS_IN_REPLAY,     0x006D0F14);
+SCBW_DATA(const s32*,     CURRENT_PLAYER,   0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
+SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,  0x006D11C8);
+SCBW_DATA(u32*,           lastRandomNumber, 0x0051CA14);
+SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
 
 //-------- DAT Files --------//
 

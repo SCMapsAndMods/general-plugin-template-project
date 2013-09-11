@@ -9,14 +9,14 @@ void findUnitsInBounds(int left, int top, int right, int bottom,
   u32 finderFlags[UNIT_ARRAY_LENGTH + 1] = {0}; //1701 elements
 
   int r = right, b = bottom;
-  bool isWidthExtended  = right - left - 1 < *maxUnitWidth;
-  bool isHeightExtended = top - bottom - 1 < *maxUnitHeight;
+  const bool isWidthExtended  = right - left - 1 < *MAX_UNIT_WIDTH;
+  const bool isHeightExtended = top - bottom - 1 < *MAX_UNIT_HEIGHT;
 
   // Check if the location is smaller than the largest unit
   if (isWidthExtended)
-    r += *maxUnitWidth;
+    r += *MAX_UNIT_WIDTH;
   if (isHeightExtended)
-    b += *maxUnitHeight;
+    b += *MAX_UNIT_HEIGHT;
 
   // Obtain finder indexes for all bounds
   UnitFinderData *p_xend = unitOrderingX + *unitOrderingCount;

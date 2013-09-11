@@ -207,7 +207,8 @@ u32 getGroundHeightAtPos(s32 x, s32 y) {
 }
 
 void refreshScreen(int left, int top, int right, int bottom) {
-  left >>= 4; top >>= 4; right >>= 4; bottom >>= 4;
+  left  >>= 4; right  = (right  + 15) >> 4;
+  top   >>= 4; bottom = (bottom + 15) >> 4;
 
   if (left > right) std::swap(left, right);
   if (top > bottom) std::swap(top, bottom);
