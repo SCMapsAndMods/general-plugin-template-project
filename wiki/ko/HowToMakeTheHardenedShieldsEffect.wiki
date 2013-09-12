@@ -1,0 +1,90 @@
+﻿#summary A tutorial on how to make the "Hardened Shields" effect with GPTP.
+#labels Tutorial
+
+= 강화 보호막 효과를 만드는 법 =
+
+스타크래프트 2의 프로토스 유닛인 [http://kr.battle.net/sc2/ko/game/unit/immortal 불멸자]는 '강화 보호막'이라는 특수 효과를 가지고 있다. 이 효과는 불멸자의 플라즈마 보호막이 남아 있을 경우 받는 피해량을 10으로 줄여준다. 이 글에서는 GPTP를 사용해 강화 보호막 효과를 만드는 법을 설명할 것이다.
+
+== 사용할 파일 ==
+`hooks\do_weapon_damage.cpp`
+
+== 코드 작성 ==
+
+`hooks\do_weapon_damage.cpp` 파일에 있는 `doWeaponDamageHook()` 함수는 유닛이 공격받을 때 피해량이 어떻게 적용되는지를 결정한다. 이 플러그인에서는 특정한 유닛이 피해를 입었을 때 그 유닛의 ID를 확인하고, 강화 보호막을 지닌 유닛을 경우 피해량을 10으로 줄이면 된다. 스타크래프트에는 불멸자가 없으므로 대신 리버(파괴자)를 사용한다.
+
+`do_weapon_damage.cpp`를 열어 아래의 코드을 찾는다.
+
+{{{
+//...snip...
+const u8 damageType = Weapon::DamageType[weaponId];
+
+//Reduce Plasma Shields...but not just yet
+s32 shieldReduceAmount = 0;
+if (Unit::ShieldsEnabled[target->id] && target->shields >= 256) {
+  if (damageType != DamageType::IgnoreArmor) {
+    s32 plasmaShieldUpg = scbw::getUpgradeLevel(target->playerId, UpgradeId::ProtossPlasmaShields) << 8;
+//...snip...
+}}}
+
+이를 아래와 같이 수정한다.
+
+{{{
+//...snip...
+const u8 damageType = Weapon::DamageType[weaponId];
+
+bool isHardenedShieldsActivated = false;
+
+//Reduce Plasma Shields...but not just yet
+s32 shieldReduceAmount = 0;
+if (Unit::ShieldsEnabled[target->id] && target->shields >= 256) {
+  if (damageType != DamageType::IgnoreArmor) {
+    //강화 보호막을 적용할 지 확인
+    if (target->id == UnitId::reaver) {
+      if (damage > 2560) {
+        damage = 2560;
+        isHardenedShieldsActivated = true;
+      }
+    }
+    s32 plasmaShieldUpg = scbw::getUpgradeLevel(target->playerId, UpgradeId::ProtossPlasmaShields) << 8;
+//...snip...
+}}}
+
+추가한 코드는 다음과 같다:
+  # bool형 변수 `isHardenedShieldsActivated`를 `false`로 정하고, 강화 보호막이 적용될 시 `true`가 되게 하였다. 이 항목은 곧 설명할 것이다.
+  # 유닛의 ID를 확인하여 프로토스 리버인지 체크하는 if 문을 넣는다. 강화 보호막은 `weapons.dat`에서 "방어력 무시"로 설정된 무기(사이오닉 스톰, 이레디에이트, 피드백 등)의 피해는 막으면 안 되므로, 피해 유형을 확인하는 if 문 내부에 넣는다.
+  # 실제 피해량을 10으로 감소시키는 코드를 넣었다. 스타크래프트 내부에서는 피해량이 256배로 저장되므로, 10만큼의 피해량을 확인하기 위해 2560을 사용한다.
+
+이렇게 하면 강화 보호막의 효과 적용은 해결된다. 하지만 강화 보호막이 발동할 시 특유의 그래픽 효과도 나타나게 해야 한다.
+
+다음의 코드를 찾아 수정한다.
+
+{{{
+    createShieldOverlay(target, direction);
+}
+
+//Update unit strength data (?)
+target->airStrength = getUnitStrength(target, false);
+}}}
+
+이를 이렇게 고친다:
+
+{{{
+    createShieldOverlay(target, direction);
+}
+
+//강화 보호막 그래픽 효과 (Unused Heal 이미지를 이용)
+if (isHardenedShieldsActivated) {
+  scbw::createOverlay(target->sprite, 971); //Unused Heal (Medium) - TMeHealM.grp
+}
+
+//Update unit strength data (?)
+target->airStrength = getUnitStrength(target, false);
+}}}
+
+이 강좌에서는 굳이 효과를 따로 만들지 않고 `images.dat`에 있는 "Unused Heal (Medium)" (971번) 항목을 재활용하였다. 실제로 강화 보호막이 발동되어 피해량이 감소되었을 때만 이미지가 나타나게 하기 위해 조금 전에 정의한 `isHardenedShieldsActivated` 변수를 사용하는 것이다.
+
+이제 프로젝트를 빌드한 뒤 플러그인을 !FireGraft나 MPQDraft로 추가하면 된다.
+
+== 결과 ==
+
+http://gptp.googlecode.com/svn/wiki/HardenedShieldsReaver.png
