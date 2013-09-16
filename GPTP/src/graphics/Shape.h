@@ -1,7 +1,6 @@
 #pragma once
 #include "../SCBW/structures/common.h"
-#include "ColorId.h"
-#include "FontSize.h"
+#include "graphics.h"
 #include <string>
 
 namespace graphics {
