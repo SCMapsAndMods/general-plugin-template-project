@@ -57,6 +57,9 @@ void freeResourceContainer(CUnit *resource) {
   }
 }
 
+//Defined in psi_field_util.cpp.
+void removePsiField(CUnit *unit);
+
 void unitDestructorSpecialHook(CUnit *unit) {
   //Destroy interceptors and scarabs
   if (unit->id == UnitId::carrier || unit->id == UnitId::gantrithor
@@ -137,7 +140,7 @@ void unitDestructorSpecialHook(CUnit *unit) {
   }
 
   if (hooks::canMakePsiField(unit->id)) {
-    hooks::removePsiField(unit);    
+    hooks::removePsiField(unit);
     return;
   }
 

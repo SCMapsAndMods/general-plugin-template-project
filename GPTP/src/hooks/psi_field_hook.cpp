@@ -7,6 +7,8 @@
 
 namespace hooks {
 
+//-------- Unit selection hooks --------//
+
 void showAllPsiFields() {
   const u32 Func_showAllPsiFields = 0x00493640;
 
@@ -45,8 +47,6 @@ void hideAllPsiFieldsOnUnselect(CUnit *unit) {
   }
 }
 
-//-------- Actual hooking --------//
-
 void __declspec(naked) showAllPsiFieldsOnSelectWrapper() {
   static CUnit *unit;
   __asm {
@@ -84,9 +84,59 @@ void __declspec(naked) hideAllPsiFieldsOnUnselectWrapper() {
   }
 }
 
+//-------- Save & load game hooks --------//
+
+const u32 packUnitData_PsiProvider_Return = 0x004E3961;
+void __declspec(naked) packUnitData_PsiProvider() {
+  CUnit *unit; u16 unitId;
+  
+  __asm {
+    PUSHAD
+    MOV EBP, ESP
+    MOV unitId, CX
+    MOV unit, ESI
+  }
+
+  if (canMakePsiField(unitId)) {
+    const CSprite *psiFieldSprite = unit->building.pylonAura;
+    if (psiFieldSprite)
+      *(u32*)&unit->building.pylonAura = (psiFieldSprite - spriteTable) / sizeof(CSprite) + 1;
+  }
+
+  __asm {
+    POPAD
+    JMP packUnitData_PsiProvider_Return
+  }
+}
+
+const u32 unpackUnitData_PsiProvider_Return = 0x004E31A3;
+void __declspec(naked) unpackUnitData_PsiProvider() {
+  CUnit *unit; u16 unitId;
+
+  __asm {
+    PUSHAD
+    MOV EBP, ESP
+    MOV unitId, CX
+    MOV unit, ESI
+  }
+
+  if (canMakePsiField(unitId))
+    if (unit->building.pylonAura != 0)
+      unit->building.pylonAura = &spriteTable[(int)unit->building.pylonAura];
+
+  __asm {
+    POPAD
+    JMP unpackUnitData_PsiProvider_Return
+  }
+}
+
+//-------- Hook injector --------//
+
 void psiFieldHookInject() {
   jmpPatch(showAllPsiFieldsOnSelectWrapper,   0x004E6224);
   jmpPatch(hideAllPsiFieldsOnUnselectWrapper, 0x004E62BE);
+  jmpPatch(packUnitData_PsiProvider,          0x004E3935);
+  jmpPatch(unpackUnitData_PsiProvider,        0x004E3182);
 }
 
 } //hooks
