@@ -271,7 +271,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\hooks\psi_field_select.cpp"
+				RelativePath=".\hooks\psi_field_hook.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\psi_field_util.cpp"
 				>
 			</File>
 			<File
