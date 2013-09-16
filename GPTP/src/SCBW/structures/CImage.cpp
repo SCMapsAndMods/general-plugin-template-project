@@ -29,7 +29,7 @@ void CImage::free() {
 
   CSprite* const parent = this->parentSprite;
   const CListExtern<CImage, &CImage::link>
-    imageList(&(parent->imageHead), &(parent->imageTail));
+    imageList(parent->imageHead, parent->imageTail);
 
   imageList.unlink(this);
   this->grpOffset = NULL;

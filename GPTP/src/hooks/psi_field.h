@@ -10,7 +10,7 @@
 namespace hooks {
 
 /// Used by psi_field_select.cpp. You can edit this function in psi_field.cpp.
-bool canMakePsiField(CUnit *unit);
+bool isReadyToMakePsiField(CUnit *unit);
 
 /// Used by unit_destructor_sepcial.cpp. You can edit this function in psi_field.cpp.
 bool canMakePsiField(u16 unitId);
