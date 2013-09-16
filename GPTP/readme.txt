@@ -1,4 +1,4 @@
-General Plugin Template Project v2.32
+General Plugin Template Project v2.33
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -6,7 +6,9 @@ Special thanks to Heinermann, xAngelSpiritx and bajadulce
 as well as many StarCraft modders whose name we have yet to add here.
 
 WARNING: Most of the new functions have been untested. If there are any bugs,
-please report them in the GPTP thread: http://www.broodwarai.com/forums/viewtopic.php?f=5&t=923
+please report them in the GPTP thread @ BroodWarAI.com:
+  http://www.broodwarai.com/forums/viewtopic.php?f=5&t=923
+Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 
 
 == Instructions for Using GPTP ==
@@ -30,6 +32,23 @@ please report them in the GPTP thread: http://www.broodwarai.com/forums/viewtopi
 
 
 == Changes ==
+
+v2.33
+ + GPTP now supports drawing dots, lines, boxes, and text directly on the screen
+   and the map. See graphics\graphics.h for details.
+ + New hooks:
+   + Psi field - make (most) units generate psi fields
+   + Arbiter cloaking - configure which units are (not) cloaked by Arbiters
+ * Unit finder functions have been moved to a separate file (unit_finder.h).
+ * Unit finder functions now use a separate structure (UnitFinderResult) to
+   store search results.
+ * Some API functions have been moved to structure members.
+ * Several structure members have been renamed/modified.
+ * The memoryPatchX() functions in tools.h have been merged into a template
+   function.
+ * Bug fixes:
+   * Fixed a critical bug in Unit::getDistanceToTarget().
+   * Fixed small bugs in unit finder functions.
 
 v2.32
  + GPTP now supports Visual C++ out of the box (again). Tested with VC++ Express
