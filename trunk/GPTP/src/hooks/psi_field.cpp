@@ -3,37 +3,20 @@
 
 namespace hooks {
 
-//Unit type check (used in unit destructor)
+//Check if the given unit id can generate psi fields
 bool canMakePsiField(u16 unitId) {
-  if (unitId == UnitId::pylon || unitId == UnitId::shuttle || unitId == UnitId::zealot)
+  //Default StarCraft behavior
+  if (unitId == UnitId::pylon)
     return true;
   return false;
 }
 
-//Actual check whether a unit can generate a psi field
+//Actual state check whether a unit can generate a psi field
 bool isReadyToMakePsiField(CUnit *unit) {
-  //NOT default StarCraft behavior
+  //Default StarCraft behavior
 
   if (unit->id == UnitId::pylon)
     return true;
-
-  if (unit->id == UnitId::shuttle) {
-    for (int i = 0; i < 8; ++i) {
-      if (unit->loadedUnitIndex[i] == 0) continue;
-      const int unitIndex = unit->loadedUnitIndex[i] % 2048 - 1;
-      const CUnit *loadedUnit = &unitTable[unitIndex];
-
-      if (loadedUnit->mainOrderId != OrderId::Die
-          && loadedUnit->id == UnitId::probe) {
-        return true;
-      }
-    }
-  }
-
-  if (unit->id == UnitId::zealot) {
-    if (unit->shields >= 30 * 256)
-      return true;
-  }
 
   return false;
 }
