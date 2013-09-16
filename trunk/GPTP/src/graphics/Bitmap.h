@@ -1,6 +1,6 @@
 //Based on BWAPI's BW/Bitmap.h
 #pragma once
-#include "ColorId.h"
+#include "graphics.h"
 #pragma pack(1)
 
 namespace graphics {

@@ -381,10 +381,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\graphics\ColorId.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SCBW\structures\common.h"
 				>
 			</File>
@@ -438,10 +434,6 @@
 			</File>
 			<File
 				RelativePath=".\graphics\Font.h"
-				>
-			</File>
-			<File
-				RelativePath=".\graphics\FontSize.h"
 				>
 			</File>
 			<File
