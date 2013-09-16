@@ -5,7 +5,7 @@ namespace hooks {
 
 //Unit type check (used in unit destructor)
 bool canMakePsiField(u16 unitId) {
-  if (unitId == UnitId::pylon || unitId == UnitId::shuttle)
+  if (unitId == UnitId::pylon || unitId == UnitId::shuttle || unitId == UnitId::zealot)
     return true;
   return false;
 }
@@ -28,6 +28,11 @@ bool isReadyToMakePsiField(CUnit *unit) {
         return true;
       }
     }
+  }
+
+  if (unit->id == UnitId::zealot) {
+    if (unit->shields >= 30 * 256)
+      return true;
   }
 
   return false;
