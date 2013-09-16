@@ -565,10 +565,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\utilities.h"
-				>
-			</File>
-			<File
 				RelativePath=".\hooks\weapon_cooldown.h"
 				>
 			</File>

@@ -123,4 +123,35 @@ void refreshScreen();
 /// NOTE: The RNG has a maximum range of 0 - 32767.
 u32 randBetween(u32 min, u32 max);
 
+//Sets the Anywhere location.
+inline void setAnywhereLocation() {
+  LOCATION* location = &locationTable[63];
+  location->topLeftX = 0;
+  location->topLeftY = 0;
+  location->bottomRightX = mapTileSize->width * 32;
+  location->bottomRightY = mapTileSize->height * 32;
+  location->flags = 63;
+}
+
+inline void setLocation(int locNumber, int topLeftX, int topLeftY, int bottomRightX, int bottomRightY, int flags) {
+  LOCATION* location = &locationTable[locNumber];
+  location->topLeftX = topLeftX;
+  location->topLeftY = topLeftY;
+  location->bottomRightX = bottomRightX;
+  location->bottomRightY = bottomRightY;
+  location->flags = flags;
+}
+
+// Functionally identical to the [playfram] opcode in iscript.bin.
+inline void playFrame(CImage* image, u16 frameset) {
+  if (image->frameSet != frameset) {
+    image->frameSet = frameset;
+    u16 frameIndex = frameset + image->direction;
+    if (image->frameIndex != frameIndex) {
+      image->flags |= 0x1;	//Order the game to redraw the image
+      image->frameIndex = frameIndex;
+    }
+  }
+}
+
 } //scbw
