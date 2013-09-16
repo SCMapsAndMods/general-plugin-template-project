@@ -12,7 +12,7 @@ struct CSprite {
 //Utility method definitions added by pastelmind
 
 
-/// Makes the sprite play the specified Iscript animation entry.
+  /// Makes the sprite play the specified Iscript animation entry.
   void playIscriptAnim(IscriptAnimation::Enum animation);
 
   /// AKA SpriteDestructor() @ 0x00497B40

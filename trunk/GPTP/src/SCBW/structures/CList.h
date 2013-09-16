@@ -30,8 +30,9 @@ class CListExtern {
   public:
     T* &head;
     T* &tail;
-    CListExtern(T **head_, T **tail_) : head(*head_), tail(*tail_) {};
-    CListExtern(u32 head_, u32 tail_) : head(*(T**)head_), tail(*(T**)tail_) {};
+    CListExtern(T **head, T **tail) : head(*head), tail(*tail) {};
+    CListExtern(T* &head, T* &tail) : head(head), tail(tail) {};
+    CListExtern(u32 head, u32 tail) : head(*(T**)head), tail(*(T**)tail) {};
 
     void insertAfterHead(T *t) const;
     void unlink(T *t) const;

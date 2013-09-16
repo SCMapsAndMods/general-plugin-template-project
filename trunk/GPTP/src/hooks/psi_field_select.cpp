@@ -30,7 +30,7 @@ void hideAllPsiFields() {
 //If @p unit is a psi provider, make all psi field graphics visible.
 void showAllPsiFieldsOnSelect(CUnit *unit) {
   if (!(*IS_IN_REPLAY) && unit->playerId == (*LOCAL_NATION_ID)) {
-    if ((unit->status & UnitStatus::Completed) && hooks::canMakePsiField(unit)) {
+    if ((unit->status & UnitStatus::Completed) && hooks::isReadyToMakePsiField(unit)) {
        showAllPsiFields();
     }
   }
@@ -39,7 +39,7 @@ void showAllPsiFieldsOnSelect(CUnit *unit) {
 //If @p unit is a psi provider, make all psi field graphics invisible.
 void hideAllPsiFieldsOnUnselect(CUnit *unit) {
   if (!(*IS_IN_REPLAY) && unit->playerId == (*LOCAL_NATION_ID)) {
-    if ((unit->status & UnitStatus::Completed) && hooks::canMakePsiField(unit)) {
+    if ((unit->status & UnitStatus::Completed) && hooks::isReadyToMakePsiField(unit)) {
        hideAllPsiFields();
     }
   }

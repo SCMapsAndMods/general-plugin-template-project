@@ -15,16 +15,19 @@
 const int PLAYER_COUNT        = 12;
 const int UNIT_ARRAY_LENGTH   = 1700;
 const int BULLET_ARRAY_LENGTH = 100;
+const int SPRITE_ARRAY_LENGTH = 2500;
 const int UNIT_TYPE_COUNT     = 228;
 const int TECH_TYPE_COUNT     = 44;
 const int UPGRADE_TYPE_COUNT  = 61;
 const int WEAPON_TYPE_COUNT   = 130;
 const int FLINGY_TYPE_COUNT   = 209;
 
-CUnit*      const unitTable       = (CUnit*)(0x0059CCA8);
-CBullet*    const bulletTable     = (CBullet*)(0x0064B2E8);
-UNITDEATHS* const deathTable      = (UNITDEATHS*)(0x0058A364);
-UNITDEATHS* const unit_deaths     = &deathTable[0];
+
+SCBW_DATA(CUnit*,       unitTable,    0x0059CCA8);
+SCBW_DATA(CBullet*,     bulletTable,  0x0064B2E8);
+SCBW_DATA(UNITDEATHS*,  deathTable,   0x0058A364);
+SCBW_DATA(UNITDEATHS*,  unit_deaths,  deathTable);
+SCBW_DATA(CSprite*,     spriteTable,  0x00629D98);
 
 //From resources.cpp
 RESOURCES*  const resourceTable   = (RESOURCES*)(0x0057F0F0);

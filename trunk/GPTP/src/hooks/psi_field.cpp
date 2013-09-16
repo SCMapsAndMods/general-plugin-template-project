@@ -1,6 +1,7 @@
 #include "psi_field.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/api.h"
+#include <cassert>
 
 namespace hooks {
 
@@ -11,8 +12,8 @@ bool canMakePsiField(u16 unitId) {
   return false;
 }
 
-//Actual check whether a unit can build
-bool canMakePsiField(CUnit *unit) {
+//Actual check whether a unit can generate a psi field
+bool isReadyToMakePsiField(CUnit *unit) {
   //NOT default StarCraft behavior
 
   if (unit->id == UnitId::pylon)
@@ -98,9 +99,9 @@ void removePsiField(CUnit *unit) {
   if (unit->building.pylonAura) {
     unit->building.pylonAura->free();
     unit->building.pylonAura = NULL;
+    *canUpdatePoweredStatus = true;   //Might work?
   }
   removeFromPsiProviderList(unit);
-  *canUpdatePoweredStatus = true;
 }
 
 //-------- Update psi field position --------//
@@ -132,33 +133,47 @@ void updatePsiFieldPosition(const CUnit *unit) {
 
 //-------- Update psi field provider --------//
 
+//Checks if the given unit ID can provide psi (for use in assertion)
+//The following unit types cannot make psi fields
+//  workers, factories, resource containers, ghosts, nydus canals, silos,
+//  hatcheries, and powerups
+bool isValidPsiProviderType(u16 unitId) {
+  if (unitId >= UNIT_TYPE_COUNT) return false;
+
+  if (Unit::BaseProperty[unitId] & (UnitProperty::Worker | UnitProperty::ResourceContainer | UnitProperty::NPCOrAccessories))
+    return false;
+
+  if (Unit::GroupFlags[unitId].isFactory) return false;
+
+  if (unitId == UnitId::ghost
+      || unitId == UnitId::sarah_kerrigan
+      || unitId == UnitId::Hero_AlexeiStukov
+      || unitId == UnitId::Hero_SamirDuran
+      || unitId == UnitId::Hero_InfestedDuran
+      || unitId == UnitId::nydus_canal
+      || unitId == UnitId::nuclear_silo
+      || unitId == UnitId::hatchery 
+      || unitId == UnitId::lair
+      || unitId == UnitId::hive)
+    return false;
+
+  return true;
+}
+
 void updatePsiFieldProvider(CUnit *unit) {
   if (!unit || unit->mainOrderId == OrderId::Die) return;
 
-  //Exclude unit types that cannot make psi fields, including: workers,
-  //factories, resource containers, ghosts, nydus canals, silos, hatcheries, and powerups
-  if (Unit::BaseProperty[unit->id] & (UnitProperty::Worker | UnitProperty::ResourceContainer | UnitProperty::NPCOrAccessories)
-      || Unit::GroupFlags[unit->id].isFactory
-      || unit->id == UnitId::ghost
-      || unit->id == UnitId::sarah_kerrigan
-      || unit->id == UnitId::Hero_AlexeiStukov
-      || unit->id == UnitId::Hero_SamirDuran
-      || unit->id == UnitId::Hero_InfestedDuran
-      || unit->id == UnitId::nydus_canal
-      || unit->id == UnitId::nuclear_silo
-      || unit->id == UnitId::hatchery 
-      || unit->id == UnitId::lair
-      || unit->id == UnitId::hive)
-    return;
+  if (canMakePsiField(unit->id)) {
+    assert(isValidPsiProviderType(unit->id));
 
-
-  if (unit->status & UnitStatus::Completed) {
-    if (canMakePsiField(unit)) {
-      addPsiField(unit);
-      updatePsiFieldPosition(unit);
+    if (unit->status & UnitStatus::Completed) {
+      if (isReadyToMakePsiField(unit)) {
+        addPsiField(unit);
+        updatePsiFieldPosition(unit);
+      }
+      else
+        removePsiField(unit);
     }
-    else
-      removePsiField(unit);
   }
 }
 

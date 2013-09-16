@@ -22,8 +22,8 @@ void CSprite::free() {
 
   const int y = CLAMP(this->position.y / 32, 0, mapTileSize->height - 1);
   const CListExtern<CSprite, &CSprite::link>
-    spritesOnTileRow(&(spritesOnTileRow->heads[y]),
-                     &(spritesOnTileRow->tails[y]));
+    spritesOnTileRow(spritesOnTileRow->heads[y],
+                     spritesOnTileRow->tails[y]);
 
   spritesOnTileRow.unlink(this);
   unusedSprites.insertAfterHead(this);
@@ -41,10 +41,10 @@ void CSprite::setPosition(u16 x, u16 y) {
 
   if (oldTileY != newTileY) {
     const CListExtern<CSprite, &CSprite::link>
-      spritesOnOldTileRow(&(spritesOnTileRow->heads[oldTileY]),
-                          &(spritesOnTileRow->tails[oldTileY])),
-      spritesOnNewTileRow(&(spritesOnTileRow->heads[newTileY]),
-                          &(spritesOnTileRow->tails[newTileY]));
+      spritesOnOldTileRow(spritesOnTileRow->heads[oldTileY],
+                          spritesOnTileRow->tails[oldTileY]),
+      spritesOnNewTileRow(spritesOnTileRow->heads[newTileY],
+                          spritesOnTileRow->tails[newTileY]);
 
     spritesOnOldTileRow.unlink(this);
     spritesOnNewTileRow.insertAfterHead(this);
