@@ -88,7 +88,7 @@ bool Bitmap::blitString(const char *pszStr, int x, int y, u8 size) {
         continue;
       case 11:      // invisible
       case 20:
-        color = (BYTE)~0;
+        color = (u8)~0;
         continue;
       case '\f':    // 12   formfeed
         break;

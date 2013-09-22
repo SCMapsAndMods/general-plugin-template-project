@@ -4,10 +4,14 @@
 #include <algorithm>
 #include <cassert>
 
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 
 namespace scbw {
 
-void printText(char* text, DWORD color) {
+void printText(char* text, u32 color) {
   if (!text) return;
   DWORD gtc = GetTickCount() + 7000;
 
@@ -34,18 +38,18 @@ void playSound(u32 sfxId, const CUnit *sourceUnit) {
   }
 }
 
-void doWeaponDamage(DWORD   damage,
+void doWeaponDamage(s32     damage,
                     CUnit*  target,
-                    BYTE    weaponId,
+                    u8      weaponId,
                     CUnit*  attacker,
-                    DWORD   attackingPlayer,
-                    BYTE    direction,
-                    DWORD   dmgDivisor
+                    u32     attackingPlayer,
+                    s8      direction,
+                    u32     dmgDivisor
                     ) {
   if (!target || weaponId >= WEAPON_TYPE_COUNT || dmgDivisor == 0) return;
 
-  DWORD _direction = direction;
-  DWORD _weaponId = weaponId;
+  u32 _direction = direction;
+  u32 _weaponId = weaponId;
 
   __asm {
     PUSHAD
@@ -61,9 +65,9 @@ void doWeaponDamage(DWORD   damage,
   }
 }
 
-void createOverlay(CSprite* sprite, DWORD imageId, BYTE x, BYTE y, DWORD direction) {
+void createOverlay(CSprite* sprite, u32 imageId, s8 x, s8 y, u32 direction) {
   if (!sprite) return;
-  DWORD _x = x, _y = y;
+  s32 _x = x, _y = y;
 
   __asm {
     PUSHAD
@@ -77,13 +81,10 @@ void createOverlay(CSprite* sprite, DWORD imageId, BYTE x, BYTE y, DWORD directi
   }
 }
 
-void removeOverlays(CUnit *unit, DWORD imageIdStart, DWORD imageIdEnd) {
+void removeOverlays(CUnit *unit, u32 imageIdStart, u32 imageIdEnd) {
   if (!unit) return;
-  if (imageIdStart > imageIdEnd) {
-    DWORD tmp = imageIdStart;
-    imageIdStart = imageIdEnd;
-    imageIdEnd = tmp;
-  }
+  if (imageIdStart > imageIdEnd)
+    std::swap(imageIdStart, imageIdEnd);
 
   __asm {
     PUSHAD
