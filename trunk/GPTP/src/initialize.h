@@ -30,6 +30,9 @@
 /// You can also add custom modifications to StarCraft.exe by using:
 ///    memoryPatch(address_to_patch, value_to_patch_with);
 
+//Defined in CUnit.cpp
+namespace scbw { extern const u32 Func_DoWeaponDamage; }
+
 void Initialize() {
   jmpPatch(onGameStart,          offsets::GameStart);    // From BWAPI by Kovarex
   jmpPatch(onGameEnd,            offsets::GameEnd);      // From BWAPI by Kovarex
@@ -50,7 +53,7 @@ void Initialize() {
 
   jmpPatch(unitCanDetectWrapper,          offsets::Hook_UnitCanDetect);
 
-  jmpPatch(doWeaponDamageWrapper,         offsets::Func_DoWeaponDamage);
+  jmpPatch(doWeaponDamageWrapper,         scbw::Func_DoWeaponDamage);
 
   jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
 

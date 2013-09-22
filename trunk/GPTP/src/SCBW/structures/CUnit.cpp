@@ -3,6 +3,8 @@
 #include "../api.h"
 #include "../enumerations.h"
 
+
+const u32 Func_SetUnitHp = 0x00467340;
 void CUnit::setHp(s32 hitPoints) {
   assert(this);
 
@@ -10,11 +12,12 @@ void CUnit::setHp(s32 hitPoints) {
     PUSHAD
     MOV EAX, this
     MOV ECX, hitPoints
-    CALL [offsets::Func_SetUnitHp]
+    CALL Func_SetUnitHp
     POPAD
   }
 }
 
+const u32 Func_DamageUnitHp = 0x004797B0;
 void CUnit::damageHp(s32 damage, CUnit *attacker, s32 attackingPlayer, bool notify) {
   assert(this);
 
@@ -26,7 +29,7 @@ void CUnit::damageHp(s32 damage, CUnit *attacker, s32 attackingPlayer, bool noti
     PUSH attacker
     MOV EAX, damage
     MOV ECX, this
-    CALL offsets::Func_DamageUnitHp
+    CALL Func_DamageUnitHp
     POPAD
   }
 }
@@ -52,17 +55,19 @@ void CUnit::reduceDefensiveMatrixHp(s32 amount) {
   }
 }
 
+const u32 Func_RemoveUnit = 0x00475710; //AKA orders_SelfDestructing()
 void CUnit::remove() {
   assert(this);
 
   __asm {
     PUSHAD
     MOV EAX, this
-    CALL offsets::Func_RemoveUnit
+    CALL Func_RemoveUnit
     POPAD
   }
 }
 
+const u32 Func_OrderToUnit = 0x004752B0; //AKA AssignOrderWithTarget(); Primarily for use with orderNewUnitToRally(), but may have other uses.
 void CUnit::orderTo(u32 orderId, const CUnit *target) {
   assert(this);
   assert(target);
@@ -72,11 +77,12 @@ void CUnit::orderTo(u32 orderId, const CUnit *target) {
     PUSH orderId
     MOV EAX, target
     MOV ESI, this
-    CALL offsets::Func_OrderToUnit
+    CALL Func_OrderToUnit
     POPAD
   }
 }
 
+const u32 Func_OrderToPos = 0x00475260; //AKA orderTarget(); Primarily for use with orderNewUnitToRally(), but may have other uses.
 void CUnit::orderTo(u32 orderId, u16 x, u16 y) {
   assert(this);
   const u32 x_ = x, y_ = y;
@@ -87,11 +93,12 @@ void CUnit::orderTo(u32 orderId, u16 x, u16 y) {
     PUSH x_
     PUSH orderId
     MOV ESI, this
-    CALL offsets::Func_OrderToPos
+    CALL Func_OrderToPos
     POPAD
   }
 }
 
+const u32 Func_HasPathToTarget = 0x0049CBB0; //AKA unitHasPathToUnit()
 bool CUnit::hasPathToUnit(const CUnit *target) {
   assert(this);
   assert(target);
@@ -101,7 +108,7 @@ bool CUnit::hasPathToUnit(const CUnit *target) {
     PUSHAD
     MOV EAX, this
     MOV ECX, target
-    CALL offsets::Func_HasPathToTarget
+    CALL Func_HasPathToTarget
     MOV result, EAX
     POPAD
   }
@@ -109,6 +116,7 @@ bool CUnit::hasPathToUnit(const CUnit *target) {
   return result != 0;
 }
 
+const u32 Func_HasPathToPos = 0x0049CB60; //AKA unitHasPathToDest()
 bool CUnit::hasPathToPos(u32 x, u32 y) {
   assert(this);
   u32 result;
@@ -118,7 +126,7 @@ bool CUnit::hasPathToPos(u32 x, u32 y) {
     PUSH y
     PUSH x
     MOV EAX, this
-    CALL offsets::Func_HasPathToPos
+    CALL Func_HasPathToPos
     MOV result, EAX
     POPAD
   }
@@ -152,13 +160,14 @@ u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   return scbw::getDistanceFast(0, 0, dx, dy);
 }
 
+const u32 Func_UpdateSpeed = 0x00454310;
 void CUnit::updateSpeed() {
   assert(this);
 
   __asm {
     PUSHAD
     MOV EAX, this
-    CALL offsets::Func_UpdateSpeed
+    CALL Func_UpdateSpeed
     POPAD
   }
 }
@@ -168,32 +177,35 @@ void CUnit::playIscriptAnim(IscriptAnimation::Enum animation) {
   this->sprite->playIscriptAnim(animation);
 }
 
+const u32 Func_RemoveLockdown = 0x00454D90;
 void CUnit::removeLockdown() {
   assert(this);
   __asm {
     PUSHAD
     MOV ESI, this
-    CALL offsets::Func_RemoveLockdown
+    CALL Func_RemoveLockdown
     POPAD
   }
 }
 
+const u32 Func_RemoveMaelstrom = 0x00454D20;
 void CUnit::removeMaelstrom() {
   assert(this);
   __asm {
     PUSHAD
     MOV ESI, this
-    CALL offsets::Func_RemoveMaelstrom
+    CALL Func_RemoveMaelstrom
     POPAD
   }
 }
 
+const u32 Func_RemoveStasisField = 0x004F62D0;
 void CUnit::removeStasisField() {
   assert(this);
   __asm {
     PUSHAD
     MOV ESI, this
-    CALL offsets::Func_RemoveStasisField
+    CALL Func_RemoveStasisField
     POPAD
   }
 }

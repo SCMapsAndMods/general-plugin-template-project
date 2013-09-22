@@ -1,8 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS //For strcpy()
 #include "MPQDraftPlugin.h"
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
-
 #include "configure.h"
 #include "initialize.h"
 
