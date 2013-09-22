@@ -30,31 +30,30 @@ enum FontSize {
   FONT_LARGEST  = 3,
 };
 
+//Coordinate types
+enum CoordType {
+  ON_SCREEN,
+  ON_MAP,
+  ON_MOUSE,  //Shapes drawn this way are positioned relative to the mouse
+};
+
 /// Resets all previous graphics and clears error messages. This should be
 /// called every frame in game_hooks.cpp. 
 void resetAllGraphics();
 
-void drawTextOnScreen(int x, int y, const std::string& str,
-                      FontSize fontSize = FONT_MEDIUM);
-void drawTextOnMap(int x, int y, const std::string& str,
-                   FontSize fontSize = FONT_MEDIUM);
+void drawText(int x, int y, const std::string& str,
+              FontSize fontSize = FONT_MEDIUM, CoordType ct = ON_SCREEN);
 
-void drawDotOnScreen(int x, int y, ColorId color);
-void drawDotOnMap(int x, int y, ColorId color);
+void drawDot(int x, int y, ColorId color, CoordType ct = ON_SCREEN);
 
-void drawLineOnScreen(int x1, int y1, int x2, int y2, ColorId color);
-void drawLineOnMap(int x1, int y1, int x2, int y2, ColorId color);
+void drawLine(int x1, int y1, int x2, int y2, ColorId color, CoordType ct = ON_SCREEN);
 
-void drawBoxOnScreen(int left, int top, int right, int bottom, ColorId color);
-void drawBoxOnMap(int left, int top, int right, int bottom, ColorId color);
+void drawBox(int left, int top, int right, int bottom, ColorId color, CoordType ct = ON_SCREEN);
 
-void drawCircleOnScreen(int x, int y, int radius, ColorId color);
-void drawCircleOnMap(int x, int y, int radius, ColorId color);
+void drawCircle(int x, int y, int radius, ColorId color, CoordType ct = ON_SCREEN);
 
-void drawFilledBoxOnScreen(int left, int top, int right, int bottom, ColorId color);
-void drawFilledBoxOnMap(int left, int top, int right, int bottom, ColorId color);
+void drawFilledBox(int left, int top, int right, int bottom, ColorId color, CoordType ct = ON_SCREEN);
 
-void drawFilledCircleOnScreen(int x, int y, int radius, ColorId color);
-void drawFilledCircleOnMap(int x, int y, int radius, ColorId color);
+void drawFilledCircle(int x, int y, int radius, ColorId color, CoordType ct = ON_SCREEN);
 
 } //graphics

@@ -3,7 +3,6 @@
 #include "graphics_errors.h"
 #include "graphics_misc.h"
 #include "Shape.h"
-#include "../SCBW/scbwdata.h"
 
 namespace graphics {
 
@@ -23,7 +22,7 @@ void resetAllGraphics() {
 }
 
 
-void drawTextOnScreen(int x, int y, const std::string& str, FontSize fontSize) {
+void drawText(int x, int y, const std::string& str, FontSize fontSize, CoordType ct) {
   if (stringCount >= MAX_STRINGS) {
     setError(ERR_TOO_MANY_STRINGS);
     return;
@@ -33,94 +32,56 @@ void drawTextOnScreen(int x, int y, const std::string& str, FontSize fontSize) {
     return;
   }
   strings[stringCount] = str;
-  shapes[shapeCount++].setText(x, y, stringCount++, fontSize);
+  shapes[shapeCount++].setText(x, y, stringCount++, fontSize, ct);
 }
 
-void drawTextOnMap(int x, int y, const std::string& str, FontSize fontSize) {
-  drawTextOnScreen(x - (*screenX), y - (*screenY), str, fontSize);
-}
-
-
-void drawDotOnScreen(int x, int y, ColorId color) {
+void drawDot(int x, int y, ColorId color, CoordType ct) {
   if (shapeCount >= MAX_SHAPES) {
     setError(ERR_TOO_MANY_SHAPES);
     return;
   }
-  shapes[shapeCount++].setDot(x, y, color);
+  shapes[shapeCount++].setDot(x, y, color, ct);
 }
 
-void drawDotOnMap(int x, int y, ColorId color) {
-  drawDotOnScreen(x - (*screenX), y - (*screenY), color);
-}
-
-
-void drawLineOnScreen(int x1, int y1, int x2, int y2, ColorId color) {
+void drawLine(int x1, int y1, int x2, int y2, ColorId color, CoordType ct) {
   if (shapeCount >= MAX_SHAPES) {
     setError(ERR_TOO_MANY_SHAPES);
     return;
   }
-  shapes[shapeCount++].setLine(x1, y1, x2, y2, color);
+  shapes[shapeCount++].setLine(x1, y1, x2, y2, color, ct);
 }
 
-void drawLineOnMap(int x1, int y1, int x2, int y2, ColorId color) {
-  drawLineOnScreen(x1 - (*screenX), y1 - (*screenY),
-                   x2 - (*screenX), y2 - (*screenY), color);
-}
-
-
-void drawBoxOnScreen(int left, int top, int right, int bottom, ColorId color) {
+void drawBox(int left, int top, int right, int bottom, ColorId color, CoordType ct) {
   if (shapeCount >= MAX_SHAPES) {
     setError(ERR_TOO_MANY_SHAPES);
     return;
   }
-  shapes[shapeCount++].setBox(left, top, right, bottom, color);
+  shapes[shapeCount++].setBox(left, top, right, bottom, color, ct);
 }
 
-void drawBoxOnMap(int left, int top, int right, int bottom, ColorId color) {
-  drawBoxOnScreen(left  - (*screenX), top    - (*screenY),
-                  right - (*screenX), bottom - (*screenY), color);
-}
-
-
-void drawCircleOnScreen(int x, int y, int radius, ColorId color) {
+void drawCircle(int x, int y, int radius, ColorId color, CoordType ct) {
   if (shapeCount >= MAX_SHAPES) {
     setError(ERR_TOO_MANY_SHAPES);
     return;
   }
-  shapes[shapeCount++].setCircle(x, y, radius, color);
+  shapes[shapeCount++].setCircle(x, y, radius, color, ct);
 }
 
-void drawCircleOnMap(int x, int y, int radius, ColorId color) {
-  drawCircleOnScreen(x - (*screenX), y - (*screenY), radius, color);
-}
-
-
-void drawFilledBoxOnScreen(int left, int top, int right, int bottom, ColorId color) {
+void drawFilledBox(int left, int top, int right, int bottom, ColorId color, CoordType ct) {
   if (shapeCount >= MAX_SHAPES) {
     setError(ERR_TOO_MANY_SHAPES);
     return;
   }
-  shapes[shapeCount++].setFilledBox(left, top, right, bottom, color);
+  shapes[shapeCount++].setFilledBox(left, top, right, bottom, color, ct);
 }
 
-void drawFilledBoxOnMap(int left, int top, int right, int bottom, ColorId color) {
-  drawFilledBoxOnScreen(left  - (*screenX), top    - (*screenY),
-                        right - (*screenX), bottom - (*screenY), color);
-}
-
-
-void drawFilledCircleOnScreen(int x, int y, int radius, ColorId color) {
+void drawFilledCircle(int x, int y, int radius, ColorId color, CoordType ct) {
   if (shapeCount >= MAX_SHAPES) {
     setError(ERR_TOO_MANY_SHAPES);
     return;
   }
-  shapes[shapeCount++].setFilledCircle(x, y, radius, color);
+  shapes[shapeCount++].setFilledCircle(x, y, radius, color, ct);
 }
-
-void drawFilledCircleOnMap(int x, int y, int radius, ColorId color) {
-  drawFilledCircleOnScreen(x - (*screenX), y - (*screenY), radius, color);
-}
-
 
 const std::string& getStringFromIndex(int stringIndex) {
   assert(0 <= stringIndex && stringIndex < MAX_STRINGS);
