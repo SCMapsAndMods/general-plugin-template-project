@@ -5,7 +5,6 @@
 
 #pragma once
 #include "../definitions.h"
-#include "offsets.h"
 #include "structures.h"
 
 #pragma pack(1)

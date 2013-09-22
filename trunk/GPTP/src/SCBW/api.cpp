@@ -1,5 +1,4 @@
 #include "api.h"
-#include "offsets.h"
 #include "scbwdata.h"
 #include <algorithm>
 #include <cassert>

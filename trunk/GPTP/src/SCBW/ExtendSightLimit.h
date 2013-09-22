@@ -5,7 +5,6 @@
 ///    setMaxSightRange<20>();  //Sets maximum sight range to 20
 
 #pragma once
-#include "offsets.h"
 #include "../definitions.h"
 #include "../tools.h"
 #pragma pack(1)

@@ -473,10 +473,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\offsets.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SCBW\enumerations\OrderId.h"
 				>
 			</File>
