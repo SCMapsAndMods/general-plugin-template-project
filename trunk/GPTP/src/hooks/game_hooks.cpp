@@ -20,6 +20,14 @@ bool nextFrame() {
       firstRun = false;
     }
 
+    for (int i = 0; i < *clientSelectionCount; ++i) {
+      CUnit *selUnit = clientSelectionGroup[i];
+      graphics::drawCircle(selUnit->getX(), selUnit->getY(), 25, graphics::GREEN, graphics::ON_MAP);
+    }
+    
+    graphics::drawBox(-64, -64, 64, 64, graphics::YELLOW, graphics::ON_MOUSE);
+
+
     // Loop through the unit table.
     // Warning: There is no guarantee that the current unit is actually a unit
     // rather than an unused space in memory.
