@@ -11,6 +11,7 @@
 
 namespace scbw {
 
+const u32 Func_PrintText = 0x0048CD30;
 void printText(char* text, u32 color) {
   if (!text) return;
   DWORD gtc = GetTickCount() + 7000;
@@ -21,11 +22,12 @@ void printText(char* text, u32 color) {
     MOV eax, text
     PUSH gtc
     PUSH color
-    CALL offsets::Func_PrintText
+    CALL Func_PrintText
     POPAD
   }
 }
 
+const u32 Func_PlaySound = 0x0048ED50;
 void playSound(u32 sfxId, const CUnit *sourceUnit) {
   __asm {
     PUSHAD
@@ -33,11 +35,13 @@ void playSound(u32 sfxId, const CUnit *sourceUnit) {
     PUSH 1
     MOV ESI, sourceUnit
     MOV EBX, sfxId
-    CALL offsets::Func_PlaySound
+    CALL Func_PlaySound
     POPAD
   }
 }
 
+//Note: Also used by doWeaponDamageHook()
+extern const u32 Func_DoWeaponDamage = 0x00479930;
 void doWeaponDamage(s32     damage,
                     CUnit*  target,
                     u8      weaponId,
@@ -60,11 +64,12 @@ void doWeaponDamage(s32     damage,
     PUSH _direction
     PUSH dmgDivisor
     PUSH _weaponId
-    CALL [offsets::Func_DoWeaponDamage]
+    CALL Func_DoWeaponDamage
     POPAD
   }
 }
 
+const u32 Func_CreateOverlay = 0x00498EA0;
 void createOverlay(CSprite* sprite, u32 imageId, s8 x, s8 y, u32 direction) {
   if (!sprite) return;
   s32 _x = x, _y = y;
@@ -76,11 +81,12 @@ void createOverlay(CSprite* sprite, u32 imageId, s8 x, s8 y, u32 direction) {
     PUSH _x
     MOV esi, imageId
     MOV eax, sprite
-    CALL [offsets::Func_CreateOverlay]
+    CALL [Func_CreateOverlay]
     POPAD
   }
 }
 
+const u32 Func_RemoveOverlays = 0x004E5CF0;
 void removeOverlays(CUnit *unit, u32 imageIdStart, u32 imageIdEnd) {
   if (!unit) return;
   if (imageIdStart > imageIdEnd)
@@ -91,7 +97,7 @@ void removeOverlays(CUnit *unit, u32 imageIdStart, u32 imageIdEnd) {
     MOV eax, unit
     MOV edx, imageIdStart
     MOV edi, imageIdEnd
-    CALL [offsets::Func_RemoveOverlays]
+    CALL [Func_RemoveOverlays]
     POPAD
   }
 }
@@ -124,6 +130,7 @@ u32 getUnitOverlayAdjustment(const CUnit* const unit) {
     return 0;
 }
 
+const u32 Func_FireUnitWeapon = 0x00479C90;
 void fireUnitWeapon(CUnit* unit, u8 weaponId) {
   if (weaponId >= WEAPON_TYPE_COUNT) return;
   u32 _weaponId = weaponId;
@@ -132,11 +139,12 @@ void fireUnitWeapon(CUnit* unit, u8 weaponId) {
     PUSHAD
     PUSH _weaponId
     MOV ESI, unit
-    CALL offsets::Func_FireUnitWeapon
+    CALL Func_FireUnitWeapon
     POPAD
   }
 }
 
+const u32 Func_CreateUnitAtPos = 0x004CD360; //AKA createUnitXY()
 CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y) {
   if (unitType >= UNIT_TYPE_COUNT) return NULL;
   CUnit* unit;
@@ -147,7 +155,7 @@ CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y) {
     MOV AX, playerId
     PUSH y
     PUSH x
-    CALL offsets::Func_CreateUnitAtPos
+    CALL Func_CreateUnitAtPos
     MOV unit, EAX
     POPAD
   }
@@ -155,6 +163,7 @@ CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y) {
   return unit;
 }
 
+const u32 Func_CanBeEnteredBy = 0x004E6E00; //AKA CanEnterTransport()
 bool canBeEnteredBy(const CUnit* transport, const CUnit* unit) {
   u32 result;
 
@@ -162,7 +171,7 @@ bool canBeEnteredBy(const CUnit* transport, const CUnit* unit) {
     PUSHAD
     MOV EAX, transport
     PUSH unit
-    CALL offsets::Func_CanBeEnteredBy
+    CALL Func_CanBeEnteredBy
     MOV result, EAX
     POPAD
   }
@@ -192,6 +201,7 @@ u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId) {
     return Upgrade::CurrentUpgBw->level[playerId][upgradeId - 46];
 }
 
+const u32 Func_GetGroundHeightAtPos = 0x004BD0F0;
 u32 getGroundHeightAtPos(s32 x, s32 y) {
   u32 height;
 
@@ -199,7 +209,7 @@ u32 getGroundHeightAtPos(s32 x, s32 y) {
     PUSHAD
     MOV EAX, y
     MOV ECX, x
-    CALL offsets::Func_GetGroundHeightAtPos
+    CALL Func_GetGroundHeightAtPos
     MOV height, EAX
     POPAD
   }
