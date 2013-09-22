@@ -1,5 +1,4 @@
 #pragma once
-#include "../SCBW/offsets.h"
 #include "../SCBW/structures.h"
 
 

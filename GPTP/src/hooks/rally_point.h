@@ -1,6 +1,5 @@
 #pragma once
 #include "../SCBW/structures.h"
-#include "../SCBW/offsets.h"
 
 namespace offsets {
 const u32 Hook_OrderNewUnitToRally        = 0x00466F62;

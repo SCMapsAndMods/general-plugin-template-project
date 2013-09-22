@@ -1,6 +1,5 @@
 #pragma once
 #include "definitions.h"
-#include "SCBW/offsets.h"
 #include "tools.h"
 #include "hooks/game_hooks.h"
 #include "hooks/apply_upgrade_flags.h"
