@@ -55,7 +55,7 @@ static void __declspec(naked) getModifiedUnitAccelerationWrapper() {
 //Inject with jmpPatch()
 static void __declspec(naked) getModifiedUnitTurnSpeedWrapper() {
 	CUnit *unit;
-	DWORD turnSpeed;
+	u32 turnSpeed;
 	__asm {
 		PUSHAD
 		MOV ebp, esp

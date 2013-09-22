@@ -7,30 +7,30 @@
 
 namespace scbw {
 /// Prints text to the screen, optionally using the given text color.
-void printText(char* text, DWORD color = GameTextColor::White);
+void printText(char* text, u32 color = GameTextColor::White);
 
 /// Plays the given sound from sfxdata.dat, optionally using a unit as the
 /// source of the sound.
 void playSound(u32 sfxId, const CUnit *sourceUnit = NULL);
 
 /// Deals damage to the target unit, as though it was attacked by another unit.
-void doWeaponDamage(DWORD   damage,
+void doWeaponDamage(s32     damage,
                     CUnit*  target,
-                    BYTE    weaponId,             ///< Used to determine damage type (normal, concussive, explosive, etc.)
+                    u8      weaponId,             ///< Used to determine damage type (normal, concussive, explosive, etc.)
                     CUnit*  attacker = NULL,      ///< This unit receives kill count if the target dies
-                    DWORD   attackingPlayer = -1, ///< For increasing kill scores and checking whether to apply the Power Overwhelming cheat
-                    BYTE    direction = 0,        ///< Used to create plasma shield flickering overlays
-                    DWORD   dmgDivisor = 1);      ///< Used for calculating splash damage or Glave Wurm bounce damage.
+                    u32     attackingPlayer = -1, ///< For increasing kill scores and checking whether to apply the Power Overwhelming cheat
+                    s8      direction = 0,        ///< Used to create plasma shield flickering overlays
+                    u32     dmgDivisor = 1);      ///< Used for calculating splash damage or Glave Wurm bounce damage.
 
 /// Creates an image overlay with the specified images.dat ID on the given sprite.
 /// Usage:  CreateOverlay(unit->sprite, 105);
-void createOverlay(CSprite* sprite, DWORD imageId, BYTE x = 0, BYTE y = 0, DWORD direction = 0);
+void createOverlay(CSprite* sprite, u32 imageId, s8 x = 0, s8 y = 0, u32 direction = 0);
 
 /// Loops through the unit's image overlays, removing any that matches the given images.dat IDs.
-void removeOverlays(CUnit *unit, DWORD imageIdStart, DWORD imageIdEnd);
+void removeOverlays(CUnit *unit, u32 imageIdStart, u32 imageIdEnd);
 
 /// Loops through the unit's image overlays, removing any that matches the given images.dat ID.
-inline void removeOverlays(CUnit *unit, DWORD imageId) {
+inline void removeOverlays(CUnit *unit, u32 imageId) {
   removeOverlays(unit, imageId, imageId);
 }
 

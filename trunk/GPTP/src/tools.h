@@ -2,6 +2,9 @@
 
 #pragma once
 #include "types.h"
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 /// Injects a JMP to [target] at the [position], optionally overwriting [nops]
 /// bytes with NOPs.
