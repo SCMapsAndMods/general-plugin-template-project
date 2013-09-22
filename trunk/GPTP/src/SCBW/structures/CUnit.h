@@ -236,7 +236,7 @@ struct CUnit {
   };
 
   u32       status;             // See UnitStatus::Enum for more info
-  u8        resourceType;
+  u8        resourceType;       // Type of resource chunk carried by this worker. 1 = vespene gas, 2 = mineral.
   u8        wireframeRandomizer;
   u8        secondaryOrderState;
   u8        recentOrderTimer;   // Counts down from 15 to 0 when most orders are given, or when the unit moves after reaching a patrol location
