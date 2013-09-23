@@ -90,7 +90,7 @@ void updateMineralPatchImage(CUnit *mineralPatch) {
   IscriptAnimation::Enum anim;
 
   if (mineralPatch->building.resource.resourceAmount >= 750)
-    anim = IscriptAnimation::WalkingToIdle;
+    anim = IscriptAnimation::WorkingToIdle;
   else if (mineralPatch->building.resource.resourceAmount >= 500)
     anim = IscriptAnimation::AlmostBuilt;
   else if (mineralPatch->building.resource.resourceAmount >= 250)
