@@ -25,7 +25,7 @@ void updateMineralPatchImage(CUnit *mineralPatch) {
 
 //Harvests minerals/gas from the @p resource and returns the amount that a
 //worker should carry.
-u8 harvestResourceHook(CUnit *resource, bool isMineral) {
+u8 harvestResourceFrom(CUnit *resource, bool isMineral) {
   //Default StarCraft behavior
 
   if (resource->building.resource.resourceAmount < 8) {
@@ -51,6 +51,49 @@ u8 harvestResourceHook(CUnit *resource, bool isMineral) {
       scbw::showErrorMessageWithSfx(resource->playerId, 875, 20);
     
     return 8;
+  }
+}
+
+void destroyPowerupImageOverlay(CUnit *worker) {
+}
+
+const u32 Func_setResourceAmountCarried = 0x004F3AF0;
+void setResourceAmountCarried(CUnit *worker, u8 amountCarried, u32 chunkImageId, bool isMineral) {
+  if (worker->resourceType) return;
+
+  worker->resourceType = isMineral ? 2 : 1;
+}
+
+void transferResourceToWorker(CUnit *worker, CUnit *resource) {
+  //Default StarCraft behavior
+
+  u32 chunkImageId;
+  bool isMineral = false;
+
+  if (176 <= resource->id && resource->id <= 178) {  //Is a mineral patch
+    chunkImageId = 397; //Mineral Chunk Type 1
+    isMineral = true;
+  }
+  else if (resource->id == UnitId::assimilator)
+    chunkImageId = 399; //Protoss Gas Orb Type 1
+  else if (resource->id == UnitId::extractor)
+    chunkImageId = 401; //Zerg Gas Sac Type 1
+  else if (resource->id == UnitId::refinery)
+    chunkImageId = 403; //Terran Gas Tank Type 1
+  else
+    return;
+
+  u8 resourceAmount = harvestResourceFrom(resource, isMineral);
+  if (resourceAmount < 8)
+    chunkImageId += 1;  //Use depleted (smaller) chunk image
+
+  if (resourceAmount > 0) {
+    if (worker->resourceType & 3) { //Is carrying a mineral / gas
+      destroyPowerupImageOverlay(worker);
+      worker->resourceType = 0;
+    }
+
+
   }
 }
 

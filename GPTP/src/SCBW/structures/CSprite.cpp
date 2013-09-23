@@ -53,3 +53,88 @@ void CSprite::setPosition(u16 x, u16 y) {
   for (CImage *i = this->imageHead; i; i = i->link.next)
     i->flags |= 1;
 }
+
+//-------- Create overlay --------//
+
+void initializeImageData(CImage *image, CSprite *sprite, u32 imageId, s8 x, s8 y) {
+  const u32 Func_initializeImageData = 0x004D5A50;
+  s32 x_ = x, y_ = y;
+
+  __asm {
+    PUSHAD
+    PUSH y_
+    PUSH x_
+    MOV ESI, imageId
+    MOV EDI, sprite
+    MOV EAX, image
+    CALL Func_initializeImageData
+    POPAD
+  }
+}
+
+void createUpdateImageSomething(CImage *image) {
+  const u32 Func_createUpdateImageSomething = 0x004D66B0;
+
+  __asm {
+    PUSHAD
+    MOV EAX, image
+    CALL Func_createUpdateImageSomething
+    POPAD
+  }
+}
+
+void updateImageDirection(CImage *image, u32 direction) {
+  const u32 Func_updateImageDirection = 0x004D5EA0;
+
+  __asm {
+    PUSHAD
+    PUSH direction
+    MOV EAX, image
+    CALL Func_updateImageDirection
+    POPAD
+  }
+}
+
+//Identical to function @ 0x00498E00
+CImage* CSprite::createOverlay(u32 imageId, s8 x, s8 y, u32 direction) {
+  assert(this);
+  CImage *overlay = unusedImages.popHead();
+  
+  if (overlay) {
+    const CListExtern<CImage, &CImage::link> images(this->imageHead, this->imageTail);
+    if (this->imageHead) {
+      images.insertBefore(overlay, this->mainGraphic);
+    }
+    else {
+      this->mainGraphic = overlay;
+      images.insertAfterHead(overlay);
+    }
+
+    initializeImageData(overlay, this, imageId, x, y);
+    createUpdateImageSomething(overlay);
+    updateImageDirection(overlay, direction);
+  }
+  return overlay;
+}
+
+//Identical to function @ 0x00498EA0
+CImage* CSprite::createTopOverlay(u32 imageId, s8 x, s8 y, u32 direction) {
+  assert(this);
+  CImage *overlay = unusedImages.popHead();
+  
+  if (overlay) {
+    const CListExtern<CImage, &CImage::link> images(this->imageHead, this->imageTail);
+    if (this->imageHead) {
+      images.insertBeforeHead(overlay);
+    }
+    else {
+      this->mainGraphic = overlay;
+      images.insertAfterHead(overlay);
+    }
+
+    initializeImageData(overlay, this, imageId, x, y);
+    createUpdateImageSomething(overlay);
+    updateImageDirection(overlay, direction);
+  }
+  return overlay;
+}
