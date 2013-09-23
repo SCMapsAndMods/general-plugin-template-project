@@ -39,6 +39,18 @@ void playSound(u32 sfxId, const CUnit *sourceUnit) {
   }
 }
 
+const u32 Func_ShowErrorMessageWithSfx = 0x0048EE30;
+void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId) {
+  __asm {
+    PUSHAD
+    MOV ESI, sfxId
+    MOV EDI, statTxtId
+    MOV EBX, playerId
+    CALL Func_ShowErrorMessageWithSfx
+    POPAD
+  }
+}
+
 //Note: Also used by doWeaponDamageHook()
 extern const u32 Func_DoWeaponDamage = 0x00479930;
 void doWeaponDamage(s32     damage,

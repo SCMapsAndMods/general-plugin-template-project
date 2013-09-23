@@ -13,6 +13,13 @@ void printText(char* text, u32 color = GameTextColor::White);
 /// source of the sound.
 void playSound(u32 sfxId, const CUnit *sourceUnit = NULL);
 
+/// Displays an error message and plays a sound for the player.
+///
+/// @param  playerId  ID of the player who receives the message.
+/// @param  statTxtId ID of the error message string in stat_txt.tbl
+/// @param  sfxId     ID of the sound file in sfxdata.dat.
+void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId);
+
 /// Deals damage to the target unit, as though it was attacked by another unit.
 void doWeaponDamage(s32     damage,
                     CUnit*  target,
