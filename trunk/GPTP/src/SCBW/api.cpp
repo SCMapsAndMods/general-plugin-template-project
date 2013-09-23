@@ -216,6 +216,20 @@ void refreshScreen() {
   memset(refreshRegions, 1, 1200);
 }
 
+void refreshButtonSet() {
+  u32*  const bCanUpdateCurrentButtonSet      = (u32*)  0x0068C1B0;
+  u8*   const bCanUpdateSelectedUnitPortrait  = (u8*)   0x0068AC74;
+  u8*   const unknown1                        = (u8*)   0x0068C1F8;
+  u32*  const someDialogUnknown               = (u32*)  0x0068C1E8;
+  u32*  const unknown2                        = (u32*)  0x0068C1EC;
+
+  *bCanUpdateCurrentButtonSet = 1;
+  *bCanUpdateSelectedUnitPortrait = 1;
+  *unknown1 = 1;
+  *someDialogUnknown = 0;
+  *unknown2 = 0;
+}
+
 u32 randBetween(u32 min, u32 max) {
   assert(min <= max);
   if (*IS_IN_GAME_LOOP) {

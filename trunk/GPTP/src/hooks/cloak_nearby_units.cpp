@@ -1,8 +1,8 @@
 #include "cloak_nearby_units.h"
 #include "weapon_range.h"
-#include "../SCBW/scbwdata.h"
 #include "../SCBW/unit_finder.h"
 #include "../SCBW/enumerations.h"
+#include "../SCBW/api.h"
 #include <algorithm>
 
 namespace hooks {
@@ -27,7 +27,7 @@ void cloakNearbyUnitsHook(CUnit *unit) {
   scbw::UnitFinderResult unitsFound;
   scbw::findUnitsInBounds(left, top, right, bottom, unitsFound);
 
-  bool canRefreshSomething = false;
+  bool needsButtonRefresh = false;
 
   for (int i = 0; i < unitsFound.count; ++i) {
     CUnit *foundUnit = unitsFound.units[i];
@@ -52,14 +52,13 @@ void cloakNearbyUnitsHook(CUnit *unit) {
       secondaryOrder_Cloak(foundUnit);
       if (!(foundUnit->status & UnitStatus::CloakingForFree)) {
         foundUnit->status |= UnitStatus::CloakingForFree;
-        canRefreshSomething = true;
+        needsButtonRefresh = true;
       }
     }
   }
 
-  //Something related to refreshing graphics
-  if (canRefreshSomething)
-    refreshSomething();
+  if (needsButtonRefresh)
+    scbw::refreshButtonSet();
 }
 
 
@@ -80,22 +79,9 @@ void secondaryOrder_Cloak(CUnit *unit) {
     if (*firstBurrowedUnit != NULL)
       (*firstBurrowedUnit)->previousBurrowedUnit = unit;
     *firstBurrowedUnit = unit;
-    refreshSomething();
+
+    scbw::refreshButtonSet();
   }
-}
-
-void refreshSomething() {
-  u32*  const bCanUpdateCurrentButtonSet      = (u32*)  0x0068C1B0;
-  u8*   const bCanUpdateSelectedUnitPortrait  = (u8*)   0x0068AC74;
-  u8*   const unknown1                        = (u8*)   0x0068C1F8;
-  u32*  const someDialogUnknown               = (u32*)  0x0068C1E8;
-  u32*  const unknown2                        = (u32*)  0x0068C1EC;
-
-  *bCanUpdateCurrentButtonSet = 1;
-  *bCanUpdateSelectedUnitPortrait = 1;
-  *unknown1 = 1;
-  *someDialogUnknown = 0;
-  *unknown2 = 0;
 }
 
 } //hooks

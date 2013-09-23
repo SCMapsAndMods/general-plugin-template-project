@@ -112,6 +112,9 @@ void refreshScreen(int left, int top, int right, int bottom);
 /// Refreshes the entire screen.
 void refreshScreen();
 
+/// Something related to button sets, not completely understood.
+void refreshButtonSet();
+
 /// Generates a pseudorandom number between min and max, inclusive. This is
 /// identical to the function used internally by StarCraft, and is guaranteed to
 /// generate the same sequence in a replay.
