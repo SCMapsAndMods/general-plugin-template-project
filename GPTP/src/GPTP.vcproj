@@ -245,6 +245,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\harvest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\max_unit_energy.cpp"
 				>
 			</File>
@@ -450,6 +454,10 @@
 			</File>
 			<File
 				RelativePath=".\graphics\graphics_misc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\harvest.h"
 				>
 			</File>
 			<File
