@@ -31,6 +31,13 @@ struct CSprite {
   /// Creates an image overlay on top of all other images of this sprite.
   CImage* createTopOverlay(u32 imageId, s8 x = 0, s8 y = 0, u32 direction = 0);
 
+  /// Removes the first image overlay with an ID value between imageIdStart and
+  /// imageIdEnd.
+  void removeOverlay(u32 imageIdStart, u32 imageIdEnd);
+
+  /// Removes the first image overlay with the given ID.
+  void removeOverlay(u32 imageId);
+
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure

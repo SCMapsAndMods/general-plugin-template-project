@@ -54,6 +54,7 @@ void CSprite::setPosition(u16 x, u16 y) {
     i->flags |= 1;
 }
 
+
 //-------- Create overlay --------//
 
 void initializeImageData(CImage *image, CSprite *sprite, u32 imageId, s8 x, s8 y) {
@@ -137,4 +138,31 @@ CImage* CSprite::createTopOverlay(u32 imageId, s8 x, s8 y, u32 direction) {
     updateImageDirection(overlay, direction);
   }
   return overlay;
+}
+
+
+//-------- Remove overlay --------//
+
+//Based on function @ 0x004E5CF0
+void CSprite::removeOverlay(u32 imageIdStart, u32 imageIdEnd) {
+  assert(this);
+  assert(imageIdStart <= imageIdEnd);
+
+  for (CImage *image = this->imageHead; image; image = image->link.next) {
+    if (imageIdStart <= image->id && image->id <= imageIdEnd) {
+      image->free();
+      return;
+    }
+  }
+}
+
+void CSprite::removeOverlay(u32 imageId) {
+  assert(this);
+
+  for (CImage *image = this->imageHead; image; image = image->link.next) {
+    if (image->id == imageId) {
+      image->free();
+      return;
+    }
+  }
 }
