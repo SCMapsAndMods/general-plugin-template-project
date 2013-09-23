@@ -22,17 +22,17 @@ struct Point32 {
 };
 
 struct Box16 {
-  u16 left;
-  u16 top;
-  u16 right;
-  u16 bottom;
+  s16 left;
+  s16 top;
+  s16 right;
+  s16 bottom;
 };
 
 struct Box32 {
-  u32 left;
-  u32 top;
-  u32 right;
-  u32 bottom;
+  s32 left;
+  s32 top;
+  s32 right;
+  s32 bottom;
 };
 
 

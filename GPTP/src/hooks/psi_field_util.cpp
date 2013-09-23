@@ -155,7 +155,7 @@ void updatePsiFieldProviders() {
 
   if (!(*IS_PLACING_BUILDING)) {
     for (int i = 0; i < 12 && i < *clientSelectionCount; ++i) {
-      CUnit *selUnit = clientSelectionGroup[i];
+      CUnit *selUnit = clientSelectionGroup->unit[i];
       if (isReadyToMakePsiField(selUnit))
         return;
     }
