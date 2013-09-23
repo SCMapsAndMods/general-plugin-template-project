@@ -236,7 +236,7 @@ struct CUnit {
       CUnit*  targetResourceUnit;     // 8
       u16     repairResourceLossTimer;// C
       u8      isCarryingSomething;    // E
-      u8      resourceCarryCount;     // F
+      u8      resourceCarryAmount;    // F
       CUnit*  harvestTarget;          // 10
       CLink<CUnit> harvest_link;      // 14   // When there is a gather conflict
     } worker;

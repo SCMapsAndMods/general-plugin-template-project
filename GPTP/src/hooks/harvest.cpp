@@ -54,14 +54,29 @@ u8 harvestResourceFrom(CUnit *resource, bool isMineral) {
   }
 }
 
-void destroyPowerupImageOverlay(CUnit *worker) {
+void updateImagePositionOffset(CImage *image) {
+  const u32 Func_updateImagePositionOffset = 0x004D5A00;
+  __asm {
+    PUSHAD
+    MOV ECX, image
+    CALL Func_updateImagePositionOffset
+    POPAD
+  }
 }
 
-const u32 Func_setResourceAmountCarried = 0x004F3AF0;
+//Identical to function @ 0x004F3AF0
 void setResourceAmountCarried(CUnit *worker, u8 amountCarried, u32 chunkImageId, bool isMineral) {
   if (worker->resourceType) return;
-
   worker->resourceType = isMineral ? 2 : 1;
+  
+  CImage *chunkImage = worker->sprite->createOverlay(chunkImageId);
+  if (chunkImage && !(chunkImage->flags & 0x80)) {
+    chunkImage->flags |= 0x80;
+    updateImagePositionOffset(chunkImage);
+  }
+
+  worker->worker.resourceCarryAmount = amountCarried;
+  scbw::refreshButtonSet();
 }
 
 void transferResourceToWorker(CUnit *worker, CUnit *resource) {
@@ -89,11 +104,17 @@ void transferResourceToWorker(CUnit *worker, CUnit *resource) {
 
   if (resourceAmount > 0) {
     if (worker->resourceType & 3) { //Is carrying a mineral / gas
-      destroyPowerupImageOverlay(worker);
+      //Identical to function @ 0x004F3900
+      //Remove powerup shadows (mineral chunk shadow, psi emitter shadow, etc.)
+      worker->sprite->removeOverlay(405, 418);
+      //Remove powerup graphics
+      worker->sprite->removeOverlay(392, 404);
+      //Remove Uraj / Khalis
+      worker->sprite->removeOverlay(958, 959);
       worker->resourceType = 0;
     }
 
-
+    setResourceAmountCarried(worker, resourceAmount, chunkImageId, isMineral);
   }
 }
 
