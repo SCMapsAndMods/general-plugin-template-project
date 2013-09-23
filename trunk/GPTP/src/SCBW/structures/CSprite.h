@@ -25,6 +25,12 @@ struct CSprite {
   /// Moves the sprite to the new position.
   void setPosition(u16 x, u16 y);
 
+  /// Creates an image overlay over the main image of this sprite.
+  CImage* createOverlay(u32 imageId, s8 x = 0, s8 y = 0, u32 direction = 0);
+
+  /// Creates an image overlay on top of all other images of this sprite.
+  CImage* createTopOverlay(u32 imageId, s8 x = 0, s8 y = 0, u32 direction = 0);
+
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure
