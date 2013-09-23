@@ -195,7 +195,7 @@ struct CUnit {
       u16     _padding_0E;          // E    // possible alignment
       union {
         struct {
-/*10*/    u16       resourceCount;  // amount of resources
+/*10*/    u16       resourceAmount;
 /*12*/    u8        resourceIscript;
 /*13*/    u8        gatherQueueCount;
 /*14*/    CUnit*    nextGatherer;   // 14  // pointer to the next workerunit waiting in line to gather
