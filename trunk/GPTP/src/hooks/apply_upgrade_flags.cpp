@@ -113,7 +113,7 @@ void applyUpgradeFlagsToExistingUnitsHook(const u8 playerId, const u8 upgradeId)
       return;
   }
 
-  for (CUnit *unit = firstPlayerUnit[playerId]; unit; unit = unit->playerNext) {
+  for (CUnit *unit = firstPlayerUnit->unit[playerId]; unit; unit = unit->playerNext) {
     if (unit->id == validUnitId1 || unit->id == validUnitId2) {
       if (isSpeedUpgrade) {
         unit->status |= UnitStatus::SpeedUpgrade;

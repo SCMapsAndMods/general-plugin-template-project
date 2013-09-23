@@ -51,41 +51,43 @@ ActionPointer*  const actionTable = (ActionPointer*)(0x00512800);
 //actionTable[59] = &EnableDebugModeAction;
 
 /// The first nodes in StarCraft's internal linked lists (taken from BWAPI's Offsets.h)
-CUnit**    const firstVisibleUnit  = (CUnit**) 0x00628430;
+SCBW_DATA(CUnit**,      firstVisibleUnit,       0x00628430);
 /// Includes units in transports/bunkers, workers inside gas buildings, nukes in
 /// silos, queens inside command centers, and units in production.
-CUnit**    const firstHiddenUnit    = (CUnit**)   0x006283EC;
-CUnit**    const firstScannerSweep  = (CUnit**)   0x006283F4;
-/// Array of size 12.
-CUnit**    const firstPlayerUnit    = (CUnit**)   0x006283F8;
-CBullet**  const firstBullet        = (CBullet**) 0x0064DEC4;
-SCBW_DATA(CUnit**, firstPsiFieldProvider, 0x0063FF54);
+SCBW_DATA(CUnit**,      firstHiddenUnit,        0x006283EC);
+SCBW_DATA(CUnit**,      firstScannerSweep,      0x006283F4);
+SCBW_DATA(CUnit**,      firstPsiFieldProvider,  0x0063FF54);
+SCBW_DATA(CBullet**,    firstBullet,            0x0064DEC4);
+
+struct Units12 { CUnit* unit[PLAYER_COUNT]; };
+SCBW_DATA(Units12*,     firstPlayerUnit,        0x006283F8);  //Indexed by player Id
 
 // Units that are selected by the current player (or the player viewing the replay).
-CUnit* const* const clientSelectionGroup = (CUnit**) 0x00597208;  //Array of size 12
-const u8* const clientSelectionCount = (u8*) 0x0059723D;
+SCBW_DATA(const Units12*, clientSelectionGroup, 0x00597208);
+SCBW_DATA(const u8*,    clientSelectionCount,   0x0059723D);
 
 //Contains various info on the tiles.
-ActiveTile** const activeTileArray  = (ActiveTile**)  0x006D1260;
+SCBW_DATA(ActiveTile**, activeTileArray,        0x006D1260);
 
 // Stores an ordered list of all units currently in the game.
-UnitFinderData* const unitOrderingX = (UnitFinderData*) 0x0066FF78;
-UnitFinderData* const unitOrderingY = (UnitFinderData*) 0x006769B8;
+SCBW_DATA(UnitFinderData*, unitOrderingX,       0x0066FF78);
+SCBW_DATA(UnitFinderData*, unitOrderingY,       0x006769B8);
+SCBW_DATA(const u32*,   unitOrderingCount,      0x0066FF74);
 
 // Font & Drawing
 namespace graphics { class Font; class Bitmap; }
-graphics::Font**  const fontBase          = (graphics::Font**)  0x006CE0F4;
-graphics::Bitmap* const gameScreenBuffer  = (graphics::Bitmap*) 0x006CEFF0;
-u8*   const refreshRegions  = (u8*)   0x006CEFF8; //640 x 480 divided into 1200 squares of 16x16
-u32*  const screenX         = (u32*)  0x00628448;
-u32*  const screenY         = (u32*)  0x00628470;
+SCBW_DATA(graphics::Font**, fontBase,           0x006CE0F4);
+SCBW_DATA(graphics::Bitmap*, gameScreenBuffer,  0x006CEFF0);
+SCBW_DATA(u8*,          refreshRegions,         0x006CEFF8);  //640 x 480 divided into 1200 squares of 16x16
+SCBW_DATA(s32*,         screenX,                0x00628448);
+SCBW_DATA(s32*,         screenY,                0x00628470);
+SCBW_DATA(const Point32*, mouse,                0x006CDDC4);
+SCBW_DATA(Layers*,      screenLayers,           0x006CEF50);
 typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
 static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
-SCBW_DATA(const Point32*, mouse, 0x006CDDC4);
-SCBW_DATA(Layers*, screenLayers, 0x006CEF50);
 
-SCBW_DATA(CImage**, firstUnusedImage, 0x0057EB68);
-SCBW_DATA(CImage**, lastUnusedImage, 0x0057EB70);
+SCBW_DATA(CImage**,     firstUnusedImage,       0x0057EB68);
+SCBW_DATA(CImage**,     lastUnusedImage,        0x0057EB70);
 const CListExtern<CImage, &CImage::link> unusedImages(0x0057EB68, 0x0057EB70);
 const CListExtern<CSprite, &CSprite::link> unusedSprites(0x0063FE30, 0x0063FE34);
 
@@ -93,7 +95,7 @@ struct SpriteTileData {
   CSprite* tails[256];
   CSprite* heads[256];
 };
-SCBW_DATA(SpriteTileData*, spritesOnTileRow, 0x00629288);
+SCBW_DATA(SpriteTileData*, spritesOnTileRow,    0x00629288);
 
 //Player alliance status
 struct PlayerAllianceData {
@@ -103,19 +105,18 @@ PlayerAllianceData* const playerAlliance = (PlayerAllianceData*) 0x0058D634;
 
 //-------- Internal constants --------//
 
-SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,   0x006509C4);
-SCBW_DATA(const Bool8*,   IS_BROOD_WAR,     0x0058F440);
-SCBW_DATA(const u32*,     CHEAT_STATE,      0x006D5A6C);
-SCBW_DATA(const u32*,     unitOrderingCount, 0x0066FF74);
-SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,   0x006BEE68);
-SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,  0x006BB930);
-SCBW_DATA(const Bool32*,  IS_IN_REPLAY,     0x006D0F14);
-SCBW_DATA(const s32*,     LOCAL_NATION_ID,  0x00512684);  //AKA g_LocalNationID; Actually stores the player ID.
-SCBW_DATA(const s32*,     LOCAL_HUMAN_ID,   0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
-SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,  0x006D11C8);
-SCBW_DATA(u32*,           lastRandomNumber, 0x0051CA14);
+SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);
+SCBW_DATA(const Bool8*,   IS_BROOD_WAR,         0x0058F440);
+SCBW_DATA(const u32*,     CHEAT_STATE,          0x006D5A6C);
+SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,       0x006BEE68);
+SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,      0x006BB930);
+SCBW_DATA(const Bool32*,  IS_IN_REPLAY,         0x006D0F14);
+SCBW_DATA(const s32*,     LOCAL_NATION_ID,      0x00512684);  //AKA g_LocalNationID; Actually stores the player ID.
+SCBW_DATA(const s32*,     LOCAL_HUMAN_ID,       0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
+SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,      0x006D11C8);
+SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);
 SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
-SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING, 0x00640880);
+SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING,  0x00640880);
 
 //-------- DAT Files --------//
 
@@ -150,7 +151,7 @@ const u8* const   SightRange          = (const u8*)  unitsDat[24].address;
 const u8* const   ArmorUpgrade        = (const u8*)  unitsDat[25].address;
 const u8* const   SizeType            = (const u8*)  unitsDat[26].address;
 const u8* const   ArmorAmount         = (const u8*)  unitsDat[27].address;
-const Rect16* const UnitBounds        = (const Rect16*) unitsDat[38].address;
+const Box16* const UnitBounds         = (const Box16*) unitsDat[38].address;
 const u16* const  MineralCost         = (const u16*) unitsDat[40].address;
 const u16* const  GasCost             = (const u16*) unitsDat[41].address;
 const u16* const  TimeCost            = (const u16*) unitsDat[42].address;

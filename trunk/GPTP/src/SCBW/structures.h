@@ -178,12 +178,6 @@ struct ActiveTile {
 
 C_ASSERT(sizeof(ActiveTile) == 4);
 
-struct Rect16 {
-  s16 left;
-  s16 top;
-  s16 right;
-  s16 bottom;
-};
 
 struct UnitFinderData {
   s32 unitIndex;
