@@ -59,6 +59,13 @@ struct CUnit {
   void removeMaelstrom();
   void removeStasisField();
 
+  /// Removes the first image overlay with an ID value between @p imageIdStart
+  /// and @p imageIdEnd.
+  void removeOverlay(u32 imageIdStart, u32 imageIdEnd);
+
+  /// Removes the first image overlay with the given image ID.
+  void removeOverlay(u32 imageId);
+
   u16 getX() const;
   u16 getY() const;
   u16 getTileX() const;

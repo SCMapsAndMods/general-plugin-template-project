@@ -80,39 +80,6 @@ void doWeaponDamage(s32     damage,
   }
 }
 
-const u32 Func_CreateOverlay = 0x00498EA0;
-void createOverlay(CSprite* sprite, u32 imageId, s8 x, s8 y, u32 direction) {
-  if (!sprite) return;
-  s32 _x = x, _y = y;
-
-  __asm {
-    PUSHAD
-    PUSH direction
-    PUSH _y
-    PUSH _x
-    MOV esi, imageId
-    MOV eax, sprite
-    CALL [Func_CreateOverlay]
-    POPAD
-  }
-}
-
-const u32 Func_RemoveOverlays = 0x004E5CF0;
-void removeOverlays(CUnit *unit, u32 imageIdStart, u32 imageIdEnd) {
-  if (!unit) return;
-  if (imageIdStart > imageIdEnd)
-    std::swap(imageIdStart, imageIdEnd);
-
-  __asm {
-    PUSHAD
-    MOV eax, unit
-    MOV edx, imageIdStart
-    MOV edi, imageIdEnd
-    CALL [Func_RemoveOverlays]
-    POPAD
-  }
-}
-
 // Logically equivalent to function @ 0x004E5C90
 bool hasOverlay(const CUnit* const unit, const u32 imageId) {
   CImage *image = unit->sprite->imageHead;

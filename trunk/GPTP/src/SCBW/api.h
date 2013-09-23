@@ -29,18 +29,6 @@ void doWeaponDamage(s32     damage,
                     s8      direction = 0,        ///< Used to create plasma shield flickering overlays
                     u32     dmgDivisor = 1);      ///< Used for calculating splash damage or Glave Wurm bounce damage.
 
-/// Creates an image overlay with the specified images.dat ID on the given sprite.
-/// Usage:  CreateOverlay(unit->sprite, 105);
-void createOverlay(CSprite* sprite, u32 imageId, s8 x = 0, s8 y = 0, u32 direction = 0);
-
-/// Loops through the unit's image overlays, removing any that matches the given images.dat IDs.
-void removeOverlays(CUnit *unit, u32 imageIdStart, u32 imageIdEnd);
-
-/// Loops through the unit's image overlays, removing any that matches the given images.dat ID.
-inline void removeOverlays(CUnit *unit, u32 imageId) {
-  removeOverlays(unit, imageId, imageId);
-}
-
 /// Checks whether the unit has an image overlay that matches the given ID.
 bool hasOverlay(const CUnit* const unit, const u32 imageId);
 
