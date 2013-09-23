@@ -115,6 +115,7 @@ SCBW_DATA(const s32*,     LOCAL_HUMAN_ID,   0x00512688);  //AKA g_LocalHumanID; 
 SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,  0x006D11C8);
 SCBW_DATA(u32*,           lastRandomNumber, 0x0051CA14);
 SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
+SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING, 0x00640880);
 
 //-------- DAT Files --------//
 

@@ -3,6 +3,7 @@
 
 #include "psi_field.h"
 #include "../SCBW/scbwdata.h"
+#include <algorithm>
 #include <cassert>
 
 namespace hooks {
@@ -133,20 +134,33 @@ void updatePsiFieldPosition(const CUnit *unit) {
 
 //-------- Update psi field provider --------//
 
-void updatePsiFieldProvider(CUnit *unit) {
-  if (!unit || unit->mainOrderId == OrderId::Die) return;
+//Defined in psi_field_inject.cpp
+void hideAllPsiFields();
 
-  if (canMakePsiField(unit->id)) {
-    assert(isValidPsiProviderType(unit->id));
+void updatePsiFieldProviders() {
+  for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
+    if (canMakePsiField(unit->id)) {
+      assert(isValidPsiProviderType(unit->id));
 
-    if (unit->status & UnitStatus::Completed) {
-      if (isReadyToMakePsiField(unit)) {
-        addPsiField(unit);
-        updatePsiFieldPosition(unit);
+      if (unit->status & UnitStatus::Completed) {
+        if (isReadyToMakePsiField(unit)) {
+          addPsiField(unit);
+          updatePsiFieldPosition(unit);
+        }
+        else
+          removePsiField(unit);
       }
-      else
-        removePsiField(unit);
     }
+  }
+
+  if (!(*IS_PLACING_BUILDING)) {
+    for (int i = 0; i < 12 && i < *clientSelectionCount; ++i) {
+      CUnit *selUnit = clientSelectionGroup[i];
+      if (isReadyToMakePsiField(selUnit))
+        return;
+    }
+
+    hideAllPsiFields();
   }
 }
 

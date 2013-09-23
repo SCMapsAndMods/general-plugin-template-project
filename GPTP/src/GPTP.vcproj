@@ -279,7 +279,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\hooks\psi_field_hook.cpp"
+				RelativePath=".\hooks\psi_field_inject.cpp"
 				>
 			</File>
 			<File
