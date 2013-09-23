@@ -14,6 +14,7 @@ bool firstRun = true;
 bool nextFrame() {
   if (!scbw::isGamePaused()) { //If the game is not paused
     graphics::resetAllGraphics();
+    hooks::updatePsiFieldProviders();
 
     if (firstRun) {
       scbw::printText("Hello, world!");
@@ -32,7 +33,6 @@ bool nextFrame() {
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
-      hooks::updatePsiFieldProvider(unit);
     }
 
     // Loop through the bullet table.
