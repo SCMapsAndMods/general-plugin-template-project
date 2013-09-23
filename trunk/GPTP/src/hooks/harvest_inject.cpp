@@ -21,7 +21,7 @@ void __declspec(naked) transferResourceToWorkerWrapper() {
 }
 
 void harvestResourceInject() {
-  callPatch(transferResourceToWorkerWrapper, 0x004696D0);
+  jmpPatch(transferResourceToWorkerWrapper, 0x004696D0);
 }
 
 
