@@ -9,6 +9,7 @@
 #include "hooks/detector_check.h"
 #include "hooks/do_weapon_damage.h"
 #include "hooks/energy_regeneration.h"
+#include "hooks/harvest.h"
 #include "hooks/max_unit_energy.h"
 #include "hooks/rally_point.h"
 #include "hooks/recharge_shields.h"
@@ -55,6 +56,8 @@ void Initialize() {
   jmpPatch(doWeaponDamageWrapper,         scbw::Func_DoWeaponDamage);
 
   jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
+
+  hooks::harvestResourceInject();
 
   jmpPatch(getUnitMaxEnergyWrapper,       offsets::Hook_GetUnitMaxEnergy);
 

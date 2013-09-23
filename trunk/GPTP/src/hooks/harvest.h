@@ -3,8 +3,8 @@
 
 namespace hooks {
 
-//test
-//test
+u8 harvestResourceHook(CUnit *resource, bool isMineral);
 
+void harvestResourceInject();
 
 } //hooks
