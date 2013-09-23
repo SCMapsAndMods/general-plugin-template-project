@@ -23,8 +23,9 @@ void updateMineralPatchImage(CUnit *mineralPatch) {
   }
 }
 
-//Function @ 0x00469650
-u8 harvestResourceFrom(CUnit *resource, bool isMineral) {
+//Harvests minerals/gas from the @p resource and returns the amount that a
+//worker should carry.
+u8 harvestResourceHook(CUnit *resource, bool isMineral) {
   //Default StarCraft behavior
 
   if (resource->building.resource.resourceAmount < 8) {
