@@ -3,7 +3,7 @@
 
 namespace hooks {
 
-u8 harvestResourceHook(CUnit *resource, bool isMineral);
+void transferResourceToWorkerHook(CUnit *worker, CUnit *resource);
 
 void harvestResourceInject();
 
