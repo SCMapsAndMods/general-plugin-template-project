@@ -101,7 +101,7 @@ SCBW_DATA(SpriteTileData*, spritesOnTileRow,    0x00629288);
 struct PlayerAllianceData {
   u8 player[PLAYER_COUNT];
 };
-PlayerAllianceData* const playerAlliance = (PlayerAllianceData*) 0x0058D634;
+SCBW_DATA(PlayerAllianceData*, playerAlliance,  0x0058D634);
 
 //-------- Internal constants --------//
 
@@ -132,99 +132,99 @@ struct DatLoad {
 };
 
 namespace Unit {
-const DatLoad* const unitsDat      = (const DatLoad*)(0x00513C30);
+SCBW_DATA(const DatLoad*, unitsDat, 0x00513C30);
 
-const u8* const   Graphic             = (const u8*)  unitsDat[0].address;
-const u16* const  SubUnit             = (const u16*) unitsDat[1].address;
-const u32* const  ConstructionGraphic = (const u32*) unitsDat[4].address;
-const u8* const   ShieldsEnabled      = (const u8*)  unitsDat[6].address;
-const u16* const  MaxShieldPoints     = (const u16*) unitsDat[7].address;
-const s32* const  MaxHitPoints        = (const s32*) unitsDat[8].address;
-const u8* const   Elevation           = (const u8*)  unitsDat[9].address;
-const u8* const   GroundWeapon        = (const u8*)  unitsDat[17].address;
-const u8* const   MaxGroundHits       = (const u8*)  unitsDat[18].address;
-const u8* const   AirWeapon           = (const u8*)  unitsDat[19].address;
-const u8* const   MaxAirHits          = (const u8*)  unitsDat[20].address;
-const u32* const  BaseProperty        = (const u32*) unitsDat[22].address;  // AKA SpecialAbilityFlags, UnitProperty, etc. Use with UnitProperty::Enum.
-const u8* const   SeekRange           = (const u8*)  unitsDat[23].address;  // AKA Target Acquisition Range, Acquire Target Range, etc.
-const u8* const   SightRange          = (const u8*)  unitsDat[24].address;
-const u8* const   ArmorUpgrade        = (const u8*)  unitsDat[25].address;
-const u8* const   SizeType            = (const u8*)  unitsDat[26].address;
-const u8* const   ArmorAmount         = (const u8*)  unitsDat[27].address;
-const Box16* const UnitBounds         = (const Box16*) unitsDat[38].address;
-const u16* const  MineralCost         = (const u16*) unitsDat[40].address;
-const u16* const  GasCost             = (const u16*) unitsDat[41].address;
-const u16* const  TimeCost            = (const u16*) unitsDat[42].address;
-const GroupFlag* const GroupFlags     = (const GroupFlag*) unitsDat[44].address;
-const u8* const   SupplyProvided      = (const u8*)  unitsDat[45].address;  // Supply shown in-game is (true supply) / 2; e.g. Zerglings have 1 true supply, Marines have 2 true supply, etc.
-const u8* const   SupplyRequired      = (const u8*)  unitsDat[46].address;  // Supply shown in-game is (true supply) / 2; e.g. Zerglings have 1 true supply, Marines have 2 true supply, etc.
-const u8* const   SpaceRequired       = (const u8*)  unitsDat[47].address;
-const u8* const   SpaceProvided       = (const u8*)  unitsDat[48].address;
-const u16* const  BuildScore          = (const u16*) unitsDat[49].address;
-const u16* const  DestroyScore        = (const u16*) unitsDat[50].address;
-const u16* const  MapStringId         = (const u16*) unitsDat[51].address;
-const u8* const   BroodwarOnly        = (const u8*)  unitsDat[52].address;
+SCBW_DATA(u8*,  Graphic,            unitsDat[0].address);
+SCBW_DATA(u16*, SubUnit,            unitsDat[1].address);
+SCBW_DATA(u32*, ConstructionGraphic,  unitsDat[4].address);
+SCBW_DATA(u8*,  ShieldsEnabled,     unitsDat[6].address);
+SCBW_DATA(u16*, MaxShieldPoints,    unitsDat[7].address);
+SCBW_DATA(s32*, MaxHitPoints,       unitsDat[8].address);
+SCBW_DATA(u8*,  Elevation,          unitsDat[9].address);
+SCBW_DATA(u8*,  GroundWeapon,       unitsDat[17].address);
+SCBW_DATA(u8*,  MaxGroundHits,      unitsDat[18].address);
+SCBW_DATA(u8*,  AirWeapon,          unitsDat[19].address);
+SCBW_DATA(u8*,  MaxAirHits,         unitsDat[20].address);
+SCBW_DATA(u32*, BaseProperty,       unitsDat[22].address);  // AKA SpecialAbilityFlags, UnitProperty, etc. Use with UnitProperty::Enum.
+SCBW_DATA(u8*,  SeekRange,          unitsDat[23].address);  // AKA Target Acquisition Range, Acquire Target Range, etc.
+SCBW_DATA(u8*,  SightRange,         unitsDat[24].address);
+SCBW_DATA(u8*,  ArmorUpgrade,       unitsDat[25].address);
+SCBW_DATA(u8*,  SizeType,           unitsDat[26].address);
+SCBW_DATA(u8*,  ArmorAmount,        unitsDat[27].address);
+SCBW_DATA(Box16*, UnitBounds,       unitsDat[38].address);
+SCBW_DATA(u16*, MineralCost,        unitsDat[40].address);
+SCBW_DATA(u16*, GasCost,            unitsDat[41].address);
+SCBW_DATA(u16*, TimeCost,           unitsDat[42].address);
+SCBW_DATA(GroupFlag*, GroupFlags,   unitsDat[44].address);
+SCBW_DATA(u8*,  SupplyProvided,     unitsDat[45].address);  // Supply shown in-game is (true supply) / 2; e.g. Zerglings have 1 true supply, Marines have 2 true supply, etc.
+SCBW_DATA(u8*,  SupplyRequired,     unitsDat[46].address);  // Supply shown in-game is (true supply) / 2; e.g. Zerglings have 1 true supply, Marines have 2 true supply, etc.
+SCBW_DATA(u8*,  SpaceRequired,      unitsDat[47].address);
+SCBW_DATA(u8*,  SpaceProvided,      unitsDat[48].address);
+SCBW_DATA(u16*, BuildScore,         unitsDat[49].address);
+SCBW_DATA(u16*, DestroyScore,       unitsDat[50].address);
+SCBW_DATA(u16*, MapStringId,        unitsDat[51].address);
+SCBW_DATA(u8*,  BroodwarOnly,       unitsDat[52].address);
 }
 
 namespace Flingy {
-const DatLoad* const flingyDat    = (const DatLoad*)(0x00515A38);
+SCBW_DATA(const DatLoad*, flingyDat, 0x00515A38);
 
-const u16* const  SpriteID        = (const u16*) flingyDat[0].address;
-const u32* const  TopSpeed        = (const u32*) flingyDat[1].address;
-const u16* const  Acceleration    = (const u16*) flingyDat[2].address;
-const u32* const  HaltDistance    = (const u32*) flingyDat[3].address;
-const u8* const   TurnSpeed       = (const u8*)  flingyDat[4].address;  //Incorrectly known as "Turn Radius"
-const u8* const   MovementControl = (const u8*)  flingyDat[6].address;
+SCBW_DATA(u16*, SpriteID,           flingyDat[0].address);
+SCBW_DATA(u32*, TopSpeed,           flingyDat[1].address);
+SCBW_DATA(u16*, Acceleration,       flingyDat[2].address);
+SCBW_DATA(u32*, HaltDistance,       flingyDat[3].address);
+SCBW_DATA(u8*,  TurnSpeed,          flingyDat[4].address);  //Incorrectly known as "Turn Radius"
+SCBW_DATA(u8*,  MovementControl,    flingyDat[6].address);
 }
 
 namespace Weapon {
-const DatLoad* const weaponsDat     = (const DatLoad*)(0x00513868);
+SCBW_DATA(const DatLoad*, weaponsDat, 0x00513868);
 
-const u16* const Label              = (const u16*) weaponsDat[0].address;
-const u32* const Graphic            = (const u32*) weaponsDat[1].address;
-const u16* const TargetFlags        = (const u16*) weaponsDat[3].address;
-const u32* const MinRange           = (const u32*) weaponsDat[4].address;
-const u32* const MaxRange           = (const u32*) weaponsDat[5].address;
-const u8* const  DamageUpgrade      = (const u8*)  weaponsDat[6].address;
-const u8* const  DamageType         = (const u8*)  weaponsDat[7].address; //Normal, Explosive, etc.. Use with DamageType::Enum.
-const u8* const  Behavior           = (const u8*)  weaponsDat[8].address; //Fly and follow target, appear on target unit, etc. Use with WeaponBehavior::Enum.
-const u8* const  RemoveAfter        = (const u8*)  weaponsDat[9].address;
-const u8* const  ExplosionType      = (const u8*)  weaponsDat[10].address;  //NormalHit, RadialSplash, EnemySplash, etc. Use with WeaponEffect::Enum.
-const u16* const InnerSplashRadius  = (const u16*) weaponsDat[11].address;
-const u16* const MediumSplashRadius = (const u16*) weaponsDat[12].address;
-const u16* const OuterSplashRadius  = (const u16*) weaponsDat[13].address;
-const u16* const DamageAmount       = (const u16*) weaponsDat[14].address;
-const u16* const DamageBonus        = (const u16*) weaponsDat[15].address;
-const u8* const  Cooldown           = (const u8*)  weaponsDat[16].address;
-const u8* const  DamageFactor       = (const u8*)  weaponsDat[17].address;
-const u8* const  AttackDirection    = (const u8*)  weaponsDat[18].address;
-const u8* const  LaunchSpin         = (const u8*)  weaponsDat[19].address;
-const u8* const  Xoffset            = (const u8*)  weaponsDat[20].address;
-const u8* const  Yoffset            = (const u8*)  weaponsDat[21].address;
+SCBW_DATA(u16*, Label,              weaponsDat[0].address);
+SCBW_DATA(u32*, Graphic,            weaponsDat[1].address);
+SCBW_DATA(u16*, TargetFlags,        weaponsDat[3].address);
+SCBW_DATA(u32*, MinRange,           weaponsDat[4].address);
+SCBW_DATA(u32*, MaxRange,           weaponsDat[5].address);
+SCBW_DATA(u8*,  DamageUpgrade,      weaponsDat[6].address);
+SCBW_DATA(u8*,  DamageType,         weaponsDat[7].address); //Normal, Explosive, etc.. Use with DamageType::Enum.
+SCBW_DATA(u8*,  Behavior,           weaponsDat[8].address); //Fly and follow target, appear on target unit, etc. Use with WeaponBehavior::Enum.
+SCBW_DATA(u8*,  RemoveAfter,        weaponsDat[9].address);
+SCBW_DATA(u8*,  ExplosionType,      weaponsDat[10].address);  //NormalHit, RadialSplash, EnemySplash, etc. Use with WeaponEffect::Enum.
+SCBW_DATA(u16*, InnerSplashRadius,  weaponsDat[11].address);
+SCBW_DATA(u16*, MediumSplashRadius, weaponsDat[12].address);
+SCBW_DATA(u16*, OuterSplashRadius,  weaponsDat[13].address);
+SCBW_DATA(u16*, DamageAmount,       weaponsDat[14].address);
+SCBW_DATA(u16*, DamageBonus,        weaponsDat[15].address);
+SCBW_DATA(u8*,  Cooldown,           weaponsDat[16].address);
+SCBW_DATA(u8*,  DamageFactor,       weaponsDat[17].address);
+SCBW_DATA(u8*,  AttackDirection,    weaponsDat[18].address);
+SCBW_DATA(u8*,  LaunchSpin,         weaponsDat[19].address);
+SCBW_DATA(u8*,  Xoffset,            weaponsDat[20].address);
+SCBW_DATA(u8*,  Yoffset,            weaponsDat[21].address);
 }
 
 namespace Upgrade {
-const DatLoad* const upgradesDat    = (const DatLoad*)(0x005136E0);
+SCBW_DATA(const DatLoad*, upgradesDat, 0x005136E0);
 
-const u16* const  MineralCostBase   = (const u16*)  upgradesDat[0].address;
-const u16* const  MineralCostFactor = (const u16*)  upgradesDat[1].address;
-const u16* const  GasCostBase       = (const u16*)  upgradesDat[2].address;
-const u16* const  GasCostFactor     = (const u16*)  upgradesDat[3].address;
-const u16* const  TimeCostBase      = (const u16*)  upgradesDat[4].address;
-const u16* const  TimeCostFactor    = (const u16*)  upgradesDat[5].address;
-const u16* const  Label             = (const u16*)  upgradesDat[8].address;
-const u8* const   Race              = (const u8*)   upgradesDat[9].address;
-const u8* const   MaxRepeats        = (const u8*)   upgradesDat[10].address;
+SCBW_DATA(u16*, MineralCostBase,    upgradesDat[0].address);
+SCBW_DATA(u16*, MineralCostFactor,  upgradesDat[1].address);
+SCBW_DATA(u16*, GasCostBase,        upgradesDat[2].address);
+SCBW_DATA(u16*, GasCostFactor,      upgradesDat[3].address);
+SCBW_DATA(u16*, TimeCostBase,       upgradesDat[4].address);
+SCBW_DATA(u16*, TimeCostFactor,     upgradesDat[5].address);
+SCBW_DATA(u16*, Label,              upgradesDat[8].address);
+SCBW_DATA(u8*,  Race,               upgradesDat[9].address);
+SCBW_DATA(u8*,  MaxRepeats,         upgradesDat[10].address);
 }
 
 namespace Tech {
-const DatLoad* const techdataDat  = (const DatLoad*)(0x005137D8);
+SCBW_DATA(const DatLoad*, techdataDat, 0x005137D8);
 
-const u16* const MineralCost      = (const u16*) techdataDat[0].address;
-const u16* const GasCost          = (const u16*) techdataDat[1].address;
-const u16* const TimeCost         = (const u16*) techdataDat[2].address;
-const u16* const EnergyCost       = (const u16*) techdataDat[3].address;
-const u16* const Label            = (const u16*) techdataDat[7].address;
+SCBW_DATA(u16*, MineralCost,        techdataDat[0].address);
+SCBW_DATA(u16*, GasCost,            techdataDat[1].address);
+SCBW_DATA(u16*, TimeCost,           techdataDat[2].address);
+SCBW_DATA(u16*, EnergyCost,         techdataDat[3].address);
+SCBW_DATA(u16*, Label,              techdataDat[7].address);
 }
 
 
@@ -233,10 +233,10 @@ const u16* const Label            = (const u16*) techdataDat[7].address;
 namespace Tech {
 struct _scTechs { u8 enabled[PLAYER_COUNT][24]; };
 struct _bwTechs { u8 enabled[PLAYER_COUNT][20]; };
-_scTechs* const AvailableSc   = (_scTechs*) 0x0058CE24; //Use with ScTech::Enum
-_scTechs* const ResearchedSc  = (_scTechs*) 0x0058CF44; //Use with ScTech::Enum
-_bwTechs* const AvailableBw   = (_bwTechs*) 0x0058F050; //Use with BwTech::Enum
-_bwTechs* const ResearchedBw  = (_bwTechs*) 0x0058F140; //Use with BwTech::Enum
+SCBW_DATA(_scTechs*, AvailableSc,   0x0058CE24); //Use with ScTech::Enum
+SCBW_DATA(_scTechs*, ResearchedSc,  0x0058CF44); //Use with ScTech::Enum
+SCBW_DATA(_bwTechs*, AvailableBw,   0x0058F050); //Use with BwTech::Enum
+SCBW_DATA(_bwTechs*, ResearchedBw,  0x0058F140); //Use with BwTech::Enum
 }
 
 //-------- Upgrade levels --------//
@@ -244,10 +244,10 @@ _bwTechs* const ResearchedBw  = (_bwTechs*) 0x0058F140; //Use with BwTech::Enum
 namespace Upgrade {
 struct _scUpgrs { u8 level[PLAYER_COUNT][46];  };
 struct _bwUpgrs { u8 level[PLAYER_COUNT][15];  };
-static _scUpgrs* MaximumUpgSc = (_scUpgrs*) 0x0058D088; //Use with ScUpgrade::Enum
-static _scUpgrs* CurrentUpgSc = (_scUpgrs*) 0x0058D2B0; //Use with ScUpgrade::Enum
-static _bwUpgrs* MaximumUpgBw = (_bwUpgrs*) 0x0058F24A; //Use with BwUpgrade::Enum
-static _bwUpgrs* CurrentUpgBw = (_bwUpgrs*) 0x0058F32C; //Use with BwUpgrade::Enum
+SCBW_DATA(_scUpgrs*, MaximumUpgSc,  0x0058D088); //Use with ScUpgrade::Enum
+SCBW_DATA(_scUpgrs*, CurrentUpgSc,  0x0058D2B0); //Use with ScUpgrade::Enum
+SCBW_DATA(_bwUpgrs*, MaximumUpgBw,  0x0058F24A); //Use with BwUpgrade::Enum
+SCBW_DATA(_bwUpgrs*, CurrentUpgBw,  0x0058F32C); //Use with BwUpgrade::Enum
 }
 
 #undef SCBW_DATA
