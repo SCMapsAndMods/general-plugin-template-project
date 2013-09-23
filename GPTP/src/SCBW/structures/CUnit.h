@@ -278,16 +278,16 @@ struct CUnit {
   u8        unusedTimer;        // ?? Might be afterburner timer or ultralisk roar timer
   u8        acidSporeCount;
   u8        acidSporeTime[9];
-  u16       offsetIndex3by3;
+  u16       offsetIndex3by3;    //0x130; Cycles between 0-12 for each bullet fired by this unit (if it uses a "Attack 3x3 area" weapon)
   u16       _padding_0x132;
-  void*     pAI;
-  u16       airStrength;
-  u16       groundStrength;
-  u32       tableIdUnknown[4];        //?
-  u8        repulse1Unknown;        //?
-  u8        repulseAngle;          // updated only when air unit is being pushed
-  u8        driftPosX;
-  u8        driftPosY;
+  void*     pAI;                //0x134
+  u16       airStrength;        //0x138
+  u16       groundStrength;     //0x13A
+  Box32     finder;             //0x13C; Ordering for unit boundries in unit finder for binary search
+  u8        repulse1Unknown;    //0x14C; ?
+  u8        repulseAngle;       //0x14D; updated only when air unit is being pushed
+  u8        driftPosX;          //0x14E
+  u8        driftPosY;          //0x14F
 };
 
 C_ASSERT(sizeof(CUnit) == 336);

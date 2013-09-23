@@ -28,9 +28,17 @@ struct Box16 {
   u16 bottom;
 };
 
+struct Box32 {
+  u32 left;
+  u32 top;
+  u32 right;
+  u32 bottom;
+};
+
 
 C_ASSERT(sizeof(Point16) == 4);
 C_ASSERT(sizeof(Point32) == 8);
 C_ASSERT(sizeof(Box16) == 8);
+C_ASSERT(sizeof(Box32) == 16);
 
 #pragma pack()
