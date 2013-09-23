@@ -3,27 +3,25 @@
 
 namespace hooks {
 
-void __declspec(naked) harvestResourceWrapper() {
-  static CUnit *resource;
-  static u8 isMineral;
-  static u8 resourceAmountReturned;
+void __declspec(naked) transferResourceToWorkerWrapper() {
+  CUnit *worker, *resource;
   __asm {
     PUSHAD
+    MOV EBP, ESP
+    MOV worker, ECX
     MOV resource, EAX
-    MOV isMineral, CL
   }
 
-  resourceAmountReturned = harvestResourceHook(resource, isMineral != 0);
+  transferResourceToWorkerHook(worker, resource);
 
   __asm {
     POPAD
-    MOV AL, resourceAmountReturned
     RETN
   }
 }
 
 void harvestResourceInject() {
-  callPatch(harvestResourceWrapper, 0x00469713);
+  callPatch(transferResourceToWorkerWrapper, 0x004696D0);
 }
 
 
