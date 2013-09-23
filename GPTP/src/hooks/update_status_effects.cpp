@@ -31,7 +31,7 @@ void updateStatusEffectsHook(CUnit *unit) {
   if (unit->ensnareTimer) {
     unit->ensnareTimer--;
     if (unit->ensnareTimer == 0) {
-      scbw::removeOverlays(unit, ImageId::EnsnareOverlay_Small, ImageId::EnsnareOverlay_Large);
+      unit->removeOverlay(ImageId::EnsnareOverlay_Small, ImageId::EnsnareOverlay_Large);
       unit->updateSpeed();
     }
   }
@@ -47,7 +47,7 @@ void updateStatusEffectsHook(CUnit *unit) {
     unit->irradiateTimer--;
     runIrradiateDamageLoop(unit);
     if (unit->irradiateTimer == 0) {
-      scbw::removeOverlays(unit, ImageId::Irradiate_Small, ImageId::Irradiate_Large);
+      unit->removeOverlay(ImageId::Irradiate_Small, ImageId::Irradiate_Large);
       unit->irradiatedBy = NULL;
       unit->irradiatePlayerId = 8;
     }
@@ -73,7 +73,7 @@ void updateStatusEffectsHook(CUnit *unit) {
         unit->damageHp(damage);
     }
     if (unit->plagueTimer == 0)
-      scbw::removeOverlays(unit, ImageId::PlagueOverlay_Small, ImageId::PlagueOverlay_Large);
+      unit->removeOverlay(ImageId::PlagueOverlay_Small, ImageId::PlagueOverlay_Large);
   }
 
   if (unit->isUnderStorm)
@@ -89,14 +89,14 @@ void updateStatusEffectsHook(CUnit *unit) {
   if (unit->acidSporeCount) {
     u32 acidOverlayId = getAcidSporeOverlayAdjustment(unit) + ImageId::AcidSpores_1_Overlay_Small;
     if (!scbw::hasOverlay(unit, acidOverlayId)) {
-      scbw::removeOverlays(unit, ImageId::AcidSpores_1_Overlay_Small, ImageId::AcidSpores_6_9_Overlay_Large);
+      unit->removeOverlay(ImageId::AcidSpores_1_Overlay_Small, ImageId::AcidSpores_6_9_Overlay_Large);
       if (unit->subunit)
         unit = unit->subunit;
-      scbw::createOverlay(unit->sprite, acidOverlayId);
+      unit->sprite->createTopOverlay(acidOverlayId);
     }
   }
   else if (unit->acidSporeCount) {
-    scbw::removeOverlays(unit, ImageId::AcidSpores_1_Overlay_Small, ImageId::AcidSpores_6_9_Overlay_Large);
+    unit->removeOverlay(ImageId::AcidSpores_1_Overlay_Small, ImageId::AcidSpores_6_9_Overlay_Large);
   }
 }
 
@@ -124,14 +124,13 @@ static void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount) {
   else {
     unit->defensiveMatrixHp = 0;
     unit->defensiveMatrixTimer = 0;
-    scbw::removeOverlays(unit, ImageId::DefensiveMatrixFront_Small, ImageId::DefensiveMatrixFront_Large);
-    scbw::removeOverlays(unit, ImageId::DefensiveMatrixBack_Small, ImageId::DefensiveMatrixBack_Large);
+    unit->removeOverlay(ImageId::DefensiveMatrixFront_Small, ImageId::DefensiveMatrixFront_Large);
+    unit->removeOverlay(ImageId::DefensiveMatrixBack_Small, ImageId::DefensiveMatrixBack_Large);
   }
   if (unit->defensiveMatrixTimer && !(unit->status & UnitStatus::Burrowed)) {
     if (unit->subunit)
       unit = unit->subunit;
-    scbw::createOverlay(unit->sprite,
-                        scbw::getUnitOverlayAdjustment(unit) + ImageId::DefensiveMatrixHit_Small);
+    unit->sprite->createTopOverlay(scbw::getUnitOverlayAdjustment(unit) + ImageId::DefensiveMatrixHit_Small);
   }
 }
 

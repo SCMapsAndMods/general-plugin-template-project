@@ -44,14 +44,14 @@ void CUnit::reduceDefensiveMatrixHp(s32 amount) {
   else {
     this->defensiveMatrixHp = 0;
     this->defensiveMatrixTimer = 0;
-    scbw::removeOverlays(this, ImageId::DefensiveMatrixFront_Small,
-                         ImageId::DefensiveMatrixFront_Large);
-    scbw::removeOverlays(this, ImageId::DefensiveMatrixBack_Small,
-                         ImageId::DefensiveMatrixBack_Large);
+    this->removeOverlay(ImageId::DefensiveMatrixFront_Small,
+                        ImageId::DefensiveMatrixFront_Large);
+    this->removeOverlay(ImageId::DefensiveMatrixBack_Small,
+                        ImageId::DefensiveMatrixBack_Large);
   }
   if (this->defensiveMatrixTimer && !(this->status & UnitStatus::Burrowed)) {
     CUnit *unit = this->subunit ? this->subunit : this;
-    scbw::createOverlay(unit->sprite, scbw::getUnitOverlayAdjustment(unit) + ImageId::DefensiveMatrixHit_Small);
+    unit->sprite->createTopOverlay(scbw::getUnitOverlayAdjustment(unit) + ImageId::DefensiveMatrixHit_Small);
   }
 }
 
@@ -208,6 +208,22 @@ void CUnit::removeStasisField() {
     CALL Func_RemoveStasisField
     POPAD
   }
+}
+
+void CUnit::removeOverlay(u32 imageIdStart, u32 imageIdEnd) {
+  assert(this);
+
+  this->sprite->removeOverlay(imageIdStart, imageIdEnd);
+  if (this->subunit)
+    this->subunit->sprite->removeOverlay(imageIdStart, imageIdEnd);
+}
+
+void CUnit::removeOverlay(u32 imageId) {
+  assert(this);
+
+  this->sprite->removeOverlay(imageId);
+  if (this->subunit)
+    this->subunit->sprite->removeOverlay(imageId);
 }
 
 u16 CUnit::getX() const {
