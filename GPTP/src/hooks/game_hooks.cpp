@@ -8,6 +8,9 @@
 #include "psi_field.h"
 #include <cstdio>
 
+
+namespace hooks {
+
 bool firstRun = true;
 
 /// This hook is called every frame; most of your plugin's logic goes here.
@@ -60,3 +63,5 @@ bool gameOn() {
 bool gameEnd() {
   return true;
 }
+
+} //hooks
