@@ -5,6 +5,10 @@
 == v2.34 Preview ==
 
  * The hook system is being overhauled from the header-source format to a header-source-injector format.
+ * MPQDraftPlugin overhaul:
+  * `qdp.cpp` has been replaced with `Plugin.h`, `Plugin.cpp` and `plugin_main.cpp`. This should be unnoticeable for most modders.
+  * `qdp.def` has been renamed to `plugin.def`. This should be reflected in the tutorials.
+  * `initialize.h` and `configure.h` have been renamed to `initialize.cpp` and `configure.cpp`, respectively.
  * `offsets.h` has been removed and all hardcoded offsets moved to function definitions. This should make writing hooks easier.
  * Graphics changes (`graphics/graphics.h`)
   * Drawing functions have been merged into one function per shape (ex: `drawDotOnMap() / drawDotOnScreen() => drawDot()`).
