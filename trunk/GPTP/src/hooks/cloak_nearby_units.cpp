@@ -5,12 +5,11 @@
 #include "../SCBW/api.h"
 #include <algorithm>
 
-namespace hooks {
-
 //Helper functions
 void refreshSomething();
 void secondaryOrder_Cloak(CUnit *unit);
 
+namespace hooks {
 
 //Cloak all units near @p unit.
 void cloakNearbyUnitsHook(CUnit *unit) {
@@ -61,6 +60,7 @@ void cloakNearbyUnitsHook(CUnit *unit) {
     scbw::refreshButtonSet();
 }
 
+} //hooks
 
 /**** Helper function definitions. Do not change anything below this! ****/
 
@@ -83,5 +83,3 @@ void secondaryOrder_Cloak(CUnit *unit) {
     scbw::refreshButtonSet();
   }
 }
-
-} //hooks
