@@ -1,4 +1,5 @@
 #include "game_hooks.h"
+#include "../SCBW/api.h"
 #include "../hook_tools.h"
 
 namespace hooks {
@@ -7,10 +8,11 @@ bool isGameOn = false;
 
 /******** Game Start ********/
 
+const u32 Hook_OnGameStart = 0x004C9A51;
+const u32 Hook_OnGameStartBack = Hook_OnGameStart + 5;
 const u32 Func_CompileSCode = 0x00417C20;
 void __declspec(naked) onGameStart() { // From BWAPI by Kovarex, slightly modified
 	__asm PUSHAD;
-
 	{
 		isGameOn = true;
     gameOn();
@@ -18,7 +20,7 @@ void __declspec(naked) onGameStart() { // From BWAPI by Kovarex, slightly modifi
 	__asm {
 		POPAD
 		CALL Func_CompileSCode
-		RETN
+		JMP Hook_OnGameStartBack
 	}
 }
 
@@ -33,33 +35,42 @@ void __declspec(naked) onGameEnd() { // From BWAPI by Kovarex, slightly modified
 	}
 	__asm {
 		POPAD
-		call Func_DeleteSCode
+		CALL Func_DeleteSCode
 		RETN
 	}
 }
 
 /******** NEXT FRAME HOOK ********/
 
-const u32 Func_IsGamePaused = 0x00488780;
 void __declspec(naked) nextFrameHook() { // From BWAPI by Kovarex, slightly modified
 	__asm {
-		CALL Func_IsGamePaused
 		PUSHAD
 		MOV EBP, ESP
 	}
 	{
     nextFrame();
 	}
-	__asm {
-		POPAD
-		RETN
-	}
+
+  if (scbw::isGamePaused()) {
+	  __asm {
+		  POPAD
+      MOV EAX, 1
+		  RETN
+	  }
+  }
+  else {
+	  __asm {
+		  POPAD
+      MOV EAX, 0
+		  RETN
+	  }
+  }
 }
 
 //-------- Hook njector --------//
 
 void injectGameHooks() {
-  callPatch(onGameStart,    0x004C9A51);
+  jmpPatch(onGameStart,     Hook_OnGameStart);
   callPatch(onGameEnd,      0x004EE983);
   callPatch(nextFrameHook,  0x004D974E);
 }
