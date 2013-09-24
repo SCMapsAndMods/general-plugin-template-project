@@ -1,5 +1,13 @@
 /*
-	QDPlugin.h
+	The contents of this file are subject to the Common Development and Distribution License Version 1.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.sun.com/cddl/cddl.html.
+
+	Software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for the specific language governing rights and limitations under the License.
+
+	The Initial Developer of the Original Code is Justin Olbrantz. The Original Code Copyright (C) 2008 Justin Olbrantz. All Rights Reserved.
+*/
+
+/*
+	MPQDraftPlugin.h
 	The central hive of the MPQDraft plugin system.
 
 	In addition to the standard MPQ "adding" functionality of MPQDraft,
@@ -87,10 +95,13 @@
 	3. IMPQDraftPlugin::InitializePlugin gets called with a pointer to the
 	MPQDraft server interface, to allow the plugin to locate its data files.
 
-	When the patchee is closing down, and MPQDraft is terminating:
-	1. IMPQDraftPlugin::TerminatePlugin	gets called to remove any patches the
-	plugin performed.
-	2. The plugin is unloaded with FreeLibrary.
+	Shutdown implementation is variable. Plugins should be prepared to
+	handle shutdown either through the DLL_PROCESS_DETACH notification or
+	the IMPQDraftPlugin::TerminatePlugin function. The plugin DLL itself is 
+	never unloaded. The plugin must beware of calls to functions it has hooked 
+	in other modules after both TerminatePlugin and DLL_PROCESS_DETACH are 
+	called, as it is possible these may still be called. This requires special
+	care in plugin development.
 */
 
 #ifndef QDPLUGIN_H
@@ -106,7 +117,7 @@
 
 /*
 	MPQDRAFTPLUGINMODULE
-
+	
 	Structure used by IMPQDraftPlugin::GetModules to notify MPQDraft of any
 	files (called plugin modules) that are to be loaded. Read description of
 	that function for more information.
@@ -134,7 +145,7 @@ struct MPQDRAFTPLUGINMODULE
 	not only be executed by MPQDraft, but also it communicate with MPQDraft.
 	A plugin will be given an IMPQDraftServer pointer when MPQDraft calls
 	IMPQDraftPlugin::InitializePlugin.
-*/
+*/ 
 struct IMPQDraftServer
 {
 	/*
@@ -149,7 +160,7 @@ struct IMPQDraftServer
 			its modules.
 			dwModuleID [in] - The ID of the module to be located.
 			lpszFileName [out] - Pointer to a buffer where MPQDraft will copy
-			the file name of the module to. This buffer should be
+			the file name of the module to. This buffer should be 
 			MPQDRAFT_MAX_PATH characters long.
 
 		Behavior:
@@ -222,7 +233,7 @@ struct IMPQDraftPlugin
 
 		Behavior:
 			- If lpszPluginName is null, GetPluginName will assert.
-
+			
 			- If nNameBufferLength is shorter than the name of the plugin,
 			GetPluginName will fail.
 
