@@ -1,8 +1,6 @@
 #include "harvest.h"
 #include "../hook_tools.h"
 
-namespace hooks {
-
 void __declspec(naked) transferResourceToWorkerWrapper() {
   CUnit *worker, *resource;
   __asm {
@@ -12,7 +10,7 @@ void __declspec(naked) transferResourceToWorkerWrapper() {
     MOV resource, EAX
   }
 
-  transferResourceToWorkerHook(worker, resource);
+  hooks::transferResourceToWorkerHook(worker, resource);
 
   __asm {
     POPAD
@@ -20,7 +18,9 @@ void __declspec(naked) transferResourceToWorkerWrapper() {
   }
 }
 
-void harvestResourceInject() {
+namespace hooks {
+
+void injectHarvestResource() {
   jmpPatch(transferResourceToWorkerWrapper, 0x004696D0);
 }
 
