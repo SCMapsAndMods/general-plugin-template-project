@@ -257,6 +257,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Plugin.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin_main.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\psi_field.cpp"
 				>
 				<FileConfiguration
@@ -486,6 +494,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\OrderId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Plugin.h"
 				>
 			</File>
 			<File
