@@ -1,5 +1,6 @@
 #include "definitions.h"
 #include "Plugin.h"
+#include "hook_tools.h"
 
 //Hook header files
 #include "hooks/game_hooks.h"
@@ -41,8 +42,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   jmpPatch(unitCanAttackInsideBunkerWrapper,
            offsets::Hook_UnitCanAttackInsideBunker);
 
-  injectCloakNearbyUnitsHook();
-
+  hooks::injectCloakNearbyUnits();
   hooks::injectConsumeHooks();
 
   jmpPatch(unitCanDetectWrapper,          offsets::Hook_UnitCanDetect);

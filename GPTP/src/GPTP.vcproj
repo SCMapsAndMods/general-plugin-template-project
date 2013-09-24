@@ -205,6 +205,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\cloak_nearby_units_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\configure.cpp"
 				>
 			</File>
