@@ -61,7 +61,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName).qdp"
 				LinkIncremental="2"
-				ModuleDefinitionFile="$(ProjectDir)qdp.def"
+				ModuleDefinitionFile="$(ProjectDir)plugin.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -135,7 +135,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\$(ProjectName).qdp"
 				LinkIncremental="1"
-				ModuleDefinitionFile="$(ProjectDir)qdp.def"
+				ModuleDefinitionFile="$(ProjectDir)plugin.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -300,14 +300,6 @@
 			</File>
 			<File
 				RelativePath=".\hooks\psi_field_util.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\qdp.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\qdp.def"
 				>
 			</File>
 			<File
