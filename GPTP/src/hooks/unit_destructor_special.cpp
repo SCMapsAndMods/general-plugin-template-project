@@ -4,7 +4,7 @@
 #include "unit_destructor_special.h"
 #include "../SCBW/api.h"
 #include "psi_field.h"
-#include "../tools.h"
+#include "../hook_tools.h"
 #include <algorithm>
 
 namespace hooks {

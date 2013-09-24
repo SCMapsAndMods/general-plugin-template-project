@@ -6,7 +6,7 @@
 
 #pragma once
 #include "../definitions.h"
-#include "../tools.h"
+#include "../hook_tools.h"
 #pragma pack(1)
 
 namespace offsets {

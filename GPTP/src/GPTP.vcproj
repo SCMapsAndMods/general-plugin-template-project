@@ -257,6 +257,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hook_tools.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\initialize.cpp"
 				>
 			</File>
@@ -320,10 +324,6 @@
 			</File>
 			<File
 				RelativePath=".\hooks\stim_packs.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\tools.cpp"
 				>
 			</File>
 			<File
@@ -469,6 +469,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hook_tools.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SCBW\enumerations\ImageId.h"
 				>
 			</File>
@@ -530,10 +534,6 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\TechId.h"
-				>
-			</File>
-			<File
-				RelativePath=".\tools.h"
 				>
 			</File>
 			<File
