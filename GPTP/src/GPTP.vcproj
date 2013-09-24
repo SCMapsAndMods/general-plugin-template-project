@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\configure.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\consume.cpp"
 				>
 			</File>
@@ -250,6 +254,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\harvest_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\initialize.cpp"
 				>
 			</File>
 			<File
@@ -401,10 +409,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\configure.h"
-				>
-			</File>
-			<File
 				RelativePath=".\hooks\consume.h"
 				>
 			</File>
@@ -474,10 +478,6 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\ImageId.h"
-				>
-			</File>
-			<File
-				RelativePath=".\initialize.h"
 				>
 			</File>
 			<File
