@@ -5,7 +5,7 @@
 /// Replaces the scbw::getMaxEnergy() function.
 /// Return the amount of maximum energy that a unit can have.
 /// Note: 1 energy displayed in-game equals 256 energy.
-s32 getUnitMaxEnergyHook(const CUnit* const unit) {
+u16 getUnitMaxEnergyHook(const CUnit* const unit) {
   //Default StarCraft behavior
   using scbw::getUpgradeLevel;
   if (Unit::BaseProperty[unit->id] & UnitProperty::Hero)

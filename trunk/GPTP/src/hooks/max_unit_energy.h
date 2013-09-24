@@ -5,12 +5,12 @@ namespace offsets {
 const u32 Hook_GetUnitMaxEnergy  = 0x00491870;
 }
 
-s32 getUnitMaxEnergyHook(const CUnit* const unit);
+u16 getUnitMaxEnergyHook(const CUnit* const unit);
 
 //Inject with jmpPatch()
 static void __declspec(naked) getUnitMaxEnergyWrapper() {
-  CUnit *unit;
-  u32 maxEnergy;
+  static CUnit *unit;
+  static u16 maxEnergy;
 
   __asm {
     PUSHAD
@@ -21,21 +21,20 @@ static void __declspec(naked) getUnitMaxEnergyWrapper() {
   maxEnergy = getUnitMaxEnergyHook(unit);
 
   __asm {
-    MOV EAX, maxEnergy
-    MOV [ESP + 28], EAX
     POPAD
+    MOVZX EAX, maxEnergy
     RETN
   }
 }
 
 //Wrapper for native version
-static s32 getUnitMaxEnergy(const CUnit* unit) {
-  s32 result;
+static u16 getUnitMaxEnergy(const CUnit* unit) {
+  static u16 result;
   __asm {
     PUSHAD
     MOV EAX, unit
     CALL offsets::Hook_GetUnitMaxEnergy
-    MOV result, EAX
+    MOV result, AX
     POPAD
   }
   return result;

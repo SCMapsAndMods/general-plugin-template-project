@@ -43,8 +43,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   injectCloakNearbyUnitsHook();
 
-  jmpPatch(unitIsConsumableWrapper,       offsets::Hook_UnitIsConsumable);
-  jmpPatch(onConsumeUnitWrapper,          offsets::Hook_OnConsumeUnit);
+  hooks::injectConsumeHooks();
 
   jmpPatch(unitCanDetectWrapper,          offsets::Hook_UnitCanDetect);
 

@@ -213,6 +213,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\consume_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SCBW\structures\CSprite.cpp"
 				>
 			</File>
