@@ -1,6 +1,5 @@
 #include "definitions.h"
 #include "Plugin.h"
-#include "tools.h"
 
 //Hook header files
 #include "hooks/game_hooks.h"

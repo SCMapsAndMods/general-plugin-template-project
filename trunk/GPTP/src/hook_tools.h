@@ -58,8 +58,3 @@ void memoryPatch(void* const address, const u8* data, const size_t size);
 inline void memoryPatch(const u32 address, const u8* data, const size_t size) {
   memoryPatch((void*)address, data, size);
 }
-
-/// Displays a simple non-modal message box.
-inline void mBox(const char* str) {
-	MessageBox(0, str, "!", 0);
-}

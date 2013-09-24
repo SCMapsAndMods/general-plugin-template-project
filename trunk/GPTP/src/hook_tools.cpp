@@ -1,4 +1,4 @@
-#include "tools.h"
+#include "hook_tools.h"
 
 //Injects a relative CALL to [target] at the [position].
 //Original function from BWAPI by Kovarex; Modified by pastelmind

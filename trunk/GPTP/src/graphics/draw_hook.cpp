@@ -1,6 +1,6 @@
 #include "draw_hook.h"
 #include "../SCBW/api.h"
-#include "../tools.h"
+#include "../hook_tools.h"
 #include "graphics_misc.h"
 
 //-------- Draw hook taken from BWAPI --------//
