@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\apply_upgrade_flags_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\Bitmap.cpp"
 				>
 			</File>
