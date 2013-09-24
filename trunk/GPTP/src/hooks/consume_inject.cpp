@@ -1,8 +1,6 @@
 #include "consume.h"
 #include "../hook_tools.h"
 
-namespace hooks {
-
 //Inject with jmpPatch
 void __declspec(naked) unitIsConsumableWrapper() {
 	CUnit* unit;
@@ -14,7 +12,7 @@ void __declspec(naked) unitIsConsumableWrapper() {
 		MOV defilerOwner, BL
 	}
 
-	if (unitIsConsumable(unit, defilerOwner)) {
+  if (hooks::unitIsConsumable(unit, defilerOwner)) {
 		__asm {
 			POPAD
 			XOR AX, AX	;//Equivalent to MOV AX, 0
@@ -43,7 +41,7 @@ void __declspec(naked) onConsumeUnitWrapper() {
 		MOV target, EDI
 	}
 
-	onConsumeUnit(caster, target);
+  hooks::onConsumeUnit(caster, target);
 
 	__asm {
 	  POPAD
@@ -53,10 +51,11 @@ void __declspec(naked) onConsumeUnitWrapper() {
 	}
 }
 
+namespace hooks {
+
 void injectConsumeHooks() {
   jmpPatch(unitIsConsumableWrapper, 0x00491F51);
   jmpPatch(onConsumeUnitWrapper,    0x004F47DE);
 }
-
 
 } //hooks

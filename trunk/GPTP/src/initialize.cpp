@@ -92,8 +92,8 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   jmpPatch(getSeekRangeWrapper,           offsets::Hook_GetSeekRange);
   jmpPatch(getMaxWeaponRangeWrapper,      offsets::Hook_GetMaxWeaponRange);
 
-  hooks::unitDestructorSpecialInject();
-  hooks::psiFieldHookInject();
+  hooks::injectUnitDestructorSpecial();
+  hooks::injectPsiFieldHooks();
 
   InjectDrawHook();
 

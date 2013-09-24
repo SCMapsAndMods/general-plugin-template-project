@@ -18,6 +18,6 @@ bool canMakePsiField(u16 unitId);
 void updatePsiFieldProviders();
 
 //Call this in initialize.h.
-void psiFieldHookInject();
+void injectPsiFieldHooks();
 
 } //hooks

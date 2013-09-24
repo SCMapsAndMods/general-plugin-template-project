@@ -7,8 +7,6 @@
 #include "../hook_tools.h"
 #include <algorithm>
 
-namespace hooks {
-
 void killAllHangarUnits(CUnit *unit) {
   while (unit->carrier.inHangarCount--) {
     CUnit *childInside = unit->carrier.inHangarChild;
@@ -140,7 +138,7 @@ void unitDestructorSpecialHook(CUnit *unit) {
   }
 
   if (hooks::canMakePsiField(unit->id)) {
-    hooks::removePsiField(unit);
+    removePsiField(unit);
     return;
   }
 
@@ -174,7 +172,9 @@ void __declspec(naked) unitDestructorSpecialWrapper() {
   }
 }
 
-void unitDestructorSpecialInject() {
+namespace hooks {
+
+void injectUnitDestructorSpecial() {
   callPatch(unitDestructorSpecialWrapper, 0x004A075F);
 }
 
