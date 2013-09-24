@@ -245,6 +245,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\game_hooks_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\graphics.cpp"
 				>
 			</File>

@@ -43,7 +43,7 @@ void __declspec(naked) applyUpgradeFlagsToExistingUnitsWrapper() {
   }
 }
 
-void applyUpgradeFlagsInject() {
+void injectApplyUpgradeFlags() {
   jmpPatch(applyUpgradeFlagsToNewUnitWrapper, 0x00454370);
   jmpPatch(applyUpgradeFlagsToExistingUnitsWrapper, 0x00454540);
 }

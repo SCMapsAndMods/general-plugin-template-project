@@ -35,11 +35,8 @@ namespace scbw { extern const u32 Func_DoWeaponDamage; }
 ///    memoryPatch(address_to_patch, value_to_patch_with);
 
 BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
-  jmpPatch(onGameStart,          offsets::GameStart);    // From BWAPI by Kovarex
-  jmpPatch(onGameEnd,            offsets::GameEnd);      // From BWAPI by Kovarex
-  jmpPatch(nextFrameHook,        offsets::NextLogicFrame);  // From BWAPI by Kovarex
-
-  hooks::applyUpgradeFlagsInject();
+  hooks::injectGameHooks();
+  hooks::injectApplyUpgradeFlags();
 
   jmpPatch(unitCanAttackInsideBunkerWrapper,
            offsets::Hook_UnitCanAttackInsideBunker);
