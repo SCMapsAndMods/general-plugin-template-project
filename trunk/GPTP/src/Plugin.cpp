@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS   //For strcpy()
 #include "definitions.h"
 #include "Plugin.h"
 #include <cstring>
