@@ -3,6 +3,8 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
+namespace hooks {
+
 /// This function is called when creating a new unit.
 void applyUpgradeFlagsToNewUnitHook(CUnit* const unit) {
   //Default StarCraft behavior
@@ -124,3 +126,5 @@ void applyUpgradeFlagsToExistingUnitsHook(const u8 playerId, const u8 upgradeId)
     }
   }
 }
+
+} //hooks

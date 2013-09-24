@@ -39,10 +39,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   jmpPatch(onGameEnd,            offsets::GameEnd);      // From BWAPI by Kovarex
   jmpPatch(nextFrameHook,        offsets::NextLogicFrame);  // From BWAPI by Kovarex
 
-  jmpPatch(applyUpgradeFlagsToNewUnitWrapper,
-           offsets::Hook_ApplyUpgradeFlagsToNewUnit);
-  jmpPatch(applyUpgradeFlagsToExistingUnitsWrapper,
-           offsets::Hook_ApplyUpgradeFlagsToExistingUnits);
+  hooks::applyUpgradeFlagsInject();
 
   jmpPatch(unitCanAttackInsideBunkerWrapper,
            offsets::Hook_UnitCanAttackInsideBunker);
