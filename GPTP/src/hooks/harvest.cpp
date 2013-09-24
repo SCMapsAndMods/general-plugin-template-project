@@ -36,7 +36,7 @@ u8 harvestResourceFrom(CUnit *resource, bool isMineral) {
         resource->remove();
     }
     else if (resource->building.resource.resourceAmount < 8)
-      scbw::showErrorMessageWithSfx(resource->playerId, 875, 20);
+      scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
     
     return 8;
   }
@@ -50,15 +50,15 @@ void transferResourceToWorkerHook(CUnit *worker, CUnit *resource) {
   bool isMineral = false;
 
   if (176 <= resource->id && resource->id <= 178) {  //Is a mineral patch
-    chunkImageId = 397; //Mineral Chunk Type 1
+    chunkImageId = ImageId::MineralChunkType1;
     isMineral = true;
   }
   else if (resource->id == UnitId::assimilator)
-    chunkImageId = 399; //Protoss Gas Orb Type 1
+    chunkImageId = ImageId::ProtossGasOrbType1;
   else if (resource->id == UnitId::extractor)
-    chunkImageId = 401; //Zerg Gas Sac Type 1
+    chunkImageId = ImageId::ZergGasSacType1;
   else if (resource->id == UnitId::refinery)
-    chunkImageId = 403; //Terran Gas Tank Type 1
+    chunkImageId = ImageId::TerranGasTankType1;
   else
     return;
 
@@ -70,11 +70,11 @@ void transferResourceToWorkerHook(CUnit *worker, CUnit *resource) {
     if (worker->resourceType & 3) { //Is carrying a mineral / gas
       //Identical to function @ 0x004F3900
       //Remove powerup shadows (mineral chunk shadow, psi emitter shadow, etc.)
-      worker->sprite->removeOverlay(405, 418);
+      worker->sprite->removeOverlay(ImageId::MineralChunkShadow, ImageId::PsiEmitterShadow_Carried);
       //Remove powerup graphics
-      worker->sprite->removeOverlay(392, 404);
+      worker->sprite->removeOverlay(ImageId::Flag, ImageId::TerranGasTankType2);
       //Remove Uraj / Khalis
-      worker->sprite->removeOverlay(958, 959);
+      worker->sprite->removeOverlay(ImageId::Uraj, ImageId::Khalis);
       worker->resourceType = 0;
     }
 
