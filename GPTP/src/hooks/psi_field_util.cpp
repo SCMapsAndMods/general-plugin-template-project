@@ -6,8 +6,6 @@
 #include <algorithm>
 #include <cassert>
 
-namespace hooks {
-
 //-------- Unit id safeguard --------//
 
 //Checks if the given unit ID can provide psi (for use in assertion)
@@ -137,13 +135,15 @@ void updatePsiFieldPosition(const CUnit *unit) {
 //Defined in psi_field_inject.cpp
 void hideAllPsiFields();
 
+namespace hooks {
+
 void updatePsiFieldProviders() {
   for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
-    if (canMakePsiField(unit->id)) {
+    if (hooks::canMakePsiField(unit->id)) {
       assert(isValidPsiProviderType(unit->id));
 
       if (unit->status & UnitStatus::Completed) {
-        if (isReadyToMakePsiField(unit)) {
+        if (hooks::isReadyToMakePsiField(unit)) {
           addPsiField(unit);
           updatePsiFieldPosition(unit);
         }
@@ -156,7 +156,7 @@ void updatePsiFieldProviders() {
   if (!(*IS_PLACING_BUILDING)) {
     for (int i = 0; i < 12 && i < *clientSelectionCount; ++i) {
       CUnit *selUnit = clientSelectionGroup->unit[i];
-      if (isReadyToMakePsiField(selUnit))
+      if (hooks::isReadyToMakePsiField(selUnit))
         return;
     }
 

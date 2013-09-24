@@ -8,10 +8,9 @@
 #include "psi_field.h"
 #include <cstdio>
 
+bool firstRun = true;
 
 namespace hooks {
-
-bool firstRun = true;
 
 /// This hook is called every frame; most of your plugin's logic goes here.
 bool nextFrame() {

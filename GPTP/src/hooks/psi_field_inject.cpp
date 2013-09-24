@@ -5,8 +5,6 @@
 #include "../SCBW/scbwdata.h"
 #include "../hook_tools.h"
 
-namespace hooks {
-
 //-------- Unit selection hooks --------//
 
 void showAllPsiFields() {
@@ -97,7 +95,7 @@ void __declspec(naked) packUnitData_PsiProvider() {
     MOV unit, ESI
   }
 
-  if (canMakePsiField(unitId)) {
+  if (hooks::canMakePsiField(unitId)) {
     const CSprite *psiFieldSprite = unit->building.pylonAura;
     if (psiFieldSprite)
       *(u32*)&unit->building.pylonAura = (psiFieldSprite - spriteTable) / sizeof(CSprite) + 1;
@@ -120,7 +118,7 @@ void __declspec(naked) unpackUnitData_PsiProvider() {
     MOV unit, ESI
   }
 
-  if (canMakePsiField(unitId))
+  if (hooks::canMakePsiField(unitId))
     if (unit->building.pylonAura != 0)
       unit->building.pylonAura = &spriteTable[(int)unit->building.pylonAura];
 
@@ -131,8 +129,9 @@ void __declspec(naked) unpackUnitData_PsiProvider() {
 }
 
 //-------- Hook injector --------//
+namespace hooks {
 
-void psiFieldHookInject() {
+void injectPsiFieldHooks() {
   jmpPatch(showAllPsiFieldsOnSelectWrapper,   0x004E6224);
   jmpPatch(hideAllPsiFieldsOnUnselectWrapper, 0x004E62BE);
   jmpPatch(packUnitData_PsiProvider,          0x004E3935);

@@ -2,8 +2,6 @@
 #include "../SCBW/api.h"
 #include "../hook_tools.h"
 
-namespace hooks {
-
 bool isGameOn = false;
 
 /******** Game Start ********/
@@ -15,7 +13,7 @@ void __declspec(naked) onGameStart() { // From BWAPI by Kovarex, slightly modifi
 	__asm PUSHAD;
 	{
 		isGameOn = true;
-    gameOn();
+    hooks::gameOn();
 	}
 	__asm {
 		POPAD
@@ -31,7 +29,7 @@ void __declspec(naked) onGameEnd() { // From BWAPI by Kovarex, slightly modified
 	__asm PUSHAD;
 	{
 		isGameOn = false;
-    gameEnd();
+    hooks::gameEnd();
 	}
 	__asm {
 		POPAD
@@ -48,7 +46,7 @@ void __declspec(naked) nextFrameHook() { // From BWAPI by Kovarex, slightly modi
 		MOV EBP, ESP
 	}
 	{
-    nextFrame();
+    hooks::nextFrame();
 	}
 
   if (scbw::isGamePaused()) {
@@ -67,7 +65,9 @@ void __declspec(naked) nextFrameHook() { // From BWAPI by Kovarex, slightly modi
   }
 }
 
-//-------- Hook njector --------//
+//-------- Hook injector --------//
+
+namespace hooks {
 
 void injectGameHooks() {
   jmpPatch(onGameStart,     Hook_OnGameStart);
