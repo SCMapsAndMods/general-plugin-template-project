@@ -2,14 +2,13 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
-namespace hooks {
-
 //Helper functions
 void updateMineralPatchImage(CUnit *mineralPatch);
 void setResourceAmountCarried(CUnit *worker, u8 amountCarried, u32 chunkImageId, bool isMineral);
 
-
 //-------- Actual hooks --------//
+
+namespace hooks {
 
 //Harvests minerals/gas from the @p resource and returns the amount that a
 //worker should carry.
@@ -82,6 +81,7 @@ void transferResourceToWorkerHook(CUnit *worker, CUnit *resource) {
   }
 }
 
+} //hooks
 
 //-------- Helper function definitions. Do NOT change this! --------//
 
@@ -128,5 +128,3 @@ void setResourceAmountCarried(CUnit *worker, u8 amountCarried, u32 chunkImageId,
   worker->worker.resourceCarryAmount = amountCarried;
   scbw::refreshButtonSet();
 }
-
-} //hooks

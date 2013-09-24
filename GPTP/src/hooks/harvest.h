@@ -5,6 +5,6 @@ namespace hooks {
 
 void transferResourceToWorkerHook(CUnit *worker, CUnit *resource);
 
-void harvestResourceInject();
+void injectHarvestResource();
 
 } //hooks
