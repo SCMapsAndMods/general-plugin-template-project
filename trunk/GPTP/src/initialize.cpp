@@ -1,6 +1,8 @@
-#pragma once
 #include "definitions.h"
+#include "Plugin.h"
 #include "tools.h"
+
+//Hook header files
 #include "hooks/game_hooks.h"
 #include "hooks/apply_upgrade_flags.h"
 #include "hooks/bunker_hooks.h"
@@ -25,15 +27,15 @@
 #include "hooks/psi_field.h"
 #include "graphics/draw_hook.h"
 
+//Defined in CUnit.cpp
+namespace scbw { extern const u32 Func_DoWeaponDamage; }
+
 /// This function is called when the plugin is loaded into StarCraft.
 /// You can enable/disable each group of hooks by commenting them.
 /// You can also add custom modifications to StarCraft.exe by using:
 ///    memoryPatch(address_to_patch, value_to_patch_with);
 
-//Defined in CUnit.cpp
-namespace scbw { extern const u32 Func_DoWeaponDamage; }
-
-void Initialize() {
+BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   jmpPatch(onGameStart,          offsets::GameStart);    // From BWAPI by Kovarex
   jmpPatch(onGameEnd,            offsets::GameEnd);      // From BWAPI by Kovarex
   jmpPatch(nextFrameHook,        offsets::NextLogicFrame);  // From BWAPI by Kovarex
@@ -102,4 +104,6 @@ void Initialize() {
   hooks::psiFieldHookInject();
 
   InjectDrawHook();
+
+  return TRUE;
 }
