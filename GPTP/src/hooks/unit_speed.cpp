@@ -4,6 +4,8 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/scbwdata.h"
 
+namespace hooks {
+
 /// Calculates the unit's modified movement speed, factoring in upgrades and status effects.
 ///
 /// @return		The modified speed value.
@@ -55,3 +57,5 @@ u32 getModifiedUnitTurnSpeedHook(const CUnit* unit) {
 		turnSpeed -= turnSpeed >> 2;
 	return turnSpeed;
 }
+
+} //hooks

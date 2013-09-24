@@ -233,6 +233,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\detector_check_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\do_weapon_damage.cpp"
 				>
 			</File>
@@ -356,6 +360,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\unit_speed.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\unit_speed_inject.cpp"
 				>
 			</File>
 			<File

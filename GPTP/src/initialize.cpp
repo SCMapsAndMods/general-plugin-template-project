@@ -75,12 +75,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   jmpPatch(getArmorBonusWrapper,          offsets::Hook_GetArmorBonus);
 
-  jmpPatch(getModifiedUnitSpeedWrapper,
-           offsets::Hook_GetModifiedUnitSpeed);
-  jmpPatch(getModifiedUnitAccelerationWrapper,
-           offsets::Hook_GetModifiedUnitAcceleration);
-  jmpPatch(getModifiedUnitTurnSpeedWrapper,
-           offsets::Hook_GetModifiedUnitTurnSpeed);
+  hooks::injectUnitSpeedHooks();
 
   jmpPatch(updateStatusEffectsWrapper,    offsets::Hook_UpdateStatusEffects);
 
