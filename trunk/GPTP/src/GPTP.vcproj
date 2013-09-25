@@ -229,11 +229,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\detector_check.cpp"
+				RelativePath=".\hooks\detector.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\detector_check_inject.cpp"
+				RelativePath=".\hooks\detector_inject.cpp"
 				>
 			</File>
 			<File
@@ -445,7 +445,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\detector_check.h"
+				RelativePath=".\hooks\detector.h"
 				>
 			</File>
 			<File
