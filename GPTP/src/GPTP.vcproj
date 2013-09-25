@@ -241,15 +241,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\damage_with.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\damage_with_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\detector.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\hooks\detector_inject.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\do_weapon_damage.cpp"
 				>
 			</File>
 			<File
@@ -489,15 +493,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\damage_with.h"
+				>
+			</File>
+			<File
 				RelativePath=".\definitions.h"
 				>
 			</File>
 			<File
 				RelativePath=".\hooks\detector.h"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\do_weapon_damage.h"
 				>
 			</File>
 			<File

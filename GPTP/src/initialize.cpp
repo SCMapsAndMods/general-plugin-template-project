@@ -9,8 +9,8 @@
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
 #include "hooks/consume.h"
+#include "hooks/damage_with.h"
 #include "hooks/detector.h"
-#include "hooks/do_weapon_damage.h"
 #include "hooks/energy_regeneration.h"
 #include "hooks/harvest.h"
 #include "hooks/max_unit_energy.h"
@@ -44,9 +44,9 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectBunkerHooks();
   hooks::injectCloakNearbyUnits();
   hooks::injectConsumeHooks();
-  hooks::injectDetectorHooks();
 
-  jmpPatch(doWeaponDamageWrapper,         Func_DamageWith);
+  hooks::injectDamageWithHook();
+  hooks::injectDetectorHooks();
 
   jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
 
