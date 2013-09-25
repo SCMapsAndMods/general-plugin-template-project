@@ -203,6 +203,24 @@ u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
   return maxWeaponRange;
 }
 
+const u32 Func_GetSightRange = 0x004E5B40;
+u32 CUnit::getSightRange(bool applyStatusEffects) const {
+  assert(this);
+
+  static u32 sightRange;
+  Bool32 ignoreStatusEffects = (applyStatusEffects ? 0 : 1);
+  __asm {
+    PUSHAD
+    PUSH ignoreStatusEffects
+    MOV EDX, this
+    CALL Func_GetSightRange
+    MOV sightRange, EAX
+    POPAD
+  }
+
+  return sightRange;
+}
+
 const u32 Func_GetMaxEnergy = 0x00491870;
 u16 CUnit::getMaxEnergy() const {
   assert(this);

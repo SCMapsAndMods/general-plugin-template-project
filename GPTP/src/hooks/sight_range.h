@@ -28,8 +28,3 @@ static void __declspec(naked) getSightRangeWrapper() {
     RETN 4
   }
 }
-
-//Wrapper for native version
-static u32 getSightRange(const CUnit *unit) {
-  //TODO:finish this
-}
