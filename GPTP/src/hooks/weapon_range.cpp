@@ -5,6 +5,8 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
+namespace hooks {
+
 /// Returns the modified seek range (AKA target acquisition range) for the unit.
 /// Note: Seek ranges are measured in matrices (1 matrix = 32 pixels).
 u8 getSeekRangeHook(const CUnit *unit) {
@@ -107,3 +109,5 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
 
   return Weapon::MaxRange[weaponId] + bonusAmount;
 }
+
+} //hooks

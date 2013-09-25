@@ -398,6 +398,10 @@
 				RelativePath=".\hooks\weapon_range.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\hooks\weapon_range_inject.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="헤더 파일"
