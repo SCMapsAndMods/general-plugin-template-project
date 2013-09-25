@@ -59,6 +59,10 @@ struct CUnit {
   /// attached to this unit for calculating upgrade effects.
   u32 getMaxWeaponRange(u8 weaponId) const;
 
+  /// Returns the sight range of this unit (with upgrades).
+  /// If @p applyStatusEffects is true, also factors in status effects.
+  u32 getSightRange(bool applyStatusEffects = false) const;
+
   /// Returns the maximum energy amount of this unit (with upgrades).
   u16 getMaxEnergy() const;
 
