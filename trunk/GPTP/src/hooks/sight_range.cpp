@@ -2,10 +2,13 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/scbwdata.h"
 
+namespace {
 /// Helper function: checks if the unit is a building morphing into another building.
 /// Logically equivalent to the SCBW function @ 0x0045CD00
-static bool isRemorphingBuilding(const CUnit *unit);
+bool isRemorphingBuilding(const CUnit *unit);
+} //unnamed namespace
 
+namespace hooks {
 
 /// Returns the modified sight range of the unit, measured in matrices.
 /// StarCraft passes 1 for isForSpellCasting when using Feedback, Mind Control,
@@ -50,9 +53,12 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
   return Unit::SightRange[unit->id];
 }
 
+} //hooks
+
+namespace {
 /**** Definitions of helper functions. Do not edit anything below this! ****/
 
-static bool isRemorphingBuilding(const CUnit *unit) {
+bool isRemorphingBuilding(const CUnit *unit) {
   if (unit->status & UnitStatus::Completed)
     return false;
   u16 firstQueuedUnit = unit->buildQueue[unit->buildQueueSlot];
@@ -62,3 +68,5 @@ static bool isRemorphingBuilding(const CUnit *unit) {
          || firstQueuedUnit == UnitId::spore_colony
          || firstQueuedUnit == UnitId::sunken_colony;
 }
+
+} //unnamed namespace

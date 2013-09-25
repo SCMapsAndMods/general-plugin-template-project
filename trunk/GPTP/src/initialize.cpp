@@ -56,7 +56,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectRallyHooks();
   hooks::injectRechargeShieldsHooks();
 
-  jmpPatch(getSightRangeWrapper,          offsets::Hook_GetSightRange);
+  hooks::injectSightRangeHook();
   hooks::injectStimPacksHooks();
 
   hooks::injectUnitSpeedHooks();
