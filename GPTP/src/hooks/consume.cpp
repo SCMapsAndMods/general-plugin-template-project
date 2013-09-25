@@ -37,7 +37,7 @@ void onConsumeUnit(CUnit* caster, CUnit *target) {
   target->remove();
   if (!(target->status & UnitStatus::IsHallucination)) {  //If not a hallucination
     u16 energy = caster->energy + 12800; //50 energy
-    caster->energy = std::min(energy, getUnitMaxEnergy(caster));
+    caster->energy = std::min(energy, caster->getMaxEnergy());
   }
 }
 

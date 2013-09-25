@@ -58,7 +58,7 @@ void regenerateEnergyHook(CUnit *unit) {
         )
       maxEnergy = 12800;  //50 * 256; Identical to energy amount on spawn
     else
-      maxEnergy = getUnitMaxEnergy(unit);
+      maxEnergy = unit->getMaxEnergy();
 
     if (unit->energy != maxEnergy) {
       u16 energy = unit->energy + 8;
