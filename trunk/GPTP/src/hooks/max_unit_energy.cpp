@@ -1,8 +1,11 @@
+#include "max_unit_energy.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
-/// Replaces the scbw::getMaxEnergy() function.
+namespace hooks {
+
+/// Replaces the CUnit::getMaxEnergy() function.
 /// Return the amount of maximum energy that a unit can have.
 /// Note: 1 energy displayed in-game equals 256 energy.
 u16 getUnitMaxEnergyHook(const CUnit* const unit) {
@@ -60,3 +63,5 @@ u16 getUnitMaxEnergyHook(const CUnit* const unit) {
 
   return 51200; //200
 }
+
+} //hooks

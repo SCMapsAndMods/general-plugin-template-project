@@ -39,12 +39,9 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectGameHooks();
   hooks::injectApplyUpgradeFlags();
 
-  jmpPatch(unitCanAttackInsideBunkerWrapper,
-           offsets::Hook_UnitCanAttackInsideBunker);
-
+  hooks::injectBunkerHooks();
   hooks::injectCloakNearbyUnits();
   hooks::injectConsumeHooks();
-
   hooks::injectDetectorHooks();
 
   jmpPatch(doWeaponDamageWrapper,         Func_DamageWith);
@@ -52,8 +49,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
 
   hooks::injectHarvestResource();
-
-  jmpPatch(getUnitMaxEnergyWrapper,       offsets::Hook_GetUnitMaxEnergy);
+  hooks::injectUnitMaxEnergyHook();
 
   jmpPatch(orderNewUnitToRallyWrapper,    offsets::Hook_OrderNewUnitToRally);
   callPatch(setRallyPositionWrapper_Call, offsets::Hook_SetRallyPosition_Call);
