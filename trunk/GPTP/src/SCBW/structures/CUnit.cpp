@@ -203,6 +203,22 @@ u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
   return maxWeaponRange;
 }
 
+const u32 Func_GetMaxEnergy = 0x00491870;
+u16 CUnit::getMaxEnergy() const {
+  assert(this);
+  
+  static u16 result;
+  __asm {
+    PUSHAD
+    MOV EAX, this
+    CALL Func_GetMaxEnergy
+    MOV result, AX
+    POPAD
+  }
+
+  return result;
+}
+
 const u32 Func_UpdateSpeed = 0x00454310;
 void CUnit::updateSpeed() {
   assert(this);

@@ -26,16 +26,3 @@ static void __declspec(naked) getUnitMaxEnergyWrapper() {
     RETN
   }
 }
-
-//Wrapper for native version
-static u16 getUnitMaxEnergy(const CUnit* unit) {
-  static u16 result;
-  __asm {
-    PUSHAD
-    MOV EAX, unit
-    CALL offsets::Hook_GetUnitMaxEnergy
-    MOV result, AX
-    POPAD
-  }
-  return result;
-}

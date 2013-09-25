@@ -59,6 +59,9 @@ struct CUnit {
   /// attached to this unit for calculating upgrade effects.
   u32 getMaxWeaponRange(u8 weaponId) const;
 
+  /// Returns the maximum energy amount of this unit.
+  u16 getMaxEnergy() const;
+
   /// Updates the unit's actual speed. This function should be called after
   /// changing any properties and status effects that affect movement speed.
   void updateSpeed();
