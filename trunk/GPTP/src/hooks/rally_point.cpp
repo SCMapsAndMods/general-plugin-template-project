@@ -5,6 +5,7 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
+namespace hooks {
 
 /// Orders newly-produced units to rally, based upon the properties of the
 /// building that produced it.
@@ -40,3 +41,5 @@ void setRallyUnit(CUnit *unit, CUnit *target) {
   unit->rally.pt.x = target->getX();
   unit->rally.pt.y = target->getY();
 }
+
+} //hooks

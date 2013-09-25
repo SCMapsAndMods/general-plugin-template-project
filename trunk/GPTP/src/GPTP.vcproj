@@ -339,6 +339,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\rally_point_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\recharge_shields.cpp"
 				>
 			</File>
