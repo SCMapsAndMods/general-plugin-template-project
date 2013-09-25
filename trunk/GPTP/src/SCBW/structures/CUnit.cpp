@@ -219,6 +219,22 @@ u16 CUnit::getMaxEnergy() const {
   return result;
 }
 
+const u32 Func_GetArmorBonus = 0x00453FC0;
+u8 CUnit::getArmor() const {
+  assert(this);
+
+  static u8 armorBonus;
+  __asm {
+    PUSHAD
+    MOV EAX, this
+    CALL Func_GetArmorBonus
+    MOV armorBonus, AL
+    POPAD
+  }
+
+  return Unit::ArmorAmount[this->id] + armorBonus;
+}
+
 const u32 Func_UpdateSpeed = 0x00454310;
 void CUnit::updateSpeed() {
   assert(this);

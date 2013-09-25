@@ -26,16 +26,3 @@ static void __declspec(naked) getArmorBonusWrapper() {
     RETN
   }
 }
-
-//Wrapper for native version
-static u8 getArmorBonus(const CUnit *unit) {
-  u8 armor;
-  __asm {
-    PUSHAD
-    MOV EAX, unit
-    CALL offsets::Hook_GetArmorBonus
-    MOV armor, AL
-    POPAD
-  }
-  return armor;
-}
