@@ -347,6 +347,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\recharge_shields_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\Shape.cpp"
 				>
 			</File>

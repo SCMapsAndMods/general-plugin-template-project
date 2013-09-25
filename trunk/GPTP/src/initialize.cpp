@@ -52,10 +52,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectUnitMaxEnergyHook();
 
   hooks::injectRallyHooks();
-
-  callPatch(rechargeShieldsProcWrapper,   offsets::Hook_RechargeShieldsProc);
-  jmpPatch(unitCanRechargeShieldsWrapper, offsets::Hook_UnitCanRechargeShields);
-  jmpPatch(canStopRechargeShieldsWrapper, offsets::Hook_CanStopRechargeShields);
+  hooks::injectRechargeShieldsHooks();
 
   jmpPatch(getSightRangeWrapper,          offsets::Hook_GetSightRange);
 
