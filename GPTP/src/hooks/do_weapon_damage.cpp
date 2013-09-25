@@ -73,7 +73,7 @@ void doWeaponDamageHook(s32     damage,
 
   //Apply armor
   if (damageType != DamageType::IgnoreArmor) {
-    const s32 armorTotal = (Unit::ArmorAmount[target->id] + getArmorBonus(target)) << 8;
+    const s32 armorTotal = target->getArmor() << 8;
     damage -= std::min<s32>(damage, armorTotal);
   }
 
