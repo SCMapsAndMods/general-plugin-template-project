@@ -17,7 +17,7 @@ bool unitCanDetectHook(const CUnit *unit) {
          && !unit->isBlind;
 }
 
-//Check if the @p unit can see the @p target (assuming it is cloaked).
+//Check if the @p unit can see the @p target (assuming target is cloaked).
 u32 getCloakedTargetVisibility(const CUnit *unit, const CUnit* target) {
   //Default StarCraft behavior
   if (target->status & UnitStatus::IsHallucination)
@@ -26,11 +26,18 @@ u32 getCloakedTargetVisibility(const CUnit *unit, const CUnit* target) {
   if (unitCanDetectHook(unit) && unit != target) {
     if ((1 << unit->playerId) & target->sprite->visibilityFlags) {
       u32 detectionRange;
+
       if (unit->status & UnitStatus::GroundedBuilding)
         detectionRange = 224;
       else
-        detectionRange = 32 * 
+        detectionRange = 32 * unit->getSightRange();
+
+      if (unit->getDistanceToTarget(target) <= detectionRange)
+        return ((1 << unit->playerId) | playerVision->flags[unit->playerId] | unit->parasiteFlags);
     }
+  }
+
+  return 0;
 }
 
 } //hooks
