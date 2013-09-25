@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\bunker_hooks_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SCBW\structures\CImage.cpp"
 				>
 			</File>
@@ -286,6 +290,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\max_unit_energy.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\max_unit_energy_inject.cpp"
 				>
 			</File>
 			<File

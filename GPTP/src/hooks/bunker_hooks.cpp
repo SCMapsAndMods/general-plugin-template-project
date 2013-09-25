@@ -1,6 +1,8 @@
 #include "bunker_hooks.h"
 #include "../SCBW/enumerations.h"
 
+namespace hooks {
+
 /// Checks whether the unit can attack from inside a bunker.
 bool unitCanAttackInsideBunkerHook(const CUnit *unit) {
   //Default StarCraft behavior
@@ -17,4 +19,6 @@ bool unitCanAttackInsideBunkerHook(const CUnit *unit) {
     return true;
   else
     return false;
+}
+
 }
