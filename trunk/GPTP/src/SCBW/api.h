@@ -94,7 +94,7 @@ inline bool isBroodWarMode() {
 /// Checks whether @p playerB is recognized by @p playerA as an ally.
 /// Warning: The opposite may not necessarily be true!
 inline bool isAlliedTo(u8 playerA, u8 playerB) {
-  return 0 != playerAlliance[playerA].player[playerB];
+  return 0 != playerAlliance[playerA].flags[playerB];
 }
 
 /// Refreshes the screen position within the given rectangle area in pixels.

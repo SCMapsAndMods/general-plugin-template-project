@@ -8,7 +8,7 @@
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
 #include "hooks/consume.h"
-#include "hooks/detector_check.h"
+#include "hooks/detector.h"
 #include "hooks/do_weapon_damage.h"
 #include "hooks/energy_regeneration.h"
 #include "hooks/harvest.h"
@@ -28,7 +28,7 @@
 #include "graphics/draw_hook.h"
 
 //Defined in CUnit.cpp
-namespace scbw { extern const u32 Func_DoWeaponDamage; }
+extern const u32 Func_DamageWith;
 
 /// This function is called when the plugin is loaded into StarCraft.
 /// You can enable/disable each group of hooks by commenting them.
@@ -45,9 +45,9 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectCloakNearbyUnits();
   hooks::injectConsumeHooks();
 
-  //@TODO: Inject detector hooks here
+  hooks::injectDetectorHooks();
 
-  jmpPatch(doWeaponDamageWrapper,         scbw::Func_DoWeaponDamage);
+  jmpPatch(doWeaponDamageWrapper,         Func_DamageWith);
 
   jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
 

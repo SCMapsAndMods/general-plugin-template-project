@@ -97,11 +97,12 @@ struct SpriteTileData {
 };
 SCBW_DATA(SpriteTileData*, spritesOnTileRow,    0x00629288);
 
-//Player alliance status
-struct PlayerAllianceData {
-  u8 player[PLAYER_COUNT];
+template <typename T>
+struct PlayerFlags {
+  T flags[PLAYER_COUNT];
 };
-SCBW_DATA(PlayerAllianceData*, playerAlliance,  0x0058D634);
+SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);
+SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 
 //-------- Internal constants --------//
 
