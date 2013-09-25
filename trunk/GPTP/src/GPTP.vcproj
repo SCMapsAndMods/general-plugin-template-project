@@ -395,6 +395,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\weapon_cooldown_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\weapon_range.cpp"
 				>
 			</File>
