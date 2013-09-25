@@ -48,7 +48,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectDamageWithHook();
   hooks::injectDetectorHooks();
 
-  jmpPatch(regenerateEnergyWrapper,       offsets::Hook_RegenerateEnergy);
+  hooks::injectEnergyRegenerationHook();
 
   hooks::injectHarvestResource();
   hooks::injectUnitMaxEnergyHook();

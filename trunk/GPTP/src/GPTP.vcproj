@@ -265,6 +265,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\energy_regeneration_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\Font.cpp"
 				>
 			</File>
