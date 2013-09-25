@@ -5,9 +5,12 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
+namespace {
 //Helper function: Returns true if the unit's HP <= 33%.
 static bool unitHpIsInRedZone(const CUnit *unit);
+} //unnamed namespace
 
+namespace hooks {
 
 /// Updates unit timers, regenerates hp and shields, and burns down Terran buildings.
 /// Logically equivalent to function @ 0x004EC290
@@ -95,21 +98,22 @@ void updateUnitTimersHook(CUnit* unit) {
   }
 }
 
+} //hooks
 
+namespace {
 
 /**** Helper function definitions. Do not modify anything below this! ****/
-namespace offsets {
 const u32 Helper_UnitHpIsInRedZone  = 0x004022C0;
-}
-
-static bool unitHpIsInRedZone(const CUnit *unit) {
-  u32 result;
+bool unitHpIsInRedZone(const CUnit *unit) {
+  static Bool32 result;
   __asm {
     PUSHAD
     MOV ECX, unit
-    CALL offsets::Helper_UnitHpIsInRedZone
+    CALL Helper_UnitHpIsInRedZone
     MOV result, EAX
     POPAD
   }
   return result != 0;
+}
+
 }

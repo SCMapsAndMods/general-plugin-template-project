@@ -399,6 +399,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\update_unit_timers_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\weapon_cooldown.cpp"
 				>
 			</File>
