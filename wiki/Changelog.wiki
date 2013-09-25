@@ -4,7 +4,7 @@
 
 == v2.34 Preview ==
 
- * The hook system is being overhauled from the header-source format to a header-source-injector format.
+ * The hook system has been overhauled from the header-source format to the header-source-injector format.
  * MPQDraftPlugin overhaul:
   * `qdp.cpp` has been replaced with `Plugin.h`, `Plugin.cpp` and `plugin_main.cpp`. This should be unnoticeable for most modders.
   * `qdp.def` has been renamed to `plugin.def`. This should be reflected in the tutorials.
@@ -15,8 +15,9 @@
   * Drawing functions now take an extra parameter of `graphics::CoordType` type. Allowed values are `graphics::ON_SCREEN` (default), `graphics::ON_MAP`, and `graphics::ON_MOUSE`.
  * The following functions have been replaced with:
   * `scbw::createOverlay() => CSprite::createOverlay(), CSprite::createTopOverlay()`
-  * `scbw::removeOverlay() => CUnit::removeOverlay() and CSprite::removeOverlay()`
- * New functions: `scbw::showErrorMessageWithSfx(), scbw::refreshButtonSet()`
+  * `scbw::removeOverlay() => CUnit::removeOverlay(), CSprite::removeOverlay()`
+  * `scbw::doWeaponDamage() => CUnit::damageWith()`
+ * New functions: `scbw::showErrorMessageWithSfx(), scbw::refreshButtonSet(), CUnit::getMaxWeaponRange(), CUnit::getMaxEnergy(), CUnit::getArmor(), CUnit::getArmorBonus(), CUnit::getSightRange()`
  * New hooks
   * `hooks/harvest.cpp`: Change how much resources are harvested/returned per each worker trip.
  * Bug fixes
