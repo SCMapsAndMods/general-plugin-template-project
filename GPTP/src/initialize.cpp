@@ -45,7 +45,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectCloakNearbyUnits();
   hooks::injectConsumeHooks();
 
-  //
+  //@TODO: Inject detector hooks here
 
   jmpPatch(doWeaponDamageWrapper,         scbw::Func_DoWeaponDamage);
 

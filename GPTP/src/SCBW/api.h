@@ -20,15 +20,6 @@ void playSound(u32 sfxId, const CUnit *sourceUnit = NULL);
 /// @param  sfxId     ID of the sound file in sfxdata.dat.
 void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId);
 
-/// Deals damage to the target unit, as though it was attacked by another unit.
-void doWeaponDamage(s32     damage,
-                    CUnit*  target,
-                    u8      weaponId,             ///< Used to determine damage type (normal, concussive, explosive, etc.)
-                    CUnit*  attacker = NULL,      ///< This unit receives kill count if the target dies
-                    u32     attackingPlayer = -1, ///< For increasing kill scores and checking whether to apply the Power Overwhelming cheat
-                    s8      direction = 0,        ///< Used to create plasma shield flickering overlays
-                    u32     dmgDivisor = 1);      ///< Used for calculating splash damage or Glave Wurm bounce damage.
-
 /// Checks whether the unit has an image overlay that matches the given ID.
 bool hasOverlay(const CUnit* const unit, const u32 imageId);
 

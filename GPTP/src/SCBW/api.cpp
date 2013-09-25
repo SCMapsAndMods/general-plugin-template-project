@@ -51,35 +51,6 @@ void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId) {
   }
 }
 
-//Note: Also used by doWeaponDamageHook()
-extern const u32 Func_DoWeaponDamage = 0x00479930;
-void doWeaponDamage(s32     damage,
-                    CUnit*  target,
-                    u8      weaponId,
-                    CUnit*  attacker,
-                    u32     attackingPlayer,
-                    s8      direction,
-                    u32     dmgDivisor
-                    ) {
-  if (!target || weaponId >= WEAPON_TYPE_COUNT || dmgDivisor == 0) return;
-
-  u32 _direction = direction;
-  u32 _weaponId = weaponId;
-
-  __asm {
-    PUSHAD
-    MOV edi, target
-    MOV eax, damage
-    PUSH attackingPlayer
-    PUSH attacker
-    PUSH _direction
-    PUSH dmgDivisor
-    PUSH _weaponId
-    CALL Func_DoWeaponDamage
-    POPAD
-  }
-}
-
 // Logically equivalent to function @ 0x004E5C90
 bool hasOverlay(const CUnit* const unit, const u32 imageId) {
   CImage *image = unit->sprite->imageHead;
