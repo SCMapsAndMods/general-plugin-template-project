@@ -367,6 +367,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\sight_range_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\stim_packs.cpp"
 				>
 			</File>
