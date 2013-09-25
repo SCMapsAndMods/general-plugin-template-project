@@ -61,8 +61,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   hooks::injectUnitSpeedHooks();
 
-  jmpPatch(updateStatusEffectsWrapper,    offsets::Hook_UpdateStatusEffects);
-
+  hooks::injectUpdateStatusEffects();
   hooks::injectUpdateUnitTimers();
 
   hooks::injectWeaponCooldownHook();  

@@ -3,12 +3,14 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/scbwdata.h"
 
-
+namespace {
 //Helper functions that should be used only in this file
-static void runIrradiateDamageLoop(CUnit *unit);
-static void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount);
-static u8 getAcidSporeOverlayAdjustment(const CUnit* const unit);
+void runIrradiateDamageLoop(CUnit *unit);
+void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount);
+u8 getAcidSporeOverlayAdjustment(const CUnit* const unit);
+} //unnamed namespace
 
+namespace hooks {
 
 //Detour for UpdateStatusEffects() (AKA RestoreAllUnitStats())
 //Original function address: 0x00492F70 (SCBW 1.16.1)
@@ -100,24 +102,23 @@ void updateStatusEffectsHook(CUnit *unit) {
   }
 }
 
+} //hooks
 
+namespace {
 /**** Helper function definitions. Do not change anything below this! ****/
 
-namespace offsets {
 const u32 IrradiateDamageLoop = 0x004555C0;
-}
-
-static void runIrradiateDamageLoop(CUnit *unit) {
+void runIrradiateDamageLoop(CUnit *unit) {
   __asm {
     PUSHAD
     MOV ECX, unit
-    CALL offsets::IrradiateDamageLoop
+    CALL IrradiateDamageLoop
     POPAD
   }
 }
 
 //Logic copied from function @ 0x00454ED0
-static void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount) {
+void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount) {
   if (unit->defensiveMatrixHp > amount) {
     unit->defensiveMatrixHp -= amount;
   }
@@ -134,8 +135,10 @@ static void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount) {
   }
 }
 
-static u8 getAcidSporeOverlayAdjustment(const CUnit* const unit) {
+u8 getAcidSporeOverlayAdjustment(const CUnit* const unit) {
   u8 adjustment = unit->acidSporeCount >> 1;
   return (adjustment < 3 ? adjustment : 3)
           + 4 * scbw::getUnitOverlayAdjustment(unit);
 }
+
+} //unnamed namespace
