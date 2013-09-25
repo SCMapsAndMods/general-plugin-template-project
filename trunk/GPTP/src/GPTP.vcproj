@@ -395,6 +395,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\update_status_effects_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\update_unit_timers.cpp"
 				>
 			</File>
