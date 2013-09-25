@@ -2,6 +2,8 @@
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
 
+namespace hooks {
+
 /// Calculates the unit's weapon cooldown, factoring in upgrades and status effects.
 ///
 /// @return		The modified cooldown value.
@@ -27,3 +29,5 @@ u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId) {
 
 	return cooldown;
 }
+
+} //hooks

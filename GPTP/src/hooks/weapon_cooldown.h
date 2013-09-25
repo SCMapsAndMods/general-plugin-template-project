@@ -1,30 +1,10 @@
 #pragma once
 #include "../SCBW/structures.h"
 
-namespace offsets {
-const u32 Hook_GetModifiedWeaponCooldown  = 0x00475DC0;
-}
+namespace hooks {
 
 u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId);
 
-//Inject with jmpPatch()
-static void __declspec(naked) getModifiedWeaponCooldownWrapper() {
-	static CUnit *unit;
-	static u8 weaponId;
-	static u32 cooldown;
-	__asm {
-		PUSHAD
-		MOV ebp, esp
-		MOV unit, esi
-		MOV weaponId, al
-	}
+void injectWeaponCooldownHook();
 
-	cooldown = getModifiedWeaponCooldownHook(unit, weaponId);
-
-	__asm {
-		MOV eax, cooldown
-		MOV [esp + 28], eax
-		POPAD
-		RETN
-	}
-}
+} //hooks

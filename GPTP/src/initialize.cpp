@@ -68,9 +68,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   jmpPatch(updateUnitTimersWrapper,       offsets::Hook_UpdateUnitTimers);
 
-  jmpPatch(getModifiedWeaponCooldownWrapper,
-           offsets::Hook_GetModifiedWeaponCooldown);
-  
+  hooks::injectWeaponCooldownHook();  
   hooks::injectWeaponRangeHooks();
 
   hooks::injectUnitDestructorSpecial();
