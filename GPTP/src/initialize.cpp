@@ -51,13 +51,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectHarvestResource();
   hooks::injectUnitMaxEnergyHook();
 
-  jmpPatch(orderNewUnitToRallyWrapper,    offsets::Hook_OrderNewUnitToRally);
-  callPatch(setRallyPositionWrapper_Call, offsets::Hook_SetRallyPosition_Call);
-  jmpPatch(setRallyPositionWrapper_Jmp1,  offsets::Hook_SetRallyPosition_Jmp1);
-  jmpPatch(setRallyPositionWrapper_Jmp2,  offsets::Hook_SetRallyPosition_Jmp2);
-  callPatch(setRallyUnitWrapper_Call,     offsets::Hook_SetRallyUnit_Call);
-  jmpPatch(setRallyUnitWrapper_Jmp1,      offsets::Hook_SetRallyUnit_Jmp1);
-  jmpPatch(setRallyUnitWrapper_Jmp2,      offsets::Hook_SetRallyUnit_Jmp2);
+  hooks::injectRallyHooks();
 
   callPatch(rechargeShieldsProcWrapper,   offsets::Hook_RechargeShieldsProc);
   jmpPatch(unitCanRechargeShieldsWrapper, offsets::Hook_UnitCanRechargeShields);
