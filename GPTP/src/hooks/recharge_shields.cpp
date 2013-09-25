@@ -3,6 +3,8 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
+namespace hooks {
+
 /// Decides whether the @p target can recharge shields from the @p battery.
 bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
   //Default StarCraft behavior
@@ -78,3 +80,4 @@ bool canStopRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
          || battery->energy == 0; //Shield Battery is drained
 }
 
+} //hooks
