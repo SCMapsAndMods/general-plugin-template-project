@@ -4,7 +4,7 @@
 namespace {
 
 //Inject with jmpPatch()
-static void __declspec(naked) getUnitMaxEnergyWrapper() {
+void __declspec(naked) getUnitMaxEnergyWrapper() {
   static CUnit *unit;
   static u16 maxEnergy;
 

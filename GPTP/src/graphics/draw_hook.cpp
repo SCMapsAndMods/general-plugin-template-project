@@ -5,8 +5,7 @@
 
 //-------- Draw hook taken from BWAPI --------//
 static bool wantRefresh = false;
-static void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds)
-{
+void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds) {
   if (wantRefresh) {
     wantRefresh = false;
     scbw::refreshScreen();

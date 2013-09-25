@@ -5,7 +5,7 @@ namespace {
 
 //Inject with callPatch
 const u32 Hook_RechargeShieldsProc = 0x00493ED2;
-static void __declspec(naked) rechargeShieldsProcWrapper() {
+void __declspec(naked) rechargeShieldsProcWrapper() {
   CUnit *target, *battery;
   __asm {
     PUSHAD
@@ -24,7 +24,7 @@ static void __declspec(naked) rechargeShieldsProcWrapper() {
 
 //Inject with jmpPatch
 const u32 Hook_UnitCanRechargeShields = 0x00493520;
-static void __declspec(naked) unitCanRechargeShieldsWrapper() {
+void __declspec(naked) unitCanRechargeShieldsWrapper() {
   CUnit *target, *battery;
   __asm {
     PUSHAD
@@ -52,7 +52,7 @@ static void __declspec(naked) unitCanRechargeShieldsWrapper() {
 //Inject with jmpPatch
 const u32 Hook_CanStopRechargeShields = 0x00493ED7;
 const u32 Hook_CanStopRechargeShieldsYes = 0x00493EF7;
-static void __declspec(naked) canStopRechargeShieldsWrapper() {
+void __declspec(naked) canStopRechargeShieldsWrapper() {
   CUnit *target, *battery;
   __asm {
     PUSHAD

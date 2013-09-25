@@ -27,9 +27,6 @@
 #include "hooks/psi_field.h"
 #include "graphics/draw_hook.h"
 
-//Defined in CUnit.cpp
-extern const u32 Func_DamageWith;
-
 /// This function is called when the plugin is loaded into StarCraft.
 /// You can enable/disable each group of hooks by commenting them.
 /// You can also add custom modifications to StarCraft.exe by using:

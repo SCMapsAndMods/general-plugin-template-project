@@ -5,7 +5,7 @@ namespace {
 
 //Inject with jmpPatch()
 const u32 Hook_GetSeekRange       = 0x00476000;
-static void __declspec(naked) getSeekRangeWrapper() {
+void __declspec(naked) getSeekRangeWrapper() {
   CUnit *unit;
   u8 seekRange;
   __asm {
@@ -26,7 +26,7 @@ static void __declspec(naked) getSeekRangeWrapper() {
 
 //Inject with jmpPatch()
 const u32 Hook_GetMaxWeaponRange  = 0x00475870;
-static void __declspec(naked) getMaxWeaponRangeWrapper() {
+void __declspec(naked) getMaxWeaponRangeWrapper() {
   CUnit *unit;
   u8 weaponId;
   u32 maxWeaponRange;
