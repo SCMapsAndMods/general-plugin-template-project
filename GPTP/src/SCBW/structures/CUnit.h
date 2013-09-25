@@ -65,6 +65,9 @@ struct CUnit {
   /// Returns the armor count of this unit (with upgrades).
   u8 getArmor() const;
 
+  /// Returns the bonus armor this unit has (from upgrades).
+  u8 getArmorBonus() const;
+
   /// Updates the unit's actual speed. This function should be called after
   /// changing any properties and status effects that affect movement speed.
   void updateSpeed();
