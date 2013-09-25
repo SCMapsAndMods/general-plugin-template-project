@@ -5,6 +5,7 @@
 //Hook header files
 #include "hooks/game_hooks.h"
 #include "hooks/apply_upgrade_flags.h"
+#include "hooks/armor_bonus.h"
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
 #include "hooks/consume.h"
@@ -17,7 +18,6 @@
 #include "hooks/recharge_shields.h"
 #include "hooks/sight_range.h"
 #include "hooks/stim_packs.h"
-#include "hooks/unit_armor_bonus.h"
 #include "hooks/unit_speed.h"
 #include "hooks/update_status_effects.h"
 #include "hooks/update_unit_timers.h"
@@ -39,6 +39,8 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectGameHooks();
   hooks::injectApplyUpgradeFlags();
 
+  hooks::injectArmorBonusHook();
+
   hooks::injectBunkerHooks();
   hooks::injectCloakNearbyUnits();
   hooks::injectConsumeHooks();
@@ -56,8 +58,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   jmpPatch(getSightRangeWrapper,          offsets::Hook_GetSightRange);
   hooks::injectStimPacksHooks();
-
-  jmpPatch(getArmorBonusWrapper,          offsets::Hook_GetArmorBonus);
 
   hooks::injectUnitSpeedHooks();
 
