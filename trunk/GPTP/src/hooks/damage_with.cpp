@@ -1,13 +1,13 @@
-#include "do_weapon_damage.h"
-#include "unit_armor_bonus.h"
+#include "damage_with.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 #include <algorithm>
 
+namespace {
 //Helper functions
-static void createShieldOverlay(CUnit *unit, u32 attackDirection);
-static u16 getUnitStrength(const CUnit *unit, bool useGroundStrength);
+void createShieldOverlay(CUnit *unit, u32 attackDirection);
+u16 getUnitStrength(const CUnit *unit, bool useGroundStrength);
 
 /// Definition of damage factors (explosive, concussive, etc.)
 struct {
@@ -21,14 +21,18 @@ struct {
   {4, 0, 256, 256, 256}   //IgnoreArmor
 };
 
-/// Hooks into the doWeaponDamage() function, available in api.h.
-void doWeaponDamageHook(s32     damage,
-                        CUnit*  target,
-                        u8      weaponId,
-                        CUnit*  attacker,
-                        u32     attackingPlayer,
-                        u8      direction,
-                        u32     dmgDivisor) {
+} //unnamed namespace
+
+namespace hooks {
+
+/// Hooks into the CUnit::damageWith() function.
+void damageWithHook(s32     damage,
+                    CUnit*  target,
+                    u8      weaponId,
+                    CUnit*  attacker,
+                    s8      attackingPlayer,
+                    s8      direction,
+                    u8      dmgDivisor) {
   //Default StarCraft behavior
   using scbw::isCheatEnabled;
   using CheatFlags::PowerOverwhelming;
@@ -98,26 +102,27 @@ void doWeaponDamageHook(s32     damage,
   target->groundStrength = getUnitStrength(target, true);
 }
 
+} //hooks
+
+namespace{
 
 /**** Definitions of helper functions. Do NOT modify anything below! ****/
-namespace offsets {
-const u32 Helper_CreateShieldOverlay  = 0x004E6140;
-const u32 Helper_GetUnitStrength      = 0x00431800;
-}
 
 //Creates the Plasma Shield flickering effect.
-static void createShieldOverlay(CUnit *unit, u32 attackDirection) {
+const u32 Helper_CreateShieldOverlay  = 0x004E6140;
+void createShieldOverlay(CUnit *unit, u32 attackDirection) {
   __asm {
     PUSHAD
     MOV EAX, attackDirection
     MOV ECX, unit
-    CALL offsets::Helper_CreateShieldOverlay
+    CALL Helper_CreateShieldOverlay
     POPAD
   }
 }
 
 //Somehow related to AI stuff; details unknown.
-static u16 getUnitStrength(const CUnit *unit, bool useGroundStrength) {
+const u32 Helper_GetUnitStrength      = 0x00431800;
+u16 getUnitStrength(const CUnit *unit, bool useGroundStrength) {
   u16 strength;
   u32 useGroundStrength_ = (useGroundStrength ? 1 : 0);
 
@@ -125,10 +130,12 @@ static u16 getUnitStrength(const CUnit *unit, bool useGroundStrength) {
     PUSHAD
     PUSH useGroundStrength_
     MOV EAX, unit
-    CALL offsets::Helper_GetUnitStrength
+    CALL Helper_GetUnitStrength
     MOV strength, AX
     POPAD
   }
 
   return strength;
 }
+
+} //unnamed namespace
