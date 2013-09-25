@@ -1,6 +1,8 @@
 #include "stim_packs.h"
 #include "../SCBW/api.h"
 
+namespace hooks {
+
 void useStimPacksHook(CUnit *unit) {
   //Default StarCraft behavior
   if (unit->hitPoints > 2560) {
@@ -17,3 +19,5 @@ bool canUseStimPacksHook(const CUnit *unit) {
   //Default StarCraft behavior
   return unit->hitPoints > 2560;
 }
+
+} //hooks

@@ -55,10 +55,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectRechargeShieldsHooks();
 
   jmpPatch(getSightRangeWrapper,          offsets::Hook_GetSightRange);
-
-  callPatch(useStimPacksAiWrapper,        offsets::Hook_UseStimPacksAi);
-  jmpPatch(useStimPacksPlayerWrapper,     offsets::Hook_UseStimPacksPlayer);
-  jmpPatch(canUseStimPacksWrapper,        offsets::Hook_CanUseStimPacks);
+  hooks::injectStimPacksHooks();
 
   jmpPatch(getArmorBonusWrapper,          offsets::Hook_GetArmorBonus);
 
