@@ -16,7 +16,7 @@ void cloakNearbyUnitsHook(CUnit *unit) {
   //Default StarCraft behavior
 
   //Use the unit's air weapon range
-  const unsigned int cloakRadius = getMaxWeaponRange(unit, Unit::AirWeapon[unit->id]);
+  const unsigned int cloakRadius = unit->getMaxWeaponRange(Unit::AirWeapon[unit->id]);
 
   //Run the unit finder
   int left    = unit->getX() - cloakRadius;

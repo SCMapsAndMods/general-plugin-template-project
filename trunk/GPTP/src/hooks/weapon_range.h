@@ -50,19 +50,3 @@ static void __declspec(naked) getMaxWeaponRangeWrapper() {
     RETN
   }
 }
-
-//Wrapper for native version of getMaxWeaponRange()
-static int getMaxWeaponRange(CUnit *unit, u8 weaponId) {
-  int maxWeaponRange;
-
-  __asm {
-    PUSHAD
-    MOV BL, weaponId
-    MOV EAX, unit
-    CALL offsets::Hook_GetMaxWeaponRange
-    MOV maxWeaponRange, EAX
-    POPAD
-  }
-
-  return maxWeaponRange;
-}

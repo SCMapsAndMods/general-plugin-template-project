@@ -17,6 +17,15 @@ struct CUnit {
   /// strength data (used by the AI). HP is guaranteed not to overflow.
   void setHp(s32 hitPoints);
 
+  /// Deals damage to this unit, using a specific weapons.dat ID.
+  void damageWith(s32 damage,               ///< Amount of damage dealt to this unit.
+                  u8 weaponId,              ///< weapons.dat ID to use.
+                  CUnit *attacker = NULL,   ///< Attacking unit (for increasing kill count)
+                  s8 attackingPlayer = -1,  ///< Attacking player (for increasing kill score)
+                  s8 direction = 0,         ///< Attacked direction (for shield flicker overlays)
+                  u8 damageDivisor = 1      ///< Damage divisor (for splash damage / glave wurm calculations)
+                  );
+
   /// Deals damage directly to unit HP, killing it if possible.
   void damageHp(s32 damage, CUnit *attacker = NULL, s32 attackingPlayer = -1,
                 bool notify = true);
@@ -35,16 +44,20 @@ struct CUnit {
 
   /// Checks whether this unit can reach the @p target unit. This checks only
   /// for terrain, and does not consider obstacles (units and buildings).
-  bool hasPathToUnit(const CUnit *target);
+  bool hasPathToUnit(const CUnit *target) const;
 
   /// Checks whether this unit can reach the target position. This checks only
   /// for terrain, and does not consider obstacles (units and buildings).
-  bool hasPathToPos(u32 x, u32 y);
+  bool hasPathToPos(u32 x, u32 y) const;
 
   /// Returns the distance between this unit and the @p target, taking unit
   /// collision size in units.dat into account.
   /// Internally, this function uses scbw::getDistanceFast().
   u32 getDistanceToTarget(const CUnit *target) const;
+
+  /// Returns the maximum range of a weapon. The weapon is assumed to be
+  /// attached to this unit for calculating upgrade effects.
+  u32 getMaxWeaponRange(u8 weaponId) const;
 
   /// Updates the unit's actual speed. This function should be called after
   /// changing any properties and status effects that affect movement speed.

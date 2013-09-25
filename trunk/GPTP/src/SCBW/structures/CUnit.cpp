@@ -17,6 +17,31 @@ void CUnit::setHp(s32 hitPoints) {
   }
 }
 
+const u32 Func_DamageWith = 0x00479930; //Note: Also used by doWeaponDamageHook()
+void CUnit::damageWith(s32 damage, u8 weaponId, CUnit *attacker,
+                       s8 attackingPlayer, s8 direction, u8 damageDivisor) {
+  assert(this);
+  assert(weaponId < WEAPON_TYPE_COUNT);
+  assert(damageDivisor != 0);
+
+  u32 weaponId_         = weaponId;
+  s32 attackingPlayer_  = attackingPlayer;
+  s32 direction_        = direction;
+  s32 damageDivisor_    = damageDivisor;
+  __asm {
+    PUSHAD
+    MOV EDI, this
+    MOV EAX, damage
+    PUSH attackingPlayer_
+    PUSH attacker
+    PUSH direction_
+    PUSH damageDivisor_
+    PUSH weaponId_
+    CALL Func_DamageWith
+    POPAD    
+  }
+}
+
 const u32 Func_DamageUnitHp = 0x004797B0;
 void CUnit::damageHp(s32 damage, CUnit *attacker, s32 attackingPlayer, bool notify) {
   assert(this);
@@ -99,7 +124,7 @@ void CUnit::orderTo(u32 orderId, u16 x, u16 y) {
 }
 
 const u32 Func_HasPathToTarget = 0x0049CBB0; //AKA unitHasPathToUnit()
-bool CUnit::hasPathToUnit(const CUnit *target) {
+bool CUnit::hasPathToUnit(const CUnit *target) const {
   assert(this);
   assert(target);
   u32 result;
@@ -117,7 +142,7 @@ bool CUnit::hasPathToUnit(const CUnit *target) {
 }
 
 const u32 Func_HasPathToPos = 0x0049CB60; //AKA unitHasPathToDest()
-bool CUnit::hasPathToPos(u32 x, u32 y) {
+bool CUnit::hasPathToPos(u32 x, u32 y) const {
   assert(this);
   u32 result;
 
@@ -158,6 +183,24 @@ u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   }
 
   return scbw::getDistanceFast(0, 0, dx, dy);
+}
+
+const u32 Func_GetMaxWeaponRange = 0x00475870;
+u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
+  assert(this);
+  assert(weaponId < WEAPON_TYPE_COUNT);
+
+  static u32 maxWeaponRange;
+  __asm {
+    PUSHAD
+    MOV BL, weaponId
+    MOV EAX, this
+    CALL Func_GetMaxWeaponRange
+    MOV maxWeaponRange, EAX
+    POPAD
+  }
+
+  return maxWeaponRange;
 }
 
 const u32 Func_UpdateSpeed = 0x00454310;
