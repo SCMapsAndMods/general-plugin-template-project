@@ -1,7 +1,9 @@
-#include "unit_armor_bonus.h"
+#include "armor_bonus.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
+
+namespace hooks {
 
 /// Returns the bonus armor for this unit.
 u8 getArmorBonusHook(const CUnit *unit) {
@@ -18,4 +20,6 @@ u8 getArmorBonusHook(const CUnit *unit) {
     }
   }
   return armorUpg + getUpgradeLevel(unit->playerId, Unit::ArmorUpgrade[unit->id]);
+}
+
 }
