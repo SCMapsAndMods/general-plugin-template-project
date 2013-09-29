@@ -1,3 +1,7 @@
 #pragma once
 
-void InjectDrawHook();
+namespace hooks {
+
+void injectDrawHook();
+
+} //hooks
