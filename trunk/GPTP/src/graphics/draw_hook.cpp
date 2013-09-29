@@ -3,8 +3,10 @@
 #include "../hook_tools.h"
 #include "graphics_misc.h"
 
+namespace {
+
 //-------- Draw hook taken from BWAPI --------//
-static bool wantRefresh = false;
+bool wantRefresh = false;
 void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds) {
   if (wantRefresh) {
     wantRefresh = false;
@@ -24,6 +26,12 @@ void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds) {
     wantRefresh = true;
 }
 
-void InjectDrawHook() {
+} //unnamed namespace
+
+namespace hooks {
+
+void injectDrawHook() {
   memoryPatch(0x004BD68D, &DrawHook);
 }
+
+} //hooks

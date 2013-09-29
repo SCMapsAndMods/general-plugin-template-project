@@ -67,7 +67,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectUnitDestructorSpecial();
   hooks::injectPsiFieldHooks();
 
-  InjectDrawHook();
+  hooks::injectDrawHook();
 
   return TRUE;
 }
