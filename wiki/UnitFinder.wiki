@@ -1,0 +1,81 @@
+#summary Documentation on the UnitFinder class.
+
+Class header file: [http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/UnitFinder.h SCBW/UnitFinder.h]
+
+The `UnitFinder` class utilizies the internal data structures that !StarCraft uses to efficiently search for units within a portion of the map.
+
+<wiki:toc max_depth="2" />
+
+= Methods =
+
+== !UnitFinder ==
+
+{{{
+UnitFinder();
+UnitFinder(int left, int top, int right, int bottom);
+}}}
+
+Constructors for the `UnitFinder` class. The four-parameter version immediately calls [#search UnitFinder::search()].
+
+== search ==
+
+{{{
+void search(int left, int top, int right, int bottom);
+}}}
+
+Searches for all units within the given bounds, using !StarCraft's internal data structures. This is much more efficient than manually looping through the entire unit table or linked list.
+
+== getUnitCount ==
+
+{{{
+int getUnitCount() const;
+}}}
+
+Returns the number of units found by [#search UnitFinder::search()]. If no searches have been conducted, returns 0.
+
+== getUnit ==
+
+{{{
+CUnit* getUnit(int index) const;
+}}}
+
+Returns the unit at the given index. Invalid index returns `NULL` instead.
+
+
+== forEach ==
+
+{{{
+template <typename callback>
+void forEach(callback &proc) const;
+}}}
+
+Iterates through all units found, calling `proc()` once for each unit.
+
+=== Parameters ===
+ * `procA`: A callback function that accepts a `CUnit` pointer.
+
+
+== getFirst ==
+
+{{{
+template <typename callback>
+CUnit* getFirst(callback &match) const;
+}}}
+
+Returns the first unit for which `match()` returns true. If there are no matches, returns `NULL`.
+
+=== Parameters ===
+ *  `match`: A callback function that accepts a `CUnit` pointer and returns true/false.
+
+
+== getBest ==
+
+{{{
+template <typename callback>
+CUnit* getBest(callback &score) const;
+}}}
+
+Returns the unit for which `score()` returns the highest nonnegative score. If there are no units, returns `NULL`.
+
+=== Parameters ===
+ * `score`: A callback function that accepts a `CUnit` pointer and returns an int value as the unit's "score". If the score is less than zero, the unit is ignored.
