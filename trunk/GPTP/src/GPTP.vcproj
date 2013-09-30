@@ -391,10 +391,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SCBW\unit_finder.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\hooks\unit_speed.cpp"
 				>
 			</File>
@@ -626,10 +622,6 @@
 			</File>
 			<File
 				RelativePath=".\hooks\unit_destructor_special.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SCBW\unit_finder.h"
 				>
 			</File>
 			<File

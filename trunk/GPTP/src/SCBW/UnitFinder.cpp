@@ -14,6 +14,12 @@ int UnitFinder::getUnitCount() const {
   return this->unitCount;
 }
 
+CUnit* UnitFinder::getUnit(int index) const {
+  if (0 <= index && index <= this->unitCount)
+    return this->units[index];
+  return NULL;
+}
+
 // The heart and core of StarCraft's unit search engine.
 // Based on BWAPI's Shared/Templates.h
 void UnitFinder::search(int left, int top, int right, int bottom) {
