@@ -1,8 +1,6 @@
 #summary Changelog of GPTP
 
-= GPTP Changelog =
-
-== v2.34 Preview ==
+= v2.34 Preview =
 
  * The hook system has been overhauled from the header-source format to the header-source-injector format.
  * MPQDraftPlugin overhaul:
@@ -13,6 +11,7 @@
  * Graphics changes (`graphics/graphics.h`)
   * Drawing functions have been merged into one function per shape (ex: `drawDotOnMap() / drawDotOnScreen() => drawDot()`).
   * Drawing functions now take an extra parameter of `graphics::CoordType` type. Allowed values are `graphics::ON_SCREEN` (default), `graphics::ON_MAP`, and `graphics::ON_MOUSE`.
+ * `SCBW/unit_finder.h` and `SCBW/unit_finder.cpp` have been replaced by the UnitFinder class. See documentation for more info.
  * The following functions have been replaced with:
   * `scbw::createOverlay() => CSprite::createOverlay(), CSprite::createTopOverlay()`
   * `scbw::removeOverlay() => CUnit::removeOverlay(), CSprite::removeOverlay()`
@@ -25,7 +24,7 @@
   * Shapes drawn on the map no longer "lag" when the viewport is scrolled across the map.
  * To avoid confusion, `hooks::updatePsiFieldProvider()` no longer requires a `CUnit*` parameter, and should be called _once_ per frame. It has also been renamed to `hooks::updatePsiFieldProviders()`.
 
-== v2.33 ==
+= v2.33 =
 
  * GPTP now supports drawing dots, lines, boxes, and text directly on the screen and the map. See graphics\graphics.h for details.
  * New hooks:
@@ -40,7 +39,7 @@
   * Fixed a critical bug in Unit::getDistanceToTarget().
   * Fixed small bugs in unit finder functions.
 
-== v2.32 ==
+= v2.32 =
 
  * GPTP now supports Visual C++ out of the box (again). Tested with VC++ Express 2005 and the Platform SDK.
  * Added new hook for controlling which units can fire from inside bunkers.
@@ -49,11 +48,11 @@
  * Bug fixes:
   * Fixed a bug that caused Ensnared units to attack faster.
 
-== v2.31 ==
+= v2.31 =
 
  * Fixed a critical bug with doWeaponDamageHook().
 
-== v2.3 ==
+= v2.3 =
 
  * Hooks have been modified:
   * Function definitions of hooks now reside in the hooks\ directory.
@@ -66,7 +65,7 @@ To modify any hooks, edit the `*.CPP` files.
  * `UNIT::healthPoints` has been renamed to `UNIT::hitPoints`.
  * Other numerous changes that should make modding easier
 
-== v2.23 ==
+= v2.23 =
  * Turns out `UNIT::healthPoints` is a signed 32-bit integer. Fixed.
  * Fixed typos:
   * UNIT struct: `statisTime` -> `stasisTime`
@@ -78,17 +77,17 @@ To modify any hooks, edit the `*.CPP` files.
   * Control upgrade effects for weapon range and sight range
   * Control which units can detect.
 
-== v2.221 ==
+= v2.221 =
  * Hotfixed a problem that caused rally hook to crash.
 
-== v2.22 ==
+= v2.22 =
  * !JmpCallPatch() has been replaced by jmpPatch() and callPatch(), reflecting the latest set of functions used in BWAPI. See tools.h for a thorough documentation.
  * Many existing hooks have been rewritten to use jmpPatch() and callPatch(). This reduces quite a few lines of unnecessary code.
  * Fixed (well, deleted) a potential bug in stimPacksHpCostToEax2().
  * Fixed a potential bug in energyRegenAmountHook() that could make a unit's energy overflow in some weird cases.
  * Added a new pointer constant, CONSUME_ENERGY_GAIN. You can use this pointer to access the energy gain amount set in FireGraft. consumeEnergyGainHook() has been modified to not destroy this value.
 
-== v2.21 ==
+= v2.21 =
 
  * Many enumerations were renamed. I promise I won't rename them again.
  * Added some new API functions and one hook function for controlling unit rally orders.
@@ -98,7 +97,7 @@ To modify any hooks, edit the `*.CPP` files.
  * memoryPatch() has been split to memoryPatch1(), memoryPatch2(), and memoryPatch4() to avoid ambiguities.
  * sightLimitExtender should work properly now.
 
-== v2.2 ==
+= v2.2 =
 
  * Massively reorganized header and source files.
  * Added many missing DAT offsets, copied from BWAPI's Offsets.h
