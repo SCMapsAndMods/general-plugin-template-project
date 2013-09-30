@@ -23,6 +23,9 @@ class UnitFinder {
     /// If no searches have been conducted, returns 0.
     int getUnitCount() const;
 
+    /// Returns the unit at the given index. Invalid index returns NULL instead.
+    CUnit* getUnit(int index) const;
+
     /// Iterates through all units found, calling @p proc() once for each unit.
     ///
     /// @param  proc    A callback function that accepts a CUnit pointer.
