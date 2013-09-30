@@ -52,7 +52,7 @@ void forEach(callback &proc) const;
 Iterates through all units found, calling `proc()` once for each unit.
 
 === Parameters ===
- * `procA`: A callback function that accepts a `CUnit` pointer.
+ * `proc`: A callback function that accepts a `CUnit` pointer.
 
 
 == getFirst ==
