@@ -403,6 +403,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SCBW\UnitFinder.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\update_status_effects.cpp"
 				>
 			</File>
@@ -630,6 +634,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\unit_speed.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\UnitFinder.h"
 				>
 			</File>
 			<File
