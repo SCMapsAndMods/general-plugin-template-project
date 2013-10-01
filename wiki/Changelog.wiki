@@ -1,7 +1,8 @@
 #summary Changelog of GPTP
 
-= v2.34 Preview =
+= v2.34 =
 
+ * Dropped official support for Code::Blocks. You can still import GPTP into a new project, though.
  * The hook system has been overhauled from the header-source format to the header-source-injector format.
  * MPQDraftPlugin overhaul:
   * `qdp.cpp` has been replaced with `Plugin.h`, `Plugin.cpp` and `plugin_main.cpp`. This should be unnoticeable for most modders.
