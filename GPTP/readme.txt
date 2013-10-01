@@ -1,4 +1,4 @@
-General Plugin Template Project v2.33
+General Plugin Template Project v2.34
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -32,6 +32,33 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 
 
 == Changes ==
+
+For the full changelog, see http://code.google.com/p/gptp/wiki/Changelog
+
+v2.34
+ * Dropped official support for Code::Blocks. A tutorial on creating a custom
+   project will soon be available.
+ * The hook system has been overhauled to the new header-source-injector format.
+ * The underlying MPQDraft plugin structure has been overhauled.
+   * initialize.h has been renamed to initialize.cpp
+   * configure.h has been renamed to configure.cpp
+ * Graphics changes:
+   * Drawing functions have been merged into one function per shape.
+   * Drawing functions now take an extra parameter of graphics::CoordType type.
+ * Several API functions have been moved to member functions of CUnit/CSprite.
+ + New API functions: scbw::showErrorMessageWithSfx(), scbw::refreshButtonSet(),
+   CUnit::getMaxWeaponRange(), CUnit::getMaxEnergy(), CUnit::getArmor(),
+   CUnit::getArmorBonus(), CUnit::getSightRange()
+ + New hooks
+   + hooks/harvest.cpp: Change how much resources are harvested and returned per
+     each worker trip.
+ * Bug fixes
+   * Psi field sprites become automatically invisible when a selected psi field
+     provider stops providing power.
+   * Shapes drawn on the map no longer "lag" when the viewport is scrolled
+     across the map.
+ * hooks::updatePsiFieldProvider() has been replaced by
+   hooks::updatePsiFieldProviders().
 
 v2.33
  + GPTP now supports drawing dots, lines, boxes, and text directly on the screen
