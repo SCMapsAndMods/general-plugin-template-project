@@ -4,20 +4,6 @@
 
 namespace datcc {
 
-//-------- INI section comments --------//
-
-std::string makeUnitSectionComment(int unitId) {
-  return "; " + getUnitName(unitId);  
-}
-
-std::string makeWeaponSectionComment(int weaponId) {
-  return "; " + getWeaponName(weaponId);  
-}
-
-std::string makeFlingySectionComment(int flingyId) {
-  return "; " + getFlingyName(flingyId);  
-}
-
 //-------- INI key/value comments --------//
 
 std::string makeUnitComment(int unitId, size_t keyStrSize) {

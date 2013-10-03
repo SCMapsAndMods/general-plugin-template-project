@@ -57,7 +57,7 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
   for (int weaponId = 0; weaponId < WEAPON_TYPE_COUNT; ++weaponId) {
     std::ostringstream sectionName;
     sectionName << "Weapon #" << weaponId;
-    iniProc.setSection(sectionName.str(), makeWeaponSectionComment(weaponId));
+    iniProc.setSection(sectionName.str(), getWeaponName(weaponId));
     
     //Fix stat_txt.tbl offset issue
     data.label[weaponId] -= 1;

@@ -4,7 +4,7 @@ namespace datcc {
  
 int IniWriter::setSection(const std::string &section, const std::string &comment) {
   currentSection = section;
-  return ini.SetValue(currentSection.c_str(), NULL, NULL, comment.c_str());
+  return ini.SetValue(currentSection.c_str(), NULL, NULL, ("; " + comment).c_str());
 }
 
 int IniWriter::saveTo(const std::string &fileName) const {

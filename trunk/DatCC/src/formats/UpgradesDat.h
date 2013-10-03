@@ -47,7 +47,7 @@ void UpgradesDat::processIni(IniProcT &iniProc) {
   for (int upgradeId = 0; upgradeId < UPGRADE_TYPE_COUNT; ++upgradeId) {
     std::ostringstream sectionName;
     sectionName << "Upgrade #" << upgradeId;
-    iniProc.setSection(sectionName.str(), "; " + getUpgradeName(upgradeId));
+    iniProc.setSection(sectionName.str(), getUpgradeName(upgradeId));
 
     iniProc.process(data.mineralCostBase[upgradeId],    "Mineral Cost Base");
     iniProc.process(data.mineralCostFactor[upgradeId],  "Mineral Cost Factor");

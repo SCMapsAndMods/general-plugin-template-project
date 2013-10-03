@@ -42,7 +42,7 @@ void SpritesDat::processIni(IniProcT &iniProc) {
   for (int spriteId = 0; spriteId < SPRITE_TYPE_COUNT; ++spriteId) {
     std::ostringstream sectionName;
     sectionName << "Sprite #" << spriteId;
-    iniProc.setSection(sectionName.str(), "; " + getSpriteName(spriteId));
+    iniProc.setSection(sectionName.str(), getSpriteName(spriteId));
 
     iniProc.processImageId(data.image[spriteId], "Image");
     iniProc.process(data.isVisible[spriteId], "IsVisible");
