@@ -14,26 +14,10 @@ class IniProcessor {
     //template <class T>
     //int process(T &t, const std::string &key);
 
-    //template <class T>
-    //int processUnitId(T &t, const std::string &key);
-    
-    //template <class T>
-    //int processWeaponId(T &t, const std::string &key);
-    
-    //template <class T>
-    //int processFlingyId(T &t, const std::string &key);
-
-    //template <class T>
-    //int processSpriteId(T &t, const std::string &key);
-    
-    //template <class T>
-    //int processImageId(T &t, const std::string &key);
-    
-    //template <class T>
-    //int processUpgradeId(T &t, const std::string &key);
-
-    //template <class T>
-    //int processOrderId(T &t, const std::string &key);
+    // Callbacks must be of the form:
+    //    std::string func(int val, size_t keyStrSize);
+    //template <class T, typename CallbackT>
+    //int process(T &t, const std::string &key, CallbackT &commenter);
     
     //template <class T>
     //int processFlags(T &t, const std::string &key);

@@ -44,7 +44,7 @@ void SpritesDat::processIni(IniProcT &iniProc) {
     sectionName << "Sprite #" << spriteId;
     iniProc.setSection(sectionName.str(), getSpriteName(spriteId));
 
-    iniProc.processImageId(data.image[spriteId], "Image");
+    iniProc.process(data.image[spriteId], "Image", makeImageComment);
     iniProc.process(data.isVisible[spriteId], "IsVisible");
     iniProc.process(data.unknown[spriteId], "Unknown");
 
@@ -54,7 +54,7 @@ void SpritesDat::processIni(IniProcT &iniProc) {
 
       //@TODO Fix this to use a separate hint comment
       WORD selectionCircle = data.selectionCircle[spriteId - 130] + 561;
-      iniProc.processImageId(selectionCircle, "Selection Circle");
+      iniProc.process(selectionCircle, "Selection Circle", makeImageComment);
       data.selectionCircle[spriteId - 130] = selectionCircle - 561;
 
       iniProc.process(data.selectionCircleVPos[spriteId - 130], "Selection Circle V-Offset");

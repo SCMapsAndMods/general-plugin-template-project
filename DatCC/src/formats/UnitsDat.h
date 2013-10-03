@@ -94,9 +94,9 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     sectionName << "Unit #" << unitId;
     iniProc.setSection(sectionName.str(), getUnitName(unitId));
 
-    iniProc.processFlingyId(data.flingy[unitId],    "Flingy");
-    iniProc.processUnitId(data.subUnit1[unitId],    "SubUnit 1");
-    iniProc.processUnitId(data.subUnit2[unitId],    "SubUnit 2");
+    iniProc.process(data.flingy[unitId],            "Flingy", makeFlingyComment);
+    iniProc.process(data.subUnit1[unitId],          "SubUnit 1", makeUnitComment);
+    iniProc.process(data.subUnit2[unitId],          "SubUnit 2", makeUnitComment);
     iniProc.process(data.constructionAnimation[unitId], "Construction Animation");
     iniProc.process(data.spawnDirection[unitId],    "Spawn Direction");
     iniProc.process(data.hasShields[unitId],        "Has Shields");
@@ -104,7 +104,7 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.maxHitPoints[unitId],      "Max HP");
     iniProc.process(data.unitSize[unitId],          "Unit Size");
     iniProc.process(data.armor[unitId],             "Armor");
-    iniProc.processUpgradeId(data.armorUpgrade[unitId], "Armor Upgrade");
+    iniProc.process(data.armorUpgrade[unitId],      "Armor Upgrade", makeUpgradeComment);
 
     iniProc.process(data.elevationLevel[unitId],    "Elevation Level");
     iniProc.processFlags(data.movementFlags[unitId], "Movement Flags");
@@ -166,7 +166,7 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     
     //Process building-specific data
     if (106 <= unitId && unitId <= 201) {
-      iniProc.processUnitId(data.infestChangeUnit[unitId - 106], "InfestChangeUnit");
+      iniProc.process(data.infestChangeUnit[unitId - 106], "InfestChangeUnit", makeUnitComment);
       iniProc.process(data.addonOffsetX[unitId - 106], "Addon Offset (X)");
       iniProc.process(data.addonOffsetY[unitId - 106], "Addon Offset (Y)");
     }

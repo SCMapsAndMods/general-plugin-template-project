@@ -11,27 +11,9 @@ class IniWriter: public IniProcessor {
     template <class T>
     int process(const T &t, const std::string &key);
 
-    template <class T>
-    int processUnitId(const T &t, const std::string &key);
-    
-    template <class T>
-    int processWeaponId(const T &t, const std::string &key);
-    
-    template <class T>
-    int processFlingyId(const T &t, const std::string &key);
-    
-    template <class T>
-    int processSpriteId(const T &t, const std::string &key);
-    
-    template <class T>
-    int processImageId(const T &t, const std::string &key);
-    
-    template <class T>
-    int processUpgradeId(const T &t, const std::string &key);
+    template <class T, typename CallbackT>
+    int process(const T &t, const std::string &key, CallbackT &commenter);
 
-    template <class T>
-    int processOrderId(const T &t, const std::string &key);
-    
     template <class T>
     int processFlags(const T &t, const std::string &key);
 
@@ -54,39 +36,9 @@ int IniWriter::process(const T &t, const std::string &key) {
 template <>
 int IniWriter::process(const std::string &str, const std::string &key);
 
-template <class T>
-int IniWriter::processUnitId(const T &t, const std::string &key) {
-  return process(makeUnitComment(t, key.size()), key);
-}
-
-template <class T>
-int IniWriter::processWeaponId(const T &t, const std::string &key) {
-  return process(makeWeaponComment(t, key.size()), key);
-}
-
-template <class T>
-int IniWriter::processFlingyId(const T &t, const std::string &key) {
-  return process(makeFlingyComment(t, key.size()), key);
-}
-
-template <class T>
-int IniWriter::processSpriteId(const T &t, const std::string &key) {
-  return process(makeSpriteComment(t, key.size()), key);
-}
-
-template <class T>
-int IniWriter::processImageId(const T &t, const std::string &key) {
-  return process(makeImageComment(t, key.size()), key);
-}
-
-template <class T>
-int IniWriter::processUpgradeId(const T &t, const std::string &key) {
-  return process(makeUpgradeComment(t, key.size()), key);
-}
-
-template <class T>
-int IniWriter::processOrderId(const T &t, const std::string &key) {
-  return process(makeOrderComment(t, key.size()), key);
+template <class T, typename CallbackT>
+int IniWriter::process(const T &t, const std::string &key, CallbackT &commenter) {
+  return process(commenter(t, key.size()), key);
 }
 
 template <class T>
