@@ -79,6 +79,9 @@ int main(const int argc, const char* argv[]) {
       if (flingyFileArg.isSet())
         datcc::compileFlingy(flingyFileArg.getValue());
 
+      if (spritesFileArg.isSet())
+        datcc::compileSprites(spritesFileArg.getValue());
+
       if (upgradesFileArg.isSet())
         datcc::compileUpgrades(upgradesFileArg.getValue());
     }
@@ -92,6 +95,9 @@ int main(const int argc, const char* argv[]) {
 
       if (flingyFileArg.isSet())
         datcc::decompileFlingy(flingyFileArg.getValue());
+
+      if (spritesFileArg.isSet())
+        datcc::decompileSprites(spritesFileArg.getValue());
       
       if (upgradesFileArg.isSet())
         datcc::decompileUpgrades(upgradesFileArg.getValue());

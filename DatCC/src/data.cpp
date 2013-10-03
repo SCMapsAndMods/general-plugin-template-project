@@ -9,6 +9,7 @@ namespace datcc {
 char DefaultDat<UnitsDat>::path[]     = "data/units.dat";
 char DefaultDat<WeaponsDat>::path[]   = "data/weapons.dat";
 char DefaultDat<FlingyDat>::path[]    = "data/flingy.dat";
+char DefaultDat<SpritesDat>::path[]   = "data/sprites.dat";
 char DefaultDat<UpgradesDat>::path[]  = "data/upgrades.dat";
 
 //-------- Current program directory --------//
@@ -32,7 +33,6 @@ const std::string& getCurrentProgramDir() {
 
 //@TODO Add all DAT types so that these constants can find a home
 const int ORDER_TYPE_COUNT = 189;
-const int SPRITE_TYPE_COUNT = 517;
 const int IMAGE_TYPE_COUNT = 999;
 
 std::string unitNames[UNIT_TYPE_COUNT + 1];
