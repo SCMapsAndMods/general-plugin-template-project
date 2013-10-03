@@ -78,6 +78,9 @@ int main(const int argc, const char* argv[]) {
       
       if (flingyFileArg.isSet())
         datcc::compileFlingy(flingyFileArg.getValue());
+
+      if (upgradesFileArg.isSet())
+        datcc::compileUpgrades(upgradesFileArg.getValue());
     }
     else if (isDecompileModeArg.isSet()) {
       //Decompile mode
@@ -87,9 +90,11 @@ int main(const int argc, const char* argv[]) {
       if (weaponsFileArg.isSet())
         datcc::decompileWeapons(weaponsFileArg.getValue());
 
-      if (flingyFileArg.isSet()) {
+      if (flingyFileArg.isSet())
         datcc::decompileFlingy(flingyFileArg.getValue());
-      }
+      
+      if (upgradesFileArg.isSet())
+        datcc::decompileUpgrades(upgradesFileArg.getValue());
     }
     else { //Should never reach here
       throw new TCLAP::ArgException("Cannot determine compile/decompile mode");

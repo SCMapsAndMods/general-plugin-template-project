@@ -1,7 +1,6 @@
 #include "TblFile.h"
 #include "../util.h"
 #include <fstream>
-#include <cassert>
 
 TblFile statTxtTbl;
 
@@ -26,17 +25,21 @@ int TblFile::loadFile(const char *fileName) {
 }
 
 const char* TblFile::getString(int index) const {
-  assert(0 <= index && index < stringCount);
-  return (char*) data + stringOffsets[index];
+  static char invalidIndexMsg[] = "invalid string index";
+  if (0 <= index && index < stringCount)
+    return (char*) data + stringOffsets[index];
+  return invalidIndexMsg;
 }
 
 int TblFile::getStringSize(int index) const {
-  assert(0 <= index && index < stringCount);
-  const char *strStart = getString(index);
-  if (index == stringCount - 1)
-    return (char*) data + dataSize - strStart;
-  else
-    return getString(index + 1) - strStart;
+  if (0 <= index && index < stringCount) {
+    const char *strStart = getString(index);
+    if (index == stringCount - 1)
+      return (char*) data + dataSize - strStart;
+    else
+      return getString(index + 1) - strStart;
+  }
+  return strlen(getString(index));
 }
 
 const char* TblFile::getEscapedString(int index) const {
