@@ -39,7 +39,7 @@ void FlingyDat::processIni(IniProcT &iniProc) {
   for (int flingyId = 0; flingyId < FLINGY_TYPE_COUNT; ++flingyId) {
     std::ostringstream sectionName;
     sectionName << "Flingy #" << flingyId;
-    iniProc.setSection(sectionName.str(), makeFlingySectionComment(flingyId));
+    iniProc.setSection(sectionName.str(), getFlingyName(flingyId));
 
     iniProc.processSpriteId(data.sprite[flingyId], "Sprite");
     iniProc.process(data.topSpeed[flingyId],     "Top Speed");

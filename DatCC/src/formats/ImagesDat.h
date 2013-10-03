@@ -49,7 +49,7 @@ void ImagesDat::processIni(IniProcT &iniProc) {
   for (int imageId = 0; imageId < IMAGE_TYPE_COUNT; ++imageId) {
     std::ostringstream sectionName;
     sectionName << "Image #" << imageId;
-    iniProc.setSection(sectionName.str(), "; " + getImageName(imageId));
+    iniProc.setSection(sectionName.str(), getImageName(imageId));
 
     //@TODO: Add support for images.tbl entries
     iniProc.process(data.grpFile[imageId], "GRP File");

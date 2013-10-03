@@ -92,7 +92,7 @@ void UnitsDat::processIni(IniProcT &iniProc) {
   for (int unitId = 0; unitId < UNIT_TYPE_COUNT; ++unitId) {
     std::ostringstream sectionName;
     sectionName << "Unit #" << unitId;
-    iniProc.setSection(sectionName.str(), makeUnitSectionComment(unitId));
+    iniProc.setSection(sectionName.str(), getUnitName(unitId));
 
     iniProc.processFlingyId(data.flingy[unitId],    "Flingy");
     iniProc.processUnitId(data.subUnit1[unitId],    "SubUnit 1");
