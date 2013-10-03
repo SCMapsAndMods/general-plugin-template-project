@@ -68,6 +68,7 @@ int main(const int argc, const char* argv[]) {
 
     datcc::loadData();
 
+    //@TODO: Add check for zero file options
     if (isCompileModeArg.isSet()) {
       //Compile mode
       if (unitsFileArg.isSet())
@@ -81,6 +82,9 @@ int main(const int argc, const char* argv[]) {
 
       if (spritesFileArg.isSet())
         datcc::compileSprites(spritesFileArg.getValue());
+
+      if (imagesFileArg.isSet())
+        datcc::compileImages(imagesFileArg.getValue());
 
       if (upgradesFileArg.isSet())
         datcc::compileUpgrades(upgradesFileArg.getValue());
@@ -98,7 +102,10 @@ int main(const int argc, const char* argv[]) {
 
       if (spritesFileArg.isSet())
         datcc::decompileSprites(spritesFileArg.getValue());
-      
+
+      if (imagesFileArg.isSet())
+        datcc::decompileImages(imagesFileArg.getValue());
+
       if (upgradesFileArg.isSet())
         datcc::decompileUpgrades(upgradesFileArg.getValue());
     }

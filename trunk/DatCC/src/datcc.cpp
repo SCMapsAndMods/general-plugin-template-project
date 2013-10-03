@@ -126,7 +126,9 @@ void compileSprites(const std::string &inputPath) {
   compileDat<SpritesDat>(inputPath);
 }
 
-void compileImages  (const std::string &inputPath);
+void compileImages(const std::string &inputPath) {
+  compileDat<ImagesDat>(inputPath);
+}
 
 void compileUpgrades(const std::string &inputPath) {
   compileDat<UpgradesDat>(inputPath);
@@ -153,7 +155,9 @@ void decompileSprites(const std::string &inputPath) {
   decompileDat<SpritesDat>(inputPath);
 }
 
-void decompileImages  (const std::string &inputPath);
+void decompileImages(const std::string &inputPath) {
+  decompileDat<ImagesDat>(inputPath);
+}
 
 void decompileUpgrades(const std::string &inputPath) {
   decompileDat<UpgradesDat>(inputPath);

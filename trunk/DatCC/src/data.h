@@ -3,6 +3,7 @@
 #include "formats/WeaponsDat.h"
 #include "formats/FlingyDat.h"
 #include "formats/SpritesDat.h"
+#include "formats/ImagesDat.h"
 #include "formats/UpgradesDat.h"
 #include "formats/TblFile.h"
 #include <string>

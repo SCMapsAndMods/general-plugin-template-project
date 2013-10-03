@@ -235,6 +235,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\formats\ImagesDat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ini_comments.h"
 				>
 			</File>
