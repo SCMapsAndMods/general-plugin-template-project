@@ -43,51 +43,27 @@ std::string imageNames[IMAGE_TYPE_COUNT];
 std::string upgradeNames[UPGRADE_TYPE_COUNT + 1];
 std::string orderNames[ORDER_TYPE_COUNT + 1];
 
+void loadNameFile(std::string arr[], const char *basePath) {
+  std::string filePath = getCurrentProgramDir() + basePath;
+
+  std::ifstream in(filePath.c_str());
+  if (in.fail()) {
+    std::cerr << "Critical error: Cannot open settings file " << filePath << std::endl;
+    exit(1);
+  }
+
+  for (int i = 0; i <= sizeof(arr) && !in.eof(); ++i)
+    std::getline(in, arr[i]);
+}
+
 void loadData() {
-  std::ifstream in;
-
-  //@TODO: Simplify redundant code and add error checking
-  in.open((getCurrentProgramDir() + "data/units.txt").c_str());
-  for (int i = 0; i <= sizeof(unitNames) && !in.eof(); ++i)
-    std::getline(in, unitNames[i]);
-  in.close();
-  in.clear();
-  
-  in.open((getCurrentProgramDir() + "data/weapons.txt").c_str());
-  for (int i = 0; i <= sizeof(weaponNames) && !in.eof(); ++i)
-    std::getline(in, weaponNames[i]);
-  in.close();
-  in.clear();
-  
-  in.open((getCurrentProgramDir() + "data/flingy.txt").c_str());
-  for (int i = 0; i <= sizeof(flingyNames) && !in.eof(); ++i)
-    std::getline(in, flingyNames[i]);
-  in.close();
-  in.clear();
-  
-  in.open((getCurrentProgramDir() + "data/sprites.txt").c_str());
-  for (int i = 0; i <= sizeof(spriteNames) && !in.eof(); ++i)
-    std::getline(in, spriteNames[i]);
-  in.close();
-  in.clear();
-  
-  in.open((getCurrentProgramDir() + "data/images.txt").c_str());
-  for (int i = 0; i <= sizeof(imageNames) && !in.eof(); ++i)
-    std::getline(in, imageNames[i]);
-  in.close();
-  in.clear();
-  
-  in.open((getCurrentProgramDir() + "data/upgrades.txt").c_str());
-  for (int i = 0; i <= sizeof(upgradeNames) && !in.eof(); ++i)
-    std::getline(in, upgradeNames[i]);
-  in.close();
-  in.clear();
-
-  in.open((getCurrentProgramDir() + "data/orders.txt").c_str());
-  for (int i = 0; i < sizeof(orderNames) && !in.eof(); ++i)
-    std::getline(in, orderNames[i]);
-  in.close();
-  in.clear();
+  loadNameFile(unitNames,     "data/units.txt");
+  loadNameFile(weaponNames,   "data/weapons.txt");
+  loadNameFile(flingyNames,   "data/flingy.txt");
+  loadNameFile(spriteNames,   "data/sprites.txt");
+  loadNameFile(imageNames,    "data/images.txt");
+  loadNameFile(upgradeNames,  "data/upgrades.txt");
+  loadNameFile(orderNames,    "data/orders.txt");
 
   if (statTxtTbl.loadFile((getCurrentProgramDir() + "data/stat_txt.tbl").c_str())) {
     std::cerr << "Error: Cannot read default stat_txt.tbl" << std::endl;
