@@ -1,7 +1,6 @@
 #include "data.h"
 #include <fstream>
 #include <iostream>
-#include <cassert>
 
 namespace datcc {
 
@@ -97,40 +96,48 @@ void loadData() {
 
 //-------- DAT entry names --------//
 
-//@TODO Replace asserts with empty return strings ("invalid"?)
+static const std::string invalidIndexMsg("invalid index");
+
 const std::string& getUnitName(int unitId) {
-  assert(0 <= unitId && unitId < sizeof(unitNames));
-  return unitNames[unitId];
+  if (0 <= unitId && unitId < sizeof(unitNames))
+    return unitNames[unitId];
+  return invalidIndexMsg;
 }
 
 const std::string& getWeaponName(int weaponId) {
-  assert(0 <= weaponId && weaponId < sizeof(weaponNames));
-  return weaponNames[weaponId];
+  if (0 <= weaponId && weaponId < sizeof(weaponNames))
+    return weaponNames[weaponId];
+  return invalidIndexMsg;
 }
 
 const std::string& getFlingyName(int flingyId) {
-  assert(0 <= flingyId && flingyId < sizeof(flingyNames));
-  return flingyNames[flingyId];
+  if (0 <= flingyId && flingyId < sizeof(flingyNames))
+    return flingyNames[flingyId];
+  return invalidIndexMsg;
 }
 
 const std::string& getSpriteName(int spriteId) {
-  assert(0 <= spriteId && spriteId < sizeof(spriteNames));
-  return spriteNames[spriteId];
+  if (0 <= spriteId && spriteId < sizeof(spriteNames))
+    return spriteNames[spriteId];
+  return invalidIndexMsg;
 }
 
 const std::string& getImageName(int imageId) {
-  assert(0 <= imageId && imageId < sizeof(imageNames));
-  return imageNames[imageId];
+  if (0 <= imageId && imageId < sizeof(imageNames))
+    return imageNames[imageId];
+  return invalidIndexMsg;
 }
 
 const std::string& getUpgradeName(int upgradeId) {
-  assert(0 <= upgradeId && upgradeId < sizeof(upgradeNames));
-  return upgradeNames[upgradeId];
+  if (0 <= upgradeId && upgradeId < sizeof(upgradeNames))
+    return upgradeNames[upgradeId];
+  return invalidIndexMsg;
 }
 
 const std::string& getOrderName(int orderId) {
-  assert(0 <= orderId && orderId < sizeof(orderNames));
-  return orderNames[orderId];
+  if (0 <= orderId && orderId < sizeof(orderNames))
+    return orderNames[orderId];
+  return invalidIndexMsg;
 }
 
 } //datcc
