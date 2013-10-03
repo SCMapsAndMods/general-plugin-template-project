@@ -251,6 +251,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\formats\SpritesDat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\formats\TblFile.h"
 				>
 			</File>

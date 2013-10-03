@@ -122,7 +122,10 @@ void compileFlingy(const std::string &inputPath) {
   compileDat<FlingyDat>(inputPath);
 }
 
-void compileSprites (const std::string &inputPath);
+void compileSprites(const std::string &inputPath) {
+  compileDat<SpritesDat>(inputPath);
+}
+
 void compileImages  (const std::string &inputPath);
 
 void compileUpgrades(const std::string &inputPath) {
@@ -146,7 +149,10 @@ void decompileFlingy(const std::string &inputPath) {
   decompileDat<FlingyDat>(inputPath);
 }
 
-void decompileSprites (const std::string &inputPath);
+void decompileSprites(const std::string &inputPath) {
+  decompileDat<SpritesDat>(inputPath);
+}
+
 void decompileImages  (const std::string &inputPath);
 
 void decompileUpgrades(const std::string &inputPath) {
