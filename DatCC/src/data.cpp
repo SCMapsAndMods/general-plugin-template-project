@@ -10,6 +10,7 @@ char DefaultDat<UnitsDat>::path[]     = "data/units.dat";
 char DefaultDat<WeaponsDat>::path[]   = "data/weapons.dat";
 char DefaultDat<FlingyDat>::path[]    = "data/flingy.dat";
 char DefaultDat<SpritesDat>::path[]   = "data/sprites.dat";
+char DefaultDat<ImagesDat>::path[]    = "data/images.dat";
 char DefaultDat<UpgradesDat>::path[]  = "data/upgrades.dat";
 
 //-------- Current program directory --------//
@@ -33,7 +34,6 @@ const std::string& getCurrentProgramDir() {
 
 //@TODO Add all DAT types so that these constants can find a home
 const int ORDER_TYPE_COUNT = 189;
-const int IMAGE_TYPE_COUNT = 999;
 
 std::string unitNames[UNIT_TYPE_COUNT + 1];
 std::string weaponNames[WEAPON_TYPE_COUNT + 1];
