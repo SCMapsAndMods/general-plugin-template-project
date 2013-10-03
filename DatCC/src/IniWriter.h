@@ -56,37 +56,37 @@ int IniWriter::process(const std::string &str, const std::string &key);
 
 template <class T>
 int IniWriter::processUnitId(const T &t, const std::string &key) {
-  return process(makeUnitComment(key, t), key);
+  return process(makeUnitComment(t, key.size()), key);
 }
 
 template <class T>
 int IniWriter::processWeaponId(const T &t, const std::string &key) {
-  return process(makeWeaponComment(key, t), key);
+  return process(makeWeaponComment(t, key.size()), key);
 }
 
 template <class T>
 int IniWriter::processFlingyId(const T &t, const std::string &key) {
-  return process(makeFlingyComment(key, t), key);
+  return process(makeFlingyComment(t, key.size()), key);
 }
 
 template <class T>
 int IniWriter::processSpriteId(const T &t, const std::string &key) {
-  return process(makeSpriteComment(key, t), key);
+  return process(makeSpriteComment(t, key.size()), key);
 }
 
 template <class T>
 int IniWriter::processImageId(const T &t, const std::string &key) {
-  return process(makeImageComment(key, t), key);
+  return process(makeImageComment(t, key.size()), key);
 }
 
 template <class T>
 int IniWriter::processUpgradeId(const T &t, const std::string &key) {
-  return process(t, key); //Not implemented yet
+  return process(t, key); //@TODO Implement this
 }
 
 template <class T>
 int IniWriter::processOrderId(const T &t, const std::string &key) {
-  return process(makeOrderComment(key, t), key);
+  return process(makeOrderComment(t, key.size()), key);
 }
 
 template <class T>
@@ -96,7 +96,7 @@ int IniWriter::processFlags(const T &t, const std::string &key) {
 
 template <class T>
 int IniWriter::processTblId(const T &t, const std::string &key) {
-  return process(makeTblComment(key, t), key);
+  return process(makeTblComment(t, key.size()), key);
 }
 
 } //datcc

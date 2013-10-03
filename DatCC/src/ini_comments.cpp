@@ -20,60 +20,60 @@ std::string makeFlingySectionComment(int flingyId) {
 
 //-------- INI key/value comments --------//
 
-std::string makeUnitComment(const std::string &iniKey, int unitId) {
+std::string makeUnitComment(int unitId, size_t keyStrSize) {
   std::ostringstream os;
-  os << iniKey << " = " << unitId;
-  os.width(32 - os.tellp());
+  os << unitId;
+  os.width(32 - os.tellp() - keyStrSize);
   os << "; " << getUnitName(unitId);
-  return os.str().erase(0, iniKey.size() + 3);
+  return os.str();
 }
 
-std::string makeWeaponComment(const std::string &iniKey, int weaponId) {
+std::string makeWeaponComment(int weaponId, size_t keyStrSize) {
   std::ostringstream os;
-  os << iniKey << " = " << weaponId;
-  os.width(32 - os.tellp());
+  os << weaponId;
+  os.width(32 - os.tellp() - keyStrSize);
   os << "; " << getWeaponName(weaponId);
-  return os.str().erase(0, iniKey.size() + 3);  
+  return os.str();
 }
 
-std::string makeFlingyComment(const std::string &iniKey, int flingyId) {
+std::string makeFlingyComment(int flingyId, size_t keyStrSize) {
   std::ostringstream os;
-  os << iniKey << " = " << flingyId;
-  os.width(32 - os.tellp());
+  os << flingyId;
+  os.width(32 - os.tellp() - keyStrSize);
   os << "; " << getFlingyName(flingyId);
-  return os.str().erase(0, iniKey.size() + 3);
+  return os.str();
 }
 
-std::string makeSpriteComment(const std::string &iniKey, int spriteId) {
+std::string makeSpriteComment(int spriteId, size_t keyStrSize) {
   std::ostringstream os;
-  os << iniKey << " = " << spriteId;
-  os.width(32 - os.tellp());
+  os << spriteId;
+  os.width(32 - os.tellp() - keyStrSize);
   os << "; " << getSpriteName(spriteId);
-  return os.str().erase(0, iniKey.size() + 3);
+  return os.str();
 }
 
-std::string makeImageComment(const std::string &iniKey, int imageId) {
+std::string makeImageComment(int imageId, size_t keyStrSize) {
   std::ostringstream os;
-  os << iniKey << " = " << imageId;
-  os.width(32 - os.tellp());
+  os << imageId;
+  os.width(32 - os.tellp() - keyStrSize);
   os << "; " << getImageName(imageId);
-  return os.str().erase(0, iniKey.size() + 3);  
+  return os.str();
 }
 
-std::string makeOrderComment(const std::string &iniKey, int orderId) {
+std::string makeOrderComment(int orderId, size_t keyStrSize) {
   std::ostringstream os;
-  os << iniKey << " = " << orderId;
-  os.width(32 - os.tellp());
+  os << orderId;
+  os.width(32 - os.tellp() - keyStrSize);
   os << "; " << getOrderName(orderId);
-  return os.str().erase(0, iniKey.size() + 3);  
+  return os.str();
 }
 
-std::string makeTblComment(const std::string &iniKey, int stringIndex) {
+std::string makeTblComment(int stringIndex, size_t keyStrSize) {
   std::ostringstream os;
-  os << iniKey << " = " << stringIndex;
-  os.width(32 - os.tellp());
+  os << stringIndex;
+  os.width(32 - os.tellp() - keyStrSize);
   os << "; " << statTxtTbl.getEscapedString(stringIndex);
-  return os.str().erase(0, iniKey.size() + 3);  
+  return os.str();
 }
 
 
