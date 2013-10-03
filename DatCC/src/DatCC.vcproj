@@ -263,6 +263,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\formats\UpgradesDat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\util.h"
 				>
 			</File>
