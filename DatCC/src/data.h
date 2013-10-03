@@ -25,6 +25,7 @@ const std::string& getWeaponName(int weaponId);
 const std::string& getFlingyName(int flingyId);
 const std::string& getSpriteName(int spriteId);
 const std::string& getImageName(int imageId);
+const std::string& getUpgradeName(int upgradeId);
 const std::string& getOrderName(int orderId);
 
 } //datcc

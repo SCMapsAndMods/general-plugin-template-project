@@ -68,6 +68,14 @@ std::string makeOrderComment(int orderId, size_t keyStrSize) {
   return os.str();
 }
 
+std::string makeUpgradeComment(int upgradeId, size_t keyStrSize) {
+  std::ostringstream os;
+  os << upgradeId;
+  os.width(32 - os.tellp() - keyStrSize);
+  os << "; " << getUpgradeName(upgradeId);
+  return os.str();
+}
+
 std::string makeTblComment(int stringIndex, size_t keyStrSize) {
   std::ostringstream os;
   os << stringIndex;

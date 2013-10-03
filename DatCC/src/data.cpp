@@ -30,20 +30,24 @@ const std::string& getCurrentProgramDir() {
 
 //-------- Text and TBL loader --------//
 
+//@TODO Add all DAT types so that these constants can find a home
 const int ORDER_TYPE_COUNT = 189;
 const int SPRITE_TYPE_COUNT = 517;
 const int IMAGE_TYPE_COUNT = 999;
+const int UPGRADE_TYPE_COUNT = 61;
 
 std::string unitNames[UNIT_TYPE_COUNT + 1];
 std::string weaponNames[WEAPON_TYPE_COUNT + 1];
 std::string flingyNames[FLINGY_TYPE_COUNT];
 std::string spriteNames[SPRITE_TYPE_COUNT];
 std::string imageNames[IMAGE_TYPE_COUNT];
+std::string upgradeNames[UPGRADE_TYPE_COUNT + 1];
 std::string orderNames[ORDER_TYPE_COUNT + 1];
 
 void loadData() {
   std::ifstream in;
 
+  //@TODO: Simplify redundant code and add error checking
   in.open((getCurrentProgramDir() + "data/units.txt").c_str());
   for (int i = 0; i <= sizeof(unitNames) && !in.eof(); ++i)
     std::getline(in, unitNames[i]);
@@ -74,6 +78,12 @@ void loadData() {
   in.close();
   in.clear();
   
+  in.open((getCurrentProgramDir() + "data/upgrades.txt").c_str());
+  for (int i = 0; i <= sizeof(upgradeNames) && !in.eof(); ++i)
+    std::getline(in, upgradeNames[i]);
+  in.close();
+  in.clear();
+
   in.open((getCurrentProgramDir() + "data/orders.txt").c_str());
   for (int i = 0; i < sizeof(orderNames) && !in.eof(); ++i)
     std::getline(in, orderNames[i]);
@@ -87,6 +97,7 @@ void loadData() {
 
 //-------- DAT entry names --------//
 
+//@TODO Replace asserts with empty return strings ("invalid"?)
 const std::string& getUnitName(int unitId) {
   assert(0 <= unitId && unitId < sizeof(unitNames));
   return unitNames[unitId];
@@ -110,6 +121,11 @@ const std::string& getSpriteName(int spriteId) {
 const std::string& getImageName(int imageId) {
   assert(0 <= imageId && imageId < sizeof(imageNames));
   return imageNames[imageId];
+}
+
+const std::string& getUpgradeName(int upgradeId) {
+  assert(0 <= upgradeId && upgradeId < sizeof(upgradeNames));
+  return upgradeNames[upgradeId];
 }
 
 const std::string& getOrderName(int orderId) {

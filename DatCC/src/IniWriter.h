@@ -81,7 +81,7 @@ int IniWriter::processImageId(const T &t, const std::string &key) {
 
 template <class T>
 int IniWriter::processUpgradeId(const T &t, const std::string &key) {
-  return process(t, key); //@TODO Implement this
+  return process(makeUpgradeComment(t, key.size()), key);
 }
 
 template <class T>
