@@ -41,7 +41,7 @@ void FlingyDat::processIni(IniProcT &iniProc) {
     sectionName << "Flingy #" << flingyId;
     iniProc.setSection(sectionName.str(), getFlingyName(flingyId));
 
-    iniProc.processSpriteId(data.sprite[flingyId], "Sprite");
+    iniProc.process(data.sprite[flingyId],       "Sprite", makeSpriteComment);
     iniProc.process(data.topSpeed[flingyId],     "Top Speed");
     iniProc.process(data.acceleration[flingyId], "Acceleration");
     iniProc.process(data.haltDistance[flingyId], "Halt Distance");

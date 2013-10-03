@@ -74,7 +74,7 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
 
     iniProc.process(data.damage[weaponId],          "Damage");
     iniProc.process(data.damageBonus[weaponId],     "Damage Bonus");
-    iniProc.processUpgradeId(data.upgrade[weaponId], "Upgrade");
+    iniProc.process(data.upgrade[weaponId],         "Upgrade", makeUpgradeComment);
     iniProc.process(data.damageType[weaponId],      "Damage Type");
     iniProc.process(data.cooldown[weaponId],        "Cooldown");
     iniProc.process(data.damageFactor[weaponId],    "Damage Factor");
@@ -84,7 +84,7 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.mediumSplashRadius[weaponId], "Medium Splash Radius");
     iniProc.process(data.outerSplashRadius[weaponId], "Outer Splash Radius");
 
-    iniProc.processFlingyId(data.flingy[weaponId],  "Flingy");
+    iniProc.process(data.flingy[weaponId],          "Flingy", makeFlingyComment);
     iniProc.process(data.flingyAction[weaponId],    "Flingy Action");
     iniProc.process(data.removeTimer[weaponId],     "Remove Timer");
     iniProc.process(data.attackAngle[weaponId],     "Attack Angle");

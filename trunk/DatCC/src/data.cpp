@@ -43,7 +43,7 @@ std::string imageNames[IMAGE_TYPE_COUNT];
 std::string upgradeNames[UPGRADE_TYPE_COUNT + 1];
 std::string orderNames[ORDER_TYPE_COUNT + 1];
 
-void loadNameFile(std::string arr[], const char *basePath) {
+void loadNameFile(const char *basePath, std::string arr[], size_t arr_size) {
   std::string filePath = getCurrentProgramDir() + basePath;
 
   std::ifstream in(filePath.c_str());
@@ -52,18 +52,18 @@ void loadNameFile(std::string arr[], const char *basePath) {
     exit(1);
   }
 
-  for (int i = 0; i <= sizeof(arr) && !in.eof(); ++i)
+  for (unsigned int i = 0; i < arr_size && !in.eof(); ++i)
     std::getline(in, arr[i]);
 }
 
 void loadData() {
-  loadNameFile(unitNames,     "data/units.txt");
-  loadNameFile(weaponNames,   "data/weapons.txt");
-  loadNameFile(flingyNames,   "data/flingy.txt");
-  loadNameFile(spriteNames,   "data/sprites.txt");
-  loadNameFile(imageNames,    "data/images.txt");
-  loadNameFile(upgradeNames,  "data/upgrades.txt");
-  loadNameFile(orderNames,    "data/orders.txt");
+  loadNameFile("data/units.txt",    unitNames,    sizeof(unitNames));
+  loadNameFile("data/weapons.txt",  weaponNames,  sizeof(weaponNames));
+  loadNameFile("data/flingy.txt",   flingyNames,  sizeof(flingyNames));
+  loadNameFile("data/sprites.txt",  spriteNames,  sizeof(spriteNames));
+  loadNameFile("data/images.txt",   imageNames,   sizeof(imageNames));
+  loadNameFile("data/upgrades.txt", upgradeNames, sizeof(upgradeNames));
+  loadNameFile("data/orders.txt",   orderNames,   sizeof(orderNames));
 
   if (statTxtTbl.loadFile((getCurrentProgramDir() + "data/stat_txt.tbl").c_str())) {
     std::cerr << "Error: Cannot read default stat_txt.tbl" << std::endl;
