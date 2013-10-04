@@ -53,8 +53,8 @@ void UpgradesDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.mineralCostFactor[upgradeId],  "Mineral Cost Factor");
     iniProc.process(data.gasCostBase[upgradeId],        "Gas Cost Base");
     iniProc.process(data.gasCostFactor[upgradeId],      "Gas Cost Factor");
-    iniProc.process(data.researchTimeBase[upgradeId],   "Research Time Base");
-    iniProc.process(data.researchTimeFactor[upgradeId], "Research Time Factor");
+    iniProc.process(data.researchTimeBase[upgradeId],   "Research Time Base", makeTimeComment);
+    iniProc.process(data.researchTimeFactor[upgradeId], "Research Time Factor", makeTimeComment);
 
     iniProc.process(data.unknown[upgradeId],            "Unknown");
     
