@@ -5,6 +5,7 @@
 #include "formats/SpritesDat.h"
 #include "formats/ImagesDat.h"
 #include "formats/UpgradesDat.h"
+#include "formats/TechdataDat.h"
 #include "formats/TblFile.h"
 #include <string>
 
@@ -29,6 +30,7 @@ const std::string& getFlingyName(int flingyId);
 const std::string& getSpriteName(int spriteId);
 const std::string& getImageName(int imageId);
 const std::string& getUpgradeName(int upgradeId);
+const std::string& getTechName(int techId);
 const std::string& getOrderName(int orderId);
 
 } //datcc
