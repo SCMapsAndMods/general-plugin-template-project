@@ -4,7 +4,7 @@ namespace datcc {
  
 int IniReader::setSection(const std::string &section, const std::string &comment) {
   currentSection = section;
-  return ini.SetValue(currentSection.c_str(), NULL, NULL, comment.c_str());
+  return 0; //No need to do anything else here
 }
 
 int IniReader::loadFrom(const std::string &fileName) {

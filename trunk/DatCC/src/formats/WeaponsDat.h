@@ -61,7 +61,7 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
     
     iniProc.process(data.label[weaponId],           "Label", makeStatTxtTblComment);
 
-    iniProc.process(data.techHint[weaponId],        "Tech Hint");
+    iniProc.process(data.techHint[weaponId],        "Tech Hint");//, makeTechComment);
 
     iniProc.processFlags(data.targetFlags[weaponId], "Target Flags");
     iniProc.process(data.targetErrorMsg[weaponId],  "Target Error Message", makeStatTxtTblComment);
