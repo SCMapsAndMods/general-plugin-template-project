@@ -1,12 +1,16 @@
 #pragma once
 #include "../types.h"
 
+namespace datcc {
+
+/// Wrapper for *.TBL files. WARNING: TBL file indices start at 1, NOT 0!
+
 class TblFile {
   public:
     int loadFile(const char *fileName);
     const char* getString(int index) const;
     const char* getEscapedString(int index) const;
-    int getStringSize(int index) const;
+    size_t getStringSize(int index) const;
     
     ~TblFile();
 
@@ -17,4 +21,6 @@ class TblFile {
     int dataSize;
 };
 
-extern TblFile statTxtTbl;
+extern TblFile statTxtTbl, imagesTbl;
+
+} //datcc

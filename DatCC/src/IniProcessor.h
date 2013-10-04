@@ -22,9 +22,6 @@ class IniProcessor {
     //template <class T>
     //int processFlags(T &t, const std::string &key);
 
-    //template <class T>
-    //int processTblId(T &t, const std::string &key);
-
   private:
     std::string currentSection;
 

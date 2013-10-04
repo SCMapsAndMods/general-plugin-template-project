@@ -2,7 +2,9 @@
 #include "../util.h"
 #include <fstream>
 
-TblFile statTxtTbl;
+namespace datcc {
+
+TblFile statTxtTbl, imagesTbl;
 
 TblFile::~TblFile() {
   delete data;
@@ -26,29 +28,35 @@ int TblFile::loadFile(const char *fileName) {
 
 const char* TblFile::getString(int index) const {
   static char invalidIndexMsg[] = "invalid string index";
-  if (0 <= index && index < stringCount)
-    return (char*) data + stringOffsets[index];
-  return invalidIndexMsg;
+  static char noneStr[] = "None";
+
+  if (0 < index && index <= stringCount)
+    return (char*) data + stringOffsets[index - 1];
+  else if (index == 0)
+    return noneStr;
+  else
+    return invalidIndexMsg;
 }
 
-int TblFile::getStringSize(int index) const {
-  if (0 <= index && index < stringCount) {
+size_t TblFile::getStringSize(int index) const {
+  if (0 < index && index <= stringCount) {
     const char *strStart = getString(index);
-    if (index == stringCount - 1)
+    if (index == stringCount)
       return (char*) data + dataSize - strStart;
     else
       return getString(index + 1) - strStart;
   }
-  return strlen(getString(index));
+  else
+    return strlen(getString(index));
 }
 
 const char* TblFile::getEscapedString(int index) const {
-  const int stringSize = getStringSize(index);
+  const size_t stringSize = getStringSize(index);
   const char *string = getString(index);
   static char buffer[1000] = "";
 
-  int pos = 0;
-  for (int i = 0; i < stringSize; ++i) {
+  size_t pos = 0;
+  for (size_t i = 0; i < stringSize; ++i) {
     if (iscntrl(string[i])) {
       char smallbuf[10];
       sprintf(smallbuf, "<%d>", (int)string[i]);
@@ -62,3 +70,5 @@ const char* TblFile::getEscapedString(int index) const {
 
   return buffer;
 }
+
+} //datcc

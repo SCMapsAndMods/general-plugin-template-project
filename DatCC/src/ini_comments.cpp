@@ -9,7 +9,7 @@ namespace datcc {
 std::string makeCommentPadding(int id, size_t keyStrSize) {
   std::ostringstream os;
   os << id;
-  os.width(32 - os.tellp() - keyStrSize);
+  os.width(31 - os.tellp() - keyStrSize); //Align to 32 characters
   os << "; ";
   return os.str();
 }
@@ -42,9 +42,14 @@ std::string makeUpgradeComment(int upgradeId, size_t keyStrSize) {
   return makeCommentPadding(upgradeId, keyStrSize) + getUpgradeName(upgradeId);
 }
 
-std::string makeTblComment(int stringIndex, size_t keyStrSize) {
-  return makeCommentPadding(stringIndex, keyStrSize) + statTxtTbl.getEscapedString(stringIndex);
+std::string makeStatTxtTblComment(int stringIndex, size_t keyStrSize) {
+  return makeCommentPadding(stringIndex, keyStrSize)
+    + "stat_txt.tbl: " + statTxtTbl.getEscapedString(stringIndex);
 }
 
+std::string makeImagesTblComment(int stringIndex, size_t keyStrSize) {
+  return makeCommentPadding(stringIndex, keyStrSize)
+    + "images.tbl: " + imagesTbl.getEscapedString(stringIndex);
+}
 
 } //datcc
