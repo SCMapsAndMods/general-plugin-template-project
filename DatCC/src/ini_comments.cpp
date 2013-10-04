@@ -42,6 +42,10 @@ std::string makeUpgradeComment(int upgradeId, size_t keyStrSize) {
   return makeCommentPadding(upgradeId, keyStrSize) + getUpgradeName(upgradeId);
 }
 
+std::string makeTechComment(int techId, size_t keyStrSize) {
+  return makeCommentPadding(techId, keyStrSize) + getTechName(techId);
+}
+
 
 std::string makeStatTxtTblComment(int stringIndex, size_t keyStrSize) {
   return makeCommentPadding(stringIndex, keyStrSize)
