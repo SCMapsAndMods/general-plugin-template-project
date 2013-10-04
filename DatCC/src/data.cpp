@@ -12,6 +12,7 @@ char DefaultDat<FlingyDat>::path[]    = "data/flingy.dat";
 char DefaultDat<SpritesDat>::path[]   = "data/sprites.dat";
 char DefaultDat<ImagesDat>::path[]    = "data/images.dat";
 char DefaultDat<UpgradesDat>::path[]  = "data/upgrades.dat";
+char DefaultDat<TechdataDat>::path[]  = "data/techdata.dat";
 
 //-------- Current program directory --------//
 
@@ -41,6 +42,7 @@ std::string flingyNames[FLINGY_TYPE_COUNT];
 std::string spriteNames[SPRITE_TYPE_COUNT];
 std::string imageNames[IMAGE_TYPE_COUNT];
 std::string upgradeNames[UPGRADE_TYPE_COUNT + 1];
+std::string techNames[TECH_TYPE_COUNT + 1];
 std::string orderNames[ORDER_TYPE_COUNT + 1];
 
 void loadNameFile(const char *basePath, std::string arr[], size_t arr_size) {
@@ -63,6 +65,7 @@ void loadData() {
   loadNameFile("data/sprites.txt",  spriteNames,  sizeof(spriteNames));
   loadNameFile("data/images.txt",   imageNames,   sizeof(imageNames));
   loadNameFile("data/upgrades.txt", upgradeNames, sizeof(upgradeNames));
+  loadNameFile("data/techdata.txt", techNames,    sizeof(techNames));
   loadNameFile("data/orders.txt",   orderNames,   sizeof(orderNames));
 
   if (statTxtTbl.loadFile((getCurrentProgramDir() + "data/stat_txt.tbl").c_str())) {
@@ -113,6 +116,12 @@ const std::string& getImageName(int imageId) {
 const std::string& getUpgradeName(int upgradeId) {
   if (0 <= upgradeId && upgradeId < sizeof(upgradeNames))
     return upgradeNames[upgradeId];
+  return invalidIndexMsg;
+}
+
+const std::string& getTechName(int techId) {
+  if (0 <= techId && techId < sizeof(techNames))
+    return techNames[techId];
   return invalidIndexMsg;
 }
 

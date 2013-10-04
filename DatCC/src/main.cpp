@@ -88,6 +88,9 @@ int main(const int argc, const char* argv[]) {
 
       if (upgradesFileArg.isSet())
         datcc::compileUpgrades(upgradesFileArg.getValue());
+
+      if (techFileArg.isSet())
+        datcc::compileTech(techFileArg.getValue());
     }
     else if (isDecompileModeArg.isSet()) {
       //Decompile mode
@@ -108,6 +111,9 @@ int main(const int argc, const char* argv[]) {
 
       if (upgradesFileArg.isSet())
         datcc::decompileUpgrades(upgradesFileArg.getValue());
+
+      if (techFileArg.isSet())
+        datcc::decompileTech(techFileArg.getValue());
     }
     else { //Should never reach here
       throw new TCLAP::ArgException("Cannot determine compile/decompile mode");
