@@ -16,9 +16,6 @@ class IniReader: public IniProcessor {
     template <class T>
     int processFlags(T &t, const std::string &key);
 
-    template <class T>
-    int processTblId(T &t, const std::string &key);
-
     int loadFrom(const std::string &fileName);
 
   private:
@@ -48,11 +45,6 @@ int IniReader::processFlags(T &t, const std::string &key) {
   if (flagStr != NULL)
     t = (T) datcc::convertToFlags(flagStr);
   return 0;
-}
-
-template <class T>
-int IniReader::processTblId(T &t, const std::string &key) {
-  return process(t, key);
 }
 
 } //datcc

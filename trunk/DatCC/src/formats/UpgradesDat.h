@@ -59,11 +59,7 @@ void UpgradesDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.unknown[upgradeId],            "Unknown");
     
     iniProc.process(data.icon[upgradeId],               "Icon");
-
-    //Fix stat_txt.tbl offset issue
-    data.label[upgradeId] -= 1;
-    iniProc.processTblId(data.label[upgradeId],         "Label");
-    data.label[upgradeId] += 1;
+    iniProc.process(data.label[upgradeId],              "Label", makeStatTxtTblComment);
     
     iniProc.process(data.race[upgradeId],               "Race");
     iniProc.process(data.maxRepeats[upgradeId],         "Max Repeats");

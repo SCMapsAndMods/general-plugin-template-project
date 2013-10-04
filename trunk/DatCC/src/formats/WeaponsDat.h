@@ -59,15 +59,12 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
     sectionName << "Weapon #" << weaponId;
     iniProc.setSection(sectionName.str(), getWeaponName(weaponId));
     
-    //Fix stat_txt.tbl offset issue
-    data.label[weaponId] -= 1;
-    iniProc.processTblId(data.label[weaponId],      "Label");
-    data.label[weaponId] += 1;
+    iniProc.process(data.label[weaponId],           "Label", makeStatTxtTblComment);
 
     iniProc.process(data.techHint[weaponId],        "Tech Hint");
 
     iniProc.processFlags(data.targetFlags[weaponId], "Target Flags");
-    iniProc.processTblId(data.targetErrorMsg[weaponId], "Target Error Message");
+    iniProc.process(data.targetErrorMsg[weaponId],  "Target Error Message", makeStatTxtTblComment);
 
     iniProc.process(data.minRange[weaponId],        "Minimum Range");
     iniProc.process(data.maxRange[weaponId],        "Maximum Range");

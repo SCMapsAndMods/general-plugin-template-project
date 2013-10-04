@@ -67,6 +67,12 @@ void loadData() {
 
   if (statTxtTbl.loadFile((getCurrentProgramDir() + "data/stat_txt.tbl").c_str())) {
     std::cerr << "Error: Cannot read default stat_txt.tbl" << std::endl;
+    exit(1);
+  }
+  
+  if (imagesTbl.loadFile((getCurrentProgramDir() + "data/images.tbl").c_str())) {
+    std::cerr << "Error: Cannot read default images.tbl" << std::endl;
+    exit(1);
   }
 }
 

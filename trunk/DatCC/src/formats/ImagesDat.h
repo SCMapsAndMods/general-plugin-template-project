@@ -52,21 +52,21 @@ void ImagesDat::processIni(IniProcT &iniProc) {
     iniProc.setSection(sectionName.str(), getImageName(imageId));
 
     //@TODO: Add support for images.tbl entries
-    iniProc.process(data.grpFile[imageId], "GRP File");
-    iniProc.process(data.isTurnable[imageId], "Is Turnable");
-    iniProc.process(data.isClickable[imageId], "Is Clickable");
-    iniProc.process(data.useFullIscript[imageId], "Use Full Iscript");
-    iniProc.process(data.drawIfCloaked[imageId], "Draw If Cloaked");
-    iniProc.process(data.drawFunction[imageId], "Drawing Function");
-    iniProc.process(data.remapping[imageId], "Remapping");
-    iniProc.process(data.iscriptEntry[imageId], "Iscript Entry");
+    iniProc.process(data.grpFile[imageId],          "GRP File", makeImagesTblComment);
+    iniProc.process(data.isTurnable[imageId],       "Is Turnable");
+    iniProc.process(data.isClickable[imageId],      "Is Clickable");
+    iniProc.process(data.useFullIscript[imageId],   "Use Full Iscript");
+    iniProc.process(data.drawIfCloaked[imageId],    "Draw If Cloaked");
+    iniProc.process(data.drawFunction[imageId],     "Drawing Function");
+    iniProc.process(data.remapping[imageId],        "Remapping");
+    iniProc.process(data.iscriptEntry[imageId],     "Iscript Entry");
     
-    iniProc.process(data.shieldOverlayLO[imageId], "Shield Overlay LO File");
-    iniProc.process(data.attackOverlayLO[imageId], "Attack Overlay LO File");
-    iniProc.process(data.injuryOverlayLO[imageId], "Injury Overlay LO File");
-    iniProc.process(data.specialOverlayLO[imageId], "Special Overlay LO File");
-    iniProc.process(data.landingDustLO[imageId], "Landing Dust LO File");
-    iniProc.process(data.liftOffDustLO[imageId], "Lift-Off Dust LO File");
+    iniProc.process(data.shieldOverlayLO[imageId],  "Shield Overlay LO File", makeImagesTblComment);
+    iniProc.process(data.attackOverlayLO[imageId],  "Attack Overlay LO File", makeImagesTblComment);
+    iniProc.process(data.injuryOverlayLO[imageId],  "Injury Overlay LO File", makeImagesTblComment);
+    iniProc.process(data.specialOverlayLO[imageId], "Special Overlay LO File", makeImagesTblComment);
+    iniProc.process(data.landingDustLO[imageId],    "Landing Dust LO File", makeImagesTblComment);
+    iniProc.process(data.liftOffDustLO[imageId],    "Lift-Off Dust LO File", makeImagesTblComment);
   }
 }
 

@@ -17,9 +17,6 @@ class IniWriter: public IniProcessor {
     template <class T>
     int processFlags(const T &t, const std::string &key);
 
-    template <class T>
-    int processTblId(const T &t, const std::string &key);
-
     int IniWriter::saveTo(const std::string &fileName) const;
 
   private:
@@ -44,11 +41,6 @@ int IniWriter::process(const T &t, const std::string &key, CallbackT &commenter)
 template <class T>
 int IniWriter::processFlags(const T &t, const std::string &key) {
   return process(std::string(convertFlagsToStr(t)), key);
-}
-
-template <class T>
-int IniWriter::processTblId(const T &t, const std::string &key) {
-  return process(makeTblComment(t, key.size()), key);
 }
 
 } //datcc
