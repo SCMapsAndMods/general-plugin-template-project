@@ -148,7 +148,7 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.portrait[unitId],          "Portrait");
     iniProc.process(data.mineralCost[unitId],       "Mineral Cost");
     iniProc.process(data.gasCost[unitId],           "Gas Cost");
-    iniProc.process(data.buildTime[unitId],         "Build Time");
+    iniProc.process(data.buildTime[unitId],         "Build Time", makeTimeComment);
     iniProc.process(data.unknown[unitId],           "Unknown");
 
     iniProc.processFlags(data.groupFlags[unitId],   "Group Flags");

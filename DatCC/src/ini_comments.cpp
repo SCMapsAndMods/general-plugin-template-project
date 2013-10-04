@@ -42,6 +42,7 @@ std::string makeUpgradeComment(int upgradeId, size_t keyStrSize) {
   return makeCommentPadding(upgradeId, keyStrSize) + getUpgradeName(upgradeId);
 }
 
+
 std::string makeStatTxtTblComment(int stringIndex, size_t keyStrSize) {
   return makeCommentPadding(stringIndex, keyStrSize)
     + "stat_txt.tbl: " + statTxtTbl.getEscapedString(stringIndex);
@@ -50,6 +51,15 @@ std::string makeStatTxtTblComment(int stringIndex, size_t keyStrSize) {
 std::string makeImagesTblComment(int stringIndex, size_t keyStrSize) {
   return makeCommentPadding(stringIndex, keyStrSize)
     + "images.tbl: " + imagesTbl.getEscapedString(stringIndex);
+}
+
+
+std::string makeTimeComment(int time, size_t keyStrSize) {
+  std::ostringstream os;
+  os.setf(std::ios::fixed, std::ios::floatfield);
+  os.precision(2);
+  os << time / 15. << " sec on Normal, " << time / 24. << " sec on Fastest";
+  return makeCommentPadding(time, keyStrSize) + os.str();
 }
 
 } //datcc

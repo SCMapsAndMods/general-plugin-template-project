@@ -83,7 +83,7 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
 
     iniProc.process(data.flingy[weaponId],          "Flingy", makeFlingyComment);
     iniProc.process(data.flingyAction[weaponId],    "Flingy Action");
-    iniProc.process(data.removeTimer[weaponId],     "Remove Timer");
+    iniProc.process(data.removeTimer[weaponId],     "Remove Timer", makeTimeComment);
     iniProc.process(data.attackAngle[weaponId],     "Attack Angle");
     iniProc.process(data.launchSpin[weaponId],      "Launch Spin");
     iniProc.process(data.forwardOffset[weaponId],   "Forward Offset");
