@@ -14,6 +14,7 @@ char DefaultDat<SpritesDat>::path[]   = "data/sprites.dat";
 char DefaultDat<ImagesDat>::path[]    = "data/images.dat";
 char DefaultDat<UpgradesDat>::path[]  = "data/upgrades.dat";
 char DefaultDat<TechdataDat>::path[]  = "data/techdata.dat";
+char DefaultDat<OrdersDat>::path[]    = "data/orders.dat";
 
 //-------- Current program directory --------//
 
@@ -33,9 +34,6 @@ const std::string& getCurrentProgramDir() {
 }
 
 //-------- Text and TBL loader --------//
-
-//@TODO Add all DAT types so that these constants can find a home
-const int ORDER_TYPE_COUNT = 189;
 
 std::string unitNames[UNIT_TYPE_COUNT + 1];
 std::string weaponNames[WEAPON_TYPE_COUNT + 1];
@@ -153,8 +151,11 @@ const std::string& getOrderName(int orderId) {
 }
 
 const std::string& getIconName(int iconId) {
+  static const std::string noIconMsg("No icon");
   if (0 <= iconId && iconId < iconNames.size())
     return iconNames.at(iconId);
+  else if (iconId == -1)
+    return noIconMsg;
   return invalidIndexMsg;
 }
 

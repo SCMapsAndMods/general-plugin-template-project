@@ -317,6 +317,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\formats\OrdersDat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\parser.h"
 				>
 			</File>
