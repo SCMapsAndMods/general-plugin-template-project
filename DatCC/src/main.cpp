@@ -14,9 +14,9 @@ int main(const int argc, const char* argv[]) {
       "\nDatCC -c -w \"C:\\My Mod\\my weapons.ini\""
       "\n\tCompiles \"C:\\My Mod\\my weapons.ini\" into \"C:\\My Mod\\my weapons.dat\""
       "\nDatCC -c -t \"C:\\test\\tech.ini\" -b C:\\test\\techdata.dat"
-      "\n\tCompiles \"C:\\test\\tech.ini\" on top of C:\\test\\techdata.dat"
-      "\nDatCC -r -f \"example mod-flingy.dat\" -b ."
-      "\n\tCompares \"example mod-flingy.dat\" with the default flingy.dat and save the differences to \"example mod-flingy.ini\"";
+      "\n\tCompiles \"C:\\test\\tech.ini\" into \"C:\\test\\tech.dat\", using C:\\test\\techdata.dat as the base DAT file"
+      "\nDatCC -r -f \"example mod-flingy.dat\" output.ini"
+      "\n\tCompares \"example mod-flingy.dat\" with the default flingy.dat and save the differences to output.ini";
     TCLAP::CmdLine cmd(exampleStr, ' ', "0.1");
 
     TCLAP::SwitchArg isCompileModeArg  ("c", "compile",   "Compiles INI files to DAT files.");

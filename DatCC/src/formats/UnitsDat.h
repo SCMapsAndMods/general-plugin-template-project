@@ -107,11 +107,11 @@ void UnitsDat::processIni(IniProcT &iniProc) {
 
     //AI-related
     iniProc.process(data.rank[unitId],              "Rank");
-    iniProc.process(data.computerAiIdleOrder[unitId], "Comp AI Idle Order");
-    iniProc.process(data.humanAiIdleOrder[unitId],  "Human AI Idle Order");
-    iniProc.process(data.returnToIdleOrder[unitId], "Return Idle Order");
-    iniProc.process(data.attackUnitOrder[unitId],   "Attack Unit Order");
-    iniProc.process(data.attackMoveOrder[unitId],   "Attack Move Order");
+    iniProc.process(data.computerAiIdleOrder[unitId], "Comp AI Idle Order", makeOrderComment);
+    iniProc.process(data.humanAiIdleOrder[unitId],  "Human AI Idle Order", makeOrderComment);
+    iniProc.process(data.returnToIdleOrder[unitId], "Return Idle Order", makeOrderComment);
+    iniProc.process(data.attackUnitOrder[unitId],   "Attack Unit Order", makeOrderComment);
+    iniProc.process(data.attackMoveOrder[unitId],   "Attack Move Order", makeOrderComment);
     iniProc.process(data.seekRange[unitId],         "Seek Range");
     iniProc.process(data.sightRange[unitId],        "Sight Range");
     iniProc.process(data.rightClickAction[unitId],  "Right-Click Action");
@@ -145,8 +145,8 @@ void UnitsDat::processIni(IniProcT &iniProc) {
 
     iniProc.processFlags(data.groupFlags[unitId],   "Group Flags");
 
-    iniProc.process(data.supplyProvided[unitId],    "Supply Provided");
-    iniProc.process(data.supplyCost[unitId],        "Supply Cost");
+    iniProc.process(data.supplyProvided[unitId],    "Supply Provided", makeSupplyComment);
+    iniProc.process(data.supplyCost[unitId],        "Supply Cost", makeSupplyComment);
     iniProc.process(data.cargoSize[unitId],         "Cargo Size");
     iniProc.process(data.cargoSpace[unitId],        "Cargo Space");
     iniProc.process(data.buildScore[unitId],        "Build Score");

@@ -24,5 +24,8 @@ std::string makeTimeComment     (int time,    size_t keyStrSize);
 std::string makeHpAmountComment (int hp,      size_t keyStrSize);
 std::string makeShieldAmtComment(int shields, size_t keyStrSize);
 std::string makeSpeedComment    (int speed,   size_t keyStrSize);
+std::string makeSupplyComment   (int supply,  size_t keyStrSize);
+std::string makeWeaponRangeComment(int weaponRange, size_t keyStrSize);
+std::string makeAngleComment    (int brad,    size_t keyStrSize);
 
 } //datcc
