@@ -28,21 +28,4 @@ class IniProcessor {
     CSimpleIniCaseA ini;
 };
 
-/*
-class IniImporter {
-  public:
-    void setSection(const std::string &section, const std::string &comment);
-
-  private:
-    std::string currentSection;
-};
-
-class DifferentialExporter {
-  public:
-    void setSection(const std::string &section, const std::string &comment);
-
-  private:
-    std::string currentSection;
-};
-*/
 } //datcc

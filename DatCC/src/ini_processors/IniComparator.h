@@ -58,6 +58,9 @@ int IniComparator::process(const T &t, const std::string &key) {
 template <>
 int IniComparator::process(const Point16 &p, const std::string &key);
 
+template <>
+int IniComparator::process(const Box16 &b, const std::string &key);
+
 template <class T, typename CallbackT>
 int IniComparator::process(const T &t, const std::string &key, CallbackT &commenter) {
   if (isLoadingBaseDat)

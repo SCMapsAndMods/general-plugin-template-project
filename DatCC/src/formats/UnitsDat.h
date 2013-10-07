@@ -48,13 +48,9 @@ struct UnitsDatFile {
   WORD  pissedLastSfx   [UNITS_DAT_UNITS];
   WORD  yesFirstSfx     [UNITS_DAT_UNITS];
   WORD  yesLastSfx      [UNITS_DAT_UNITS];
-  WORD  unitWidth       [UNIT_TYPE_COUNT];
-  WORD  unitHeight      [UNIT_TYPE_COUNT];
+  Point16 unitBoxSize   [UNIT_TYPE_COUNT];
   Point16 addonOffset   [UNITS_DAT_BLDGS];
-  SWORD unitBoxLeft     [UNIT_TYPE_COUNT];
-  SWORD unitBoxTop      [UNIT_TYPE_COUNT];
-  SWORD unitBoxRight    [UNIT_TYPE_COUNT];
-  SWORD unitBoxBottom   [UNIT_TYPE_COUNT];
+  Box16 unitBox         [UNIT_TYPE_COUNT];
   WORD  portrait        [UNIT_TYPE_COUNT];
   WORD  mineralCost     [UNIT_TYPE_COUNT];
   WORD  gasCost         [UNIT_TYPE_COUNT];
@@ -139,12 +135,8 @@ void UnitsDat::processIni(IniProcT &iniProc) {
       iniProc.process(data.yesLastSfx[unitId],      "Yes Sound (Last)");
     }
 
-    iniProc.process(data.unitWidth[unitId],         "Unit Width");
-    iniProc.process(data.unitHeight[unitId],        "Unit Height");
-    iniProc.process(data.unitBoxLeft[unitId],       "Unit Box (Left)");
-    iniProc.process(data.unitBoxTop[unitId],        "Unit Box (Top)");
-    iniProc.process(data.unitBoxRight[unitId],      "Unit Box (Right)");
-    iniProc.process(data.unitBoxBottom[unitId],     "Unit Box (Bottom)");
+    iniProc.process(data.unitBoxSize[unitId],       "Unit Width/Height");
+    iniProc.process(data.unitBox[unitId],           "Unit Box (LTRB)");
     iniProc.process(data.portrait[unitId],          "Portrait");
     iniProc.process(data.mineralCost[unitId],       "Mineral Cost");
     iniProc.process(data.gasCost[unitId],           "Gas Cost");

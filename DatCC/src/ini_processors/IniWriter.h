@@ -32,6 +32,9 @@ int IniWriter::process(const std::string &str, const std::string &key);
 template <>
 int IniWriter::process(const Point16 &p, const std::string &key);
 
+template <>
+int IniWriter::process(const Box16 &b, const std::string &key);
+
 template <class T, typename CallbackT>
 int IniWriter::process(const T &t, const std::string &key, CallbackT &commenter) {
   return process(commenter(t, key.size()), key);
