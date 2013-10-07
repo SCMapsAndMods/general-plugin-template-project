@@ -34,6 +34,9 @@ int IniReader::process(T &t, const std::string &key) {
 template <>
 int IniReader::process(Point16 &p, const std::string &key);
 
+template <>
+int IniReader::process(Box16 &b, const std::string &key);
+
 template <class T, typename CallbackT>
 int IniReader::process(T &t, const std::string &key, CallbackT &commenter) {
   return process(t, key);

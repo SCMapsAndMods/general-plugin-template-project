@@ -26,4 +26,11 @@ int IniWriter::process(const Point16 &p, const std::string &key) {
   return process(os.str(), key);
 }
 
+template <>
+int IniWriter::process(const Box16 &b, const std::string &key) {
+  std::ostringstream os;
+  os << b.left << " " << b.top << " " << b.right << " " << b.bottom;
+  return process(os.str(), key);
+}
+
 } //datcc

@@ -24,4 +24,14 @@ int IniReader::process(Point16 &p, const std::string &key) {
     return 0;
 }
 
+template <>
+int IniReader::process(Box16 &b, const std::string &key) {
+  std::istringstream is(ini.GetValue(currentSection.c_str(), key.c_str(), ""));
+  is >> b.left >> b.top >> b.right >> b.bottom;
+  if (is.fail())
+    return 1;
+  else
+    return 0;
+}
+
 } //datcc
