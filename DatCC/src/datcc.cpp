@@ -99,7 +99,7 @@ void compareDat(const std::string &inputDatPath, const std::string &basePath) {
   iniComparator.compare(dat, baseDat);
 
   std::string outputIniPath = getOutputIniPath(inputDatPath);
-  std::cout << "Writing to " << outputIniPath << "...\n";
+  std::cout << "Decompiling differences to " << outputIniPath << "...\n";
   if (0 > iniComparator.saveTo(outputIniPath)) {
     std::cerr << "Error: Could not save to " << outputIniPath << std::endl;
     return;

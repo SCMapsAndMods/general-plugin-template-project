@@ -20,7 +20,12 @@ int main(const int argc, const char* argv[]) {
     TCLAP::SwitchArg isCompileModeArg  ("c", "compile",   "Compiles INI files to DAT files.");
     TCLAP::SwitchArg isDecompileModeArg("d", "decompile", "Decompiles DAT files to INI files.");
     TCLAP::SwitchArg isCompareModeArg  ("r", "compare",   "Compares the DAT file with the base DAT file and decompiles the differences to an INI file");
-    cmd.xorAdd(isCompileModeArg, isDecompileModeArg);
+
+    std::vector<TCLAP::Arg*> modeSwitchArgs;
+    modeSwitchArgs.push_back(&isCompileModeArg);
+    modeSwitchArgs.push_back(&isDecompileModeArg);
+    modeSwitchArgs.push_back(&isCompareModeArg);
+    cmd.xorAdd(modeSwitchArgs);
 
     TCLAP::ValueArg<std::string> baseDatArg("b", "basedat",
       "Base DAT file to use when compiling/comparing. If omitted, the default DAT files are used.",
@@ -28,7 +33,8 @@ int main(const int argc, const char* argv[]) {
     cmd.add(baseDatArg);
 
     TCLAP::UnlabeledValueArg<std::string> inputFileArg("input",
-      "In compile mode, specify the INI file to compile. In decompile or compare mode, specify the DAT file to decompile or compare.", true, "", "input file");
+      "In compile mode, specify the INI file to compile. In decompile or compare mode, specify the DAT file to decompile or compare.",
+      true, "", "input file");
     cmd.add(inputFileArg);
 
     TCLAP::SwitchArg useUnitsDatArg   ("u", "units",    "Operate on units.dat");

@@ -170,7 +170,6 @@ void UnitsDat::processIni(IniProcT &iniProc) {
       iniProc.process(data.addonOffsetX[unitId - 106], "Addon Offset (X)");
       iniProc.process(data.addonOffsetY[unitId - 106], "Addon Offset (Y)");
     }
-
   }
 }
 
