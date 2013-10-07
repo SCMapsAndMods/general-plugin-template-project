@@ -18,9 +18,6 @@ class IniWriter: public IniProcessor {
     int processFlags(const T &t, const std::string &key);
 
     int saveTo(const std::string &fileName) const;
-
-  private:
-    std::string currentSection;
 };
 
 //-------- Member function template definitions --------//
