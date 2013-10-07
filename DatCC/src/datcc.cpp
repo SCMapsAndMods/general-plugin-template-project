@@ -1,6 +1,7 @@
 #include "datcc.h"
 #include "IniWriter.h"
 #include "IniReader.h"
+#include "IniComparator.h"
 #include "dat_io.h"
 #include "data.h"
 #include "util.h"
@@ -73,6 +74,38 @@ void decompileDat(const std::string &inputDatPath_) {
   }
 }
 
+template <class DatT>
+void compareDat(const std::string &inputDatPath, const std::string &basePath) {
+  std::string loadBasePath;
+  const bool useDefaultDat = (basePath == ".");
+
+  if (useDefaultDat) {
+    loadBasePath = getCurrentProgramDir() + DefaultDat<DatT>::path;
+    std::cout << "Reading default DAT..." << std::endl;
+  }
+  else {
+    loadBasePath = basePath;
+    std::cout << "Reading base DAT from " << loadBasePath << "...\n";
+  }
+
+  DatT baseDat;
+  if (loadDat(baseDat, loadBasePath)) return;
+
+  DatT dat;
+  std::cout << "Reading from " << inputDatPath << "...\n";
+  if (loadDat(dat, inputDatPath)) return;
+
+  IniComparator iniComparator;
+  iniComparator.compare(dat, baseDat);
+
+  std::string outputIniPath = getOutputIniPath(inputDatPath);
+  std::cout << "Writing to " << outputIniPath << "...\n";
+  if (0 > iniComparator.saveTo(outputIniPath)) {
+    std::cerr << "Error: Could not save to " << outputIniPath << std::endl;
+    return;
+  }
+}
+
 //-------- Compile functions --------//
 
 void compileUnits(const std::string &inputPath, const std::string &basePath) {
@@ -137,5 +170,39 @@ void decompileTechdata(const std::string &inputPath) {
 
 void decompileOrders  (const std::string &inputPath);
 
+//-------- Compare functions --------//
+
+void compareUnits   (const std::string &inputPath, const std::string &basePath) {
+  compareDat<UnitsDat>(inputPath, basePath);
+}
+
+void compareWeapons (const std::string &inputPath, const std::string &basePath) {
+  compareDat<WeaponsDat>(inputPath, basePath);
+}
+
+void compareFlingy  (const std::string &inputPath, const std::string &basePath) {
+  compareDat<FlingyDat>(inputPath, basePath);
+}
+
+void compareSprites (const std::string &inputPath, const std::string &basePath) {
+  compareDat<SpritesDat>(inputPath, basePath);
+}
+
+void compareImages  (const std::string &inputPath, const std::string &basePath) {
+  compareDat<ImagesDat>(inputPath, basePath);
+}
+
+void compareUpgrades(const std::string &inputPath, const std::string &basePath) {
+  compareDat<UpgradesDat>(inputPath, basePath);
+}
+
+void compareTechdata(const std::string &inputPath, const std::string &basePath) {
+  compareDat<TechdataDat>(inputPath, basePath);
+}
+
+void compareSfxdata (const std::string &inputPath, const std::string &basePath);
+void comparePortdata(const std::string &inputPath, const std::string &basePath);
+void compareMapdata (const std::string &inputPath, const std::string &basePath);
+void compareOrders  (const std::string &inputPath, const std::string &basePath);
 
 } //datcc

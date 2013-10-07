@@ -17,7 +17,7 @@ class IniWriter: public IniProcessor {
     template <class T>
     int processFlags(const T &t, const std::string &key);
 
-    int IniWriter::saveTo(const std::string &fileName) const;
+    int saveTo(const std::string &fileName) const;
 
   private:
     std::string currentSection;

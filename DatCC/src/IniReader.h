@@ -1,3 +1,4 @@
+#pragma once
 #include "IniProcessor.h"
 #include "parser.h"
 
