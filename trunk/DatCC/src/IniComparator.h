@@ -44,7 +44,7 @@ int IniComparator::process(const T &t, const std::string &key) {
   if (isLoadingBaseDat)
     return baseIni.SetLongValue(currentSection.c_str(), key.c_str(), t);
   
-  const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), 0);
+  const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
   if (baseVal != t) {
     if (isCurrentSectionUnwritten) {
       IniWriter::setSection(currentSection, currentSectionComment);

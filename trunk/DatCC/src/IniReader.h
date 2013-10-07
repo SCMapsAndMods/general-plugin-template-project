@@ -25,12 +25,11 @@ class IniReader: public IniProcessor {
 
 template <class T>
 int IniReader::process(T &t, const std::string &key) {
-  t = (T) ini.GetLongValue(currentSection.c_str(), key.c_str(), t);
+  const char *str = ini.GetValue(currentSection.c_str(), key.c_str());
+  if (str != NULL)
+    t = (T) atol(str);  //To handle inline comments
   return 0;
 }
-
-template <>
-int IniReader::process(std::string &str, const std::string &key);
 
 template <class T, typename CallbackT>
 int IniReader::process(T &t, const std::string &key, CallbackT &commenter) {
