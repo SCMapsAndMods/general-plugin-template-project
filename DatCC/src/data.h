@@ -6,6 +6,7 @@
 #include "formats/ImagesDat.h"
 #include "formats/UpgradesDat.h"
 #include "formats/TechdataDat.h"
+#include "formats/SfxdataDat.h"
 #include "formats/OrdersDat.h"
 #include "formats/TblFile.h"
 #include <string>

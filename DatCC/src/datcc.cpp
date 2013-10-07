@@ -151,6 +151,10 @@ void compileTechdata(const std::string &inputPath, const std::string &outputPath
   compileDat<TechdataDat>(inputPath, outputPath, basePath);
 }
 
+void compileSfxdata(const std::string &inputPath, const std::string &outputPath, const std::string &basePath) {
+  compileDat<SfxdataDat>(inputPath, outputPath, basePath);
+}
+
 void compileOrders(const std::string &inputPath, const std::string &outputPath, const std::string &basePath) {
   compileDat<OrdersDat>(inputPath, outputPath, basePath);
 }
@@ -183,6 +187,10 @@ void decompileUpgrades(const std::string &inputPath, const std::string &outputPa
 
 void decompileTechdata(const std::string &inputPath, const std::string &outputPath) {
   decompileDat<TechdataDat>(inputPath, outputPath);
+}
+
+void decompileSfxdata(const std::string &inputPath, const std::string &outputPath) {
+  decompileDat<SfxdataDat>(inputPath, outputPath);
 }
 
 void decompileOrders(const std::string &inputPath, const std::string &outputPath) {
@@ -219,7 +227,10 @@ void compareTechdata(const std::string &inputPath, const std::string &outputPath
   compareDat<TechdataDat>(inputPath, outputPath, basePath);
 }
 
-void compareSfxdata (const std::string &inputPath, const std::string &outputPath, const std::string &basePath);
+void compareSfxdata (const std::string &inputPath, const std::string &outputPath, const std::string &basePath) {
+  compareDat<SfxdataDat>(inputPath, outputPath, basePath);
+}
+
 void comparePortdata(const std::string &inputPath, const std::string &outputPath, const std::string &basePath);
 void compareMapdata (const std::string &inputPath, const std::string &outputPath, const std::string &basePath);
 
