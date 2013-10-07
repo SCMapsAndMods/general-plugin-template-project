@@ -134,7 +134,7 @@ void compileUpgrades(const std::string &inputPath, const std::string &basePath) 
   compileDat<UpgradesDat>(inputPath, basePath);
 }
 
-void compileTech(const std::string &inputPath, const std::string &basePath) {
+void compileTechdata(const std::string &inputPath, const std::string &basePath) {
   compileDat<TechdataDat>(inputPath, basePath);
 }
 
@@ -166,7 +166,7 @@ void decompileUpgrades(const std::string &inputPath) {
   decompileDat<UpgradesDat>(inputPath);
 }
 
-void decompileTech(const std::string &inputPath) {
+void decompileTechdata(const std::string &inputPath) {
   decompileDat<TechdataDat>(inputPath);
 }
 
