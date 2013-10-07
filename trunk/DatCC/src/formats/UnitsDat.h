@@ -1,5 +1,6 @@
 #pragma once
 #include "DatInterface.h"
+#include "../coord_structs.h"
 #include <sstream>
 
 namespace datcc {
@@ -49,8 +50,7 @@ struct UnitsDatFile {
   WORD  yesLastSfx      [UNITS_DAT_UNITS];
   WORD  unitWidth       [UNIT_TYPE_COUNT];
   WORD  unitHeight      [UNIT_TYPE_COUNT];
-  SWORD addonOffsetX    [UNITS_DAT_BLDGS];
-  SWORD addonOffsetY    [UNITS_DAT_BLDGS];
+  Point16 addonOffset   [UNITS_DAT_BLDGS];
   SWORD unitBoxLeft     [UNIT_TYPE_COUNT];
   SWORD unitBoxTop      [UNIT_TYPE_COUNT];
   SWORD unitBoxRight    [UNIT_TYPE_COUNT];
@@ -166,9 +166,8 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     
     //Process building-specific data
     if (106 <= unitId && unitId <= 201) {
-      iniProc.process(data.infestChangeUnit[unitId - 106], "InfestChangeUnit", makeUnitComment);
-      iniProc.process(data.addonOffsetX[unitId - 106], "Addon Offset (X)");
-      iniProc.process(data.addonOffsetY[unitId - 106], "Addon Offset (Y)");
+      iniProc.process(data.infestChangeUnit[unitId - 106], "Infest Change Unit", makeUnitComment);
+      iniProc.process(data.addonOffset[unitId - 106], "Addon Offset");
     }
   }
 }

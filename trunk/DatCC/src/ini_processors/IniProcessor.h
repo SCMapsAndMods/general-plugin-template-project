@@ -1,7 +1,8 @@
 #pragma once
-#include "../types.h"
 #include <SimpleIni.h>
 #include <string>
+#include "../types.h"
+#include "../coord_structs.h"
 
 namespace datcc {
 
@@ -18,7 +19,7 @@ class IniProcessor {
     //    std::string func(int val, size_t keyStrSize);
     //template <class T, typename CallbackT>
     //int process(T &t, const std::string &key, CallbackT &commenter);
-    
+
     //template <class T>
     //int processFlags(T &t, const std::string &key);
 

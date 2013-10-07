@@ -15,13 +15,15 @@ class IniComparator: public IniWriter {
     //    std::string func(int val, size_t keyStrSize);
     template <class T, typename CallbackT>
     int process(const T &t, const std::string &key, CallbackT &commenter);
-    
+
     template <class T>
     int processFlags(const T &t, const std::string &key);
 
     int setSection(const std::string &section, const std::string &comment);
 
   private:
+    void writeSection();
+
     CSimpleIniCaseA baseIni;
     std::string currentSectionComment;
     bool isLoadingBaseDat;
@@ -46,15 +48,15 @@ int IniComparator::process(const T &t, const std::string &key) {
   
   const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
   if (baseVal != t) {
-    if (isCurrentSectionUnwritten) {
-      IniWriter::setSection(currentSection, currentSectionComment);
-      isCurrentSectionUnwritten = false;
-    }
+    writeSection();
     return IniWriter::process(t, key);
   }
   else
     return 0; //Identical, no write
 }
+
+template <>
+int IniComparator::process(const Point16 &p, const std::string &key);
 
 template <class T, typename CallbackT>
 int IniComparator::process(const T &t, const std::string &key, CallbackT &commenter) {
@@ -63,10 +65,7 @@ int IniComparator::process(const T &t, const std::string &key, CallbackT &commen
 
   const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
   if (baseVal != t) {
-    if (isCurrentSectionUnwritten) {
-      IniWriter::setSection(currentSection, currentSectionComment);
-      isCurrentSectionUnwritten = false;
-    }
+    writeSection();
     return IniWriter::process(t, key, commenter);
   }
   else
@@ -80,10 +79,7 @@ int IniComparator::processFlags(const T &t, const std::string &key) {
 
   const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
   if (baseVal != t) {
-    if (isCurrentSectionUnwritten) {
-      IniWriter::setSection(currentSection, currentSectionComment);
-      isCurrentSectionUnwritten = false;
-    }
+    writeSection();
     return IniWriter::processFlags(t, key);
   }
   else
