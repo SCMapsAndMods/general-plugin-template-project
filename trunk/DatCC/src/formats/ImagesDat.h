@@ -52,7 +52,6 @@ void ImagesDat::processIni(IniProcT &iniProc) {
     sectionName << "Image #" << imageId;
     iniProc.setSection(sectionName.str(), getImageName(imageId));
 
-    //@TODO: Add support for images.tbl entries
     iniProc.process(data.grpFile[imageId],          "GRP File", makeImagesTblComment);
     iniProc.process(data.isTurnable[imageId],       "Is Turnable");
     iniProc.process(data.isClickable[imageId],      "Is Clickable");

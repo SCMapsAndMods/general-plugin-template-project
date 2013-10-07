@@ -151,7 +151,9 @@ void compileTechdata(const std::string &inputPath, const std::string &outputPath
   compileDat<TechdataDat>(inputPath, outputPath, basePath);
 }
 
-void compileOrders  (const std::string &inputPath, const std::string &outputPath, const std::string &basePath);
+void compileOrders(const std::string &inputPath, const std::string &outputPath, const std::string &basePath) {
+  compileDat<OrdersDat>(inputPath, outputPath, basePath);
+}
 
 //-------- Decompile functions --------//
 
@@ -183,7 +185,9 @@ void decompileTechdata(const std::string &inputPath, const std::string &outputPa
   decompileDat<TechdataDat>(inputPath, outputPath);
 }
 
-void decompileOrders  (const std::string &inputPath, const std::string &outputPath);
+void decompileOrders(const std::string &inputPath, const std::string &outputPath) {
+  decompileDat<OrdersDat>(inputPath, outputPath);
+}
 
 //-------- Compare functions --------//
 
@@ -218,6 +222,9 @@ void compareTechdata(const std::string &inputPath, const std::string &outputPath
 void compareSfxdata (const std::string &inputPath, const std::string &outputPath, const std::string &basePath);
 void comparePortdata(const std::string &inputPath, const std::string &outputPath, const std::string &basePath);
 void compareMapdata (const std::string &inputPath, const std::string &outputPath, const std::string &basePath);
-void compareOrders  (const std::string &inputPath, const std::string &outputPath, const std::string &basePath);
+
+void compareOrders(const std::string &inputPath, const std::string &outputPath, const std::string &basePath) {
+  compareDat<OrdersDat>(inputPath, outputPath, basePath);
+}
 
 } //datcc
