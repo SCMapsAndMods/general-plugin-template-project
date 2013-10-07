@@ -51,7 +51,7 @@ int main(const int argc, const char* argv[]) {
     TCLAP::SwitchArg useImagesDatArg  ("i", "images",   "Operate on images.dat");
     TCLAP::SwitchArg useUpgradesDatArg("g", "upgrades", "Operate on upgrades.dat");
     TCLAP::SwitchArg useTechdataDatArg("t", "techdata", "Operate on techdata.dat");
-    TCLAP::SwitchArg useSfxdataDatArg ("x", "sfxdata",  "Operate on sfxdata.dat (NOT SUPPORTED YET!)");
+    TCLAP::SwitchArg useSfxdataDatArg ("x", "sfxdata",  "Operate on sfxdata.dat");
     TCLAP::SwitchArg usePortdataDatArg("p", "portdata", "Operate on portdata.dat (NOT SUPPORTED YET!)");
     TCLAP::SwitchArg useMapdataDatArg ("m", "mapdata",  "Operate on mapdata.dat (NOT SUPPORTED YET)");
     TCLAP::SwitchArg useOrdersDatArg  ("o", "orders",   "Operate on orders.dat");

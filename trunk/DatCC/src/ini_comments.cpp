@@ -75,4 +75,22 @@ std::string makeTimeComment(int time, size_t keyStrSize) {
   return makeCommentPadding(time, keyStrSize) + os.str();
 }
 
+std::string makeHpAmountComment (int hp, size_t keyStrSize) {
+  std::ostringstream os;
+  os << hp / 256. << " HP";
+  return makeCommentPadding(hp, keyStrSize) + os.str();
+}
+
+std::string makeShieldAmtComment(int shields, size_t keyStrSize) {
+  std::ostringstream os;
+  os << shields / 256. << " shields";
+  return makeCommentPadding(shields, keyStrSize) + os.str();
+}
+
+std::string makeSpeedComment(int speed, size_t keyStrSize) {
+  std::ostringstream os;
+  os << speed / 256. << " pixels per frame";
+  return makeCommentPadding(speed, keyStrSize) + os.str();
+}
+
 } //datcc
