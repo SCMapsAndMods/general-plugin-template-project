@@ -22,10 +22,8 @@ class IniProcessor {
     //template <class T>
     //int processFlags(T &t, const std::string &key);
 
-  private:
-    std::string currentSection;
-
   protected:
+    std::string currentSection;
     CSimpleIniCaseA ini;
 };
 

@@ -18,9 +18,6 @@ class IniReader: public IniProcessor {
     int processFlags(T &t, const std::string &key);
 
     int loadFrom(const std::string &fileName);
-
-  private:
-    std::string currentSection;
 };
 
 
