@@ -24,13 +24,15 @@ const std::string& getCurrentProgramDir();
 template <class DatT> class DefaultDat { public: static char path[]; };
 
 /// Retrieve DAT entry names loaded from text files.
-const std::string& getUnitName(int unitId);
-const std::string& getWeaponName(int weaponId);
-const std::string& getFlingyName(int flingyId);
-const std::string& getSpriteName(int spriteId);
-const std::string& getImageName(int imageId);
-const std::string& getUpgradeName(int upgradeId);
-const std::string& getTechName(int techId);
-const std::string& getOrderName(int orderId);
+const std::string& getUnitName    (int unitId);
+const std::string& getWeaponName  (int weaponId);
+const std::string& getFlingyName  (int flingyId);
+const std::string& getSpriteName  (int spriteId);
+const std::string& getImageName   (int imageId);
+const std::string& getUpgradeName (int upgradeId);
+const std::string& getTechName    (int techId);
+const std::string& getOrderName   (int orderId);
+
+const std::string& getIconName    (int iconId);
 
 } //datcc

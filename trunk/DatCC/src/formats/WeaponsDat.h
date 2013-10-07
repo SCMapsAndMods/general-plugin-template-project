@@ -61,7 +61,7 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
     
     iniProc.process(data.label[weaponId],           "Label", makeStatTxtTblComment);
 
-    iniProc.process(data.techHint[weaponId],        "Tech Hint");//, makeTechComment);
+    iniProc.process(data.techHint[weaponId],        "Tech Hint", makeTechComment);
 
     iniProc.processFlags(data.targetFlags[weaponId], "Target Flags");
     iniProc.process(data.targetErrorMsg[weaponId],  "Target Error Message", makeStatTxtTblComment);
@@ -89,7 +89,7 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.forwardOffset[weaponId],   "Forward Offset");
     iniProc.process(data.verticalOffset[weaponId],  "Vertical Offset");
 
-    iniProc.process(data.icon[weaponId],            "Icon");
+    iniProc.process(data.icon[weaponId],            "Icon", makeIconNameComment);
   }
 }
 
