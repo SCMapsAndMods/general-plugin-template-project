@@ -9,7 +9,7 @@
 namespace datcc {
 
 template <class DatT>
-void compileDat(const std::string &inputIniPath) {
+void compileDat(const std::string &inputIniPath, const std::string &basePath) {
   std::cout << "Reading default data..." << std::endl;
   const std::string defaultDatPath = getCurrentProgramDir() + DefaultDat<DatT>::path;
 
@@ -110,35 +110,35 @@ void decompileDat(const std::string &inputDatPath_) {
 
 //-------- Compile functions --------//
 
-void compileUnits(const std::string &inputPath) {
-  compileDat<UnitsDat>(inputPath);
+void compileUnits(const std::string &inputPath, const std::string &basePath) {
+  compileDat<UnitsDat>(inputPath, basePath);
 }
 
-void compileWeapons(const std::string &inputPath) {
-  compileDat<WeaponsDat>(inputPath);
+void compileWeapons(const std::string &inputPath, const std::string &basePath) {
+  compileDat<WeaponsDat>(inputPath, basePath);
 }
 
-void compileFlingy(const std::string &inputPath) {
-  compileDat<FlingyDat>(inputPath);
+void compileFlingy(const std::string &inputPath, const std::string &basePath) {
+  compileDat<FlingyDat>(inputPath, basePath);
 }
 
-void compileSprites(const std::string &inputPath) {
-  compileDat<SpritesDat>(inputPath);
+void compileSprites(const std::string &inputPath, const std::string &basePath) {
+  compileDat<SpritesDat>(inputPath, basePath);
 }
 
-void compileImages(const std::string &inputPath) {
-  compileDat<ImagesDat>(inputPath);
+void compileImages(const std::string &inputPath, const std::string &basePath) {
+  compileDat<ImagesDat>(inputPath, basePath);
 }
 
-void compileUpgrades(const std::string &inputPath) {
-  compileDat<UpgradesDat>(inputPath);
+void compileUpgrades(const std::string &inputPath, const std::string &basePath) {
+  compileDat<UpgradesDat>(inputPath, basePath);
 }
 
-void compileTech(const std::string &inputPath) {
-  compileDat<TechdataDat>(inputPath);
+void compileTech(const std::string &inputPath, const std::string &basePath) {
+  compileDat<TechdataDat>(inputPath, basePath);
 }
 
-void compileOrders  (const std::string &inputPath);
+void compileOrders  (const std::string &inputPath, const std::string &basePath);
 
 //-------- Decompile functions --------//
 

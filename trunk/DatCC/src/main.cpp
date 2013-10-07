@@ -22,7 +22,7 @@ int main(const int argc, const char* argv[]) {
     cmd.xorAdd(isCompileModeArg, isDecompileModeArg);
 
     TCLAP::ValueArg<std::string> baseDatArg("b", "basedat",
-      "Base DAT file to use for (de)compiling. If omitted, the default DAT files are used.",
+      "Base DAT file to use when compiling. If omitted, the default DAT files are used.",
       false, ".", "base file");
     cmd.add(baseDatArg);
 
@@ -66,25 +66,25 @@ int main(const int argc, const char* argv[]) {
     if (isCompileModeArg.isSet()) {
       //Compile mode
       if (useUnitsDatArg.isSet())
-        datcc::compileUnits(inputFileArg.getValue());
+        datcc::compileUnits(inputFileArg.getValue(), baseDatArg.getValue());
 
       else if (useWeaponsDatArg.isSet())
-        datcc::compileWeapons(inputFileArg.getValue());
+        datcc::compileWeapons(inputFileArg.getValue(), baseDatArg.getValue());
       
       else if (useFlingyDatArg.isSet())
-        datcc::compileFlingy(inputFileArg.getValue());
+        datcc::compileFlingy(inputFileArg.getValue(), baseDatArg.getValue());
 
       else if (useSpritesDatArg.isSet())
-        datcc::compileSprites(inputFileArg.getValue());
+        datcc::compileSprites(inputFileArg.getValue(), baseDatArg.getValue());
 
       else if (useImagesDatArg.isSet())
-        datcc::compileImages(inputFileArg.getValue());
+        datcc::compileImages(inputFileArg.getValue(), baseDatArg.getValue());
 
       else if (useUpgradesDatArg.isSet())
-        datcc::compileUpgrades(inputFileArg.getValue());
+        datcc::compileUpgrades(inputFileArg.getValue(), baseDatArg.getValue());
 
       else if (useTechdataDatArg.isSet())
-        datcc::compileTech(inputFileArg.getValue());
+        datcc::compileTech(inputFileArg.getValue(), baseDatArg.getValue());
       
       else
         throw new TCLAP::ArgException("Unsupported DAT file format, please wait for new version.",
