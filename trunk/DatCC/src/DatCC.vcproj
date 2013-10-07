@@ -189,20 +189,70 @@
 				>
 			</File>
 			<File
-				RelativePath=".\IniComparator.cpp"
+				RelativePath=".\ini_processors\IniComparator.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\IniReader.cpp"
+				RelativePath=".\ini_processors\IniReader.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\IniReader.h"
+				RelativePath=".\ini_processors\IniWriter.cpp"
 				>
-			</File>
-			<File
-				RelativePath=".\IniWriter.cpp"
-				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\main.cpp"
@@ -251,15 +301,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\IniComparator.h"
+				RelativePath=".\ini_processors\IniComparator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\IniProcessor.h"
+				RelativePath=".\ini_processors\IniProcessor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\IniWriter.h"
+				RelativePath=".\ini_processors\IniReader.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ini_processors\IniWriter.h"
 				>
 			</File>
 			<File
