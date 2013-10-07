@@ -27,4 +27,16 @@ void decompilePortdata(const std::string &inputPath);
 void decompileMapdata (const std::string &inputPath);
 void decompileOrders  (const std::string &inputPath);
 
+void compareUnits   (const std::string &inputPath, const std::string &basePath);
+void compareWeapons (const std::string &inputPath, const std::string &basePath);
+void compareFlingy  (const std::string &inputPath, const std::string &basePath);
+void compareSprites (const std::string &inputPath, const std::string &basePath);
+void compareImages  (const std::string &inputPath, const std::string &basePath);
+void compareUpgrades(const std::string &inputPath, const std::string &basePath);
+void compareTechdata(const std::string &inputPath, const std::string &basePath);
+void compareSfxdata (const std::string &inputPath, const std::string &basePath);
+void comparePortdata(const std::string &inputPath, const std::string &basePath);
+void compareMapdata (const std::string &inputPath, const std::string &basePath);
+void compareOrders  (const std::string &inputPath, const std::string &basePath);
+
 } //datcc

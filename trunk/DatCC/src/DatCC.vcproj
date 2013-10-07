@@ -247,6 +247,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IniComparator.h"
+				>
+			</File>
+			<File
 				RelativePath=".\IniProcessor.h"
 				>
 			</File>

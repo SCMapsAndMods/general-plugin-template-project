@@ -17,17 +17,18 @@ int main(const int argc, const char* argv[]) {
       "\n\tCompiles \"C:\\test\\tech.ini\" on top of C:\\test\\techdata.dat";
     TCLAP::CmdLine cmd(exampleStr, ' ', "0.1");
 
-    TCLAP::SwitchArg isCompileModeArg("c", "compile", "Compiles INI files to DAT files.", false);
-    TCLAP::SwitchArg isDecompileModeArg("d", "decompile", "Decompiles DAT files to INI files.", true);
+    TCLAP::SwitchArg isCompileModeArg  ("c", "compile",   "Compiles INI files to DAT files.");
+    TCLAP::SwitchArg isDecompileModeArg("d", "decompile", "Decompiles DAT files to INI files.");
+    TCLAP::SwitchArg isCompareModeArg  ("r", "compare",   "Compares the DAT file with the base DAT file and decompiles the differences to an INI file");
     cmd.xorAdd(isCompileModeArg, isDecompileModeArg);
 
     TCLAP::ValueArg<std::string> baseDatArg("b", "basedat",
-      "Base DAT file to use when compiling. If omitted, the default DAT files are used.",
+      "Base DAT file to use when compiling/comparing. If omitted, the default DAT files are used.",
       false, ".", "base file");
     cmd.add(baseDatArg);
 
     TCLAP::UnlabeledValueArg<std::string> inputFileArg("input",
-      "Input file (DAT or INI) to be (de)compiled", true, "", "input file");
+      "In compile mode, specify the INI file to compile. In decompile or compare mode, specify the DAT file to decompile or compare.", true, "", "input file");
     cmd.add(inputFileArg);
 
     TCLAP::SwitchArg useUnitsDatArg   ("u", "units",    "Operate on units.dat");
@@ -113,6 +114,33 @@ int main(const int argc, const char* argv[]) {
       else if (useTechdataDatArg.isSet())
         datcc::decompileTechdata(inputFileArg.getValue());
 
+      else
+        throw new TCLAP::ArgException("Unsupported DAT file format, please wait for new version.",
+          "UnsupportedFormat", "Unsupported DAT format exception");
+    }
+    else if (isCompareModeArg.isSet()) {
+      //Compare mode
+      if (useUnitsDatArg.isSet())
+        datcc::compareUnits(inputFileArg.getValue(), baseDatArg.getValue());
+
+      else if (useWeaponsDatArg.isSet())
+        datcc::compareWeapons(inputFileArg.getValue(), baseDatArg.getValue());
+      
+      else if (useFlingyDatArg.isSet())
+        datcc::compareFlingy(inputFileArg.getValue(), baseDatArg.getValue());
+
+      else if (useSpritesDatArg.isSet())
+        datcc::compareSprites(inputFileArg.getValue(), baseDatArg.getValue());
+
+      else if (useImagesDatArg.isSet())
+        datcc::compareImages(inputFileArg.getValue(), baseDatArg.getValue());
+
+      else if (useUpgradesDatArg.isSet())
+        datcc::compareUpgrades(inputFileArg.getValue(), baseDatArg.getValue());
+
+      else if (useTechdataDatArg.isSet())
+        datcc::compareTechdata(inputFileArg.getValue(), baseDatArg.getValue());
+      
       else
         throw new TCLAP::ArgException("Unsupported DAT file format, please wait for new version.",
           "UnsupportedFormat", "Unsupported DAT format exception");
