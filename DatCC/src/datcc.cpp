@@ -1,38 +1,31 @@
 #include "datcc.h"
 #include "IniWriter.h"
 #include "IniReader.h"
+#include "dat_io.h"
 #include "data.h"
 #include "util.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 namespace datcc {
 
 template <class DatT>
 void compileDat(const std::string &inputIniPath, const std::string &basePath) {
-  std::cout << "Reading default data..." << std::endl;
-  const std::string defaultDatPath = getCurrentProgramDir() + DefaultDat<DatT>::path;
+  std::string loadBasePath;
+  const bool useDefaultDat = (basePath == ".");
 
-  std::ifstream defaultDatStream(defaultDatPath.c_str(), std::ios::binary);
-  if (defaultDatStream.fail()) {
-    std::cerr << "Error: Cannot open default DAT (" << defaultDatPath << ")\n";
-    return;
+  if (useDefaultDat) {
+    loadBasePath = getCurrentProgramDir() + DefaultDat<DatT>::path;
+    std::cout << "Reading default DAT..." << std::endl;
+  }
+  else {
+    loadBasePath = basePath;
+    std::cout << "Reading base DAT from " << loadBasePath << "...\n";
   }
 
   DatT dat;
-  if (dat.getDataSize() != getFileSize(defaultDatStream)) {
-    std::cerr << "Error: File size mismatch (" << defaultDatPath
-              << " is " << getFileSize(defaultDatStream)
-              << ", expected " << dat.getDataSize() << ")\n";
-    return;
-  }
-  
-  defaultDatStream.read((char*) dat.getData(), dat.getDataSize());
-  if (defaultDatStream.fail()) {
-    std::cerr << "Error: Failed reading in " << defaultDatPath << std::endl;
-    return;
-  }
-  defaultDatStream.close();
+  if (loadDat(dat, loadBasePath)) return;
 
   std::cout << "Reading from " << inputIniPath << "...\n";
   IniReader iniReader;
@@ -44,20 +37,7 @@ void compileDat(const std::string &inputIniPath, const std::string &basePath) {
 
   const std::string outputDatPath = getOutputDatPath(inputIniPath);
   std::cout << "Writing to " << outputDatPath << "...\n";
-
-  std::ofstream outputDatStream(outputDatPath.c_str(), std::ios::binary | std::ios::trunc);
-  if (outputDatStream.fail()) {
-    std::cerr << "Error: Cannot open default DAT (" << defaultDatPath << ")\n";
-    return;
-  }
-
-  outputDatStream.write((char*) dat.getData(), dat.getDataSize());
-  if (outputDatStream.fail()) {
-    std::cerr << "Error: Failed writing to " << defaultDatPath << std::endl;
-    return;
-  }
-
-  outputDatStream.close();
+  if (saveDat(dat, outputDatPath)) return;
 }
 
 template <class DatT>
@@ -65,32 +45,17 @@ void decompileDat(const std::string &inputDatPath_) {
   const bool useDefaultDat = (inputDatPath_ == ".");
 
   std::string inputDatPath;
-  if (useDefaultDat)
+  if (useDefaultDat) {
     inputDatPath = getCurrentProgramDir() + DefaultDat<DatT>::path;
-  else
+    std::cout << "Using default DAT file (" << inputDatPath << ")\n";
+  }
+  else {
     inputDatPath = inputDatPath_;
-  std::cout << "Reading from " << inputDatPath << "...\n";
-
-  std::ifstream inputDatStream(inputDatPath.c_str(), std::ios::binary);
-  if (inputDatStream.fail()) {
-    std::cerr << "Error: Cannot open " << inputDatPath << std::endl;
-    return;
+    std::cout << "Reading from " << inputDatPath << "...\n";
   }
 
   DatT dat;
-  if (dat.getDataSize() != getFileSize(inputDatStream)) {
-    std::cerr << "Error: File size mismatch (" << inputDatPath
-              << " is " << getFileSize(inputDatStream)
-              << ", expected " << dat.getDataSize() << ")\n";
-    return;
-  }
-
-  inputDatStream.read((char*) dat.getData(), dat.getDataSize());
-  if (inputDatStream.fail()) {
-    std::cerr << "Error: Failed reading in " << inputDatPath << std::endl;
-    return;
-  }
-  inputDatStream.close();
+  if (loadDat(dat, inputDatPath)) return;
 
   std::cout << "Converting to INI format...\n";
   IniWriter iniExporter;
