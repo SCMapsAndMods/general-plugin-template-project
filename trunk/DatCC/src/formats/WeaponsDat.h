@@ -66,14 +66,14 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
     iniProc.processFlags(data.targetFlags[weaponId], "Target Flags");
     iniProc.process(data.targetErrorMsg[weaponId],  "Target Error Message", makeStatTxtTblComment);
 
-    iniProc.process(data.minRange[weaponId],        "Minimum Range");
-    iniProc.process(data.maxRange[weaponId],        "Maximum Range");
+    iniProc.process(data.minRange[weaponId],        "Minimum Range", makeWeaponRangeComment);
+    iniProc.process(data.maxRange[weaponId],        "Maximum Range", makeWeaponRangeComment);
 
     iniProc.process(data.damage[weaponId],          "Damage");
     iniProc.process(data.damageBonus[weaponId],     "Damage Bonus");
     iniProc.process(data.upgrade[weaponId],         "Upgrade", makeUpgradeComment);
     iniProc.process(data.damageType[weaponId],      "Damage Type");
-    iniProc.process(data.cooldown[weaponId],        "Cooldown");
+    iniProc.process(data.cooldown[weaponId],        "Cooldown", makeTimeComment);
     iniProc.process(data.damageFactor[weaponId],    "Damage Factor");
 
     iniProc.process(data.effect[weaponId],          "Effect");
@@ -84,8 +84,8 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.flingy[weaponId],          "Flingy", makeFlingyComment);
     iniProc.process(data.flingyAction[weaponId],    "Flingy Action");
     iniProc.process(data.removeTimer[weaponId],     "Remove Timer", makeTimeComment);
-    iniProc.process(data.attackAngle[weaponId],     "Attack Angle");
-    iniProc.process(data.launchSpin[weaponId],      "Launch Spin");
+    iniProc.process(data.attackAngle[weaponId],     "Attack Angle", makeAngleComment);
+    iniProc.process(data.launchSpin[weaponId],      "Launch Spin", makeAngleComment);
     iniProc.process(data.forwardOffset[weaponId],   "Forward Offset");
     iniProc.process(data.verticalOffset[weaponId],  "Vertical Offset");
 

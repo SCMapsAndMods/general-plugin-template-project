@@ -93,4 +93,22 @@ std::string makeSpeedComment(int speed, size_t keyStrSize) {
   return makeCommentPadding(speed, keyStrSize) + os.str();
 }
 
+std::string makeSupplyComment(int supply, size_t keyStrSize) {
+  std::ostringstream os;
+  os << supply / 2. << " supply in game";
+  return makeCommentPadding(supply, keyStrSize) + os.str();
+}
+
+std::string makeWeaponRangeComment(int weaponRange, size_t keyStrSize) {
+  std::ostringstream os;
+  os << weaponRange / 32. << " matrix distance in game";
+  return makeCommentPadding(weaponRange, keyStrSize) + os.str();
+}
+
+std::string makeAngleComment(int brad, size_t keyStrSize) {
+  std::ostringstream os;
+  os << brad * 1.40625 << " degrees";
+  return makeCommentPadding(brad, keyStrSize) + os.str();
+}
+
 } //datcc
