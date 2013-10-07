@@ -33,7 +33,7 @@ int main(const int argc, const char* argv[]) {
     cmd.add(baseDatArg);
 
     TCLAP::UnlabeledValueArg<std::string> inputFileArg("input",
-      "In compile mode, specify the INI file to compile. In decompile or compare mode, specify the DAT file to decompile or compare.",
+      "In compile mode, specify the INI file to compile. In decompile or compare mode, specify the DAT file to decompile or compare. Use . to decompile the default DAT files.",
       true, "", "input file");
     cmd.add(inputFileArg);
 

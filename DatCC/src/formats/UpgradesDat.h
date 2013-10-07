@@ -59,7 +59,7 @@ void UpgradesDat::processIni(IniProcT &iniProc) {
 
     iniProc.process(data.unknown[upgradeId],            "Unknown");
     
-    iniProc.process(data.icon[upgradeId],               "Icon");
+    iniProc.process(data.icon[upgradeId],               "Icon", makeIconNameComment);
     iniProc.process(data.label[upgradeId],              "Label", makeStatTxtTblComment);
     
     iniProc.process(data.race[upgradeId],               "Race");

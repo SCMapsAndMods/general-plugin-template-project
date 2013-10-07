@@ -10,8 +10,8 @@ TblFile::~TblFile() {
   delete data;
 }
 
-int TblFile::loadFile(const char *fileName) {
-  std::ifstream in(fileName, std::ios::binary);
+int TblFile::loadFile(const std::string &fileName) {
+  std::ifstream in(fileName.c_str(), std::ios::binary);
   if (in.fail()) return -1;
 
   dataSize = getFileSize(in);

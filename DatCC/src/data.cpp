@@ -1,6 +1,7 @@
 #include "data.h"
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 namespace datcc {
 
@@ -45,6 +46,8 @@ std::string upgradeNames[UPGRADE_TYPE_COUNT + 1];
 std::string techNames[TECH_TYPE_COUNT + 1];
 std::string orderNames[ORDER_TYPE_COUNT + 1];
 
+std::vector<std::string> iconNames;
+
 void loadNameFile(const char *basePath, std::string arr[], size_t arr_size) {
   std::string filePath = getCurrentProgramDir() + basePath;
 
@@ -58,6 +61,22 @@ void loadNameFile(const char *basePath, std::string arr[], size_t arr_size) {
     std::getline(in, arr[i]);
 }
 
+void loadNameFile(const char *basePath, std::vector<std::string> &names) {
+  std::string filePath = getCurrentProgramDir() + basePath;
+
+  std::ifstream in(filePath.c_str());
+  if (in.fail()) {
+    std::cerr << "Critical error: Cannot open settings file " << filePath << std::endl;
+    exit(1);
+  }
+
+  std::string temp;
+  while (!in.eof()) {
+    std::getline(in, temp);
+    names.push_back(temp);
+  }
+}
+
 void loadData() {
   loadNameFile("data/units.txt",    unitNames,    sizeof(unitNames));
   loadNameFile("data/weapons.txt",  weaponNames,  sizeof(weaponNames));
@@ -67,13 +86,15 @@ void loadData() {
   loadNameFile("data/upgrades.txt", upgradeNames, sizeof(upgradeNames));
   loadNameFile("data/techdata.txt", techNames,    sizeof(techNames));
   loadNameFile("data/orders.txt",   orderNames,   sizeof(orderNames));
+  
+  loadNameFile("data/icons.txt",    iconNames);
 
-  if (statTxtTbl.loadFile((getCurrentProgramDir() + "data/stat_txt.tbl").c_str())) {
+  if (statTxtTbl.loadFile(getCurrentProgramDir() + "data/stat_txt.tbl")) {
     std::cerr << "Error: Cannot read default stat_txt.tbl" << std::endl;
     exit(1);
   }
-  
-  if (imagesTbl.loadFile((getCurrentProgramDir() + "data/images.tbl").c_str())) {
+
+  if (imagesTbl.loadFile(getCurrentProgramDir() + "data/images.tbl")) {
     std::cerr << "Error: Cannot read default images.tbl" << std::endl;
     exit(1);
   }
@@ -128,6 +149,12 @@ const std::string& getTechName(int techId) {
 const std::string& getOrderName(int orderId) {
   if (0 <= orderId && orderId < sizeof(orderNames))
     return orderNames[orderId];
+  return invalidIndexMsg;
+}
+
+const std::string& getIconName(int iconId) {
+  if (0 <= iconId && iconId < iconNames.size())
+    return iconNames.at(iconId);
   return invalidIndexMsg;
 }
 

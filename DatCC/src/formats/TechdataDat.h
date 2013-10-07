@@ -55,7 +55,7 @@ void TechdataDat::processIni(IniProcT &iniProc) {
 
     iniProc.process(data.unknown[techId],       "Unknown");
     
-    iniProc.process(data.icon[techId],          "Icon");
+    iniProc.process(data.icon[techId],          "Icon", makeIconNameComment);
     iniProc.process(data.label[techId],         "Label", makeStatTxtTblComment);
     
     iniProc.process(data.race[techId],          "Race");

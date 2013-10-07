@@ -1,5 +1,6 @@
 #pragma once
 #include "../types.h"
+#include <string>
 
 namespace datcc {
 
@@ -7,7 +8,7 @@ namespace datcc {
 
 class TblFile {
   public:
-    int loadFile(const char *fileName);
+    int loadFile(const std::string &fileName);
     const char* getString(int index) const;
     const char* getEscapedString(int index) const;
     size_t getStringSize(int index) const;
