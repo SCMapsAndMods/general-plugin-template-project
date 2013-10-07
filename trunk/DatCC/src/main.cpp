@@ -8,59 +8,53 @@ int main(const int argc, const char* argv[]) {
   datcc::setCurrentProgramDir(argv[0]);
 
   try {
-    TCLAP::CmdLine cmd("", ' ', "0.1");
+    const char exampleStr[] = "EXAMPLES:"
+      "\nDatCC -d -u ."
+      "\n\tDecompiles the default units.dat file."
+      "\nDatCC -c -w \"C:\\My Mod\\my weapons.ini\""
+      "\n\tCompiles \"C:\\My Mod\\my weapons.ini\" into \"C:\\My Mod\\my weapons.dat\""
+      "\nDatCC -c -t \"C:\\test\\tech.ini\" -b C:\\test\\techdata.dat"
+      "\n\tCompiles \"C:\\test\\tech.ini\" on top of C:\\test\\techdata.dat";
+    TCLAP::CmdLine cmd(exampleStr, ' ', "0.1");
 
     TCLAP::SwitchArg isCompileModeArg("c", "compile", "Compiles INI files to DAT files.", false);
     TCLAP::SwitchArg isDecompileModeArg("d", "decompile", "Decompiles DAT files to INI files.", true);
     cmd.xorAdd(isCompileModeArg, isDecompileModeArg);
 
-    TCLAP::ValueArg<std::string> ordersFileArg("o", "orders",
-      "In compile mode, specify INI file to compile into orders.dat. "
-      "In decompile mode, specify orders.dat to decompile (use . to decompile default).",
-      false, "", "orders file");
-    cmd.add(ordersFileArg);
+    TCLAP::ValueArg<std::string> baseDatArg("b", "basedat",
+      "Base DAT file to use for (de)compiling. If omitted, the default DAT files are used.",
+      false, ".", "base file");
+    cmd.add(baseDatArg);
 
-    TCLAP::ValueArg<std::string> techFileArg("t", "tech",
-      "In compile mode, specify INI file to compile into techdata.dat. "
-      "In decompile mode, specify techdata.dat to decompile (use . to decompile default).",
-      false, "", "tech file");
-    cmd.add(techFileArg);
+    TCLAP::UnlabeledValueArg<std::string> inputFileArg("input",
+      "Input file (DAT or INI) to be (de)compiled", true, "", "input file");
+    cmd.add(inputFileArg);
 
-    TCLAP::ValueArg<std::string> upgradesFileArg("g", "upgrades",
-      "In compile mode, specify INI file to compile into upgrades.dat. "
-      "In decompile mode, specify upgrades.dat to decompile (use . to decompile default).",
-      false, "", "upgrades file");
-    cmd.add(upgradesFileArg);
-    
-    TCLAP::ValueArg<std::string> imagesFileArg("i", "images",
-      "In compile mode, specify INI file to compile into images.dat. "
-      "In decompile mode, specify images.dat to decompile (use . to decompile default).",
-      false, "", "images file");
-    cmd.add(imagesFileArg);
-    
-    TCLAP::ValueArg<std::string> spritesFileArg("s", "sprites",
-      "In compile mode, specify INI file to compile into sprites.dat. "
-      "In decompile mode, specify sprites.dat to decompile (use . to decompile default).",
-      false, "", "sprites file");
-    cmd.add(spritesFileArg);
-    
-    TCLAP::ValueArg<std::string> flingyFileArg("f", "flingy",
-      "In compile mode, specify INI file to compile into flingy.dat. "
-      "In decompile mode, specify flingy.dat to decompile (use . to decompile default).",
-      false, "", "flingy file");
-    cmd.add(flingyFileArg);
+    TCLAP::SwitchArg useUnitsDatArg   ("u", "units",    "Operate on units.dat");
+    TCLAP::SwitchArg useWeaponsDatArg ("w", "weapons",  "Operate on weapons.dat");
+    TCLAP::SwitchArg useFlingyDatArg  ("f", "flingy",   "Operate on flingy.dat");
+    TCLAP::SwitchArg useSpritesDatArg ("s", "sprites",  "Operate on sprites.dat");
+    TCLAP::SwitchArg useImagesDatArg  ("i", "images",   "Operate on images.dat");
+    TCLAP::SwitchArg useUpgradesDatArg("g", "upgrades", "Operate on upgrades.dat");
+    TCLAP::SwitchArg useTechdataDatArg("t", "techdata", "Operate on techdata.dat");
+    TCLAP::SwitchArg useSfxdataDatArg ("x", "sfxdata",  "Operate on sfxdata.dat (NOT SUPPORTED YET!)");
+    TCLAP::SwitchArg usePortdataDatArg("p", "portdata", "Operate on portdata.dat (NOT SUPPORTED YET!)");
+    TCLAP::SwitchArg useMapdataDatArg ("m", "mapdata",  "Operate on mapdata.dat (NOT SUPPORTED YET)");
+    TCLAP::SwitchArg useOrdersDatArg  ("o", "orders",   "Operate on orders.dat");
 
-    TCLAP::ValueArg<std::string> weaponsFileArg("w", "weapons",
-      "In compile mode, specify INI file to compile into weapons.dat. "
-      "In decompile mode, specify weapons.dat to decompile (use . to decompile default).",
-      false, "", "weapons file");
-    cmd.add(weaponsFileArg);
-
-    TCLAP::ValueArg<std::string> unitsFileArg("u", "units",
-      "In compile mode, specify INI file to compile into units.dat. "
-      "In decompile mode, specify units.dat to decompile (use . to decompile default).",
-      false, "", "units file");
-    cmd.add(unitsFileArg);
+    std::vector<TCLAP::Arg*> datSwitchArgs;
+    datSwitchArgs.push_back(&useUnitsDatArg);
+    datSwitchArgs.push_back(&useWeaponsDatArg);
+    datSwitchArgs.push_back(&useFlingyDatArg);
+    datSwitchArgs.push_back(&useSpritesDatArg);
+    datSwitchArgs.push_back(&useImagesDatArg);
+    datSwitchArgs.push_back(&useUpgradesDatArg);
+    datSwitchArgs.push_back(&useTechdataDatArg);
+    datSwitchArgs.push_back(&useSfxdataDatArg);
+    datSwitchArgs.push_back(&usePortdataDatArg);
+    datSwitchArgs.push_back(&useMapdataDatArg);
+    datSwitchArgs.push_back(&useOrdersDatArg);
+    cmd.xorAdd(datSwitchArgs);
 
     cmd.parse(argc, argv);
 
@@ -71,49 +65,57 @@ int main(const int argc, const char* argv[]) {
     //@TODO: Add check for zero file options
     if (isCompileModeArg.isSet()) {
       //Compile mode
-      if (unitsFileArg.isSet())
-        datcc::compileUnits(unitsFileArg.getValue());
+      if (useUnitsDatArg.isSet())
+        datcc::compileUnits(inputFileArg.getValue());
+
+      else if (useWeaponsDatArg.isSet())
+        datcc::compileWeapons(inputFileArg.getValue());
       
-      if (weaponsFileArg.isSet())
-        datcc::compileWeapons(weaponsFileArg.getValue());
+      else if (useFlingyDatArg.isSet())
+        datcc::compileFlingy(inputFileArg.getValue());
+
+      else if (useSpritesDatArg.isSet())
+        datcc::compileSprites(inputFileArg.getValue());
+
+      else if (useImagesDatArg.isSet())
+        datcc::compileImages(inputFileArg.getValue());
+
+      else if (useUpgradesDatArg.isSet())
+        datcc::compileUpgrades(inputFileArg.getValue());
+
+      else if (useTechdataDatArg.isSet())
+        datcc::compileTech(inputFileArg.getValue());
       
-      if (flingyFileArg.isSet())
-        datcc::compileFlingy(flingyFileArg.getValue());
-
-      if (spritesFileArg.isSet())
-        datcc::compileSprites(spritesFileArg.getValue());
-
-      if (imagesFileArg.isSet())
-        datcc::compileImages(imagesFileArg.getValue());
-
-      if (upgradesFileArg.isSet())
-        datcc::compileUpgrades(upgradesFileArg.getValue());
-
-      if (techFileArg.isSet())
-        datcc::compileTech(techFileArg.getValue());
+      else
+        throw new TCLAP::ArgException("Unsupported DAT file format, please wait for new version.",
+          "UnsupportedFormat", "Unsupported DAT format exception");
     }
     else if (isDecompileModeArg.isSet()) {
       //Decompile mode
-      if (unitsFileArg.isSet())
-        datcc::decompileUnits(unitsFileArg.getValue());
+      if (useUnitsDatArg.isSet())
+        datcc::decompileUnits(inputFileArg.getValue());
       
-      if (weaponsFileArg.isSet())
-        datcc::decompileWeapons(weaponsFileArg.getValue());
+      else if (useWeaponsDatArg.isSet())
+        datcc::decompileWeapons(inputFileArg.getValue());
 
-      if (flingyFileArg.isSet())
-        datcc::decompileFlingy(flingyFileArg.getValue());
+      else if (useFlingyDatArg.isSet())
+        datcc::decompileFlingy(inputFileArg.getValue());
 
-      if (spritesFileArg.isSet())
-        datcc::decompileSprites(spritesFileArg.getValue());
+      else if (useSpritesDatArg.isSet())
+        datcc::decompileSprites(inputFileArg.getValue());
 
-      if (imagesFileArg.isSet())
-        datcc::decompileImages(imagesFileArg.getValue());
+      else if (useImagesDatArg.isSet())
+        datcc::decompileImages(inputFileArg.getValue());
 
-      if (upgradesFileArg.isSet())
-        datcc::decompileUpgrades(upgradesFileArg.getValue());
+      else if (useUpgradesDatArg.isSet())
+        datcc::decompileUpgrades(inputFileArg.getValue());
 
-      if (techFileArg.isSet())
-        datcc::decompileTech(techFileArg.getValue());
+      else if (useTechdataDatArg.isSet())
+        datcc::decompileTech(inputFileArg.getValue());
+
+      else
+        throw new TCLAP::ArgException("Unsupported DAT file format, please wait for new version.",
+          "UnsupportedFormat", "Unsupported DAT format exception");
     }
     else { //Should never reach here
       throw new TCLAP::ArgException("Cannot determine compile/decompile mode");
