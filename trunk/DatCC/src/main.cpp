@@ -84,7 +84,7 @@ int main(const int argc, const char* argv[]) {
         datcc::compileUpgrades(inputFileArg.getValue(), baseDatArg.getValue());
 
       else if (useTechdataDatArg.isSet())
-        datcc::compileTech(inputFileArg.getValue(), baseDatArg.getValue());
+        datcc::compileTechdata(inputFileArg.getValue(), baseDatArg.getValue());
       
       else
         throw new TCLAP::ArgException("Unsupported DAT file format, please wait for new version.",
@@ -111,7 +111,7 @@ int main(const int argc, const char* argv[]) {
         datcc::decompileUpgrades(inputFileArg.getValue());
 
       else if (useTechdataDatArg.isSet())
-        datcc::decompileTech(inputFileArg.getValue());
+        datcc::decompileTechdata(inputFileArg.getValue());
 
       else
         throw new TCLAP::ArgException("Unsupported DAT file format, please wait for new version.",
