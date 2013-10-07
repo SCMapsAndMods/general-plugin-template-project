@@ -98,6 +98,9 @@ int main(const int argc, const char* argv[]) {
 
       else if (useTechdataDatArg.isSet())
         datcc::compileTechdata(inputFileArg.getValue(), outputFileArg.getValue(), baseDatArg.getValue());
+
+      else if (useSfxdataDatArg.isSet())
+        datcc::compileSfxdata(inputFileArg.getValue(), outputFileArg.getValue(), baseDatArg.getValue());
       
       else if (useOrdersDatArg.isSet())
         datcc::compileOrders(inputFileArg.getValue(), outputFileArg.getValue(), baseDatArg.getValue());
@@ -132,6 +135,9 @@ int main(const int argc, const char* argv[]) {
       else if (useTechdataDatArg.isSet())
         datcc::decompileTechdata(inputFileArg.getValue(), outputFileArg.getValue());
 
+      else if (useSfxdataDatArg.isSet())
+        datcc::decompileSfxdata(inputFileArg.getValue(), outputFileArg.getValue());
+
       else if (useOrdersDatArg.isSet())
         datcc::decompileOrders(inputFileArg.getValue(), outputFileArg.getValue());
 
@@ -162,6 +168,9 @@ int main(const int argc, const char* argv[]) {
       else if (useTechdataDatArg.isSet())
         datcc::compareTechdata(inputFileArg.getValue(), outputFileArg.getValue(), baseDatArg.getValue());
       
+      else if (useSfxdataDatArg.isSet())
+        datcc::compareSfxdata(inputFileArg.getValue(), outputFileArg.getValue(), baseDatArg.getValue());
+
       else if (useOrdersDatArg.isSet())
         datcc::compareOrders(inputFileArg.getValue(), outputFileArg.getValue(), baseDatArg.getValue());
       

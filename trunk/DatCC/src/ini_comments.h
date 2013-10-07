@@ -15,6 +15,7 @@ std::string makeIconNameComment(int iconId,   size_t keyStrSize);
 
 std::string makeStatTxtTblComment (int stringIndex, size_t keyStrSize);
 std::string makeImagesTblComment  (int stringIndex, size_t keyStrSize);
+std::string makeSfxdataTblComment (int stringIndex, size_t keyStrSize);
 
 std::string makeTimeComment(int time, size_t keyStrSize);
 

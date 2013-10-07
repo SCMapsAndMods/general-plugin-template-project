@@ -14,6 +14,7 @@ char DefaultDat<SpritesDat>::path[]   = "data/sprites.dat";
 char DefaultDat<ImagesDat>::path[]    = "data/images.dat";
 char DefaultDat<UpgradesDat>::path[]  = "data/upgrades.dat";
 char DefaultDat<TechdataDat>::path[]  = "data/techdata.dat";
+char DefaultDat<SfxdataDat>::path[]   = "data/sfxdata.dat";
 char DefaultDat<OrdersDat>::path[]    = "data/orders.dat";
 
 //-------- Current program directory --------//
@@ -94,6 +95,11 @@ void loadData() {
 
   if (imagesTbl.loadFile(getCurrentProgramDir() + "data/images.tbl")) {
     std::cerr << "Error: Cannot read default images.tbl" << std::endl;
+    exit(1);
+  }
+  
+  if (sfxdataTbl.loadFile(getCurrentProgramDir() + "data/sfxdata.tbl")) {
+    std::cerr << "Error: Cannot read default sfxdata.tbl" << std::endl;
     exit(1);
   }
 }

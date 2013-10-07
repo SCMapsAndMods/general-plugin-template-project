@@ -4,7 +4,7 @@
 
 namespace datcc {
 
-TblFile statTxtTbl, imagesTbl;
+TblFile statTxtTbl, imagesTbl, sfxdataTbl;
 
 TblFile::~TblFile() {
   delete data;

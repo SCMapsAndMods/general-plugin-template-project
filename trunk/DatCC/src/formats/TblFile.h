@@ -22,6 +22,6 @@ class TblFile {
     int dataSize;
 };
 
-extern TblFile statTxtTbl, imagesTbl;
+extern TblFile statTxtTbl, imagesTbl, sfxdataTbl;
 
 } //datcc

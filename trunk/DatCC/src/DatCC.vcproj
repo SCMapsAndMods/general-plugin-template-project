@@ -325,6 +325,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\formats\SfxdataDat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\formats\SpritesDat.h"
 				>
 			</File>
