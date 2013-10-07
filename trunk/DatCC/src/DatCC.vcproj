@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IniComparator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\IniReader.cpp"
 				>
 			</File>

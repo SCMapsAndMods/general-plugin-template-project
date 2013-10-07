@@ -19,9 +19,13 @@ class IniComparator: public IniWriter {
     template <class T>
     int processFlags(const T &t, const std::string &key);
 
+    int setSection(const std::string &section, const std::string &comment);
+
   private:
     CSimpleIniCaseA baseIni;
+    std::string currentSectionComment;
     bool isLoadingBaseDat;
+    bool isCurrentSectionUnwritten;
 };
 
 //-------- Member function template definitions --------//
@@ -29,7 +33,7 @@ class IniComparator: public IniWriter {
 template <class DatT>
 void IniComparator::compare(DatT &dat, DatT &baseDat) {
   isLoadingBaseDat = true;
-  dat.processIni(*this);
+  baseDat.processIni(*this);
 
   isLoadingBaseDat = false;
   dat.processIni(*this);
@@ -40,21 +44,50 @@ int IniComparator::process(const T &t, const std::string &key) {
   if (isLoadingBaseDat)
     return baseIni.SetLongValue(currentSection.c_str(), key.c_str(), t);
   
-  const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
-  if (baseVal != t)
-    return ini.SetLongValue(currentSection.c_str(), key.c_str(), t);
+  const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), 0);
+  if (baseVal != t) {
+    if (isCurrentSectionUnwritten) {
+      IniWriter::setSection(currentSection, currentSectionComment);
+      isCurrentSectionUnwritten = false;
+    }
+    return IniWriter::process(t, key);
+  }
   else
     return 0; //Identical, no write
 }
 
 template <class T, typename CallbackT>
 int IniComparator::process(const T &t, const std::string &key, CallbackT &commenter) {
-  return process(t, key);
+  if (isLoadingBaseDat)
+    return baseIni.SetLongValue(currentSection.c_str(), key.c_str(), t);
+
+  const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
+  if (baseVal != t) {
+    if (isCurrentSectionUnwritten) {
+      IniWriter::setSection(currentSection, currentSectionComment);
+      isCurrentSectionUnwritten = false;
+    }
+    return IniWriter::process(t, key, commenter);
+  }
+  else
+    return 0; //Identical, no write
 }
 
 template <class T>
 int IniComparator::processFlags(const T &t, const std::string &key) {
-  return process(t, key);
+  if (isLoadingBaseDat)
+    return baseIni.SetLongValue(currentSection.c_str(), key.c_str(), t);
+
+  const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
+  if (baseVal != t) {
+    if (isCurrentSectionUnwritten) {
+      IniWriter::setSection(currentSection, currentSectionComment);
+      isCurrentSectionUnwritten = false;
+    }
+    return IniWriter::processFlags(t, key);
+  }
+  else
+    return 0; //Identical, no write
 }
 
 } //datcc
