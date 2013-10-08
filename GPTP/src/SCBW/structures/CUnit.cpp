@@ -123,6 +123,18 @@ void CUnit::orderTo(u32 orderId, u16 x, u16 y) {
   }
 }
 
+//Identical to @ 0x004743D0
+void CUnit::setSecondaryOrder(u8 orderId) {
+  assert(this);
+  if (this->secondaryOrderId == orderId)
+    return;
+  this->secondaryOrderId = orderId;
+  this->secondaryOrderPos.x = 0;
+  this->secondaryOrderPos.y = 0;
+  this->currentBuildUnit = NULL;
+  this->secondaryOrderState = 0;
+}
+
 const u32 Func_HasPathToTarget = 0x0049CBB0; //AKA unitHasPathToUnit()
 bool CUnit::hasPathToUnit(const CUnit *target) const {
   assert(this);
@@ -152,6 +164,25 @@ bool CUnit::hasPathToPos(u32 x, u32 y) const {
     PUSH x
     MOV EAX, this
     CALL Func_HasPathToPos
+    MOV result, EAX
+    POPAD
+  }
+
+  return result != 0;
+}
+
+const u32 Func_CanUseTech = 0x0046DD80;
+bool CUnit::canUseTech(u8 techId, s8 playerId) const {
+  assert(this);
+  s32 playerId_ = playerId;
+  u32 result;
+
+  __asm {
+    PUSHAD
+    PUSH playerId_
+    MOVZX DI, techId
+    MOV EAX, this
+    CALL Func_CanUseTech
     MOV result, EAX
     POPAD
   }

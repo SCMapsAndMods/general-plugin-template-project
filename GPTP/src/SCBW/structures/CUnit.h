@@ -42,6 +42,9 @@ struct CUnit {
   /// Issue the @p order to the unit, using the given position as the target.
   void orderTo(u32 orderId, u16 x, u16 y);
 
+  /// Used by several hooks.
+  void setSecondaryOrder(u8 orderId);
+
   /// Checks whether this unit can reach the @p target unit. This checks only
   /// for terrain, and does not consider obstacles (units and buildings).
   bool hasPathToUnit(const CUnit *target) const;
@@ -49,6 +52,13 @@ struct CUnit {
   /// Checks whether this unit can reach the target position. This checks only
   /// for terrain, and does not consider obstacles (units and buildings).
   bool hasPathToPos(u32 x, u32 y) const;
+
+  /// Checks the following:
+  ///  * If the unit is actually owned by the commanding @p playerId
+  ///  * If the unit's owning player has the @p techId researched
+  ///  * If the unit has enough energy (or energy cheat is enabled)
+  ///  * If the unit is not stunned / is a hallucination / is being built
+  bool canUseTech(u8 techId, s8 playerId) const;
 
   /// Returns the distance between this unit and the @p target, taking unit
   /// collision size in units.dat into account.
@@ -274,8 +284,7 @@ struct CUnit {
   u8        secondaryOrderState;
   u8        recentOrderTimer;   // Counts down from 15 to 0 when most orders are given, or when the unit moves after reaching a patrol location
   s32       visibilityStatus;   // Flags specifying which players can detect this unit (cloaked/burrowed)
-  u16       _unknown_0x0E8;     // Secondary order related (x?)
-  u16       _unknown_0x0EA;     // Secondary order related (y?)
+  Point16   secondaryOrderPos;  // Secondary order related (tentative)
   CUnit*    currentBuildUnit;
   CUnit*    previousBurrowedUnit;
   CUnit*    nextBurrowedUnit;
