@@ -4,9 +4,6 @@
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/api.h"
 
-namespace {
-//Helper function definitions
-void setSecondaryOrder(CUnit *unit, u8 orderId);
 
 /// Determines cloaking energy consumption.
 u16 getCloakingEnergyConsumption(const CUnit *unit) {
@@ -25,8 +22,6 @@ u16 getCloakingEnergyConsumption(const CUnit *unit) {
   else
     return 0;
 }
-
-} //unnamed namespace
 
 namespace hooks {
 
@@ -50,7 +45,7 @@ void regenerateEnergyHook(CUnit *unit) {
     u16 cloakingEnergyCost = getCloakingEnergyConsumption(unit);
     if (unit->energy < cloakingEnergyCost) {
       if (unit->secondaryOrderId == OrderId::Cloak)
-        setSecondaryOrder(unit, OrderId::Nothing2); //Supposedly, immediately decloaks the unit.
+        unit->setSecondaryOrder(OrderId::Nothing2); //Supposedly, immediately decloaks the unit.
       return;
     }
     unit->energy -= cloakingEnergyCost;
@@ -82,20 +77,3 @@ void regenerateEnergyHook(CUnit *unit) {
 }
 
 } //hooks
-
-
-namespace {
-/**** Helper function definitions. Do not change anything below this! ****/
-
-//Logically same as the function @ 0x004743D0
-void setSecondaryOrder(CUnit *unit, u8 orderId) {
-  if (unit->secondaryOrderId == orderId)
-    return;
-  unit->secondaryOrderId = orderId;
-  unit->_unknown_0x0E8 = 0;
-  unit->_unknown_0x0EA = 0;
-  unit->currentBuildUnit = 0;
-  unit->secondaryOrderState = 0;
-}
-
-} //unnamed namespace

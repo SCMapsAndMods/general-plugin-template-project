@@ -8,6 +8,7 @@
 #include "hooks/armor_bonus.h"
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
+#include "hooks/cloak_tech.h"
 #include "hooks/consume.h"
 #include "hooks/damage_with.h"
 #include "hooks/detector.h"
@@ -39,7 +40,10 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectArmorBonusHook();
 
   hooks::injectBunkerHooks();
+  
   hooks::injectCloakNearbyUnits();
+  hooks::injectCloakingTechHooks();
+
   hooks::injectConsumeHooks();
 
   hooks::injectDamageWithHook();
