@@ -1,5 +1,16 @@
 #summary Changelog of GPTP
 
+= v2.35 Preview =
+
+ * New features
+  * Hooks
+   * Irradiate proc hooks (`hooks/irradiate.cpp`)
+   * Cloaking tech check hooks (`hooks/cloak_tech.cpp`)
+  * Added member functions: `CUnit::canUseTech(), CUnit::setSecondaryOrder(), CUnit::getFromIndex(), CUnit::getIndex()`
+ * Bug fixes
+  * Fixed bug in Unit Timers Hook that prevented updating the status effects of units loaded inside transports.
+  * Fixed critical bug in UnitFinder that created duplicate search entries
+
 = v2.34 =
 
  * Dropped official support for Code::Blocks. You can still import GPTP into a new project, though.
