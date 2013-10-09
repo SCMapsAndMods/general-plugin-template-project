@@ -70,7 +70,7 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
   }
 
   // Iterate the Y entries of the finder
-  int unitCount = 0;
+  this->unitCount = 0;
   for (UnitFinderData *py = pTop; py < pBottom; ++py) {
     const int actualUnitIndex = py->unitIndex - 1;
     //if (finderFlags[actualUnitIndex] == 1) {
@@ -83,16 +83,26 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
     //  else
     //    finderFlags[actualUnitIndex] = 2;
     //}
-    if (finderFlags[actualUnitIndex]) {
+    if (finderFlags[actualUnitIndex] == 1) {
       CUnit *unit = &unitTable[actualUnitIndex];
       // If height is small, check unit bounds
       if (!isHeightExtended || unit->getTop() <= bottom)
-        this->units[unitCount++] = unit;
+        finderFlags[actualUnitIndex] = 2;
+        //this->units[this->unitCount++] = unit;
     }
   }
-  this->unitCount = unitCount;
 
   // Final iteration
+  for (UnitFinderData *px = pLeft; px < pRight; ++px) {
+    const int actualUnitIndex = px->unitIndex - 1;
+    if (finderFlags[actualUnitIndex] == 2) {
+      CUnit *unit = &unitTable[actualUnitIndex];
+      if (unit && unit->mainOrderId)
+        this->units[this->unitCount++] = unit;
+    }
+    finderFlags[actualUnitIndex] = 0; //Prevent duplicates
+  }
+
   //int unitsFoundCount = 0;
   //for (UnitFinderData *px = pLeft; px < pRight; ++px) {
   //  const int actualUnitIndex = px->unitIndex - 1;

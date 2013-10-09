@@ -2,10 +2,10 @@
 #include "../SCBW/api.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/scbwdata.h"
+#include "irradiate.h"
 
 namespace {
 //Helper functions that should be used only in this file
-void runIrradiateDamageLoop(CUnit *unit);
 void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount);
 u8 getAcidSporeOverlayAdjustment(const CUnit* const unit);
 } //unnamed namespace
@@ -47,7 +47,7 @@ void updateStatusEffectsHook(CUnit *unit) {
 
   if (unit->irradiateTimer) {
     unit->irradiateTimer--;
-    runIrradiateDamageLoop(unit);
+    doIrradiateDamage(unit);
     if (unit->irradiateTimer == 0) {
       unit->removeOverlay(ImageId::Irradiate_Small, ImageId::Irradiate_Large);
       unit->irradiatedBy = NULL;
@@ -106,16 +106,6 @@ void updateStatusEffectsHook(CUnit *unit) {
 
 namespace {
 /**** Helper function definitions. Do not change anything below this! ****/
-
-const u32 IrradiateDamageLoop = 0x004555C0;
-void runIrradiateDamageLoop(CUnit *unit) {
-  __asm {
-    PUSHAD
-    MOV ECX, unit
-    CALL IrradiateDamageLoop
-    POPAD
-  }
-}
 
 //Logic copied from function @ 0x00454ED0
 void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount) {
