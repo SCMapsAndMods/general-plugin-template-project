@@ -81,12 +81,6 @@ std::string makeHpAmountComment (int hp, size_t keyStrSize) {
   return makeCommentPadding(hp, keyStrSize) + os.str();
 }
 
-std::string makeShieldAmtComment(int shields, size_t keyStrSize) {
-  std::ostringstream os;
-  os << shields / 256. << " shields";
-  return makeCommentPadding(shields, keyStrSize) + os.str();
-}
-
 std::string makeSpeedComment(int speed, size_t keyStrSize) {
   std::ostringstream os;
   os << speed / 256. << " pixels per frame";
