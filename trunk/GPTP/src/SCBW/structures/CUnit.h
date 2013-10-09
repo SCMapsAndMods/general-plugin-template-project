@@ -113,6 +113,13 @@ struct CUnit {
   s16 getTop() const;
   s16 getBottom() const;
 
+  /// Retrieves the unit pointer by @p index from the unit table (first unit is
+  /// indexed at 1). If invalid, returns NULL instead.
+  static CUnit* getFromIndex(u16 index);
+
+  /// Returns the index of this unit in the unit table. First unit == index 1.
+  u16 getIndex() const;
+
 
 ////////////////////////////////////////////////////////////////
 // Actual data structure -- member variables and pointers
@@ -198,7 +205,11 @@ struct CUnit {
   UNK unknown14[2];
   u16       remainingBuildTime;
   u16       previousHp;         // The HP of the unit before it changed (example Drone->Hatchery, the Drone's HP will be stored here)
-  u16       loadedUnitIndex[8]; // To get the actual index in the unit table, use (index - 1) % 2048.
+  //u16       loadedUnit[8]; // To get the actual index in the unit table, use (index - 1) % 2048.
+  struct {
+    u16 index   : 11;           // 1-based index in the unit table.
+    u16 unitId  : 5;
+  } loadedUnit[8];
 
   union {   //0x0C0
     struct {

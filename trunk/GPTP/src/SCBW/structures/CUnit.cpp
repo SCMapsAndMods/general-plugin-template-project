@@ -397,3 +397,14 @@ s16 CUnit::getBottom() const {
   assert(this);
   return this->getY() + Unit::UnitBounds[this->id].bottom;
 }
+
+
+CUnit* CUnit::getFromIndex(u16 index) {
+  if (1 <= index && index <= UNIT_ARRAY_LENGTH)
+    return &unitTable[index - 1];
+  return NULL;
+}
+
+u16 CUnit::getIndex() const {
+  return (this - unitTable) / sizeof(*this);
+}

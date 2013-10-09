@@ -51,7 +51,7 @@ void updateUnitTimersHook(CUnit* unit) {
   unit->isBeingHealed = 0;
 
   //Update unit status effects (stim, maelstrom, plague, etc.)
-  if (unit->status & UnitStatus::Completed && !(unit->sprite->flags & 0x20)) {
+  if (unit->status & UnitStatus::Completed || !(unit->sprite->flags & 0x20)) {
     unit->cycleCounter++;
     if (unit->cycleCounter >= 8) {
       unit->cycleCounter = 0;
