@@ -96,7 +96,7 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.constructionAnimation[unitId], "Construction Animation");
     iniProc.process(data.spawnDirection[unitId],    "Spawn Direction");
     iniProc.process(data.hasShields[unitId],        "Has Shields");
-    iniProc.process(data.maxShields[unitId],        "Max Shields", makeShieldAmtComment);
+    iniProc.process(data.maxShields[unitId],        "Max Shields");
     iniProc.process(data.maxHitPoints[unitId],      "Max HP", makeHpAmountComment);
     iniProc.process(data.unitSize[unitId],          "Unit Size");
     iniProc.process(data.armor[unitId],             "Armor");
