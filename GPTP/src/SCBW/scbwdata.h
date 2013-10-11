@@ -143,6 +143,7 @@ SCBW_DATA(u8*,  ShieldsEnabled,     unitsDat[6].address);
 SCBW_DATA(u16*, MaxShieldPoints,    unitsDat[7].address);
 SCBW_DATA(s32*, MaxHitPoints,       unitsDat[8].address);
 SCBW_DATA(u8*,  Elevation,          unitsDat[9].address);
+SCBW_DATA(u8*,  MovementFlags,      unitsDat[10].address);
 SCBW_DATA(u8*,  GroundWeapon,       unitsDat[17].address);
 SCBW_DATA(u8*,  MaxGroundHits,      unitsDat[18].address);
 SCBW_DATA(u8*,  AirWeapon,          unitsDat[19].address);
