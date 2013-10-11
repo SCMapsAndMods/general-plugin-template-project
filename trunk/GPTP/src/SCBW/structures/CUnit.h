@@ -148,7 +148,7 @@ struct CUnit {
   u16       flingyAcceleration;
   u8        currentDirection2;  //?
   u8        velocityDirection2; //?
-  u8        playerId;
+  s8        playerId;
   u8        mainOrderId;
   u8        mainOrderState;
   u8        orderSignal;        /*  0x01  Update building graphic/state
