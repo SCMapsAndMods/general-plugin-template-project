@@ -1,4 +1,4 @@
-General Plugin Template Project v2.34
+General Plugin Template Project v2.35
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -34,6 +34,18 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 == Changes ==
 
 For the full changelog, see http://code.google.com/p/gptp/wiki/Changelog
+
+v2.35
+ + New hooks
+   + Cloaking tech check (hooks/cloak_tech.cpp)
+   + Irradiate proc (hooks/irradiate.cpp)
+ + New structure member functions
+   + CUnit::canUseTech(), CUnit::getFromIndex(), CUnit::getIndex()
+ * Bug fixes
+   * Fixed a bug in unit timers hook (hooks/update_unit_timers.cpp) that
+     prevented updating the status effects of units loaded inside transports.
+   * Fixed a bug in UnitFinder (SCBW/UnitFinder.cpp) that created duplicate
+     search entries.
 
 v2.34
  * Dropped official support for Code::Blocks. A tutorial on creating a custom
