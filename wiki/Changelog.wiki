@@ -1,6 +1,6 @@
 #summary Changelog of GPTP
 
-= v2.35 Preview =
+= v2.35 =
 
  * New features
   * Hooks
