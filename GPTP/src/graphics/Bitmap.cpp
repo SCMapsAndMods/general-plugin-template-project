@@ -57,7 +57,7 @@ const HWND *hWndMainSC = (HWND *) 0x0051BFB0;
 
 //Writes Korean character and returns width in pixels
 int writeKoreanChar(const char *chars, u8 *buffer, u16 screenWidth, int fontSize, u8 color) {
-  static HFONT gulim_9pt = NULL, gulim_10pt = NULL, gulim_11pt = NULL;
+  static HFONT gulim_8pt = NULL, gulim_9pt = NULL, gulim_10pt = NULL, gulim_11pt = NULL;
   static HDC mainDc = NULL, bufferDc = NULL;
   
   //Load Korean fonts
@@ -66,6 +66,9 @@ int writeKoreanChar(const char *chars, u8 *buffer, u16 screenWidth, int fontSize
     LOGFONT lFont = {};
     strcpy(lFont.lfFaceName, "±¼¸²");
     lFont.lfCharSet = HANGUL_CHARSET;
+    
+    lFont.lfHeight = -MulDiv(8, GetDeviceCaps(screenDc, LOGPIXELSY), 72);
+    gulim_8pt = CreateFontIndirect(&lFont);
     
     lFont.lfHeight = -MulDiv(9, GetDeviceCaps(screenDc, LOGPIXELSY), 72);
     gulim_9pt = CreateFontIndirect(&lFont);
@@ -94,9 +97,12 @@ int writeKoreanChar(const char *chars, u8 *buffer, u16 screenWidth, int fontSize
   HFONT currentFont = gulim_9pt;
   
   //Assume this function is only drawing in-game stuff
-  if (fontSize == 2 || fontSize == 3) {
+  if (fontSize == 0)
+    currentFont = gulim_8pt;
+  else if (fontSize == 2)
+    currentFont = gulim_10pt;
+  else if (fontSize == 3)
     currentFont = gulim_11pt;
-  }
 
   SelectObject(bufferDc, currentFont);
   
