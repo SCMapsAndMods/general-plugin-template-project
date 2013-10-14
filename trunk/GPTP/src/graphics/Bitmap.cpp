@@ -5,6 +5,10 @@
 #include <cassert>
 #include <algorithm>
 
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 namespace graphics {
 
 u16 Bitmap::getWidth() const {
@@ -48,6 +52,88 @@ u8 gbFontColors[24][8] = {
   { 0x8A, 0x88, 0x84, 0x81, 0x60, 0x8A, 0x8A, 0x8A },
   { 0x8A, 0x80, 0x34, 0x31, 0x2E, 0x8A, 0x8A, 0x8A }
 };
+
+const HWND *hWndMainSC = (HWND *) 0x0051BFB0;
+
+//Writes Korean character and returns width in pixels
+int writeKoreanChar(const char *chars, u8 *buffer, u16 screenWidth, int fontSize, u8 color) {
+  static HFONT gulim_9pt = NULL, gulim_10pt = NULL, gulim_11pt = NULL;
+  static HDC mainDc = NULL, bufferDc = NULL;
+  
+  //Load Korean fonts
+  if (!gulim_9pt) {
+    HDC screenDc = GetDC(NULL);
+    LOGFONT lFont = {};
+    strcpy(lFont.lfFaceName, "±¼¸²");
+    lFont.lfCharSet = HANGUL_CHARSET;
+    
+    lFont.lfHeight = -MulDiv(9, GetDeviceCaps(screenDc, LOGPIXELSY), 72);
+    gulim_9pt = CreateFontIndirect(&lFont);
+    
+    lFont.lfWeight = FW_BOLD;
+    lFont.lfHeight = -MulDiv(10, GetDeviceCaps(screenDc, LOGPIXELSY), 72);
+    gulim_10pt = CreateFontIndirect(&lFont);
+    
+    lFont.lfWeight = FW_BOLD;
+    lFont.lfHeight = -MulDiv(11, GetDeviceCaps(screenDc, LOGPIXELSY), 72);
+    gulim_11pt = CreateFontIndirect(&lFont);
+    
+    ReleaseDC(NULL, screenDc);
+  }
+  
+  //Load main and buffer DCs
+  if (!mainDc) {
+    mainDc = GetDC(*hWndMainSC);
+    bufferDc = CreateCompatibleDC(mainDc);
+    SetBkMode(bufferDc, OPAQUE);
+    SetTextColor(bufferDc, RGB(255, 255, 255));
+    SetBkColor(bufferDc, RGB(0, 0, 0));
+    SelectObject(bufferDc, GetStockObject(BLACK_BRUSH));
+  }
+  
+  HFONT currentFont = gulim_9pt;
+  
+  //Assume this function is only drawing in-game stuff
+  if (fontSize == 2 || fontSize == 3) {
+    currentFont = gulim_11pt;
+  }
+
+  SelectObject(bufferDc, currentFont);
+  
+  char koreanChars[3];
+  *(u16*)koreanChars = *(u16*) chars;
+  koreanChars[2] = '\0';
+
+  //Write character into temporary bitmap buffer
+  RECT chRect = {};
+  DrawText(bufferDc, koreanChars, strlen(koreanChars), &chRect, DT_CALCRECT);
+  HBITMAP bmp = CreateCompatibleBitmap(mainDc, chRect.right, chRect.bottom);
+  HGDIOBJ oldBitmap = SelectObject(bufferDc, bmp);
+  
+  Rectangle(bufferDc, chRect.left - 1, chRect.top - 1, chRect.right + 1, chRect.bottom + 1);
+  DrawText(bufferDc, koreanChars, strlen(koreanChars), &chRect, 0);
+  
+  //Copy pixels from temporary buffer into StarCraft's own buffer
+  BITMAP bmpData;
+  GetObject(bmp, sizeof(bmpData), &bmpData);
+  bmpData.bmBits = new u8[bmpData.bmWidthBytes * bmpData.bmHeight];
+  GetBitmapBits(bmp, bmpData.bmWidthBytes * bmpData.bmHeight, bmpData.bmBits);
+  
+  for (int y = 0; y < bmpData.bmHeight; ++y) {
+    for (int x = 0; x < bmpData.bmWidth; ++x) {
+      if (((u8*)bmpData.bmBits)[x + bmpData.bmWidthBytes * y]) {
+        buffer[screenWidth * (y + 3) + x + 1] = gbFontColors[color][0];
+        buffer[screenWidth * (y + 2) + x] = gbFontColors[color][1];
+      }
+    }
+  }
+  
+  delete [] bmpData.bmBits;
+  SelectObject(bufferDc, oldBitmap);
+  DeleteObject(bmp);
+
+  return chRect.right;
+}
 
 bool Bitmap::blitString(const char *pszStr, int x, int y, u8 size) {
   // verify valid size index
@@ -109,6 +195,17 @@ bool Bitmap::blitString(const char *pszStr, int x, int y, u8 size) {
         color     = gbColorTable[ pbChars[c] ];
         continue;
       }
+    }
+
+    //Korean support
+    if (GetUserDefaultLangID() == MAKELANGID(LANG_KOREAN, SUBLANG_KOREAN)
+        && IsDBCSLeadByte(pbChars[c])
+        && !(pbChars[c] == 169 || pbChars[c] == 153)) {
+      int offset = Yoffset * this->getWidth() + Xoffset;
+      Xoffset += writeKoreanChar((char*) &pbChars[c], &this->data[offset], this->getWidth(), size, color);
+      if (pbChars[++c])
+        continue;
+      break;
     }
 
     // Skip if the character is not supported by the font
