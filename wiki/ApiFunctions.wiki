@@ -1,0 +1,175 @@
+#summary Documentation of the GPTP API functions
+
+Header file: [http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/api.h SCBW/api.h]
+
+GPTP provides many useful functions for modding in the `scbw` namespace. Many of these functions wrap !StarCraft's internal functions.
+
+<wiki:toc max_depth="2" />
+
+
+= Functions =
+
+== printText ==
+{{{
+void printText(const char* text, u32 color = GameTextColor::White);
+}}}
+
+Prints text to the screen, optionally using the given text color.
+
+== playSound ==
+{{{
+void playSound(u32 sfxId, const CUnit *sourceUnit = NULL);
+}}}
+
+Plays the given sound from sfxdata.dat, optionally using a unit as the source of the sound.
+
+== showErrorMessageWithSfx ==
+{{{
+void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId);
+}}}
+
+Displays an error message and plays a sound for the player.
+
+=== Parameters ===
+ * `playerId`: ID of the player who receives the message.
+ * `statTxtId`: ID of the error message string in `stat_txt.tbl`.
+ * `sfxId`: ID of the sound file in `sfxdata.dat`.
+
+== getStatTxtTblString ==
+{{{
+const char* getStatTxtTblString(u16 index);
+}}}
+
+Retrieves a string from stat_txt.tbl, using the given `index`. If the `index` is zero, returns `NULL`. If the `index` is invalid, returns "" instead.
+
+_Note: TBL string indexes start at 1, not 0._
+
+== hasOverlay ==
+{{{
+bool hasOverlay(const CUnit* const unit, const u32 imageId);
+}}}
+
+Checks whether the unit has an image overlay that matches the given ID.
+
+== getUnitOverlayAdjustment ==
+{{{
+u32 getUnitOverlayAdjustment(const CUnit* const unit);
+}}}
+
+Calculates the images.dat overlay ID adjustment for the given unit. This piece of code is used throughout StarCraft.exe for various status effects, such as Ensnare, Plague, and Defensive Matrix.
+
+== fireUnitWeapon ==
+{{{
+void fireUnitWeapon(CUnit* unit, u8 weaponId);
+}}}
+
+Makes the unit use the specified weapon to attack its current target unit in the `CUnit::orderTarget` member. This does not affect the unit's weapon cooldown. The spawned weapon sprite obeys the weapon behavior properties in `weapons.dat`.
+
+=== Parameters ===
+ * `unit`: The unit that uses the weapon. If NULL, the function returns without error.
+ * `weaponId`: ID of the weapon `in weapons.dat`. If same or bigger than `WEAPON_TYPE_COUNT`, the function returns without error.
+
+== createUnitAtPos ==
+{{{
+CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y);
+}}}
+
+Attempts to create a unit at the specified coordinates and return a pointer to it. If the unit cannot be created (e.g. there is no space), this function displays an error message and returns `NULL` instead. This function is the same one used for creating pre-placed units in UMS maps.
+
+== canBeEnteredBy ==
+{{{
+bool canBeEnteredBy(const CUnit* transport, const CUnit* unit);
+}}}
+
+Checks whether the `transport` (Dropship, Overlord, Shuttle, or Bunker) can load the `unit`. This checks:
+
+* Whether the `transport` has any status effects (Lockdown, Maelstrom, etc.)
+* If the `transport` and `unit` is owned by the same player
+* If the `transport` has enough cargo space for `unit`.
+
+It does NOT check whether `transport` is a hallucination, or is an Overlord without the transport upgrade, or whether the `unit` itself has any status effects. Note that this function is affected by the following EXE edits in FireGraft:
+* Change bunker size check to organic flag check
+* Remove bunker size check
+
+== getDistanceFast ==
+{{{
+u32 getDistanceFast(s32 x1, s32 y1, s32 x2, s32 y2);
+}}}
+
+StarCraft's internal function used to quickly calculate distances between two points (`x1`, `y1`) and (`x2`, `y2`).
+
+_Warning: This function is inaccurate for long distances._
+
+== getUpgradeLevel ==
+{{{
+u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId);
+}}}
+
+Returns the player's upgrade level of `upgradeId`. Note that this uses `UpgradeId::Enum`, instead of `ScUpgrades::Enum` and `BwUpgrades::Enum`.
+
+== getGroundHeightAtPos ==
+{{{
+u32 getGroundHeightAtPos(s32 x, s32 y);
+}}}
+
+Returns the elevation of the tile at (x, y). 0 for low terrain, 1 for medium, and 2 for high terrain.
+
+== getActiveTileAt ==
+{{{
+ActiveTile& getActiveTileAt(s32 x, s32 y);
+}}}
+
+Returns the pointer to the active tile data at (x, y).
+
+== isCheatEnabled ==
+{{{
+bool isCheatEnabled(u32 cheatFlag);
+}}}
+
+Checks whether the given cheat flag is enabled.
+
+=== isGamePaused==
+{{{
+bool isGamePaused();
+}}}
+Checks whether the game is paused.
+
+== isBroodWarMode ==
+{{{
+bool isBroodWarMode();
+}}}
+
+Checks whether the game is in Brood War mode.
+
+== isAlliedTo ==
+{{{
+bool isAlliedTo(u8 playerA, u8 playerB);
+}}}
+
+Checks whether `playerB` is recognized by `playerA` as an ally.
+
+_Warning: The opposite may not necessarily be true!_
+
+== refreshScreen ==
+{{{
+void refreshScreen(int left, int top, int right, int bottom);
+void refreshScreen();
+}}}
+
+Refreshes the screen position within the given rectangle area in pixels. If no arguments are given, the function refreshes the entire screen.
+
+== refreshButtonSet ==
+{{{
+void refreshButtonSet();
+}}}
+
+Something related to button sets, not completely understood.
+
+== randBetween ==
+{{{
+u32 randBetween(u32 min, u32 max);
+}}}
+
+Generates a pseudorandom number between `min` and `max`, inclusive. This is identical to the function used internally by StarCraft, and is guaranteed to generate the same sequence in a replay.
+
+_NOTE: The RNG has a maximum range of 0 - 32767._
