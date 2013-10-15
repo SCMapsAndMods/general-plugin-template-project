@@ -55,8 +55,8 @@ u8 gbFontColors[24][8] = {
 
 const HWND *hWndMainSC = (HWND *) 0x0051BFB0;
 
-//Writes Korean character and returns width in pixels
-int writeKoreanChar(const char *chars, u8 *buffer, u16 screenWidth, int fontSize, u8 color) {
+//Based on writeWindowText() @ 0x0041F2B0
+void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 color) {
   static HFONT gulim_8pt = NULL, gulim_9pt = NULL, gulim_10pt = NULL, gulim_11pt = NULL;
   static HDC mainDc = NULL, bufferDc = NULL;
   
@@ -106,9 +106,8 @@ int writeKoreanChar(const char *chars, u8 *buffer, u16 screenWidth, int fontSize
 
   SelectObject(bufferDc, currentFont);
   
-  char koreanChars[3];
-  *(u16*)koreanChars = *(u16*) chars;
-  koreanChars[2] = '\0';
+  char koreanChars[3] = {};
+  *(u16*)koreanChars = *(u16*) ch;
 
   //Write character into temporary bitmap buffer
   RECT chRect = {};
@@ -122,23 +121,27 @@ int writeKoreanChar(const char *chars, u8 *buffer, u16 screenWidth, int fontSize
   //Copy pixels from temporary buffer into StarCraft's own buffer
   BITMAP bmpData;
   GetObject(bmp, sizeof(bmpData), &bmpData);
-  bmpData.bmBits = new u8[bmpData.bmWidthBytes * bmpData.bmHeight];
-  GetBitmapBits(bmp, bmpData.bmWidthBytes * bmpData.bmHeight, bmpData.bmBits);
+  //bmpData.bmBits = new u8[bmpData.bmWidthBytes * bmpData.bmHeight];
+
+  static u8 bitmapBuffer[2000]; //Totally arbitrary, should be able to handle small font characters
+  memset(bitmapBuffer, 0, sizeof(bitmapBuffer));
+  GetBitmapBits(bmp, bmpData.bmWidthBytes * bmpData.bmHeight, bitmapBuffer);
   
-  for (int y = 0; y < bmpData.bmHeight; ++y) {
-    for (int x = 0; x < bmpData.bmWidth; ++x) {
-      if (((u8*)bmpData.bmBits)[x + bmpData.bmWidthBytes * y]) {
-        buffer[screenWidth * (y + 3) + x + 1] = gbFontColors[color][0];
-        buffer[screenWidth * (y + 2) + x] = gbFontColors[color][1];
+  for (int yOff = 0; yOff < bmpData.bmHeight; ++yOff) {
+    for (int xOff = 0; xOff < bmpData.bmWidth; ++xOff) {
+      if (bitmapBuffer[xOff + bmpData.bmWidthBytes * yOff]) {
+        this->drawDot(x + xOff + 1, y + yOff + 3, gbFontColors[color][0]); //Shadow
+        this->drawDot(x + xOff, y + yOff + 2, gbFontColors[color][1]);
       }
     }
   }
   
-  delete [] bmpData.bmBits;
+  //delete [] bmpData.bmBits;
   SelectObject(bufferDc, oldBitmap);
   DeleteObject(bmp);
 
-  return chRect.right;
+  //Advance pixels
+  x += chRect.right;
 }
 
 bool Bitmap::blitString(const char *pszStr, int x, int y, u8 size) {
@@ -207,8 +210,7 @@ bool Bitmap::blitString(const char *pszStr, int x, int y, u8 size) {
     if (GetUserDefaultLangID() == MAKELANGID(LANG_KOREAN, SUBLANG_KOREAN)
         && IsDBCSLeadByte(pbChars[c])
         && !(pbChars[c] == 169 || pbChars[c] == 153)) {
-      int offset = Yoffset * this->getWidth() + Xoffset;
-      Xoffset += writeKoreanChar((char*) &pbChars[c], &this->data[offset], this->getWidth(), size, color);
+      this->blitKoreanChar((char*) &pbChars[c], Xoffset, Yoffset, size, color);
       if (pbChars[++c])
         continue;
       break;

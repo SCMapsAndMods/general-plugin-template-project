@@ -28,6 +28,8 @@ class Bitmap {
     void drawHorizontalLineUnsafe(int x1, int x2, int y, ColorId color);
     void drawVerticalLineUnsafe(int x, int y1, int y2, ColorId color);
 
+    void blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 color);
+
     //Trivially checks whether the line should be drawn; based on the trivial
     //check in the Cohen-Sutherland line clipping algorithm.
     bool isLineTriviallyIgnorable(int x1, int y1, int x2, int y2);
