@@ -67,7 +67,7 @@ void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 colo
     strcpy(lFont.lfFaceName, "±¼¸²");
     lFont.lfCharSet = HANGUL_CHARSET;
     
-    lFont.lfHeight = -MulDiv(8, GetDeviceCaps(screenDc, LOGPIXELSY), 72);
+    lFont.lfHeight = -MulDiv(8, GetDeviceCaps(screenDc, LOGPIXELSY), 72); //Not in StarCraft
     gulim_8pt = CreateFontIndirect(&lFont);
     
     lFont.lfHeight = -MulDiv(9, GetDeviceCaps(screenDc, LOGPIXELSY), 72);
@@ -93,16 +93,20 @@ void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 colo
     SetBkColor(bufferDc, RGB(0, 0, 0));
     SelectObject(bufferDc, GetStockObject(BLACK_BRUSH));
   }
-  
-  HFONT currentFont = gulim_9pt;
-  
+
   //Assume this function is only drawing in-game stuff
-  if (fontSize == 0)
-    currentFont = gulim_8pt;
-  else if (fontSize == 2)
-    currentFont = gulim_10pt;
-  else if (fontSize == 3)
-    currentFont = gulim_11pt;
+  HFONT currentFont;
+  switch (fontSize) {
+    case 0:
+      currentFont = gulim_8pt; break;   //SC uses 9pt, but who cares :P
+    case 1:
+      currentFont = gulim_9pt; break;
+    case 2:
+      currentFont = gulim_10pt; break;  //SC uses 11pt, but who cares :P
+    case 3:
+    default:
+      currentFont = gulim_11pt; break;
+  }
 
   SelectObject(bufferDc, currentFont);
   
