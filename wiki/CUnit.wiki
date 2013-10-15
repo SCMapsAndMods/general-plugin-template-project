@@ -1,0 +1,218 @@
+#summary Documentation of the CUnit struct
+
+<wiki:toc max_depth="2" />
+
+= Introduction =
+
+Structure header file: [SCBW/structures/CUnit.h /trunk/GPTP/src/SCBW/structures/CUnit.h]
+
+The CUnit structure is used by !StarCraft to store all information regarding a unit's state, such as its HP amount, controlling player, Stim Packs timer, and units loaded inside a transport.
+
+= Methods =
+
+GPTP extends the CUnit structure with many useful methods. All methods are guaranteed to behave exactly as they do in !StarCraft, or obey the modified behavior enforced by hook modules.
+
+Note: The methods in GPTP may not necessarily be actual functions within !StarCraft, but a custom method that merely emulates a certain behavior
+
+== setHp ==
+{{{
+void setHp(s32 hitPoints);
+}}}
+
+Sets the unit's HP, and also updates burning / bleeding graphics and unit strength data (used by the AI). HP is guaranteed not to overflow.
+
+== damageWith ==
+{{{
+void damageWith(s32 damage, u8 weaponId, CUnit *attacker = NULL,
+  s8 attackingPlayer = -1, s8 direction = 0, u8 damageDivisor = 1);
+}}}
+
+Deals damage to this unit, using a specific weapons.dat ID.
+
+=== Parameters ===
+ * damage: The amount of damage dealt to this unit.
+ * weaponId: `weapons.dat` ID to use.
+ * attacker: Attacking unit (for increasing kill count)
+ * attackingPlayer: Attacking player ID (for increasing kill score)
+ * direction: Attacking direction (for shield flicker overlays)
+ * damageDivisor: Damage divisor (for calculating splash damage / glave wurm damage)
+
+== damageHp ==
+{{{
+void damageHp(s32 damage, CUnit *attacker = NULL, s32 attackingPlayer = -1, bool notify = true);
+}}}
+
+Deals damage directly to unit HP, killing it if possible.
+  
+== reduceDefensiveMatrixHp ==
+{{{
+void reduceDefensiveMatrixHp(s32 amount);
+}}}
+
+Reduces Defensive Matrix by `amount`, removing it if possible.
+
+== remove ==
+{{{
+void remove();
+}}}
+
+Removes (kills) the unit from the game. To immediately remove a unit without killing it, use:
+{{{
+unit->userActionFlags |= 0x4;
+unit->remove();
+}}}
+
+== orderTo ==
+{{{
+void orderTo(u32 orderId, const CUnit *target);
+void orderTo(u32 orderId, u16 x, u16 y);
+}}}
+
+Issue a new order to the unit, using either a target unit (`target`) or position (`x`, `y`).
+
+== setSecondaryOrder ==
+{{{
+void setSecondaryOrder(u8 orderId);
+}}}
+
+Set the secondary order of this unit. Internally used by several hooks.
+
+== hasPathToUnit ==
+{{{
+bool hasPathToUnit(const CUnit *target) const;
+}}}
+
+Checks whether this unit can reach the @p target unit. This checks only the terrain layout, and does not consider obstacles (units and buildings).
+
+== hasPathToPos ==
+{{{
+bool hasPathToPos(u32 x, u32 y) const;
+}}}
+
+Checks whether this unit can reach the target position. This checks only the terrain layout, and does not consider obstacles (units and buildings).
+
+== canUseTech ==
+{{{
+bool canUseTech(u8 techId, s8 playerId) const;
+}}}
+
+Checks the following:
+ * If the unit is actually owned by the commanding `playerId`
+ * If the unit's owning player has the `techId` researched
+ * If the unit has enough energy (or energy cheat is enabled)
+ * If the unit is not stunned / is a hallucination / is being built
+
+== getDistanceToTarget ==
+{{{
+u32 getDistanceToTarget(const CUnit *target) const;
+}}}
+
+Returns the distance between this unit and the @p target, taking unit collision size in units.dat into account.
+
+Internally, this function uses `scbw::getDistanceFast()`.
+
+== getMaxWeaponRange ==
+{{{
+u32 getMaxWeaponRange(u8 weaponId) const;
+}}}
+
+Returns the maximum range of a weapon. The weapon is assumed to be attached to this unit for calculating upgrade effects.
+
+== getSightRange ==
+{{{
+u32 getSightRange(bool applyStatusEffects = false) const;
+}}}
+
+Returns the sight range of this unit (with upgrades). If `applyStatusEffects` is true, also factors in status effects.
+
+== getMaxEnergy ==
+{{{
+u16 getMaxEnergy() const;
+}}}
+
+Returns the maximum energy amount of this unit (with upgrades).
+  
+== getArmor ==
+{{{
+u8 getArmor() const;
+}}}
+
+Returns the armor count of this unit (with upgrades).
+
+== getArmorBonus ==
+{{{
+u8 getArmorBonus() const;
+}}}
+
+Returns the bonus armor this unit has (from upgrades).
+
+== updateSpeed ==
+{{{
+void updateSpeed();
+}}}
+
+Updates the unit's actual speed. This function should be called after changing any properties and status effects that affect movement speed.
+
+== playIscriptAnim ==
+{{{
+void playIscriptAnim(IscriptAnimation::Enum animation);
+}}}
+
+Makes the unit's sprite play the specified Iscript animation entry.
+
+== removeLockdown, removeMaelstrom, removeStasisField ==
+{{{
+void removeLockdown();
+void removeMaelstrom();
+void removeStasisField();
+}}}
+
+Removes status effects from the unit (clears effect timers and removes the image overlays) and updates its button set.
+
+== removeOverlay ==
+{{{
+void removeOverlay(u32 imageIdStart, u32 imageIdEnd);
+void removeOverlay(u32 imageId);
+}}}
+
+Removes the first image overlay found that has an ID value between `imageIdStart` and `imageIdEnd.` The one-parameter versino removes the first image overlay with the `imageId`.
+
+== getX, getY ==
+{{{
+u16 getX() const;
+u16 getY() const;
+}}}
+
+Returns the unit's position on the map. Internally, this uses the unit's sprite position, which is apparently preferred by Blizzard.
+
+== getTileX, getTileY ==
+{{{
+u16 getTileX() const;
+u16 getTileY() const;
+}}}
+
+Returns the position of the map tile that the unit is on.
+
+== getLeft, getRight, getTop, getBottom ==
+{{{
+s16 getLeft() const;
+s16 getRight() const;
+s16 getTop() const;
+s16 getBottom() const;
+}}}
+
+Returns the absolute position of each of the unit's collision bounds.
+
+== getFromIndex ==
+{{{
+static CUnit* getFromIndex(u16 index);
+}}}
+
+Retrieves the unit pointer by `index` from the unit table (first unit is indexed at 1). If invalid, returns `NULL` instead.
+
+== getIndex ==
+{{{
+u16 getIndex() const;
+}}}
+
+Returns the index of this unit in the unit table. First unit == index 1.
