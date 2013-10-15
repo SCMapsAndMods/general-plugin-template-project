@@ -1,12 +1,10 @@
 #summary Documentation of the CUnit struct
 
-<wiki:toc max_depth="2" />
-
-= Introduction =
-
-Structure header file: [SCBW/structures/CUnit.h /trunk/GPTP/src/SCBW/structures/CUnit.h]
+Structure header file: [SCBW/structures/CUnit.h /p/gptp/source/browse/trunk/GPTP/src/SCBW/structures/CUnit.h]
 
 The CUnit structure is used by !StarCraft to store all information regarding a unit's state, such as its HP amount, controlling player, Stim Packs timer, and units loaded inside a transport.
+
+<wiki:toc max_depth="2" />
 
 = Methods =
 
