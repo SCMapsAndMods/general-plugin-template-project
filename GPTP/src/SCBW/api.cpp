@@ -11,7 +11,7 @@
 namespace scbw {
 
 const u32 Func_PrintText = 0x0048CD30;
-void printText(char* text, u32 color) {
+void printText(const char* text, u32 color) {
   if (!text) return;
   DWORD gtc = GetTickCount() + 7000;
 
@@ -49,6 +49,16 @@ void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId) {
     CALL Func_ShowErrorMessageWithSfx
     POPAD
   }
+}
+
+// Logically equivalent to function @ 0x004C36F0
+const char* getStatTxtTblString(u16 index) {
+  if (index == 0)
+    return NULL;
+  else if (index <= **statTxtTbl)
+    return (char*)(*statTxtTbl) + (*statTxtTbl)[index];
+  else
+    return "";
 }
 
 // Logically equivalent to function @ 0x004E5C90

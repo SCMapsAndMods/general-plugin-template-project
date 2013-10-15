@@ -7,7 +7,7 @@
 
 namespace scbw {
 /// Prints text to the screen, optionally using the given text color.
-void printText(char* text, u32 color = GameTextColor::White);
+void printText(const char* text, u32 color = GameTextColor::White);
 
 /// Plays the given sound from sfxdata.dat, optionally using a unit as the
 /// source of the sound.
@@ -19,6 +19,12 @@ void playSound(u32 sfxId, const CUnit *sourceUnit = NULL);
 /// @param  statTxtId ID of the error message string in stat_txt.tbl
 /// @param  sfxId     ID of the sound file in sfxdata.dat.
 void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId);
+
+/// Retrieves a string from stat_txt.tbl, using the given @p index.
+/// If an invalid @p index is specified, returns "" instead.
+/// If @p index == 0, returns NULL.
+/// Note: TBL string indexes start at 1, not 0.
+const char* getStatTxtTblString(u16 index);
 
 /// Checks whether the unit has an image overlay that matches the given ID.
 bool hasOverlay(const CUnit* const unit, const u32 imageId);
