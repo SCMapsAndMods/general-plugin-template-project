@@ -128,6 +128,7 @@ void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 colo
   //bmpData.bmBits = new u8[bmpData.bmWidthBytes * bmpData.bmHeight];
 
   static u8 bitmapBuffer[2000]; //Totally arbitrary, should be able to handle small font characters
+  assert(bmpData.bmWidthBytes * bmpData.bmHeight <= sizeof(bitmapBuffer));
   memset(bitmapBuffer, 0, sizeof(bitmapBuffer));
   GetBitmapBits(bmp, bmpData.bmWidthBytes * bmpData.bmHeight, bitmapBuffer);
   
