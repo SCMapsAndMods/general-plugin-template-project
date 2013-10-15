@@ -113,25 +113,32 @@ void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 colo
   char koreanChars[3] = {};
   *(u16*)koreanChars = *(u16*) ch;
 
-  //Write character into temporary bitmap buffer
+  //Retrieve the size of the rectangular area to draw the character
   RECT chRect = {};
   DrawText(bufferDc, koreanChars, strlen(koreanChars), &chRect, DT_CALCRECT);
-  HBITMAP bmp = CreateCompatibleBitmap(mainDc, chRect.right, chRect.bottom);
-  HGDIOBJ oldBitmap = SelectObject(bufferDc, bmp);
+
+  //Create temporary bitmap to draw the character
+  HBITMAP tempBitmap = CreateCompatibleBitmap(mainDc, chRect.right, chRect.bottom);
+  HGDIOBJ oldBitmap = SelectObject(bufferDc, tempBitmap);
   
+  //Fill the character rectangle with black background
   Rectangle(bufferDc, chRect.left - 1, chRect.top - 1, chRect.right + 1, chRect.bottom + 1);
+
+  //Write character into temporary bitmap buffer
   DrawText(bufferDc, koreanChars, strlen(koreanChars), &chRect, 0);
   
-  //Copy pixels from temporary buffer into StarCraft's own buffer
+  //Retrieve the dimensions of the temporary bitmap
   BITMAP bmpData;
-  GetObject(bmp, sizeof(bmpData), &bmpData);
+  GetObject(tempBitmap, sizeof(bmpData), &bmpData);
   //bmpData.bmBits = new u8[bmpData.bmWidthBytes * bmpData.bmHeight];
 
+  //Copy pixel data from temporary bitmap into temporary buffer
   static u8 bitmapBuffer[2000]; //Totally arbitrary, should be able to handle small font characters
   assert(bmpData.bmWidthBytes * bmpData.bmHeight <= sizeof(bitmapBuffer));
   memset(bitmapBuffer, 0, sizeof(bitmapBuffer));
-  GetBitmapBits(bmp, bmpData.bmWidthBytes * bmpData.bmHeight, bitmapBuffer);
+  GetBitmapBits(tempBitmap, bmpData.bmWidthBytes * bmpData.bmHeight, bitmapBuffer);
   
+  //Copy pixels from temporary buffer into StarCraft's own buffer
   for (int yOff = 0; yOff < bmpData.bmHeight; ++yOff) {
     for (int xOff = 0; xOff < bmpData.bmWidth; ++xOff) {
       if (bitmapBuffer[xOff + bmpData.bmWidthBytes * yOff]) {
@@ -143,7 +150,7 @@ void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 colo
   
   //delete [] bmpData.bmBits;
   SelectObject(bufferDc, oldBitmap);
-  DeleteObject(bmp);
+  DeleteObject(tempBitmap);
 
   //Advance pixels
   x += chRect.right;
