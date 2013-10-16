@@ -1,0 +1,33 @@
+#summary Description of hook modules provided by GPTP
+
+= Introduction =
+
+Hook modules are the core of GPTP: they allow modders to directly alter how !StarCraft works. The following table lists basic information about the hook modules.
+
+= Hook Module List =
+
+|| *Hook Module * || *Editable Source File* || *Description* ||
+|| Apply Upgrade Flags || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/apply_upgrade_flags.cpp hooks/apply_upgrade_flags.cpp]</tt> || Controls movement speed/attack speed upgrades ||
+|| Armor Bonus || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/armor_bonus.cpp hooks/armor_bonus.cpp]</tt> || Controls unit armor upgrades ||
+|| Bunker || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/bunker_hooks.cpp hooks/bunker_hooks.cpp]</tt> || Determine which unit can attack from inside Bunkers ||
+|| Cloak Nearby Units || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/cloak_nearby_units.cpp hooks/cloak_nearby_units.cpp]</tt> || Control Arbiters' AoE cloaking field ||
+|| Cloak Tech || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/cloak_tech.cpp hooks/cloak_tech.cpp]</tt> || Determine which units can use the Cloaking Field / Personnel Cloaking tech ||
+|| Consume || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/consume.cpp hooks/consume.cpp]</tt> || Control Consume target check and spell effects ||
+|| Damage With || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/damage_with.cpp hooks/damage_with.cpp]</tt> || Control how weapon damage is applied to a unit. This modifies the behavior of <tt>[CUnit#damageWith CUnit::damageWith()]</tt>. ||
+|| Detector || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/detector.cpp hooks/detector.cpp]</tt> || Control detector requirement and detection range ||
+|| Energy Regeneration || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/energy_regeneration.cpp hooks/energy_regeneration.cpp]</tt> || <ul><li>Unit energy regeneration rate</li> <li>Cloaking energy consumption rate</li></ul> ||
+|| Game Hooks || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/game_hooks.cpp hooks/game_hooks.cpp]</tt> || Generic hook functions for modding ||
+|| Resource Harvest || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/harvest.cpp hooks/harvest.cpp]</tt> || <ul><li>Resource amount harvested / carried by workers</li> <li>Image ID used to represent resource chunks being carried</li></ul> ||
+|| Irradiate || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/irradiate.cpp hooks/irradiate.cpp]</tt> || Control how Irradiate works ||
+|| Maximum Energy || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/max_unit_energy.cpp hooks/max_unit_energy.cpp]</tt> || Sets the maximum energy of a unit. Affects <tt>[CUnit#getMaxEnergy CUnit::getMaxEnergy()]</tt>. ||
+|| Psi Field || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/psi_field.cpp hooks/psi_field.cpp]</tt> || Controls which units can provide Psi Fields ||
+|| Rally Point || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/rally_point.cpp hooks/rally_point.cpp]</tt> || Controls how rally points are set and used ||
+|| Recharge Shields || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/recharge_shields.cpp hooks/recharge_shields.cpp]</tt> || <ul><li>Shield recharge requirements</li> <li>Shield recharge rate and energy cost</li> ||
+|| Sight Range || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/sight_range.cpp hooks/sight_range.cpp]</tt> || Controls unit sight range ||
+|| Spider Mine || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/spider_mine.cpp hooks/spider_mine.cpp]</tt> || <ul><li>Spider Mine targeting requirements</li> <li>Spider Mine initial burrow delay</li></ul> ||
+|| Stim Packs || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/stim_packs.cpp hooks/stim_packs.cpp]</tt> || Stim Packs HP cost and effects ||
+|| Unit Speed || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/unit_speed.cpp hooks/unit_speed.cpp]</tt> || Controls unit speed, acceleration, and turn speed, factoring in upgrades and status effects ||
+|| Update Status Effects || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/update_status_effects.cpp hooks/update_status_effects.cpp]</tt> || Controls various status effect timers ||
+|| Update Unit Timers || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/update_unit_timers.cpp hooks/update_unit_timers.cpp]</tt> || <ul><li>HP and shield regeneration</li> <li>Terran building burn-down rate</li> <li>Attack delay after unburrowing</li> <li>Other unit timers</li></ul> ||
+|| Weapon Cooldown || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/weapon_cooldown.cpp hooks/weapon_cooldown.cpp]</tt> || Controls weapon cooldown, factoring in upgrades and status effects ||
+|| Weapon Range || <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/weapon_range.cpp hooks/weapon_range.cpp]</tt> || <ul><li>Weapon range upgrades (affects <tt>[CUnit#getMaxWeaponRange CUnit::getMaxWeaponRange()]</tt>)</li> <li>Seek range upgrades</li></ul> ||
