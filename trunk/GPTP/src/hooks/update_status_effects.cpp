@@ -6,7 +6,6 @@
 
 namespace {
 //Helper functions that should be used only in this file
-void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount);
 u8 getAcidSporeOverlayAdjustment(const CUnit* const unit);
 } //unnamed namespace
 
@@ -106,24 +105,6 @@ void updateStatusEffectsHook(CUnit *unit) {
 
 namespace {
 /**** Helper function definitions. Do not change anything below this! ****/
-
-//Logic copied from function @ 0x00454ED0
-void reduceDefensiveMatrixHp(CUnit *unit, const s32 amount) {
-  if (unit->defensiveMatrixHp > amount) {
-    unit->defensiveMatrixHp -= amount;
-  }
-  else {
-    unit->defensiveMatrixHp = 0;
-    unit->defensiveMatrixTimer = 0;
-    unit->removeOverlay(ImageId::DefensiveMatrixFront_Small, ImageId::DefensiveMatrixFront_Large);
-    unit->removeOverlay(ImageId::DefensiveMatrixBack_Small, ImageId::DefensiveMatrixBack_Large);
-  }
-  if (unit->defensiveMatrixTimer && !(unit->status & UnitStatus::Burrowed)) {
-    if (unit->subunit)
-      unit = unit->subunit;
-    unit->sprite->createTopOverlay(scbw::getUnitOverlayAdjustment(unit) + ImageId::DefensiveMatrixHit_Small);
-  }
-}
 
 u8 getAcidSporeOverlayAdjustment(const CUnit* const unit) {
   u8 adjustment = unit->acidSporeCount >> 1;
