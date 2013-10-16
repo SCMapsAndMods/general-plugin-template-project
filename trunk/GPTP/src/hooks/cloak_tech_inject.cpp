@@ -141,8 +141,6 @@ void __declspec(naked) getCloakingTechWrapper() {
   }
 }
 
-CUnit** const activePortraitUnit = (CUnit**) 0x00597248;
-
 Bool32 __cdecl currentUnitSelectionCanCloakWrapper() {
   for (int i = 0; i < 12; ++i) {
     CUnit *unit = clientSelectionGroup->unit[i];

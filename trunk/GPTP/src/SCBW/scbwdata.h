@@ -105,6 +105,7 @@ SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);
 SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 
 SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);
+SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
 
 //-------- Internal constants --------//
 

@@ -210,4 +210,41 @@ struct Bounds {
   u16 width;
   u16 height;
 };
+
+C_ASSERT(sizeof(Bounds) == 12);
+
+struct BinDlg {
+  BinDlg  *next;
+  Bounds  bounds;
+  u8      *buffer;
+  char    *pszText;
+  u32     flags;
+  u32     unk_1c;
+  u16     index;
+  u16     controlType;
+  u16     graphic;
+  u32     *user;
+  void    *fxnInteract;
+  void    *fxnUpdate;
+  BinDlg  *parent;
+  Box16   responseArea;
+  u32     unk_3e;
+  void    *childrenSmk;
+  Point16 textPos;
+  u16     responseAreaWidth;
+  u16     responseAreaHeight;
+  UNK     unk_4e[8];
+};
+
+C_ASSERT(sizeof(BinDlg) == 86);
+
+struct GuiOverlay {
+  UNK     unk_0[6];
+  u16     overlayType;
+  u16     id;
+  UNK     unk_a[34];
+};
+
+C_ASSERT(sizeof(GuiOverlay) == 44);
+
 #pragma pack()

@@ -21,6 +21,7 @@
 #include "hooks/sight_range.h"
 #include "hooks/stim_packs.h"
 #include "hooks/unit_speed.h"
+#include "hooks/unit_tooltip.h"
 #include "hooks/update_status_effects.h"
 #include "hooks/update_unit_timers.h"
 #include "hooks/weapon_cooldown.h"
@@ -65,6 +66,8 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectStimPacksHooks();
 
   hooks::injectUnitSpeedHooks();
+
+  hooks::injectUnitTooltipHook();
 
   hooks::injectUpdateStatusEffects();
   hooks::injectUpdateUnitTimers();
