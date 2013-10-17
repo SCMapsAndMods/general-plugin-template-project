@@ -2,6 +2,8 @@
 #include "../SCBW/enumerations/WeaponId.h"
 #include <cstdio>
 
+//-------- Helper functions --------//
+
 char buffer[128];
 
 u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
@@ -60,6 +62,8 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrI
 
   return buffer;
 }
+
+//-------- Actual hook functions --------//
 
 namespace hooks {
 
