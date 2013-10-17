@@ -406,5 +406,5 @@ CUnit* CUnit::getFromIndex(u16 index) {
 }
 
 u16 CUnit::getIndex() const {
-  return (this - unitTable) / sizeof(*this);
+  return this - unitTable;
 }
