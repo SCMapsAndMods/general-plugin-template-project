@@ -408,3 +408,9 @@ CUnit* CUnit::getFromIndex(u16 index) {
 u16 CUnit::getIndex() const {
   return (this - unitTable) / sizeof(*this);
 }
+
+bool CUnit::isVisibleTo(u8 playerId) const {
+  assert(this);
+  assert(this->sprite);
+  return (this->sprite->visibilityFlags & (1 << playerId)) != 0;
+}

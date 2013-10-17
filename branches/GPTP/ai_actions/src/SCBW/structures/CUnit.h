@@ -120,6 +120,9 @@ struct CUnit {
   /// Returns the index of this unit in the unit table. First unit == index 1.
   u16 getIndex() const;
 
+  /// Checks whether this unit can be seen by @playerId.
+  bool isVisibleTo(u8 playerId) const;
+
 
 ////////////////////////////////////////////////////////////////
 // Actual data structure -- member variables and pointers

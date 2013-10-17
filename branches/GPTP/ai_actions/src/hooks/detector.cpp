@@ -24,7 +24,7 @@ u32 getCloakedTargetVisibility(const CUnit *unit, const CUnit* target) {
     return 0;
 
   if (unitCanDetectHook(unit) && unit != target) {
-    if ((1 << unit->playerId) & target->sprite->visibilityFlags) {
+    if (target->isVisibleTo(unit->playerId)) {
       u32 detectionRange;
 
       if (unit->status & UnitStatus::GroundedBuilding)
