@@ -54,11 +54,14 @@ u8 gbFontColors[24][8] = {
 };
 
 const HWND *hWndMainSC = (HWND *) 0x0051BFB0;
+const int KOR_CHAR_MAX_WIDTH  = 32;
+const int KOR_CHAR_MAX_HEIGHT = 32;
 
-//Based on writeWindowText() @ 0x0041F2B0
+//Loosely based on writeWindowText() @ 0x0041F2B0
 void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 color) {
   static HFONT gulim_8pt = NULL, gulim_9pt = NULL, gulim_10pt = NULL, gulim_11pt = NULL;
-  static HDC mainDc = NULL, bufferDc = NULL;
+  static HDC bufferDc = NULL;
+  static HBITMAP bufferBmp = NULL; //Temporary bitmap to draw the character
   
   //Load Korean fonts
   if (!gulim_9pt) {
@@ -85,13 +88,19 @@ void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 colo
   }
   
   //Load main and buffer DCs
-  if (!mainDc) {
-    mainDc = GetDC(*hWndMainSC);
+  if (!bufferBmp) {
+    HDC mainDc = GetDC(*hWndMainSC);
+
     bufferDc = CreateCompatibleDC(mainDc);
     SetBkMode(bufferDc, OPAQUE);
     SetTextColor(bufferDc, RGB(255, 255, 255));
     SetBkColor(bufferDc, RGB(0, 0, 0));
     SelectObject(bufferDc, GetStockObject(BLACK_BRUSH));
+
+    bufferBmp = CreateCompatibleBitmap(mainDc, KOR_CHAR_MAX_WIDTH, KOR_CHAR_MAX_HEIGHT);
+    SelectObject(bufferDc, bufferBmp);
+    
+    ReleaseDC(*hWndMainSC, mainDc);
   }
 
   //Assume this function is only drawing in-game stuff
@@ -110,47 +119,33 @@ void Bitmap::blitKoreanChar(const char *ch, int &x, int &y, u8 fontSize, u8 colo
 
   SelectObject(bufferDc, currentFont);
   
-  char koreanChars[3] = {};
+  char koreanChars[3];
   *(u16*)koreanChars = *(u16*) ch;
+  koreanChars[2] = '\0';
 
   //Retrieve the size of the rectangular area to draw the character
   RECT chRect = {};
   DrawText(bufferDc, koreanChars, strlen(koreanChars), &chRect, DT_CALCRECT);
-
-  //Create temporary bitmap to draw the character
-  HBITMAP tempBitmap = CreateCompatibleBitmap(mainDc, chRect.right, chRect.bottom);
-  HGDIOBJ oldBitmap = SelectObject(bufferDc, tempBitmap);
   
   //Fill the character rectangle with black background
   Rectangle(bufferDc, chRect.left - 1, chRect.top - 1, chRect.right + 1, chRect.bottom + 1);
 
   //Write character into temporary bitmap buffer
   DrawText(bufferDc, koreanChars, strlen(koreanChars), &chRect, 0);
-  
-  //Retrieve the dimensions of the temporary bitmap
-  BITMAP bmpData;
-  GetObject(tempBitmap, sizeof(bmpData), &bmpData);
-  //bmpData.bmBits = new u8[bmpData.bmWidthBytes * bmpData.bmHeight];
 
   //Copy pixel data from temporary bitmap into temporary buffer
-  static u8 bitmapBuffer[2000]; //Totally arbitrary, should be able to handle small font characters
-  assert(bmpData.bmWidthBytes * bmpData.bmHeight <= sizeof(bitmapBuffer));
-  memset(bitmapBuffer, 0, sizeof(bitmapBuffer));
-  GetBitmapBits(tempBitmap, bmpData.bmWidthBytes * bmpData.bmHeight, bitmapBuffer);
+  static u8 bitmapBuffer[KOR_CHAR_MAX_WIDTH * KOR_CHAR_MAX_HEIGHT];
+  GetBitmapBits(bufferBmp, KOR_CHAR_MAX_WIDTH * chRect.bottom, bitmapBuffer);
   
   //Copy pixels from temporary buffer into StarCraft's own buffer
-  for (int yOff = 0; yOff < bmpData.bmHeight; ++yOff) {
-    for (int xOff = 0; xOff < bmpData.bmWidth; ++xOff) {
-      if (bitmapBuffer[xOff + bmpData.bmWidthBytes * yOff]) {
+  for (int yOff = 0; yOff < chRect.bottom; ++yOff) {
+    for (int xOff = 0; xOff < chRect.right; ++xOff) {
+      if (bitmapBuffer[xOff + KOR_CHAR_MAX_WIDTH * yOff]) {
         this->drawDot(x + xOff + 1, y + yOff + 3, gbFontColors[color][0]); //Shadow
         this->drawDot(x + xOff, y + yOff + 2, gbFontColors[color][1]);
       }
     }
   }
-  
-  //delete [] bmpData.bmBits;
-  SelectObject(bufferDc, oldBitmap);
-  DeleteObject(tempBitmap);
 
   //Advance pixels
   x += chRect.right;
