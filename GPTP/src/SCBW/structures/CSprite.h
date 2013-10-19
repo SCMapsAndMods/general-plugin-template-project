@@ -43,8 +43,8 @@ struct CSprite {
 //Actual data structure
 
   /*0x00*/ CLink<CSprite> link;
-  /*0x08*/ u16       spriteID;
-  /*0x0A*/ u8        playerID;          // officially "creator"
+  /*0x08*/ u16       spriteId;
+  /*0x0A*/ u8        playerId;          // officially "creator"
   /*0x0B*/ u8        selectionIndex;    // 0 <= selectionIndex <= 11. Index in the selection area at bottom of screen.
   /*0x0C*/ u8        visibilityFlags;
   /*0x0D*/ u8        elevationLevel;

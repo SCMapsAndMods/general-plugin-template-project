@@ -14,9 +14,7 @@ u8 getSpiderMineBurrowTimeHook(const CUnit *spiderMine) {
 //Decide if @p spiderMine can attack the @p target.
 bool spiderMineCanTargetUnitHook(const CUnit *target, const CUnit *spiderMine) {
   //Default StarCraft behavior
-  s8 targetOwner = target->playerId;
-  if (targetOwner == 11)
-    targetOwner = target->sprite->playerID;
+  const s8 targetOwner = target->getLastOwnerId();
 
   //Don't attack allied units
   if (playerAlliance[spiderMine->playerId].flags[targetOwner] != 0)
