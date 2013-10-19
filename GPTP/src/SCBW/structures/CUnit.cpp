@@ -412,7 +412,7 @@ u16 CUnit::getIndex() const {
 s8 CUnit::getLastOwnerId() const {
   assert(this);
   assert(this->sprite);
-  if (this->playerId == 11)
+  if (this->playerId == 11) //The owner has left the game
     return this->sprite->playerId;
   else
     return this->playerId;

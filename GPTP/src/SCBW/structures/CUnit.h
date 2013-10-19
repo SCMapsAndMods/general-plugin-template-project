@@ -123,7 +123,7 @@ struct CUnit {
   /// Returns the ID of the last player to own this unit. This is usually the
   /// same as CUnit::playerId, but if the unit belongs to a defeated player,
   /// this returns the correct player ID (instead of 11).
-  u8 getLastOwnerId() const;
+  s8 getLastOwnerId() const;
 
 
 ////////////////////////////////////////////////////////////////
