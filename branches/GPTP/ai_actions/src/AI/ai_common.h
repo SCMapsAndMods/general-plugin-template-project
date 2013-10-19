@@ -5,7 +5,7 @@
 
 namespace AI {
 
-bool isTargetWorthHitting(CUnit *unit, CUnit *target);
+bool isTargetWorthHitting(const CUnit *unit, const CUnit *target);
 
 int getTotalEnemyHpInArea(int x, int y, int searchBounds, const CUnit *unit);
 int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *unit);
