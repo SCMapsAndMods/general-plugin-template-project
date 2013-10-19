@@ -44,9 +44,9 @@ struct CSprite {
 
   /*0x00*/ CLink<CSprite> link;
   /*0x08*/ u16       spriteId;
-  /*0x0A*/ u8        playerId;          // officially "creator"
+  /*0x0A*/ s8        playerId;          // officially "creator"
   /*0x0B*/ u8        selectionIndex;    // 0 <= selectionIndex <= 11. Index in the selection area at bottom of screen.
-  /*0x0C*/ u8        visibilityFlags;
+  /*0x0C*/ u8        visibilityFlags;   // Determines whether the sprite is visible (not hidden by the fog-of-war).
   /*0x0D*/ u8        elevationLevel;
   /*0x0E*/ u8        flags;
                      /*   0x01  Draw selection circle.
