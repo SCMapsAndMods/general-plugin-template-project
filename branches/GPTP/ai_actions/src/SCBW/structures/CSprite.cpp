@@ -166,3 +166,10 @@ void CSprite::removeOverlay(u32 imageId) {
     }
   }
 }
+
+//-------- Other --------//
+
+bool CSprite::isVisibleTo(s8 playerId) const {
+  assert(this);
+  return (this->visibilityFlags & (1 << playerId)) != 0;
+}

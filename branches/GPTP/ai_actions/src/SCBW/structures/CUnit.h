@@ -125,7 +125,8 @@ struct CUnit {
   /// this returns the correct player ID (instead of 11).
   s8 getLastOwnerId() const;
 
-  /// Checks whether this unit can be seen by @playerId.
+  /// Checks whether this unit can be seen by @playerId (i.e. not covered by the
+  /// fog-of-war and is detectable).
   bool isVisibleTo(u8 playerId) const;
 
 ////////////////////////////////////////////////////////////////

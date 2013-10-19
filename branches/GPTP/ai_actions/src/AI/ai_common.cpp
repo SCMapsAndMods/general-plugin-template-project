@@ -6,16 +6,16 @@
 namespace AI {
 
 bool isTargetWorthHitting(const CUnit *unit, const CUnit *target) {
-  if (!(target->sprite->visibilityFlags & (1 << unit->playerId)))
+  //If the target is hidden by the fog-of-war
+  if (!target->sprite->isVisibleTo(unit->playerId))
     return false;
 
+  //If the target is not detectable
   if (target->status & (UnitStatus::Cloaked | UnitStatus::RequiresDetection)
-      && !(target->visibilityStatus & (1 << unit->playerId))
+      && !target->isVisibleTo(unit->playerId))
     return false;
 
-  u8 targetOwner = target->playerId;
-  if (targetOwner == 11)
-    targetOwner = target->sprite->playerID;
+  const s8 targetOwner = target->getLastOwnerId();
 
   if (scbw::isAlliedTo(unit->playerId, targetOwner))
     return false;
