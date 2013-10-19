@@ -156,6 +156,8 @@ struct ACTION {
 
 typedef Bool32 (__fastcall *ActionPointer)(ACTION*);
 
+//-------- Flag structures --------//
+
 //Based on BWAPI's Offsets.h
 struct ActiveTile {
   u8 visibilityFlags;
@@ -178,17 +180,6 @@ struct ActiveTile {
 
 C_ASSERT(sizeof(ActiveTile) == 4);
 
-
-struct UnitFinderData {
-  s32 unitIndex;
-  s32 searchValue;
-  bool operator < (const UnitFinderData& rhs) const {
-    return this->searchValue < rhs.searchValue;
-  }
-};
-
-C_ASSERT(sizeof(UnitFinderData) == 8);
-
 struct GroupFlag {
   u8 isZerg         : 1;
   u8 isTerran       : 1;
@@ -201,6 +192,32 @@ struct GroupFlag {
 };
 
 C_ASSERT(sizeof(GroupFlag) == 1);
+
+struct TargetFlag {
+  u16 air         : 1;
+  u16 ground      : 1;
+  u16 mechanical  : 1;
+  u16 organic     : 1;
+  u16 nonBuilding : 1;
+  u16 nonRobotic  : 1;
+  u16 terrain     : 1;
+  u16 orgOrMech   : 1;
+  u16 playerOwned : 1;
+};
+
+C_ASSERT(sizeof(TargetFlag) == 2);
+
+//-------- End of flag structures --------//
+
+struct UnitFinderData {
+  s32 unitIndex;
+  s32 searchValue;
+  bool operator < (const UnitFinderData& rhs) const {
+    return this->searchValue < rhs.searchValue;
+  }
+};
+
+C_ASSERT(sizeof(UnitFinderData) == 8);
 
 struct Bounds {
   u16 left;

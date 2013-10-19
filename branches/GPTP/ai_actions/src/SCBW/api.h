@@ -34,6 +34,15 @@ bool hasOverlay(const CUnit* const unit, const u32 imageId);
 /// effects, such as Ensnare, Plague, and Defensive Matrix.
 u32 getUnitOverlayAdjustment(const CUnit* const unit);
 
+/// Checks weapons.dat targeting flags to see if the @p target can be hit by the
+/// @p weapon.
+///
+/// @param  weaponId  If this is an invalid weapons.dat ID, returns false.
+/// @param  target    If NULL, the function checks whether the weapon can target
+///                   a position on the ground. If @p target is invincible, the
+///                   function returns false.
+bool canWeaponTargetUnit(u8 weaponId, const CUnit *target = NULL, const CUnit *attacker = NULL);
+
 /// Makes the unit use the specified weapon to attack its current target unit in
 /// the CUnit::orderTarget member. This does not affect the unit's weapon
 /// cooldown. The spawned weapon sprite obeys the weapon behavior properties in

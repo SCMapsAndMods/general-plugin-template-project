@@ -89,6 +89,46 @@ u32 getUnitOverlayAdjustment(const CUnit* const unit) {
     return 0;
 }
 
+//-------- Weapon related --------//
+
+//Identical to function @ 0x00475CE0
+bool canWeaponTargetUnit(u8 weaponId, const CUnit *target, const CUnit *attacker) {
+  if (weaponId >= WEAPON_TYPE_COUNT)
+    return false;
+
+  if (target == NULL)
+    return Weapon::TargetFlags[weaponId].terrain;
+
+  if (target->status & UnitStatus::Invincible)
+    return false;
+
+  const TargetFlag tf = Weapon::TargetFlags[weaponId];
+  const u32 targetProps = Unit::BaseProperty[target->id];
+
+  if ((target->status & UnitStatus::InAir) ? !tf.air : !tf.ground)
+    return false;
+
+  if (tf.mechanical && !(targetProps & UnitProperty::Mechanical))
+    return false;
+
+  if (tf.organic && !(targetProps & UnitProperty::Organic))
+    return false;
+
+  if (tf.nonBuilding && (targetProps & UnitProperty::Building))
+    return false;
+
+  if (tf.nonRobotic && (targetProps & UnitProperty::RoboticUnit))
+    return false;
+
+  if (tf.orgOrMech && !(targetProps & (UnitProperty::Organic | UnitProperty::Mechanical)))
+    return false;
+
+  if (tf.playerOwned && target->playerId != attacker->playerId)
+    return false;
+
+  return true;
+}
+
 const u32 Func_FireUnitWeapon = 0x00479C90;
 void fireUnitWeapon(CUnit* unit, u8 weaponId) {
   if (weaponId >= WEAPON_TYPE_COUNT) return;

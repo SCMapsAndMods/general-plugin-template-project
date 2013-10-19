@@ -188,7 +188,7 @@ SCBW_DATA(const DatLoad*, weaponsDat, 0x00513868);
 
 SCBW_DATA(u16*, Label,              weaponsDat[0].address);
 SCBW_DATA(u32*, Graphic,            weaponsDat[1].address);
-SCBW_DATA(u16*, TargetFlags,        weaponsDat[3].address);
+SCBW_DATA(TargetFlag*, TargetFlags, weaponsDat[3].address);
 SCBW_DATA(u32*, MinRange,           weaponsDat[4].address);
 SCBW_DATA(u32*, MaxRange,           weaponsDat[5].address);
 SCBW_DATA(u8*,  DamageUpgrade,      weaponsDat[6].address);
