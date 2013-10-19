@@ -127,7 +127,7 @@ struct CUnit {
 
   /// Checks whether this unit can be seen by @playerId (i.e. not covered by the
   /// fog-of-war and is detectable).
-  bool isVisibleTo(u8 playerId) const;
+  bool isVisibleTo(s8 playerId) const;
 
 ////////////////////////////////////////////////////////////////
 // Actual data structure -- member variables and pointers

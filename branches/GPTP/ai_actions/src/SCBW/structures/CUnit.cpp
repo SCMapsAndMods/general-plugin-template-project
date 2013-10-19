@@ -418,7 +418,7 @@ s8 CUnit::getLastOwnerId() const {
     return this->playerId;
 }
 
-bool CUnit::isVisibleTo(u8 playerId) const {
+bool CUnit::isVisibleTo(s8 playerId) const {
   assert(this);
   return (this->visibilityStatus & (1 << playerId)) != 0;
 }
