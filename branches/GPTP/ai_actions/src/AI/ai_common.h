@@ -7,12 +7,9 @@ namespace AI {
 
 bool isTargetWorthHitting(const CUnit *unit, const CUnit *target);
 
-int getTotalEnemyHpInArea(int x, int y, int searchBounds, const CUnit *unit);
-int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *unit);
-int getTotalEnemyEnergyInArea(int x, int y, int searchBounds, const CUnit *unit);
-
-int getTotalAllyHpInArea(int x, int y, int searchBounds, const CUnit *unit);
-int getTotalAllyShieldsInArea(int x, int y, int searchBounds, const CUnit *unit);
-
+int getTotalEnemyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId);
+int getTotalAllyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId);
+int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *caster);
+int getTotalEnemyEnergyInArea(int x, int y, int searchBounds, const CUnit *caster);
 
 } //AI

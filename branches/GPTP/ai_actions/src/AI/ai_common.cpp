@@ -36,37 +36,135 @@ bool isTargetWorthHitting(const CUnit *unit, const CUnit *target) {
 
 //-------- Unit stat accumulators --------//
 
-scbw::UnitFinder unitStatTotalFinder;
-
-class UnitLifeAccumulatorProc {
-  private:
-    CUnit *caster;
+class UnitStatSumProc {
+  protected:
+    const CUnit *caster;
     int sum;
+    u8 weaponId;
   public:
-    void operator()(const CUnit *target);
+    void set(const CUnit *caster, u8 weaponId = WEAPON_TYPE_COUNT) {
+      this->caster = caster; this->weaponId = weaponId; sum = 0;
+    }
+    int getSum() const { return sum; }
+
+    virtual void operator()(const CUnit *target) = 0;
 };
 
-void UnitLifeAccumulatorProc::operator()(const CUnit *target) {
-  if (target->status & UnitStatus::Invincible)
-    return;
+class EnemyLifeSumProc: public UnitStatSumProc {
+  public:
+    void operator()(const CUnit *target) {
+      if (target == caster)
+        return;
 
-  if (scbw::isAlliedTo(caster->playerId, target->playerId))
-    return;
+      if (target->status & UnitStatus::Invincible)
+        return;
 
-  sum += ((target->hitPoints + 255) / 256) + (target->shields / 256);
-}
+      if (!scbw::canWeaponTargetUnit(weaponId, target, caster))
+        return;
 
-int getTotalEnemyHpInArea(int x, int y, int searchBounds, const CUnit *caster) {
+      if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+        return;
+
+      sum += (target->hitPoints + 255) / 256;
+      if (weaponId != WeaponId::Plague && Unit::ShieldsEnabled[target->id])
+        sum += target->shields / 256;
+    }
+};
+
+class AllyLifeSumProc: public UnitStatSumProc {
+  public:
+    void operator()(const CUnit *target) {
+      if (target == caster)
+        return;
+
+      if (target->status & UnitStatus::Invincible)
+        return;
+
+      if (!scbw::canWeaponTargetUnit(weaponId, target, caster))
+        return;
+
+      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+        return;
+
+      sum += (target->hitPoints + 255) / 256;
+      if (Unit::ShieldsEnabled[target->id])
+        sum += target->shields / 256;
+    }
+};
+
+class EnemyShieldsSumProc: public UnitStatSumProc {
+  public:
+    void operator()(const CUnit *target) {
+        if (target->status & UnitStatus::Invincible)
+          return;
+
+        if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+          return;
+
+        if (!Unit::ShieldsEnabled[target->id])
+          return;
+
+        sum += target->shields / 256; 
+    }
+};
+
+class EnemyEnergySumProc: public UnitStatSumProc {
+  public:
+    void operator()(const CUnit *target) {
+        if (target->status & UnitStatus::Invincible)
+          return;
+
+        if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+          return;
+
+        if (!(Unit::BaseProperty[target->id] & UnitProperty::Spellcaster))
+          return;
+
+        if (target->status & UnitStatus::IsHallucination)
+          return;
+
+        sum += target->energy / 256;
+    }
+};
+
+//-------- Get total unit stats in area --------//
+
+scbw::UnitFinder unitStatTotalFinder;
+
+int getTotalEnemyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId) {
   unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
                              x + searchBounds, y + searchBounds);
-  
+  EnemyLifeSumProc sumProc;
+  sumProc.set(caster, weaponId);
+  unitStatTotalFinder.forEach(sumProc);
+  return sumProc.getSum();
 }
 
-int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *caster);
-int getTotalEnemyEnergyInArea(int x, int y, int searchBounds, const CUnit *caster);
+int getTotalAllyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId) {
+  unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
+                             x + searchBounds, y + searchBounds);
+  AllyLifeSumProc sumProc;
+  sumProc.set(caster, weaponId);
+  unitStatTotalFinder.forEach(sumProc);
+  return sumProc.getSum();
+}
 
-int getTotalAllyHpInArea(int x, int y, int searchBounds, const CUnit *caster);
-int getTotalAllyShieldsInArea(int x, int y, int searchBounds, const CUnit *caster);
+int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *caster) {
+  unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
+                             x + searchBounds, y + searchBounds);
+  EnemyShieldsSumProc sumProc;
+  sumProc.set(caster);
+  unitStatTotalFinder.forEach(sumProc);
+  return sumProc.getSum();
+}
 
+int getTotalEnemyEnergyInArea(int x, int y, int searchBounds, const CUnit *caster) {
+  unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
+                             x + searchBounds, y + searchBounds);
+  EnemyEnergySumProc sumProc;
+  sumProc.set(caster);
+  unitStatTotalFinder.forEach(sumProc);
+  return sumProc.getSum();
+}
 
 } //AI
