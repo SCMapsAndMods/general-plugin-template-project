@@ -120,6 +120,11 @@ struct CUnit {
   /// Returns the index of this unit in the unit table. First unit == index 1.
   u16 getIndex() const;
 
+  /// Returns the ID of the last player to own this unit. This is usually the
+  /// same as CUnit::playerId, but if the unit belongs to a defeated player,
+  /// this returns the correct player ID (instead of 11).
+  u8 getLastOwnerId() const;
+
 
 ////////////////////////////////////////////////////////////////
 // Actual data structure -- member variables and pointers

@@ -408,3 +408,12 @@ CUnit* CUnit::getFromIndex(u16 index) {
 u16 CUnit::getIndex() const {
   return this - unitTable;
 }
+
+s8 CUnit::getLastOwnerId() const {
+  assert(this);
+  assert(this->sprite);
+  if (this->playerId == 11)
+    return this->sprite->playerId;
+  else
+    return this->playerId;
+}
