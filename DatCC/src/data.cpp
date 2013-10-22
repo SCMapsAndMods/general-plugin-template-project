@@ -77,14 +77,14 @@ void loadNameFile(const char *basePath, std::vector<std::string> &names) {
 }
 
 void loadData() {
-  loadNameFile("data/units.txt",    unitNames,    sizeof(unitNames));
-  loadNameFile("data/weapons.txt",  weaponNames,  sizeof(weaponNames));
-  loadNameFile("data/flingy.txt",   flingyNames,  sizeof(flingyNames));
-  loadNameFile("data/sprites.txt",  spriteNames,  sizeof(spriteNames));
-  loadNameFile("data/images.txt",   imageNames,   sizeof(imageNames));
-  loadNameFile("data/upgrades.txt", upgradeNames, sizeof(upgradeNames));
-  loadNameFile("data/techdata.txt", techNames,    sizeof(techNames));
-  loadNameFile("data/orders.txt",   orderNames,   sizeof(orderNames));
+  loadNameFile("data/units.txt",    unitNames,    sizeof(unitNames) / sizeof(std::string));
+  loadNameFile("data/weapons.txt",  weaponNames,  sizeof(weaponNames) / sizeof(std::string));
+  loadNameFile("data/flingy.txt",   flingyNames,  sizeof(flingyNames) / sizeof(std::string));
+  loadNameFile("data/sprites.txt",  spriteNames,  sizeof(spriteNames) / sizeof(std::string));
+  loadNameFile("data/images.txt",   imageNames,   sizeof(imageNames) / sizeof(std::string));
+  loadNameFile("data/upgrades.txt", upgradeNames, sizeof(upgradeNames) / sizeof(std::string));
+  loadNameFile("data/techdata.txt", techNames,    sizeof(techNames) / sizeof(std::string));
+  loadNameFile("data/orders.txt",   orderNames,   sizeof(orderNames) / sizeof(std::string));
   
   loadNameFile("data/icons.txt",    iconNames);
 
