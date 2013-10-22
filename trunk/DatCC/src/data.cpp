@@ -94,17 +94,17 @@ void loadData() {
   loadNameFile("data/DrawingFunctions.txt", imagesDatDrawingFunctions);
   loadNameFile("data/Remappings.txt",       imagesDatRemappings);
 
-  if (statTxtTbl.loadFile(getCurrentProgramDir() + "data/stat_txt.tbl")) {
+  if (statTxtTbl.loadFile(getCurrentProgramDir() + "defaults/stat_txt.tbl")) {
     std::cerr << "Error: Cannot read default stat_txt.tbl" << std::endl;
     exit(1);
   }
 
-  if (imagesTbl.loadFile(getCurrentProgramDir() + "data/images.tbl")) {
+  if (imagesTbl.loadFile(getCurrentProgramDir() + "defaults/images.tbl")) {
     std::cerr << "Error: Cannot read default images.tbl" << std::endl;
     exit(1);
   }
   
-  if (sfxdataTbl.loadFile(getCurrentProgramDir() + "data/sfxdata.tbl")) {
+  if (sfxdataTbl.loadFile(getCurrentProgramDir() + "defaults/sfxdata.tbl")) {
     std::cerr << "Error: Cannot read default sfxdata.tbl" << std::endl;
     exit(1);
   }
