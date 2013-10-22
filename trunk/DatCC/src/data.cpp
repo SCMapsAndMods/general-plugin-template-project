@@ -7,15 +7,15 @@ namespace datcc {
 
 //-------- Default DAT paths --------//
 
-char DefaultDat<UnitsDat>::path[]     = "data/units.dat";
-char DefaultDat<WeaponsDat>::path[]   = "data/weapons.dat";
-char DefaultDat<FlingyDat>::path[]    = "data/flingy.dat";
-char DefaultDat<SpritesDat>::path[]   = "data/sprites.dat";
-char DefaultDat<ImagesDat>::path[]    = "data/images.dat";
-char DefaultDat<UpgradesDat>::path[]  = "data/upgrades.dat";
-char DefaultDat<TechdataDat>::path[]  = "data/techdata.dat";
-char DefaultDat<SfxdataDat>::path[]   = "data/sfxdata.dat";
-char DefaultDat<OrdersDat>::path[]    = "data/orders.dat";
+char DefaultDat<UnitsDat>::path[]     = "defaults/units.dat";
+char DefaultDat<WeaponsDat>::path[]   = "defaults/weapons.dat";
+char DefaultDat<FlingyDat>::path[]    = "defaults/flingy.dat";
+char DefaultDat<SpritesDat>::path[]   = "defaults/sprites.dat";
+char DefaultDat<ImagesDat>::path[]    = "defaults/images.dat";
+char DefaultDat<UpgradesDat>::path[]  = "defaults/upgrades.dat";
+char DefaultDat<TechdataDat>::path[]  = "defaults/techdata.dat";
+char DefaultDat<SfxdataDat>::path[]   = "defaults/sfxdata.dat";
+char DefaultDat<OrdersDat>::path[]    = "defaults/orders.dat";
 
 //-------- Current program directory --------//
 

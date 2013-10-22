@@ -70,7 +70,7 @@ void decompileDat(const std::string &inputDatPath_, const std::string &outputIni
   std::string outputIniPath;
   if (outputIniPath_ == "") {
     if (useDefaultDat)
-      outputIniPath = getOutputIniPath(std::string(DefaultDat<DatT>::path).erase(0, 5)); //Erase "data/"
+      outputIniPath = getOutputIniPath(std::string(DefaultDat<DatT>::path).erase(0, 9)); //Erase "defaults/"
     else
       outputIniPath = getOutputIniPath(inputDatPath);
   }
