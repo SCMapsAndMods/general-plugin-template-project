@@ -57,8 +57,8 @@ void ImagesDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.isClickable[imageId],      "Is Clickable");
     iniProc.process(data.useFullIscript[imageId],   "Use Full Iscript");
     iniProc.process(data.drawIfCloaked[imageId],    "Draw If Cloaked");
-    iniProc.process(data.drawFunction[imageId],     "Drawing Function");
-    iniProc.process(data.remapping[imageId],        "Remapping");
+    iniProc.process(data.drawFunction[imageId],     "Drawing Function", makeDrawingFunctionComment);
+    iniProc.process(data.remapping[imageId],        "Remapping", makeRemappingComment);
     iniProc.process(data.iscriptEntry[imageId],     "Iscript Entry");
     
     iniProc.process(data.shieldOverlayLO[imageId],  "Shield Overlay LO File", makeImagesTblComment);

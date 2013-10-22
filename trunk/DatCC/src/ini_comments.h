@@ -27,4 +27,7 @@ std::string makeSupplyComment   (int supply,  size_t keyStrSize);
 std::string makeWeaponRangeComment(int weaponRange, size_t keyStrSize);
 std::string makeAngleComment    (int brad,    size_t keyStrSize);
 
+std::string makeDrawingFunctionComment(int id, size_t keyStrSize);
+std::string makeRemappingComment      (int id, size_t keyStrSize);
+
 } //datcc

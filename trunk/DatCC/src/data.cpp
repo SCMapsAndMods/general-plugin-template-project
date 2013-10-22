@@ -47,6 +47,9 @@ std::string orderNames[ORDER_TYPE_COUNT + 1];
 
 std::vector<std::string> iconNames;
 
+std::vector<std::string> imagesDatDrawingFunctions;
+std::vector<std::string> imagesDatRemappings;
+
 void loadNameFile(const char *basePath, std::string arr[], size_t arr_size) {
   std::string filePath = getCurrentProgramDir() + basePath;
 
@@ -87,6 +90,9 @@ void loadData() {
   loadNameFile("data/orders.txt",   orderNames,   sizeof(orderNames) / sizeof(std::string));
   
   loadNameFile("data/icons.txt",    iconNames);
+
+  loadNameFile("data/DrawingFunctions.txt", imagesDatDrawingFunctions);
+  loadNameFile("data/Remappings.txt",       imagesDatRemappings);
 
   if (statTxtTbl.loadFile(getCurrentProgramDir() + "data/stat_txt.tbl")) {
     std::cerr << "Error: Cannot read default stat_txt.tbl" << std::endl;
