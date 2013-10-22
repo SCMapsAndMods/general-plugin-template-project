@@ -1,6 +1,7 @@
 #include "ini_comments.h"
 #include "data.h"
 #include <sstream>
+#include <vector>
 
 namespace datcc {
 
@@ -103,6 +104,22 @@ std::string makeAngleComment(int brad, size_t keyStrSize) {
   std::ostringstream os;
   os << brad * 1.40625 << " degrees";
   return makeCommentPadding(brad, keyStrSize) + os.str();
+}
+
+extern std::vector<std::string> imagesDatDrawingFunctions;
+std::string makeDrawingFunctionComment(int id, size_t keyStrSize) {
+  if (0 <= id && id < imagesDatDrawingFunctions.size())
+    return makeCommentPadding(id, keyStrSize) + imagesDatDrawingFunctions[id];
+  else
+    return makeCommentPadding(id, keyStrSize) + "Invalid value";  
+}
+
+extern std::vector<std::string> imagesDatRemappings;
+std::string makeRemappingComment(int id, size_t keyStrSize) {
+  if (0 <= id && id < imagesDatRemappings.size())
+    return makeCommentPadding(id, keyStrSize) + imagesDatRemappings[id];
+  else
+    return makeCommentPadding(id, keyStrSize) + "Invalid value";
 }
 
 } //datcc
