@@ -38,6 +38,9 @@ struct CSprite {
   /// Removes the first image overlay with the given image ID.
   void removeOverlay(u32 imageId);
 
+  /// Checks whether the sprite has an overlay with the given @p imageId.
+  bool hasOverlay(u16 imageId) const;
+
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure
