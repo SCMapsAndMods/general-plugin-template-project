@@ -38,7 +38,7 @@ void setMaxSightRange() {
     sightData[x].unknown2 = 3;
   }
 
-  memoryPatch(offsets::SightStructArrayRef, sightData);
+  memoryPatch(offsets::SightStructArrayRef, &sightData);
 
   const u16 mapTileWidth = mapTileSize->width;
   const u32 sightRangeParam = MAX_SIGHT_RANGE + 1;
