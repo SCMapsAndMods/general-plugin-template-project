@@ -389,6 +389,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\psi_storm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\rally_point.cpp"
 				>
 			</File>
@@ -644,6 +648,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\psi_field.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\psi_storm.h"
 				>
 			</File>
 			<File
