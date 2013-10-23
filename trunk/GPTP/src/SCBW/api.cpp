@@ -61,25 +61,6 @@ const char* getStatTxtTblString(u16 index) {
     return "";
 }
 
-// Logically equivalent to function @ 0x004E5C90
-bool hasOverlay(const CUnit* const unit, const u32 imageId) {
-  CImage *image = unit->sprite->imageHead;
-  while (image) {
-    if (image->id == imageId)
-      return true;
-    image = image->link.next;
-  }
-  if (unit->subunit) {
-    image = unit->subunit->sprite->imageHead;
-    while (image) {
-      if (image->id == imageId)
-        return true;
-      image = image->link.next;
-    }
-  }
-  return false;
-}
-
 u32 getUnitOverlayAdjustment(const CUnit* const unit) {
   if (Unit::BaseProperty[unit->id] & UnitProperty::MediumOverlay)
     return 1;

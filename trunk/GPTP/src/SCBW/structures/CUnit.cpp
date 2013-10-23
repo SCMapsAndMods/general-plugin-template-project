@@ -355,6 +355,18 @@ void CUnit::removeOverlay(u32 imageId) {
     this->subunit->sprite->removeOverlay(imageId);
 }
 
+// Functionally equivalent to function @ 0x004E5C90
+bool CUnit::hasOverlay(u16 imageId) const {
+  assert(this);
+
+  if (this->sprite->hasOverlay(imageId))
+    return true;
+  else if (this->subunit && this->subunit->sprite->hasOverlay(imageId))
+    return true;
+  else
+    return false;
+}
+
 u16 CUnit::getX() const {
   assert(this);
   assert(this->sprite);

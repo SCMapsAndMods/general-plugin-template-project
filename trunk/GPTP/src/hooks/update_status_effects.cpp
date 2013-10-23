@@ -89,7 +89,7 @@ void updateStatusEffectsHook(CUnit *unit) {
   }
   if (unit->acidSporeCount) {
     u32 acidOverlayId = getAcidSporeOverlayAdjustment(unit) + ImageId::AcidSpores_1_Overlay_Small;
-    if (!scbw::hasOverlay(unit, acidOverlayId)) {
+    if (!unit->hasOverlay(acidOverlayId)) {
       unit->removeOverlay(ImageId::AcidSpores_1_Overlay_Small, ImageId::AcidSpores_6_9_Overlay_Large);
       if (unit->subunit)
         unit = unit->subunit;
