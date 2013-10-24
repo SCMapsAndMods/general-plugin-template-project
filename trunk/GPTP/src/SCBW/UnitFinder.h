@@ -49,6 +49,12 @@ class UnitFinder {
     template <typename callback>
     CUnit* getBest(callback &score) const;
 
+    /// Returns the nearest unit to (x, y) for which @p match() returns true,
+    /// using the given map bounds. If there are no matches, returns NULL.
+    /// This does NOT take unit size into account when calculating distance.
+    template <typename callback>
+    static CUnit* getNearest(int x, int y, int left, int top, int right, int bottom, callback &match);
+
   private:
     int unitCount;
     CUnit* units[UNIT_ARRAY_LENGTH];
@@ -86,6 +92,31 @@ CUnit* UnitFinder::getBest(callback &score) const {
   }
 
   return bestUnit;    
+}
+
+template <typename callback>
+static CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bottom, callback &match) {
+  // Obtain finder indexes for all bounds
+  UnitFinderData *p_xend = unitOrderingX + *unitOrderingCount;
+  UnitFinderData *p_yend = unitOrderingY + *unitOrderingCount;
+
+  // Create UnitFinderData elements for compatibility with stl functions
+  UnitFinderData finderVal;
+
+  // Search for the values using built-in binary search algorithm and comparator
+  finderVal.position = left;
+  UnitFinderData *pLeft   = std::lower_bound(unitOrderingX, p_xend, finderVal);
+
+  finderVal.position = top;
+  UnitFinderData *pTop    = std::lower_bound(unitOrderingY, p_yend, finderVal);
+
+  finderVal.position = right - 1;
+  UnitFinderData *pRight  = std::upper_bound(pLeft, p_xend, finderVal);
+
+  finderVal.position = bottom - 1;
+  UnitFinderData *pBottom = std::upper_bound(pTop, p_yend, finderVal);
+
+  return NULL;
 }
 
 } //scbw
