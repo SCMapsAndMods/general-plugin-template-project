@@ -57,7 +57,7 @@ const CUnit* findBestSpellTarget(int x, int y, int searchBounds, const SpellTarg
 
 //-------- Unit stat accumulators --------//
 
-class UnitStatSumProc {
+class UnitStatSumProc: public scbw::UnitFinderCallbackProcInterface {
   protected:
     const CUnit *caster;
     int sum;
@@ -68,12 +68,12 @@ class UnitStatSumProc {
     }
     int getSum() const { return sum; }
 
-    virtual void operator()(const CUnit *target) = 0;
+    virtual void proc(CUnit *target) = 0;
 };
 
 class EnemyLifeSumProc: public UnitStatSumProc {
   public:
-    void operator()(const CUnit *target) {
+    void proc(CUnit *target) {
       if (target == caster)
         return;
 
@@ -94,7 +94,7 @@ class EnemyLifeSumProc: public UnitStatSumProc {
 
 class AllyLifeSumProc: public UnitStatSumProc {
   public:
-    void operator()(const CUnit *target) {
+    void proc(CUnit *target) {
       if (target == caster)
         return;
 
@@ -115,36 +115,36 @@ class AllyLifeSumProc: public UnitStatSumProc {
 
 class EnemyShieldsSumProc: public UnitStatSumProc {
   public:
-    void operator()(const CUnit *target) {
-        if (target->status & UnitStatus::Invincible)
-          return;
+    void proc(CUnit *target) {
+      if (target->status & UnitStatus::Invincible)
+        return;
 
-        if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-          return;
+      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+        return;
 
-        if (!Unit::ShieldsEnabled[target->id])
-          return;
+      if (!Unit::ShieldsEnabled[target->id])
+        return;
 
-        sum += target->shields / 256; 
+      sum += target->shields / 256; 
     }
 };
 
 class EnemyEnergySumProc: public UnitStatSumProc {
   public:
-    void operator()(const CUnit *target) {
-        if (target->status & UnitStatus::Invincible)
-          return;
+    void proc(CUnit *target) {
+      if (target->status & UnitStatus::Invincible)
+        return;
 
-        if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-          return;
+      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+        return;
 
-        if (!(Unit::BaseProperty[target->id] & UnitProperty::Spellcaster))
-          return;
+      if (!(Unit::BaseProperty[target->id] & UnitProperty::Spellcaster))
+        return;
 
-        if (target->status & UnitStatus::IsHallucination)
-          return;
+      if (target->status & UnitStatus::IsHallucination)
+        return;
 
-        sum += target->energy / 256;
+      sum += target->energy / 256;
     }
 };
 
