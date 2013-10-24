@@ -43,17 +43,17 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
   UnitFinderData finderVal;
 
   // Search for the values using built-in binary search algorithm and comparator
-  finderVal.searchValue = left;
-  UnitFinderData *pLeft   = std::lower_bound<UnitFinderData*>(unitOrderingX, p_xend, finderVal);
+  finderVal.position = left;
+  UnitFinderData *pLeft   = std::lower_bound(unitOrderingX, p_xend, finderVal);
 
-  finderVal.searchValue = top;
-  UnitFinderData *pTop    = std::lower_bound<UnitFinderData*>(unitOrderingY, p_yend, finderVal);
+  finderVal.position = top;
+  UnitFinderData *pTop    = std::lower_bound(unitOrderingY, p_yend, finderVal);
 
-  finderVal.searchValue = r - 1;
-  UnitFinderData *pRight  = std::upper_bound<UnitFinderData*>(pLeft, p_xend, finderVal);
+  finderVal.position = r - 1;
+  UnitFinderData *pRight  = std::upper_bound(pLeft, p_xend, finderVal);
 
-  finderVal.searchValue = b - 1;
-  UnitFinderData *pBottom = std::upper_bound<UnitFinderData*>(pTop, p_yend, finderVal);
+  finderVal.position = b - 1;
+  UnitFinderData *pBottom = std::upper_bound(pTop, p_yend, finderVal);
 
   // Iterate the X entries of the finder
   for (UnitFinderData *px = pLeft; px < pRight; ++px) {

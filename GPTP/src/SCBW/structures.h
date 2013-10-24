@@ -181,9 +181,9 @@ C_ASSERT(sizeof(ActiveTile) == 4);
 
 struct UnitFinderData {
   s32 unitIndex;
-  s32 searchValue;
+  s32 position;
   bool operator < (const UnitFinderData& rhs) const {
-    return this->searchValue < rhs.searchValue;
+    return this->position < rhs.position;
   }
 };
 
