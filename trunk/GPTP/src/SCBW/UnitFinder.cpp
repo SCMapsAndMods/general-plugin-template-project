@@ -116,4 +116,59 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
   //unitsFound.count = unitsFoundCount;
 }
 
+void UnitFinder::forEach(scbw::UnitFinderCallbackInterface &callback) const {
+  for (int i = 0; i < this->unitCount; ++i)
+    callback.proc(this->units[i]);
+}
+
+CUnit* UnitFinder::getFirst(UnitFinderCallbackInterface &callback) const {
+  for (int i = 0; i < this->unitCount; ++i)
+    if (callback.match(this->units[i]))
+      return this->units[i];
+
+  return NULL;
+}
+
+CUnit* UnitFinder::getBest(scbw::UnitFinderCallbackInterface &callback) const {
+  int bestScore = -1;
+  CUnit *bestUnit = NULL;
+
+  for (int i = 0; i < this->unitCount; ++i) {
+    const int currentScore = callback.score(this->units[i]);
+    if (currentScore > bestScore) {
+      bestScore = currentScore;
+      bestUnit = this->units[i];
+    }
+  }
+
+  return bestUnit;
+}
+
+CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bottom,
+                                     UnitFinderCallbackInterface &callback) {
+  // Obtain finder indexes for all bounds
+  UnitFinderData *p_xend = unitOrderingX + *unitOrderingCount;
+  UnitFinderData *p_yend = unitOrderingY + *unitOrderingCount;
+
+  // Create UnitFinderData elements for compatibility with stl functions
+  UnitFinderData finderVal;
+
+  // Search for the values using built-in binary search algorithm and comparator
+  finderVal.position = left;
+  UnitFinderData *pLeft   = std::lower_bound(unitOrderingX, p_xend, finderVal);
+
+  finderVal.position = top;
+  UnitFinderData *pTop    = std::lower_bound(unitOrderingY, p_yend, finderVal);
+
+  finderVal.position = right - 1;
+  UnitFinderData *pRight  = std::upper_bound(pLeft, p_xend, finderVal);
+
+  finderVal.position = bottom - 1;
+  UnitFinderData *pBottom = std::upper_bound(pTop, p_yend, finderVal);
+
+  UnitFinderData *pLeftUnit = pLeft;
+
+  return NULL;
+}
+
 } //scbw
