@@ -38,28 +38,6 @@ bool isUmsMode(s8 playerId) {
   return AIScriptController[playerId].AI_Flags.isUseMapSettings;
 }
 
-//-------- Find best spell target --------//
-
-class BestSpellTargetFinderProc {
-  private:
-    const CUnit *caster;
-    scbw::UnitFinderCallbackMatchInterface &callback;
-  public:
-    int operator()(const CUnit *target) {
-      if (callback.match(target))
-        return 1;
-    }
-};
-
-const CUnit* findBestSpellTarget(int x, int y, int searchBounds,
-                                 scbw::UnitFinderCallbackMatchInterface &callback) {
-  static scbw::UnitFinder spellTargetFinder;
-  spellTargetFinder.search(x - searchBounds, y - searchBounds,
-                           x + searchBounds, y + searchBounds);
-  //return spellTargetFinder.getBest(
-  return NULL;
-}
-
 //-------- Unit stat accumulators --------//
 
 class UnitStatSumProc: public scbw::UnitFinderCallbackProcInterface {

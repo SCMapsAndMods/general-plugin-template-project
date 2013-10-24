@@ -30,8 +30,18 @@ class PsiStormTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
 };
 
 const CUnit* findBestPsiStormTarget(const CUnit *caster, bool isUnderAttack) {
-  scbw::UnitFinder spellTargetFinder;
-  return NULL;
+  int bounds;
+  if (isUnderAttack)
+    bounds = 32 * 8;
+  else if (isUmsMode(caster->playerId))
+    bounds = 32 * 64;
+  else
+    bounds = 32 * 32;
+
+  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+    caster->getX() - bounds, caster->getY() - bounds,
+    caster->getX() + bounds, caster->getY() + bounds,
+    PsiStormTargetFinderProc(caster, isUnderAttack));
 }
 
 } //AI
