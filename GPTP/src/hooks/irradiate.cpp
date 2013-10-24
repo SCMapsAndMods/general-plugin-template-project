@@ -5,7 +5,7 @@
 #include "../SCBW/api.h"
 #include <cstdio>
 
-class IrradiateProc: public scbw::UnitFinderCallbackInterface {
+class IrradiateProc: public scbw::UnitFinderCallbackProcInterface {
   public:
     IrradiateProc(CUnit *irradiatedUnit) : irradiatedUnit(irradiatedUnit) {}
     void proc(CUnit *unit);

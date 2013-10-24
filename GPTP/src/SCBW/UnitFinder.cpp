@@ -116,12 +116,12 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
   //unitsFound.count = unitsFoundCount;
 }
 
-void UnitFinder::forEach(scbw::UnitFinderCallbackInterface &callback) const {
+void UnitFinder::forEach(scbw::UnitFinderCallbackProcInterface &callback) const {
   for (int i = 0; i < this->unitCount; ++i)
     callback.proc(this->units[i]);
 }
 
-CUnit* UnitFinder::getFirst(UnitFinderCallbackInterface &callback) const {
+CUnit* UnitFinder::getFirst(UnitFinderCallbackMatchInterface &callback) const {
   for (int i = 0; i < this->unitCount; ++i)
     if (callback.match(this->units[i]))
       return this->units[i];
@@ -129,7 +129,7 @@ CUnit* UnitFinder::getFirst(UnitFinderCallbackInterface &callback) const {
   return NULL;
 }
 
-CUnit* UnitFinder::getBest(scbw::UnitFinderCallbackInterface &callback) const {
+CUnit* UnitFinder::getBest(scbw::UnitFinderCallbackScoreInterface &callback) const {
   int bestScore = -1;
   CUnit *bestUnit = NULL;
 
@@ -145,7 +145,7 @@ CUnit* UnitFinder::getBest(scbw::UnitFinderCallbackInterface &callback) const {
 }
 
 CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bottom,
-                                     UnitFinderCallbackInterface &callback) {
+                              UnitFinderCallbackMatchInterface &callback) {
   // Obtain finder indexes for all bounds
   UnitFinderData *p_xend = unitOrderingX + *unitOrderingCount;
   UnitFinderData *p_yend = unitOrderingY + *unitOrderingCount;
