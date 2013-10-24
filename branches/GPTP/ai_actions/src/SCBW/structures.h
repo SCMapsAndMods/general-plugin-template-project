@@ -292,7 +292,19 @@ struct AI_Main {
   u8  AI_NukeRate;
   u8  AI_Attacks;
   u32 AI_LastNukeTime;
-  u16 AI_Flags;
+  struct {
+    u16 isSecureFinished  : 1;
+    u16 isTownStarted     : 1;
+    u16 isDefaultBuildOff : 1;
+    u16 isTransportsOff   : 1;
+    u16 isFarmsNotimingOn : 1;
+    u16 isUseMapSettings  : 1;
+    u16 flag_0x40         : 1;
+    u16 spreadCreep       : 1;
+    u16 flag_0x100        : 2;
+    u16 bUpgradesFinished : 1;
+    u16 bTargetExpansion  : 1;
+  } AI_Flags;
   u16 AI_PanicBlock;
   u16 AI_MaxForce;
   u16 AI_AttackGroup;
