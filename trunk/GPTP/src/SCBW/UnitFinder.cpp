@@ -1,4 +1,5 @@
 #include "UnitFinder.h"
+#include "api.h"
 #include <algorithm>
 
 namespace scbw {
@@ -144,31 +145,110 @@ CUnit* UnitFinder::getBest(scbw::UnitFinderCallbackScoreInterface &callback) con
   return bestUnit;
 }
 
+//Based on function @ 0x004E8320
 CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bottom,
                               UnitFinderCallbackMatchInterface &callback) {
   // Obtain finder indexes for all bounds
-  UnitFinderData *p_xend = unitOrderingX + *unitOrderingCount;
-  UnitFinderData *p_yend = unitOrderingY + *unitOrderingCount;
+  UnitFinderData* const p_xend = unitOrderingX + *unitOrderingCount;
+  UnitFinderData* const p_yend = unitOrderingY + *unitOrderingCount;
 
   // Create UnitFinderData elements for compatibility with stl functions
   UnitFinderData finderVal;
 
   // Search for the values using built-in binary search algorithm and comparator
   finderVal.position = left;
-  UnitFinderData *pLeft   = std::lower_bound(unitOrderingX, p_xend, finderVal);
+  UnitFinderData* pxMin = std::lower_bound(unitOrderingX, p_xend, finderVal);
 
   finderVal.position = top;
-  UnitFinderData *pTop    = std::lower_bound(unitOrderingY, p_yend, finderVal);
+  UnitFinderData* pyMin = std::lower_bound(unitOrderingY, p_yend, finderVal);
 
   finderVal.position = right - 1;
-  UnitFinderData *pRight  = std::upper_bound(pLeft, p_xend, finderVal);
+  UnitFinderData* pxMax = std::upper_bound(pxMin, p_xend, finderVal);
 
   finderVal.position = bottom - 1;
-  UnitFinderData *pBottom = std::upper_bound(pTop, p_yend, finderVal);
+  UnitFinderData* pyMax = std::upper_bound(pyMin, p_yend, finderVal);
 
-  UnitFinderData *pLeftUnit = pLeft;
+  //Initialize units
+  UnitFinderData *pLeft = pxMin, *pRight = pxMax, *pTop = pyMin, *pBottom = pyMax;
 
-  return NULL;
+  CUnit *bestUnit = NULL;
+  int bestDistance = 999999;
+  bool canContinue, canNarrowSearchBounds;
+
+  do {
+    canContinue = false;
+    canNarrowSearchBounds = false;
+
+    if (pRight >= pxMin) {
+      CUnit *unit = &unitTable[pRight->unitIndex - 1];
+      int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+      if (callback.match(unit) && distance < bestDistance) {
+        bestUnit = unit;
+        bestDistance = distance;
+        canNarrowSearchBounds = true;
+      }
+      --pRight;
+      canContinue = true;
+    }
+
+    if (pLeft < pxMax) {
+      CUnit *unit = &unitTable[pLeft->unitIndex - 1];
+      int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+      if (callback.match(unit) && distance < bestDistance) {
+        bestUnit = unit;
+        bestDistance = distance;
+        canNarrowSearchBounds = true;
+      }
+      ++pLeft;
+      canContinue = true;
+    }
+    
+    if (pBottom >= pyMin) {
+      CUnit *unit = &unitTable[pBottom->unitIndex - 1];
+      int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+      if (callback.match(unit) && distance < bestDistance) {
+        bestUnit = unit;
+        bestDistance = distance;
+        canNarrowSearchBounds = true;
+      }
+      --pBottom;
+      canContinue = true;
+    }
+    
+    if (pTop < pyMax) {
+      CUnit *unit = &unitTable[pTop->unitIndex - 1];
+      int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+      if (callback.match(unit) && distance < bestDistance) {
+        bestUnit = unit;
+        bestDistance = distance;
+        canNarrowSearchBounds = true;
+      }
+      ++pTop;
+      canContinue = true;
+    }
+
+    //Narrow down search boundaries
+    if (canNarrowSearchBounds) {
+      if (pxMin->position < x - bestDistance) {
+        finderVal.position = x - bestDistance;
+        pxMin = std::lower_bound(unitOrderingX, p_xend, finderVal);
+      }
+      if (pxMax->position > x + bestDistance) {
+        finderVal.position = x + bestDistance;
+        pxMax = std::upper_bound(pxMin, p_xend, finderVal);
+      }
+      if (pyMin->position < y - bestDistance) {
+        finderVal.position = y - bestDistance;
+        pyMin = std::lower_bound(unitOrderingY, p_yend, finderVal);
+      }
+      if (pyMax->position > y + bestDistance) {
+        finderVal.position = y + bestDistance;
+        pyMax = std::upper_bound(pyMin, p_yend, finderVal);
+      }
+    }
+  } while (canContinue);
+
+  return bestUnit;
 }
 
 } //scbw
