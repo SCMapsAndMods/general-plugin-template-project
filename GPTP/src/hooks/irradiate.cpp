@@ -5,17 +5,17 @@
 #include "../SCBW/api.h"
 #include <cstdio>
 
-class IrradiateProc {
+class IrradiateProc: public scbw::UnitFinderCallbackInterface {
   public:
     IrradiateProc(CUnit *irradiatedUnit) : irradiatedUnit(irradiatedUnit) {}
-    void operator ()(CUnit *unit) const;
+    void proc(CUnit *unit);
 
   private:
     CUnit *irradiatedUnit;
 };
 
 //Applied to each unit affected by Irradiate splash damage
-void IrradiateProc::operator ()(CUnit *unit) const {
+void IrradiateProc::proc(CUnit *unit) {
   //Default StarCraft behavior
 
   const u32 unitProps = Unit::BaseProperty[unit->id];
@@ -53,11 +53,11 @@ namespace hooks {
 void doIrradiateDamageHook(CUnit *unit) {
   //Default StarCraft behavior
 
-  const IrradiateProc irradiateProc(unit);
+  IrradiateProc irradiateProc(unit);
 
   //No splash if burrowed
   if (unit->status & UnitStatus::Burrowed) {
-    irradiateProc(unit);
+    irradiateProc.proc(unit);
   }
   //If inside a transport, damage all units loaded within
   else if (unit->status & UnitStatus::InTransport) {
@@ -82,7 +82,7 @@ void doIrradiateDamageHook(CUnit *unit) {
         if (loadedUnit->targetOrderSpecial != transport->loadedUnit[i].unitId)
           continue;
 
-        irradiateProc(loadedUnit);
+        irradiateProc.proc(loadedUnit);
       }
     }
   }
