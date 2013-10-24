@@ -2,7 +2,7 @@
 
 namespace AI {
 
-class PsiStormTargetFinderProc: public SpellTargetFinderProc {
+class PsiStormTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
   private:
     const CUnit *caster;
     bool isUnderAttack;
@@ -10,7 +10,7 @@ class PsiStormTargetFinderProc: public SpellTargetFinderProc {
     PsiStormTargetFinderProc(const CUnit *caster, bool isUnderAttack)
       : caster(caster), isUnderAttack(isUnderAttack) {}
 
-    bool operator()(const CUnit *target) const {
+    bool match(const CUnit *target) {
       if (!isTargetWorthHitting(target, caster))
         return false;
 

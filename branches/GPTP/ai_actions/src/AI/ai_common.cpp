@@ -5,19 +5,17 @@
 
 namespace AI {
 
-bool isTargetWorthHitting(const CUnit *target, const CUnit *unit) {
+bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
   //If the target is hidden by the fog-of-war
-  if (!target->sprite->isVisibleTo(unit->playerId))
+  if (!target->sprite->isVisibleTo(attacker->playerId))
     return false;
 
   //If the target is not detectable
   if (target->status & (UnitStatus::Cloaked | UnitStatus::RequiresDetection)
-      && !target->isVisibleTo(unit->playerId))
+      && !target->isVisibleTo(attacker->playerId))
     return false;
 
-  const s8 targetOwner = target->getLastOwnerId();
-
-  if (scbw::isAlliedTo(unit->playerId, targetOwner))
+  if (scbw::isAlliedTo(attacker->playerId, target->getLastOwnerId()))
     return false;
 
   if (target->id == UnitId::ProtossScarab
@@ -39,15 +37,16 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *unit) {
 class BestSpellTargetFinderProc {
   private:
     const CUnit *caster;
-    const SpellTargetFinderProc &isValidTarget;
+    scbw::UnitFinderCallbackMatchInterface &callback;
   public:
     int operator()(const CUnit *target) {
-      if (isValidTarget(target))
+      if (callback.match(target))
         return 1;
     }
 };
 
-const CUnit* findBestSpellTarget(int x, int y, int searchBounds, const SpellTargetFinderProc &callback) {
+const CUnit* findBestSpellTarget(int x, int y, int searchBounds,
+                                 scbw::UnitFinderCallbackMatchInterface &callback) {
   static scbw::UnitFinder spellTargetFinder;
   spellTargetFinder.search(x - searchBounds, y - searchBounds,
                            x + searchBounds, y + searchBounds);

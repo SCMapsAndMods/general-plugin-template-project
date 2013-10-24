@@ -8,12 +8,8 @@ namespace AI {
 
 bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker);
 
-class SpellTargetFinderProc {
-  public:
-    virtual bool operator()(const CUnit *unit) const = 0;
-};
-
-const CUnit* findBestSpellTarget(int x, int y, int searchBounds, const SpellTargetFinderProc &callback);
+const CUnit* findBestSpellTarget(int x, int y, int searchBounds,
+  scbw::UnitFinderCallbackMatchInterface &callback);
 
 int getTotalEnemyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId);
 int getTotalAllyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId);
