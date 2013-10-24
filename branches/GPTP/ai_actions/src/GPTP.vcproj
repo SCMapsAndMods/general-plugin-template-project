@@ -40,6 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GPTP_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,6 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GPTP_EXPORTS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
@@ -389,7 +391,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AI\psi_storm.cpp"
+				RelativePath=".\AI\spells\psi_storm.cpp"
 				>
 			</File>
 			<File
@@ -579,7 +581,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\emp_shockwave.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\energy_regeneration.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\ensnare.h"
 				>
 			</File>
 			<File
@@ -631,6 +641,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\lockdown.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\maelstrom.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\max_unit_energy.h"
 				>
 			</File>
@@ -643,6 +661,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\plague.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Plugin.h"
 				>
 			</File>
@@ -651,7 +673,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AI\psi_storm.h"
+				RelativePath=".\AI\spells\psi_storm.h"
 				>
 			</File>
 			<File
@@ -740,6 +762,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\WeaponId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\yamato_gun.h"
 				>
 			</File>
 		</Filter>
