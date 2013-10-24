@@ -26,9 +26,6 @@ void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId);
 /// Note: TBL string indexes start at 1, not 0.
 const char* getStatTxtTblString(u16 index);
 
-/// Checks whether the unit has an image overlay that matches the given ID.
-bool hasOverlay(const CUnit* const unit, const u32 imageId);
-
 /// Calculates the images.dat overlay adjustment for the given unit.
 /// This piece of code is used throughout StarCraft.exe for various status
 /// effects, such as Ensnare, Plague, and Defensive Matrix.

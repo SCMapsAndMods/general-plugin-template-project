@@ -1,5 +1,7 @@
 #include "UnitFinder.h"
+#include "api.h"
 #include <algorithm>
+#include <cassert>
 
 namespace scbw {
 
@@ -43,17 +45,17 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
   UnitFinderData finderVal;
 
   // Search for the values using built-in binary search algorithm and comparator
-  finderVal.searchValue = left;
-  UnitFinderData *pLeft   = std::lower_bound<UnitFinderData*>(unitOrderingX, p_xend, finderVal);
+  finderVal.position = left;
+  UnitFinderData *pLeft   = std::lower_bound(unitOrderingX, p_xend, finderVal);
 
-  finderVal.searchValue = top;
-  UnitFinderData *pTop    = std::lower_bound<UnitFinderData*>(unitOrderingY, p_yend, finderVal);
+  finderVal.position = top;
+  UnitFinderData *pTop    = std::lower_bound(unitOrderingY, p_yend, finderVal);
 
-  finderVal.searchValue = r - 1;
-  UnitFinderData *pRight  = std::upper_bound<UnitFinderData*>(pLeft, p_xend, finderVal);
+  finderVal.position = r - 1;
+  UnitFinderData *pRight  = std::upper_bound(pLeft, p_xend, finderVal);
 
-  finderVal.searchValue = b - 1;
-  UnitFinderData *pBottom = std::upper_bound<UnitFinderData*>(pTop, p_yend, finderVal);
+  finderVal.position = b - 1;
+  UnitFinderData *pBottom = std::upper_bound(pTop, p_yend, finderVal);
 
   // Iterate the X entries of the finder
   for (UnitFinderData *px = pLeft; px < pRight; ++px) {
@@ -114,6 +116,152 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
   //}
 
   //unitsFound.count = unitsFoundCount;
+}
+
+void UnitFinder::forEach(scbw::UnitFinderCallbackProcInterface &callback) const {
+  for (int i = 0; i < this->unitCount; ++i)
+    callback.proc(this->units[i]);
+}
+
+CUnit* UnitFinder::getFirst(UnitFinderCallbackMatchInterface &callback) const {
+  for (int i = 0; i < this->unitCount; ++i)
+    if (callback.match(this->units[i]))
+      return this->units[i];
+
+  return NULL;
+}
+
+CUnit* UnitFinder::getBest(scbw::UnitFinderCallbackScoreInterface &callback) const {
+  int bestScore = -1;
+  CUnit *bestUnit = NULL;
+
+  for (int i = 0; i < this->unitCount; ++i) {
+    const int currentScore = callback.score(this->units[i]);
+    if (currentScore > bestScore) {
+      bestScore = currentScore;
+      bestUnit = this->units[i];
+    }
+  }
+
+  return bestUnit;
+}
+
+//Based on function @ 0x004E8320
+CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bottom,
+                              UnitFinderCallbackMatchInterface &callback) {
+  // Obtain finder indexes for all bounds
+  UnitFinderData* const p_xbegin = unitOrderingX;
+  UnitFinderData* const p_ybegin = unitOrderingY;
+  UnitFinderData* const p_xend = unitOrderingX + *unitOrderingCount;
+  UnitFinderData* const p_yend = unitOrderingY + *unitOrderingCount;
+
+  // Create UnitFinderData elements for compatibility with stl functions
+  UnitFinderData finderVal;
+
+  // Search for the values using built-in binary search algorithm and comparator
+  finderVal.position = x;
+  UnitFinderData *pLeft = std::lower_bound(p_xbegin, p_xend, finderVal);
+  UnitFinderData *pRight = pLeft + 1;
+
+  finderVal.position = y;
+  UnitFinderData *pTop = std::lower_bound(p_ybegin, p_yend, finderVal);
+  UnitFinderData *pBottom = pTop + 1;
+
+  CUnit *bestUnit = NULL;
+  int bestDistance = 999999;
+  bool canContinue, canNarrowSearchBounds;
+  bool isUnitVisited[UNIT_ARRAY_LENGTH + 1] = {false};
+
+  do {
+    canContinue = false;
+    canNarrowSearchBounds = false;
+
+    if (pLeft >= p_xbegin && pLeft->position >= left) {
+      if (!isUnitVisited[pLeft->unitIndex]) {
+        isUnitVisited[pLeft->unitIndex] = true;
+        CUnit *unit = CUnit::getFromIndex(pLeft->unitIndex);
+        if (left <= unit->getX() && unit->getX() < right
+            && top <= unit->getY() && unit->getY() < bottom
+            && callback.match(unit)) {
+          int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+          if (distance < bestDistance) {
+            bestUnit = unit;
+            bestDistance = distance;
+            canNarrowSearchBounds = true;
+          }
+        }
+      }
+      --pLeft;
+      canContinue = true;
+    }
+
+    if (pRight < p_xend && pRight->position <= right) {
+      if (!isUnitVisited[pRight->unitIndex]) {
+        isUnitVisited[pRight->unitIndex] = true;
+        CUnit *unit = CUnit::getFromIndex(pRight->unitIndex);
+        if (left <= unit->getX() && unit->getX() < right
+            && top <= unit->getY() && unit->getY() < bottom
+            && callback.match(unit)) {
+          int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+          if (distance < bestDistance) {
+            bestUnit = unit;
+            bestDistance = distance;
+            canNarrowSearchBounds = true;
+          }
+        }
+      }
+      ++pRight;
+      canContinue = true;
+    }
+    
+    if (pTop >= p_ybegin && pTop->position >= top) {
+      if (!isUnitVisited[pTop->unitIndex]) {
+        isUnitVisited[pTop->unitIndex] = true;
+        CUnit *unit = CUnit::getFromIndex(pTop->unitIndex);
+        if (left <= unit->getX() && unit->getX() < right
+            && top <= unit->getY() && unit->getY() < bottom
+            && callback.match(unit)) {
+          int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+          if (distance < bestDistance) {
+            bestUnit = unit;
+            bestDistance = distance;
+            canNarrowSearchBounds = true;
+          }
+        }
+      }
+      --pTop;
+      canContinue = true;
+    }
+    
+    if (pBottom < p_yend && pBottom->position < bottom) {
+      if (!isUnitVisited[pBottom->unitIndex]) {
+        isUnitVisited[pBottom->unitIndex] = true;
+        CUnit *unit = CUnit::getFromIndex(pBottom->unitIndex);
+        if (left <= unit->getX() && unit->getX() < right
+            && top <= unit->getY() && unit->getY() < bottom
+            && callback.match(unit)) {
+          int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+          if (distance < bestDistance) {
+            bestUnit = unit;
+            bestDistance = distance;
+            canNarrowSearchBounds = true;
+          }
+        }
+      }
+      ++pBottom;
+      canContinue = true;
+    }
+
+    //Narrow down search boundaries
+    if (canNarrowSearchBounds) {
+      left   = std::max(left,   x - bestDistance);
+      top    = std::max(top,    y - bestDistance);
+      right  = std::min(right,  x + bestDistance);
+      bottom = std::min(bottom, y + bestDistance);
+    }
+  } while (canContinue);
+
+  return bestUnit;
 }
 
 } //scbw

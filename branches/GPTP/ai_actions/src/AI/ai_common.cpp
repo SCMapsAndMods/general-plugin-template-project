@@ -5,7 +5,7 @@
 
 namespace AI {
 
-bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
+bool isTargetWorthHitting(const CUnit *target, const CUnit *unit) {
   //If the target is hidden by the fog-of-war
   if (!target->sprite->isVisibleTo(unit->playerId))
     return false;
@@ -43,7 +43,7 @@ class BestSpellTargetFinderProc {
   public:
     int operator()(const CUnit *target) {
       if (isValidTarget(target))
-        return 
+        return 1;
     }
 };
 
@@ -51,7 +51,8 @@ const CUnit* findBestSpellTarget(int x, int y, int searchBounds, const SpellTarg
   static scbw::UnitFinder spellTargetFinder;
   spellTargetFinder.search(x - searchBounds, y - searchBounds,
                            x + searchBounds, y + searchBounds);
-  return spellTargetFinder.getBest(
+  //return spellTargetFinder.getBest(
+  return NULL;
 }
 
 //-------- Unit stat accumulators --------//

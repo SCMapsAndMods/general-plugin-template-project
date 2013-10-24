@@ -96,6 +96,8 @@ void updateImageDirection(CImage *image, u32 direction) {
   }
 }
 
+//-------- Create overlay --------//
+
 //Identical to function @ 0x00498E00
 CImage* CSprite::createOverlay(u32 imageId, s8 x, s8 y, u32 direction) {
   assert(this);
@@ -167,9 +169,22 @@ void CSprite::removeOverlay(u32 imageId) {
   }
 }
 
+//-------- Has overlay --------//
+
+bool CSprite::hasOverlay(u16 imageId) const {
+  assert(this);
+
+  for (CImage *image = this->imageHead; image; image = image->link.next)
+    if (image->id == imageId)
+      return true;
+
+  return false;
+}
+
 //-------- Other --------//
 
 bool CSprite::isVisibleTo(s8 playerId) const {
   assert(this);
   return (this->visibilityFlags & (1 << playerId)) != 0;
 }
+
