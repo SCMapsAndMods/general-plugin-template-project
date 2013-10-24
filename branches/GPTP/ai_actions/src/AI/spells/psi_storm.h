@@ -2,6 +2,6 @@
 
 namespace AI {
 
-const CUnit* findBestPsiStormTarget(const CUnit *caster, bool isUnderAttack);
+CUnit* findBestPsiStormTarget(const CUnit *caster, bool isUnderAttack);
 
 } //AI

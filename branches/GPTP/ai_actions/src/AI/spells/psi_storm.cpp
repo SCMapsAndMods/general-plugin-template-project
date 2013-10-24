@@ -29,7 +29,7 @@ class PsiStormTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
     }
 };
 
-const CUnit* findBestPsiStormTarget(const CUnit *caster, bool isUnderAttack) {
+CUnit* findBestPsiStormTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds;
   if (isUnderAttack)
     bounds = 32 * 8;
