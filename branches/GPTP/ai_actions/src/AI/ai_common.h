@@ -8,6 +8,9 @@ namespace AI {
 
 bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker);
 
+//Determines whether the given @p playerId is in a UMS map (i.e. campaign mode).
+bool isUmsMode(s8 playerId);
+
 const CUnit* findBestSpellTarget(int x, int y, int searchBounds,
   scbw::UnitFinderCallbackMatchInterface &callback);
 

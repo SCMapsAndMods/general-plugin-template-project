@@ -2,6 +2,7 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 #include "../SCBW/UnitFinder.h"
+#include <cassert>
 
 namespace AI {
 
@@ -30,6 +31,11 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
     return false;
 
   return true;
+}
+
+bool isUmsMode(s8 playerId) {
+  assert(0 <= playerId && playerId < 8);
+  return AIScriptController[playerId].AI_Flags.isUseMapSettings;
 }
 
 //-------- Find best spell target --------//
