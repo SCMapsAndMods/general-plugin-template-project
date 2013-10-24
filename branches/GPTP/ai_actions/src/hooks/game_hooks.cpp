@@ -23,12 +23,6 @@ bool nextFrame() {
       firstRun = false;
     }
 
-    for (int i = 0; i < 8; ++i) {
-      char buffer[50];
-      sprintf(buffer, "P%d: Flag 0x20 = %d", i, AIScriptController[i].AI_Flags.isUseMapSettings ? 1 : 0);
-      graphics::drawText(25, 25 + 25 * i, buffer);
-    }
-
     // Loop through the unit table.
     // Warning: There is no guarantee that the current unit is actually a unit
     // rather than an unused space in memory.
