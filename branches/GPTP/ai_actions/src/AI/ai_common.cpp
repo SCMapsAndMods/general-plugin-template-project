@@ -1,7 +1,7 @@
 #include "ai_common.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
-#include "../SCBW/UnitFinder.h"
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
+#include <SCBW/UnitFinder.h>
 #include <cassert>
 
 namespace AI {
@@ -33,9 +33,44 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
   return true;
 }
 
+//Logically equivalent to function @ 0x00476180
+bool unitCanAttack(const CUnit *unit) {
+  if (unit->id == UnitId::lurker) {
+    if (unit->status & UnitStatus::Burrowed
+        && Unit::GroundWeapon[unit->id] != WeaponId::None)
+      return true;
+  }
+  else if (unit->id == UnitId::carrier || unit->id == UnitId::gantrithor) {
+    if ((unit->carrier.inHangarCount + unit->carrier.outHangarCount) > 0)
+      return true;
+  }
+  else if (unit->id == UnitId::reaver || unit->id == UnitId::warbringer) {
+    if (unit->carrier.inHangarCount > 0)
+      return true;
+  }
+  else {
+    if (Unit::GroundWeapon[unit->id] != WeaponId::None
+        || Unit::AirWeapon[unit->id] != WeaponId::None)
+      return true;
+  }
+
+  return false;
+}
+
 bool isUmsMode(s8 playerId) {
   assert(0 <= playerId && playerId < 8);
   return AIScriptController[playerId].AI_Flags.isUseMapSettings;
+}
+
+int getCurrentHpInGame(const CUnit *unit) {
+  return (unit->hitPoints + 255) / 256;
+}
+
+int getCurrentLifeInGame(const CUnit *unit) {
+  if (Unit::ShieldsEnabled[unit->id])
+    return getCurrentHpInGame(unit) + unit->shields / 256;
+  else
+    return getCurrentHpInGame(unit);
 }
 
 //-------- Unit stat accumulators --------//
@@ -69,9 +104,10 @@ class EnemyLifeSumProc: public UnitStatSumProc {
       if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
         return;
 
-      sum += (target->hitPoints + 255) / 256;
-      if (weaponId != WeaponId::Plague && Unit::ShieldsEnabled[target->id])
-        sum += target->shields / 256;
+      if (weaponId == WeaponId::Plague)
+        sum += getCurrentHpInGame(target);
+      else
+        sum += getCurrentLifeInGame(target);
     }
 };
 
@@ -90,9 +126,7 @@ class AllyLifeSumProc: public UnitStatSumProc {
       if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
         return;
 
-      sum += (target->hitPoints + 255) / 256;
-      if (Unit::ShieldsEnabled[target->id])
-        sum += target->shields / 256;
+      sum += getCurrentLifeInGame(target);
     }
 };
 
@@ -108,7 +142,7 @@ class EnemyShieldsSumProc: public UnitStatSumProc {
       if (!Unit::ShieldsEnabled[target->id])
         return;
 
-      sum += target->shields / 256; 
+      sum += target->shields / 256;
     }
 };
 

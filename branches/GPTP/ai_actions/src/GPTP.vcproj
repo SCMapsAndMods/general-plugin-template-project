@@ -498,6 +498,10 @@
 				RelativePath=".\hooks\weapon_range_inject.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\AI\spells\yamato_gun.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="헤더 파일"

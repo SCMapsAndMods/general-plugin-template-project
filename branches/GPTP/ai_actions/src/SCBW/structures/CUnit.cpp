@@ -435,3 +435,25 @@ bool CUnit::isVisibleTo(s8 playerId) const {
   return (this->visibilityStatus & (1 << playerId)) != 0;
 }
 
+CUnit* CUnit::getLoadedUnit(int index) const {
+  assert(0 <= index && index < 8);
+
+  CUnit *loadedUnit = CUnit::getFromIndex(this->loadedUnit[index].index);
+  if (loadedUnit && loadedUnit->sprite
+      && !(loadedUnit->mainOrderId == OrderId::Die && loadedUnit->mainOrderState == 1)
+      && loadedUnit->targetOrderSpecial == this->loadedUnit[index].unitId)
+    return loadedUnit;
+
+  return NULL;
+}
+
+//Logically equivalent to function @ 0x004E7110
+bool CUnit::hasLoadedUnit() const {
+  assert(this);
+
+  for (int i = 0; i < 8; ++i)
+    if (!getLoadedUnit(i))
+      return true;
+
+  return false;
+}

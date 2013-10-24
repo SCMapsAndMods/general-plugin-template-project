@@ -133,6 +133,13 @@ struct CUnit {
   /// fog-of-war and is detectable).
   bool isVisibleTo(s8 playerId) const;
 
+  /// Returns the loaded unit at @p index (value between 0-7). If no unit is
+  /// loaded at the slot, returns NULL instead.
+  CUnit* getLoadedUnit(int index) const;
+
+  /// Checks if this unit has other units loaded inside.
+  bool hasLoadedUnit() const;
+
 ////////////////////////////////////////////////////////////////
 // Actual data structure -- member variables and pointers
   CUnit     *previous;
