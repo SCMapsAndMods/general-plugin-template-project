@@ -170,22 +170,25 @@ CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bo
   CUnit *bestUnit = NULL;
   int bestDistance = 999999;
   bool canContinue, canNarrowSearchBounds;
+  bool isUnitVisited[UNIT_ARRAY_LENGTH + 1] = {false};
 
   do {
     canContinue = false;
     canNarrowSearchBounds = false;
 
     if (pLeft >= p_xbegin && pLeft->position >= left) {
-      CUnit *unit = CUnit::getFromIndex(pLeft->unitIndex);
-      assert(unit);
-      if (left <= unit->getX() && unit->getX() < right
-          && top <= unit->getY() && unit->getY() < bottom
-          && callback.match(unit)) {
-        int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
-        if (distance < bestDistance) {
-          bestUnit = unit;
-          bestDistance = distance;
-          canNarrowSearchBounds = true;
+      if (!isUnitVisited[pLeft->unitIndex]) {
+        isUnitVisited[pLeft->unitIndex] = true;
+        CUnit *unit = CUnit::getFromIndex(pLeft->unitIndex);
+        if (left <= unit->getX() && unit->getX() < right
+            && top <= unit->getY() && unit->getY() < bottom
+            && callback.match(unit)) {
+          int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+          if (distance < bestDistance) {
+            bestUnit = unit;
+            bestDistance = distance;
+            canNarrowSearchBounds = true;
+          }
         }
       }
       --pLeft;
@@ -193,16 +196,18 @@ CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bo
     }
 
     if (pRight < p_xend && pRight->position <= right) {
-      CUnit *unit = CUnit::getFromIndex(pRight->unitIndex);
-      assert(unit);
-      if (left <= unit->getX() && unit->getX() < right
-          && top <= unit->getY() && unit->getY() < bottom
-          && callback.match(unit)) {
-        int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
-        if (distance < bestDistance) {
-          bestUnit = unit;
-          bestDistance = distance;
-          canNarrowSearchBounds = true;
+      if (!isUnitVisited[pRight->unitIndex]) {
+        isUnitVisited[pRight->unitIndex] = true;
+        CUnit *unit = CUnit::getFromIndex(pRight->unitIndex);
+        if (left <= unit->getX() && unit->getX() < right
+            && top <= unit->getY() && unit->getY() < bottom
+            && callback.match(unit)) {
+          int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+          if (distance < bestDistance) {
+            bestUnit = unit;
+            bestDistance = distance;
+            canNarrowSearchBounds = true;
+          }
         }
       }
       ++pRight;
@@ -210,16 +215,18 @@ CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bo
     }
     
     if (pTop >= p_ybegin && pTop->position >= top) {
-      CUnit *unit = CUnit::getFromIndex(pTop->unitIndex);
-      assert(unit);
-      if (left <= unit->getX() && unit->getX() < right
-          && top <= unit->getY() && unit->getY() < bottom
-          && callback.match(unit)) {
-        int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
-        if (distance < bestDistance) {
-          bestUnit = unit;
-          bestDistance = distance;
-          canNarrowSearchBounds = true;
+      if (!isUnitVisited[pTop->unitIndex]) {
+        isUnitVisited[pTop->unitIndex] = true;
+        CUnit *unit = CUnit::getFromIndex(pTop->unitIndex);
+        if (left <= unit->getX() && unit->getX() < right
+            && top <= unit->getY() && unit->getY() < bottom
+            && callback.match(unit)) {
+          int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+          if (distance < bestDistance) {
+            bestUnit = unit;
+            bestDistance = distance;
+            canNarrowSearchBounds = true;
+          }
         }
       }
       --pTop;
@@ -227,16 +234,18 @@ CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bo
     }
     
     if (pBottom < p_yend && pBottom->position < bottom) {
-      CUnit *unit = CUnit::getFromIndex(pBottom->unitIndex);
-      assert(unit);
-      if (left <= unit->getX() && unit->getX() < right
-          && top <= unit->getY() && unit->getY() < bottom
-          && callback.match(unit)) {
-        int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
-        if (distance < bestDistance) {
-          bestUnit = unit;
-          bestDistance = distance;
-          canNarrowSearchBounds = true;
+      if (!isUnitVisited[pBottom->unitIndex]) {
+        isUnitVisited[pBottom->unitIndex] = true;
+        CUnit *unit = CUnit::getFromIndex(pBottom->unitIndex);
+        if (left <= unit->getX() && unit->getX() < right
+            && top <= unit->getY() && unit->getY() < bottom
+            && callback.match(unit)) {
+          int distance = scbw::getDistanceFast(x, y, unit->getX(), unit->getY());
+          if (distance < bestDistance) {
+            bestUnit = unit;
+            bestDistance = distance;
+            canNarrowSearchBounds = true;
+          }
         }
       }
       ++pBottom;
