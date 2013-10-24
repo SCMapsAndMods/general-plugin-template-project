@@ -3,6 +3,17 @@
 //Special thanks to Heinermann
 
 #pragma once
+
+const int PLAYER_COUNT        = 12;
+const int UNIT_ARRAY_LENGTH   = 1700;
+const int BULLET_ARRAY_LENGTH = 100;
+const int SPRITE_ARRAY_LENGTH = 2500;
+const int UNIT_TYPE_COUNT     = 228;
+const int TECH_TYPE_COUNT     = 44;
+const int UPGRADE_TYPE_COUNT  = 61;
+const int WEAPON_TYPE_COUNT   = 130;
+const int FLINGY_TYPE_COUNT   = 209;
+
 #include "structures/CUnit.h"
 #include "structures/CBullet.h"
 #include "structures/CSprite.h"
@@ -263,5 +274,51 @@ struct GuiOverlay {
 };
 
 C_ASSERT(sizeof(GuiOverlay) == 44);
+
+struct AI_Main {
+  s32 oreCollection;
+  s32 gasCollection;
+  s32 supplyCollection;
+  s32 ore;
+  s32 gas;
+  s32 supply;
+  u8  unknown_0x18;
+  u8  newBuildType;
+  u16 nextBuildType;
+  void  *pTownMain;
+  u32 unknown_0x20[124];
+  u8  unknown_0x210;
+  u8  builtSomething;
+  u8  AI_NukeRate;
+  u8  AI_Attacks;
+  u32 AI_LastNukeTime;
+  u16 AI_Flags;
+  u16 AI_PanicBlock;
+  u16 AI_MaxForce;
+  u16 AI_AttackGroup;
+  u16 waitForceCount;
+  u8  AI_DefaultMin;
+  u8  unknown_0x223;
+  u32 lastIndividualUpdateTime;
+  u32 AI_AttackTimer;
+  u8  unknown_0x22C;
+  u8  spellcasterTimer;
+  u8  attackManagerTimer;
+  u8  AI_IfDif;
+  u16 AI_AttackGroups[64];
+  u32 AI_DefenseBuild_GG[10];
+  u32 AI_DefenseBuild_AG[10];
+  u32 AI_DefenseBuild_GA[10];
+  u32 AI_DefenseBuild_AA[10];
+  u32 AI_DefenseUse_GG[10];
+  u32 AI_DefenseUse_AG[10];
+  u32 AI_DefenseUse_GA[10];
+  u32 AI_DefenseUse_AA[10];
+  u8  AI_DefineMax[UNIT_TYPE_COUNT];
+  u32 unknown_0x4D4;
+  Box32 genCmdLoc;
+};
+
+C_ASSERT(sizeof(AI_Main) == 1256);
 
 #pragma pack()

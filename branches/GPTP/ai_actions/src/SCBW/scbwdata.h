@@ -6,21 +6,9 @@
 #pragma once
 #include "../definitions.h"
 #include "structures.h"
-
 #pragma pack(1)
 
 #define SCBW_DATA(type, name, offset) type const name = (type)offset;
-
-const int PLAYER_COUNT        = 12;
-const int UNIT_ARRAY_LENGTH   = 1700;
-const int BULLET_ARRAY_LENGTH = 100;
-const int SPRITE_ARRAY_LENGTH = 2500;
-const int UNIT_TYPE_COUNT     = 228;
-const int TECH_TYPE_COUNT     = 44;
-const int UPGRADE_TYPE_COUNT  = 61;
-const int WEAPON_TYPE_COUNT   = 130;
-const int FLINGY_TYPE_COUNT   = 209;
-
 
 SCBW_DATA(CUnit*,       unitTable,    0x0059CCA8);
 SCBW_DATA(CBullet*,     bulletTable,  0x0064B2E8);
@@ -106,6 +94,7 @@ SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 
 SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);
 SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
+SCBW_DATA(AI_Main const*, AIScriptController,   0x0068FEE8);
 
 //-------- Internal constants --------//
 
