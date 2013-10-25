@@ -313,6 +313,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\feedback.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\Font.cpp"
 				>
 			</File>
@@ -353,10 +357,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -377,6 +377,10 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -660,6 +664,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\ExtendSightLimit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\feedback.h"
 				>
 			</File>
 			<File
