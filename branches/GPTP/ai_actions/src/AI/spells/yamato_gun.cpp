@@ -11,6 +11,9 @@ class YamatoGunTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       : caster(caster), isUnderAttack(isUnderAttack) {}
 
     bool match(const CUnit *target) {
+      if (target == caster)
+        return false;
+
       if (!isTargetWorthHitting(target, caster))
         return false;
 
