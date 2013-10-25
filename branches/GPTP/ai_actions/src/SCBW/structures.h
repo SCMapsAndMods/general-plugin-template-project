@@ -358,7 +358,7 @@ struct AiCaptain {
   u32 unknown_0x20;
   CUnit *slowestUnit;
   CUnit *followTarget;
-  u32 unknown_0x2C;
+  CUnit *mainMedic;
   void  *town;
 };
 

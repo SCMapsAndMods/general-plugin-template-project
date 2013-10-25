@@ -481,6 +481,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\restoration.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\Shape.cpp"
 				>
 			</File>
@@ -796,6 +800,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\recharge_shields.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\restoration.h"
 				>
 			</File>
 			<File
