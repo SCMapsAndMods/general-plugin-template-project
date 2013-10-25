@@ -293,6 +293,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\emp_shockwave.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\energy_regeneration.cpp"
 				>
 			</File>
