@@ -301,6 +301,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\ensnare.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\Font.cpp"
 				>
 			</File>

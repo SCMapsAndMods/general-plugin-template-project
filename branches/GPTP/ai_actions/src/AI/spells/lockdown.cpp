@@ -14,7 +14,7 @@ class LockdownFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (!isTargetWorthHitting(target, caster))
         return false;
 
-      if (!scbw::canWeaponTargetUnit(WeaponId::PsiStorm, target, caster))
+      if (!scbw::canWeaponTargetUnit(WeaponId::Lockdown, target, caster))
         return false;
 
       if (target->status & UnitStatus::Disabled
