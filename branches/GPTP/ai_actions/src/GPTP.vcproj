@@ -403,6 +403,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\mind_control.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AI\spells\plague.cpp"
 				>
 			</File>
@@ -728,6 +732,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\max_unit_energy.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\mind_control.h"
 				>
 			</File>
 			<File
