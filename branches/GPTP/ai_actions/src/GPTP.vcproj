@@ -345,6 +345,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\lockdown.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AI\spells\maelstrom.cpp"
 				>
 			</File>
