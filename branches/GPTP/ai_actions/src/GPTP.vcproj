@@ -281,6 +281,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\defensive_matrix.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\detector.cpp"
 				>
 			</File>
@@ -594,6 +598,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\damage_with.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\defensive_matrix.h"
 				>
 			</File>
 			<File

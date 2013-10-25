@@ -19,8 +19,16 @@ bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit);
 /// Determines whether the given @p playerId is in a UMS map (i.e. campaign mode).
 bool isUmsMode(s8 playerId);
 
+/// Test whether @p castingPlayer can use @p techId on the @p target.
+/// If successful, returns zero. If unsuccessful, returns the index of the
+/// appropriate error message string in stat_txt.tbl.
+u16 getTechUseErrorMessage(const CUnit *target, s8 castingPlayer, int techId);
+
 /// Returns the total HP shown in-game.
 int getCurrentHpInGame(const CUnit *unit);
+
+/// Returns the maximum HP shown in-game.
+int getMaxHpInGame(const CUnit *unit);
 
 /// Returns the total HP + Shields of this unit (HP only if unit has no shield).
 /// This returns in-game values, NOT internal values.
