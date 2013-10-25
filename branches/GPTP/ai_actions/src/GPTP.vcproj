@@ -517,6 +517,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spellcasting_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\spider_mine.cpp"
 				>
 			</File>

@@ -28,7 +28,9 @@
 #include "hooks/weapon_range.h"
 #include "hooks/unit_destructor_special.h"
 #include "hooks/psi_field.h"
+
 #include "graphics/draw_hook.h"
+#include "AI/spellcasting.h"
 
 /// This function is called when the plugin is loaded into StarCraft.
 /// You can enable/disable each group of hooks by commenting them.
@@ -79,6 +81,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectPsiFieldHooks();
 
   hooks::injectDrawHook();
+  hooks::injectSpellcasterAI();
 
   return TRUE;
 }
