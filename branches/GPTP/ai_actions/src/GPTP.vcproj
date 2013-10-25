@@ -415,6 +415,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\parasite.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AI\spells\plague.cpp"
 				>
 			</File>
@@ -772,6 +776,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\OrderId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\parasite.h"
 				>
 			</File>
 			<File
