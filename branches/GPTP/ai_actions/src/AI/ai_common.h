@@ -42,6 +42,7 @@ int getTotalEnemyLifeInArea(int x, int y, int searchBounds, const CUnit *caster,
 int getTotalAllyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId);
 int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *caster);
 int getTotalEnemyEnergyInArea(int x, int y, int searchBounds, const CUnit *caster);
+int getTotalEnemyNukeValueInArea(int x, int y, int searchBounds, const CUnit *caster);
 
 //-------- Template function definition --------//
 

@@ -266,7 +266,7 @@ class EnemyShieldsSumProc: public UnitStatSumProc {
       if (target->status & UnitStatus::Invincible)
         return;
 
-      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+      if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
         return;
 
       if (!Unit::ShieldsEnabled[target->id])
@@ -282,7 +282,7 @@ class EnemyEnergySumProc: public UnitStatSumProc {
       if (target->status & UnitStatus::Invincible)
         return;
 
-      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+      if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
         return;
 
       if (!(Unit::BaseProperty[target->id] & UnitProperty::Spellcaster))
@@ -292,6 +292,28 @@ class EnemyEnergySumProc: public UnitStatSumProc {
         return;
 
       sum += target->energy / 256;
+    }
+};
+
+class EnemyNukeValueSumProc: public UnitStatSumProc {
+  public:
+    void proc(CUnit *target) {
+      if (target->status & UnitStatus::Invincible)
+        return;
+
+      if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+        return;
+
+      if ((Unit::BaseProperty[target->id] & UnitProperty::Worker)
+          || !(target->status & UnitStatus::IsBuilding))
+        sum += getCurrentLifeInGame(target);
+
+      if (Unit::BaseProperty[target->id] & UnitProperty::Building) {
+        if (target->canDetect()
+            || target->id == UnitId::sunken_colony
+            || target->id == UnitId::lurker)
+          sum = 800;  //Any static defense is at least 800 value
+      }
     }
 };
 
@@ -330,6 +352,15 @@ int getTotalEnemyEnergyInArea(int x, int y, int searchBounds, const CUnit *caste
   unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
                              x + searchBounds, y + searchBounds);
   EnemyEnergySumProc sumProc;
+  sumProc.set(caster);
+  unitStatTotalFinder.forEach(sumProc);
+  return sumProc.getSum();
+}
+
+int getTotalEnemyNukeValueInArea(int x, int y, int searchBounds, const CUnit *caster) {
+  unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
+                             x + searchBounds, y + searchBounds);
+  EnemyNukeValueSumProc sumProc;
   sumProc.set(caster);
   unitStatTotalFinder.forEach(sumProc);
   return sumProc.getSum();

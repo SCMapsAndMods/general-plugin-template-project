@@ -365,10 +365,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -391,7 +387,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\launch_nuke.cpp"
 				>
 			</File>
 			<File
@@ -747,11 +751,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\irradiate.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\irradiate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\AI\spells\irradiate.h"
+				RelativePath=".\AI\spells\launch_nuke.h"
 				>
 			</File>
 			<File
