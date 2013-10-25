@@ -138,6 +138,12 @@ SCBW_DATA(u16*, MaxShieldPoints,    unitsDat[7].address);
 SCBW_DATA(s32*, MaxHitPoints,       unitsDat[8].address);
 SCBW_DATA(u8*,  Elevation,          unitsDat[9].address);
 SCBW_DATA(u8*,  MovementFlags,      unitsDat[10].address);
+SCBW_DATA(u8*,  Rank,               unitsDat[11].address);
+SCBW_DATA(u8*,  ComputerIdleOrder,  unitsDat[12].address);
+SCBW_DATA(u8*,  HumanIdleOrder,     unitsDat[13].address);
+SCBW_DATA(u8*,  ReturnToIdleOrder,  unitsDat[14].address);
+SCBW_DATA(u8*,  AttackUnitOrder,    unitsDat[15].address);
+SCBW_DATA(u8*,  AttackMoveOrder,    unitsDat[16].address);
 SCBW_DATA(u8*,  GroundWeapon,       unitsDat[17].address);
 SCBW_DATA(u8*,  MaxGroundHits,      unitsDat[18].address);
 SCBW_DATA(u8*,  AirWeapon,          unitsDat[19].address);
@@ -222,6 +228,14 @@ SCBW_DATA(u16*, GasCost,            techdataDat[1].address);
 SCBW_DATA(u16*, TimeCost,           techdataDat[2].address);
 SCBW_DATA(u16*, EnergyCost,         techdataDat[3].address);
 SCBW_DATA(u16*, Label,              techdataDat[7].address);
+}
+
+namespace Order {
+SCBW_DATA(const DatLoad*, ordersDat, 0x00513EC8);
+
+SCBW_DATA(u16*, Label,              ordersDat[0].address);
+SCBW_DATA(u8*,  UseWeaponTargeting, ordersDat[1].address);
+SCBW_DATA(u8*,  TechUsed,           ordersDat[14].address);
 }
 
 

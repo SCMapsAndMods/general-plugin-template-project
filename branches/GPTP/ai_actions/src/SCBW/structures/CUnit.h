@@ -214,7 +214,7 @@ struct CUnit {
   u8        killCount;
   u8        lastAttackingPlayer;// the player that last attacked this unit
   u8        secondaryOrderTimer;
-  u8        aiActionFlag;       // Used internally by the AI
+  u8        aiActionFlags;      // Used internally by the AI
   u8        userActionFlags;    // some flags that change when the user interacts with the unit
                                 // 2 = issued an order, 3 = interrupted an order, 4 = hide self before death
   u16       currentButtonSet;   // The u16 is a guess, used to be u8
