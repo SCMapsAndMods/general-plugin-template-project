@@ -1,6 +1,8 @@
 #include "max_unit_energy.h"
 #include "../hook_tools.h"
 
+extern const u32 Func_GetMaxEnergy; //Defined in CUnit.cpp
+
 namespace {
 
 //Inject with jmpPatch()
@@ -28,7 +30,7 @@ void __declspec(naked) getUnitMaxEnergyWrapper() {
 namespace hooks {
 
 void injectUnitMaxEnergyHook() {
-  jmpPatch(getUnitMaxEnergyWrapper, 0x00491870);
+  jmpPatch(getUnitMaxEnergyWrapper, Func_GetMaxEnergy);
 }
 
 } //hooks

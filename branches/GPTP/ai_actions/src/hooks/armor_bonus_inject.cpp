@@ -1,10 +1,11 @@
 #include "armor_bonus.h"
 #include "../hook_tools.h"
 
+extern const u32 Func_GetArmorBonus;  //Defined in CUnit.cpp
+
 namespace {
 
 //Inject with jmpPatch()
-const u32 Hook_GetArmorBonus  = 0x00453FC0;
 void __declspec(naked) getArmorBonusWrapper() {
   CUnit *unit;
   u8 armor;
@@ -29,7 +30,7 @@ void __declspec(naked) getArmorBonusWrapper() {
 namespace hooks {
 
 void injectArmorBonusHook() {
-  jmpPatch(getArmorBonusWrapper, Hook_GetArmorBonus);
+  jmpPatch(getArmorBonusWrapper, Func_GetArmorBonus);
 }
 
 } //hooks
