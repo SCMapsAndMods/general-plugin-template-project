@@ -39,7 +39,7 @@ class PlagueTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
 CUnit* findBestPlagueTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds;
   if (isUnderAttack)
-    bounds = 32 * 8;
+    bounds = 32 * 9;
   else
     bounds = 32 * 128;
 

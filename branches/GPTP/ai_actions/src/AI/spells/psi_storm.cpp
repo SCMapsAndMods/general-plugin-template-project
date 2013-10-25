@@ -32,7 +32,7 @@ class PsiStormTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
 CUnit* findBestPsiStormTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds;
   if (isUnderAttack)
-    bounds = 32 * 8;
+    bounds = 32 * 9;
   else if (isUmsMode(caster->playerId))
     bounds = 32 * 64;
   else

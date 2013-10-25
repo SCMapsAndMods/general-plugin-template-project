@@ -345,6 +345,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\maelstrom.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\max_unit_energy.cpp"
 				>
 			</File>

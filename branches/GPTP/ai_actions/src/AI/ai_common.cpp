@@ -57,6 +57,16 @@ bool unitCanAttack(const CUnit *unit) {
   return false;
 }
 
+bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit) {
+  if (CUnit *secondTarget = target->orderTarget.unit) {
+    if (secondTarget->playerId < 8
+        && scbw::isAlliedTo(unit->playerId, secondTarget->getLastOwnerId()))
+      return true;
+  }
+
+  return false;
+}
+
 bool isUmsMode(s8 playerId) {
   assert(0 <= playerId && playerId < 8);
   return AIScriptController[playerId].AI_Flags.isUseMapSettings;
@@ -106,6 +116,12 @@ class EnemyLifeSumProc: public UnitStatSumProc {
 
       if (weaponId == WeaponId::Plague)
         sum += getCurrentHpInGame(target);
+      else if (weaponId == WeaponId::Maelstrom) {
+        if (Unit::BaseProperty[target->id] & UnitProperty::Organic
+            && target->maelstromTimer == 0) {
+          sum += getCurrentLifeInGame(target);
+        }
+      }
       else
         sum += getCurrentLifeInGame(target);
     }

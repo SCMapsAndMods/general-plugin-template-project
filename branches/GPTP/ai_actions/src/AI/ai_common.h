@@ -13,6 +13,9 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker);
 /// Lurkers are checked whether they are burrowed.
 bool unitCanAttack(const CUnit *unit);
 
+/// Returns true if @p target is attacking a player allied to @p unit.
+bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit);
+
 /// Determines whether the given @p playerId is in a UMS map (i.e. campaign mode).
 bool isUmsMode(s8 playerId);
 
