@@ -72,7 +72,7 @@ bool isUmsMode(s8 playerId) {
   return AIScriptController[playerId].AI_Flags.isUseMapSettings;
 }
 
-//-------- isUnitInSafeRegion() --------//
+//-------- isUnitInUnsafeRegion() --------//
 
 //Internal use only
 const u32 Func_GetRegionIdAtPosEx = 0x0049C9F0;

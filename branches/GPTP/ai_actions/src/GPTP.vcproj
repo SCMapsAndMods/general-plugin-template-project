@@ -293,6 +293,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\disruption_web.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\draw_hook.cpp"
 				>
 			</File>
@@ -652,6 +656,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\detector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\disruption_web.h"
 				>
 			</File>
 			<File
