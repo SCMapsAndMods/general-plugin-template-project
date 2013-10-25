@@ -443,6 +443,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\spawn_broodlings.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\spider_mine.cpp"
 				>
 			</File>
@@ -718,6 +722,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\sight_range.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\spawn_broodlings.h"
 				>
 			</File>
 			<File
