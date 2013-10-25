@@ -60,6 +60,9 @@ struct CUnit {
   ///  * If the unit is not stunned / is a hallucination / is being built
   bool canUseTech(u8 techId, s8 playerId) const;
 
+  /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
+  bool canDetect() const;
+
   /// Returns the distance between this unit and the @p target, taking unit
   /// collision size in units.dat into account.
   /// Internally, this function uses scbw::getDistanceFast().

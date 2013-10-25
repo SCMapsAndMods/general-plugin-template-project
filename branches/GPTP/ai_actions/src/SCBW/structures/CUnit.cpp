@@ -190,6 +190,22 @@ bool CUnit::canUseTech(u8 techId, s8 playerId) const {
   return result != 0;
 }
 
+extern const u32 Func_CanDetect = 0x00403430;
+bool CUnit::canDetect() const {
+  assert(this);
+  static u32 result;
+
+  __asm {
+    PUSHAD
+    MOV EAX, this
+    CALL Func_CanDetect
+    MOV result, EAX
+    POPAD
+  }
+
+  return result != 0;
+}
+
 u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   using Unit::BaseProperty;
   assert(this);
@@ -234,7 +250,7 @@ u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
   return maxWeaponRange;
 }
 
-const u32 Func_GetSightRange = 0x004E5B40;
+extern const u32 Func_GetSightRange = 0x004E5B40;
 u32 CUnit::getSightRange(bool applyStatusEffects) const {
   assert(this);
 
@@ -252,7 +268,7 @@ u32 CUnit::getSightRange(bool applyStatusEffects) const {
   return sightRange;
 }
 
-const u32 Func_GetMaxEnergy = 0x00491870;
+extern const u32 Func_GetMaxEnergy = 0x00491870;
 u16 CUnit::getMaxEnergy() const {
   assert(this);
   
@@ -273,7 +289,7 @@ u8 CUnit::getArmor() const {
   return Unit::ArmorAmount[this->id] + this->getArmorBonus();
 }
 
-const u32 Func_GetArmorBonus = 0x00453FC0;
+extern const u32 Func_GetArmorBonus = 0x00453FC0;
 u8 CUnit::getArmorBonus() const {
   assert(this);
 

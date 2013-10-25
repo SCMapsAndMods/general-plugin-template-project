@@ -23,7 +23,7 @@ class OpticalFlareTargetFinderProc: public scbw::UnitFinderCallbackMatchInterfac
       if (target->isBlind)
         return false;
 
-      if (/*target is clean detector*/)
+      if (target->canDetect())
         return true;
 
       if (getCurrentLifeInGame(target) > 80)
