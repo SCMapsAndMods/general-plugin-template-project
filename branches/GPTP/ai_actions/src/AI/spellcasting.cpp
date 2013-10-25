@@ -4,17 +4,21 @@
 
 #include "spells/psi_storm.h"
 #include "spells/hallucination.h"
-
 #include "spells/stasis_field.h"
 #include "spells/recall.h"
-
+#include "spells/feedback.h"
+#include "spells/mind_control.h"
+#include "spells/maelstrom.h"
 #include "spells/disruption_web.h"
+
+#include <algorithm>
 
 //-------- Helper function declarations. Do NOT modify! --------//
 namespace {
 
 bool canCastSpellOrder(const CUnit *unit, u8 techId, u8 orderId);
 bool aiCastSpellOrder(CUnit *unit, CUnit *target, u8 orderId, u8 aiActionFlag = 1);
+u16 getOrderEnergyCost(u8 orderId);
 
 } //unnamed namespace
 
@@ -26,6 +30,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       && AIScriptController[unit->playerId].spellcasterTimer != 0)
     return false;
 
+  u16 energyReserve;
   switch (unit->id) {
     case UnitId::science_vessel:
       break;
@@ -57,6 +62,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       break;
 
     case UnitId::high_templar:
+      //Psionic Storm
       if (canCastSpellOrder(unit, TechId::PsionicStorm, OrderId::PsiStorm)) {
         CUnit *target = findBestPsiStormTarget(unit, isUnitBeingAttacked);
         
@@ -68,6 +74,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
           return true;
       }
 
+      //Hallucination
       if (unit->getMaxEnergy() != unit->energy
           && canCastSpellOrder(unit, TechId::Hallucination, OrderId::Hallucianation1)) {
         CUnit *target = findBestHallucinationTarget(unit, isUnitBeingAttacked);
@@ -83,6 +90,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       break;
 
     case UnitId::arbiter:
+      //Stasis Field
       if (canCastSpellOrder(unit, TechId::StasisField, OrderId::StasisField)) {
         CUnit *target = findBestStasisFieldTarget(unit, isUnitBeingAttacked);
         
@@ -94,8 +102,9 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
           return true;
       }
       
+      //Recall
       if (canCastSpellOrder(unit, TechId::Recall, OrderId::Teleport)) {
-        CUnit *target = findBestStasisFieldTarget(unit, isUnitBeingAttacked);
+        CUnit *target = findBestRecallTarget(unit, isUnitBeingAttacked);
         
         if (unit->mainOrderId == OrderId::Teleport
             && unit->orderTarget.unit == target)
@@ -108,9 +117,52 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       break;
 
     case UnitId::dark_archon:
+      //Feedback
+      if (canCastSpellOrder(unit, TechId::Feedback, OrderId::CastFeedback)) {
+        CUnit *target = findBestFeedbackTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::CastFeedback
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::CastFeedback))
+          return true;
+      }
+      
+      //Mind Control
+      if (canCastSpellOrder(unit, TechId::MindControl, OrderId::CastMindControl)) {
+        CUnit *target = findBestMindControlTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::CastMindControl
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::CastMindControl))
+          return true;
+      }
+      
+      //Maelstrom
+      energyReserve = getOrderEnergyCost(OrderId::CastMaelstrom)
+                      + getOrderEnergyCost(OrderId::CastMindControl);
+      energyReserve = std::min(energyReserve, unit->getMaxEnergy());
+
+      if ((unit->energy >= energyReserve || scbw::isCheatEnabled(CheatFlags::TheGathering))
+          && unit->canUseTech(TechId::Maelstorm, unit->playerId))
+      {
+        CUnit *target = findBestMaelstromTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::CastMaelstrom
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::CastMaelstrom))
+          return true;
+      }
+
       break;
 
     case UnitId::corsair:
+      //Disruption Web
       if (canCastSpellOrder(unit, TechId::DisruptionWeb, OrderId::CastDisruptionWeb)) {
         CUnit *target = findBestDisruptionWebTarget(unit, isUnitBeingAttacked);
         
@@ -156,6 +208,14 @@ bool aiCastSpellOrder(CUnit *unit, CUnit *target, u8 orderId, u8 aiActionFlag) {
     target->aiActionFlags |= aiActionFlag;
   }
   return true;
+}
+
+//Logically equivalent to function @ 0x0049E1C0
+u16 getOrderEnergyCost(u8 orderId) {
+  if (Order::TechUsed[orderId] < TechId::None)
+    return Tech::EnergyCost[Order::TechUsed[orderId]] * 256;
+  else
+    return 0;
 }
 
 } //unnamed namespace
