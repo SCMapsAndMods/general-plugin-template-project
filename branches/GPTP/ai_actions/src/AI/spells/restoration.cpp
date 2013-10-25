@@ -44,12 +44,12 @@ CUnit* findBestRestorationTarget(const CUnit *caster, bool isUnderAttack) {
     RestorationTargetFinderProc(caster, isUnderAttack));
 }
 
-class RestorationTargetFinderProc2: public scbw::UnitFinderCallbackMatchInterface {
+class RestorationTargetFinderProcSituational: public scbw::UnitFinderCallbackMatchInterface {
   private:
     const CUnit *caster;
     bool isUnderAttack;
   public:
-    RestorationTargetFinderProc2(const CUnit *caster, bool isUnderAttack)
+    RestorationTargetFinderProcSituational(const CUnit *caster, bool isUnderAttack)
       : caster(caster), isUnderAttack(isUnderAttack) {}
 
     bool match(const CUnit *target) {
@@ -69,11 +69,11 @@ class RestorationTargetFinderProc2: public scbw::UnitFinderCallbackMatchInterfac
     }
 };
 
-CUnit* findBestRestorationTarget2(const CUnit *caster, bool isUnderAttack) {
+CUnit* findBestRestorationTargetSituational(const CUnit *caster, bool isUnderAttack) {
   if (isUnderAttack)
     return NULL;
 
   return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
-    RestorationTargetFinderProc2(caster, isUnderAttack));
+    RestorationTargetFinderProcSituational(caster, isUnderAttack));
 }
 } //AI

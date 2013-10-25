@@ -329,7 +329,7 @@ struct AI_Main {
   u32 AI_DefenseUse_GA[10];
   u32 AI_DefenseUse_AA[10];
   u8  AI_DefineMax[UNIT_TYPE_COUNT];
-  u32 unknown_0x4D4;
+  CUnit *mainMedic;
   Box32 genCmdLoc;
 };
 

@@ -1,6 +1,15 @@
 #include "spellcasting.h"
-#include "spells/dark_swarm.h"
+
 #include "spells/yamato_gun.h"
+#include "spells/lockdown.h"
+#include "spells/launch_nuke.h"
+#include "spells/emp_shockwave.h"
+#include "spells/defensive_matrix.h"
+#include "spells/irradiate.h"
+#include "spells/restoration.h"
+#include "spells/optical_flare.h"
+
+#include "spells/dark_swarm.h"
 
 #include "spells/psi_storm.h"
 #include "spells/hallucination.h"
@@ -19,6 +28,8 @@ namespace {
 bool canCastSpellOrder(const CUnit *unit, u8 techId, u8 orderId);
 bool aiCastSpellOrder(CUnit *unit, CUnit *target, u8 orderId, u8 aiActionFlag = 1);
 u16 getOrderEnergyCost(u8 orderId);
+bool isNukeTimerReady(s8 playerId);
+CUnit* getLoadedSilo(CUnit *ghost);
 
 } //unnamed namespace
 
@@ -31,11 +42,10 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
     return false;
 
   u16 energyReserve;
-  switch (unit->id) {
-    case UnitId::science_vessel:
-      break;
 
+  switch (unit->id) {
     case UnitId::battlecruiser:
+      //Yamato Gun
       if (canCastSpellOrder(unit, TechId::YamatoGun, OrderId::FireYamatoGun1)) {
         CUnit *target = findBestYamatoGunTarget(unit, isUnitBeingAttacked);
         
@@ -50,9 +60,107 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       break;
 
     case UnitId::ghost:
+      //Lockdown
+      if (canCastSpellOrder(unit, TechId::Lockdown, OrderId::MagnaPulse)) {
+        CUnit *target = findBestLockdownTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::MagnaPulse
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::MagnaPulse))
+          return true;
+      }
+
+      //Launch Nuclear Missile
+      if (isNukeTimerReady(unit->playerId)) {
+        CUnit *silo = getLoadedSilo(unit);
+        if (!silo) return false;
+
+        CUnit *target = findBestNukeLaunchTarget(unit, isUnitBeingAttacked);
+
+        if (aiCastSpellOrder(unit, target, OrderId::NukePaint)) {
+          silo->building.silo.nuke->connectedUnit = unit;
+          AIScriptController[unit->playerId].AI_LastNukeTime = *elapsedTime;
+          return true;
+        }
+      }
+
+      break;
+
+    case UnitId::science_vessel:
+      //EMP Shockwave
+      if (canCastSpellOrder(unit, TechId::EMPShockwave, OrderId::EmpShockwave)) {
+        CUnit *target = findBestEmpShockwaveTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::EmpShockwave
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::EmpShockwave))
+          return true;
+      }
+
+      //Defensive Matrix
+      if (canCastSpellOrder(unit, TechId::DefensiveMatrix, OrderId::DefensiveMatrix)) {
+        CUnit *target = findBestDefensiveMatrixTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::DefensiveMatrix
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::DefensiveMatrix))
+          return true;
+      }
+
+      //Irradiate
+      if (canCastSpellOrder(unit, TechId::Irradiate, OrderId::Irradiate)) {
+        CUnit *target = findBestIrradiateTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::Irradiate
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::Irradiate))
+          return true;
+      }
+
       break;
 
     case UnitId::medic:
+      //Restoration
+      if (canCastSpellOrder(unit, TechId::Restoration, OrderId::Restoration)) {
+        CUnit *target = findBestRestorationTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::Restoration
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::Restoration))
+          return true;
+
+        if (unit == AIScriptController[unit->id].mainMedic
+            && unit->mainOrderId != OrderId::Restoration)
+        {
+          CUnit *targetSituational = findBestRestorationTargetSituational(unit, isUnitBeingAttacked);
+          if (aiCastSpellOrder(unit, targetSituational, OrderId::Restoration))
+            return true;
+        }
+      }
+
+      //Optical Flare
+      if (unit->getMaxEnergy() == unit->energy
+          && canCastSpellOrder(unit, TechId::OpticalFlare, OrderId::CastOpticalFlare)) {
+        CUnit *target = findBestOpticalFlareTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::CastOpticalFlare
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::CastOpticalFlare))
+          return true;
+      }
+
       break;
 
     case UnitId::queen:
@@ -216,6 +324,30 @@ u16 getOrderEnergyCost(u8 orderId) {
     return Tech::EnergyCost[Order::TechUsed[orderId]] * 256;
   else
     return 0;
+}
+
+//Logically equivalent to function @ 0x00446E50
+bool isNukeTimerReady(s8 playerId) {
+  return *elapsedTime >= AIScriptController[playerId].AI_LastNukeTime
+                         + 60 * AIScriptController[playerId].AI_NukeRate;
+}
+
+//Based on function @ 0x00463360
+CUnit* getLoadedSilo(CUnit *ghost) {
+  for (CUnit *unit = firstPlayerUnit->unit[ghost->playerId];
+       unit; unit = unit->playerNext)
+  {
+    if (unit->id == UnitId::nuclear_silo
+        && unit->building.silo.hasNuke)
+    {
+      CUnit *nuke = unit->building.silo.nuke;
+      if (!nuke->connectedUnit
+          || nuke->connectedUnit == ghost
+          || nuke->connectedUnit->id == UnitId::nuclear_silo)
+        return unit;
+    }
+  }
+  return NULL;
 }
 
 } //unnamed namespace

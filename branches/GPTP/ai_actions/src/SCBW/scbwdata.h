@@ -95,7 +95,7 @@ SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);
 SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
 
-SCBW_DATA(AI_Main const*, AIScriptController,   0x0068FEE8);
+SCBW_DATA(AI_Main*,       AIScriptController,   0x0068FEE8);
 SCBW_DATA(AiCaptain* const*, AiRegionCaptains,  0x0069A604);
 
 //-------- Internal constants --------//
@@ -113,6 +113,7 @@ SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,      0x006D11C8);
 SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);
 SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
 SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING,  0x00640880);
+SCBW_DATA(const u32*,     elapsedTime,          0x0058D6F8);  //Elapsed game time in seconds
 
 //-------- DAT Files --------//
 
