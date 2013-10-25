@@ -37,10 +37,13 @@ struct CUnit {
   void remove();
 
   /// Issue the @p order to the unit, using the given @p target unit.
-  void orderTo(u32 orderId, const CUnit *target);
+  void orderTo(u8 orderId, const CUnit *target);
 
   /// Issue the @p order to the unit, using the given position as the target.
-  void orderTo(u32 orderId, u16 x, u16 y);
+  void orderTo(u8 orderId, u16 x, u16 y);
+
+  /// Issues a new order to the unit.
+  void order(u8 orderId, u16 x, u16 y, const CUnit *target, u16 targetUnitId, bool stopPreviousOrders);
 
   /// Used by several hooks.
   void setSecondaryOrder(u8 orderId);

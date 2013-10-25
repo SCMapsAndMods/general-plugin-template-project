@@ -249,15 +249,18 @@ void refreshButtonSet() {
   *unknown2 = 0;
 }
 
-u32 randBetween(u32 min, u32 max) {
-  assert(min <= max);
+u16 random() {
   if (*IS_IN_GAME_LOOP) {
     *lastRandomNumber = 22695477 * (*lastRandomNumber) + 1;
-    u32 randomNumber = (*lastRandomNumber >> 16) % 32768;  //Make a number between 0 and 32767
-    return min + ((max - min + 1) * randomNumber >> 15);
+    return (*lastRandomNumber >> 16) % 32768;  //Make a number between 0 and 32767
   }
   else
-    return min;
+    return 0;
+}
+
+u32 randBetween(u32 min, u32 max) {
+  assert(min <= max);
+  return min + ((max - min + 1) * random() >> 15);
 }
 
 } //scbw

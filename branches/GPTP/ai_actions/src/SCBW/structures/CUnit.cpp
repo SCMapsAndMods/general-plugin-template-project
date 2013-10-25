@@ -80,6 +80,8 @@ void CUnit::reduceDefensiveMatrixHp(s32 amount) {
   }
 }
 
+//-------- Unit orders --------//
+
 const u32 Func_RemoveUnit = 0x00475710; //AKA orders_SelfDestructing()
 void CUnit::remove() {
   assert(this);
@@ -92,34 +94,47 @@ void CUnit::remove() {
   }
 }
 
-const u32 Func_OrderToUnit = 0x004752B0; //AKA AssignOrderWithTarget(); Primarily for use with orderNewUnitToRally(), but may have other uses.
-void CUnit::orderTo(u32 orderId, const CUnit *target) {
-  assert(this);
-  assert(target);
+//Helper function
+typedef void (__fastcall *OrderToIdleFunc)(CUnit*);
+OrderToIdleFunc orderToIdle = (OrderToIdleFunc) 0x00475000;
 
-  __asm {
-    PUSHAD
-    PUSH orderId
-    MOV EAX, target
-    MOV ESI, this
-    CALL Func_OrderToUnit
-    POPAD
-  }
+//Logically equivalent to function @ 0x004752B0
+void CUnit::orderTo(u8 orderId, const CUnit *target) {
+  assert(this);
+
+  this->userActionFlags |= 0x1;
+  if (target)
+    this->order(orderId, target->getX(), target->getY(), target, UnitId::None, true);
+  else
+    this->order(orderId, 0, 0, target, UnitId::None, true);
+  
+  orderToIdle(this);
 }
 
-const u32 Func_OrderToPos = 0x00475260; //AKA orderTarget(); Primarily for use with orderNewUnitToRally(), but may have other uses.
-void CUnit::orderTo(u32 orderId, u16 x, u16 y) {
+//Logically equivalent to function @ 0x00475260
+void CUnit::orderTo(u8 orderId, u16 x, u16 y) {
   assert(this);
-  const u32 x_ = x, y_ = y;
+
+  this->userActionFlags |= 0x1;
+  this->order(orderId, x, y, NULL, UnitId::None, true);
+  orderToIdle(this);
+}
+
+const u32 Func_Order = 0x00474810;
+void CUnit::order(u8 orderId, u16 x, u16 y, const CUnit *target, u16 targetUnitId, bool stopPreviousOrders) {
+  assert(this);
+  Point16 pos;
+  pos.x = x, pos.y = y;
 
   __asm {
     PUSHAD
-    PUSH y_
-    PUSH x_
-    PUSH orderId
-    MOV ESI, this
-    CALL Func_OrderToPos
-    POPAD
+    PUSH targetUnitId
+    PUSH target
+    PUSH pos
+    MOVZX EAX, stopPreviousOrders
+    MOV CL, orderId
+    MOV EDX, this
+    CALL Func_Order
   }
 }
 
@@ -134,6 +149,8 @@ void CUnit::setSecondaryOrder(u8 orderId) {
   this->currentBuildUnit = NULL;
   this->secondaryOrderState = 0;
 }
+
+//-------- End of unit orders --------//
 
 const u32 Func_HasPathToTarget = 0x0049CBB0; //AKA unitHasPathToUnit()
 bool CUnit::hasPathToUnit(const CUnit *target) const {

@@ -9,6 +9,10 @@
 #include "spells/restoration.h"
 #include "spells/optical_flare.h"
 
+#include "spells/parasite.h"
+#include "spells/spawn_broodlings.h"
+#include "spells/ensnare.h"
+#include "spells/plague.h"
 #include "spells/dark_swarm.h"
 
 #include "spells/psi_storm.h"
@@ -164,9 +168,80 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       break;
 
     case UnitId::queen:
+      //Parasite
+      if (isUmsMode(unit->playerId) && scbw::random() % 256 == 1
+          || unit->getMaxEnergy() == unit->energy)
+      {
+        if (canCastSpellOrder(unit, TechId::Parasite, OrderId::CastParasite)) {
+          CUnit *target = findBestParasiteTarget(unit, isUnitBeingAttacked);
+          
+          if (unit->mainOrderId == OrderId::CastParasite
+              && unit->orderTarget.unit == target)
+            return false;
+
+          if (aiCastSpellOrder(unit, target, OrderId::CastParasite, 4))
+            return true;
+
+          return false;
+        }
+        if (isUmsMode(unit->playerId))
+          return false;
+      }
+
+      //Spawn Broodlings
+      if (canCastSpellOrder(unit, TechId::SpawnBroodlings, OrderId::SummonBroodlings)) {
+        CUnit *target = findBestSpawnBroodlingsTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::SummonBroodlings
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::SummonBroodlings)) {
+          unit->order(OrderId::Move, unit->getX(), unit->getY(), NULL, UnitId::None, false);
+          return true;
+        }
+      }
+
+      //Ensnare
+      if ((isUmsMode(unit->playerId) || unit->getMaxEnergy() == unit->energy)
+          && canCastSpellOrder(unit, TechId::Ensnare, OrderId::Ensnare))
+      {
+        CUnit *target = findBestEnsnareTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::Ensnare
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::Ensnare))
+          return true;
+      }
+
       break;
 
     case UnitId::defiler:
+      //Plague
+      if (canCastSpellOrder(unit, TechId::Plague, OrderId::Plague)) {
+        CUnit *target = findBestPlagueTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::Plague
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::Plague))
+          return true;
+      }
+
+      //Dark Swarm
+      if (canCastSpellOrder(unit, TechId::DarkSwarm, OrderId::DarkSwarm)) {
+        CUnit *target = findBestDarkSwarmTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::DarkSwarm
+            && unit->orderTarget.unit == target)
+          return false;
+
+        if (aiCastSpellOrder(unit, target, OrderId::DarkSwarm))
+          return true;
+      }
       break;
 
     case UnitId::high_templar:

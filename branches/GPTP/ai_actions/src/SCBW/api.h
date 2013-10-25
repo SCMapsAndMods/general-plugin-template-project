@@ -122,6 +122,11 @@ void refreshScreen();
 /// Something related to button sets, not completely understood.
 void refreshButtonSet();
 
+/// Generates a pseudorandom number between 0 and 32767, inclusive. This is
+/// identical to the function used internally by StarCraft, and is guaranteed to
+/// generate the same sequence in a replay.
+u16 random();
+
 /// Generates a pseudorandom number between min and max, inclusive. This is
 /// identical to the function used internally by StarCraft, and is guaranteed to
 /// generate the same sequence in a replay.
