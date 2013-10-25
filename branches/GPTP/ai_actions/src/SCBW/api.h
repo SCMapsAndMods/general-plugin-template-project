@@ -70,6 +70,10 @@ CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y);
 /// "remove bunker size check" in FireGraft.
 bool canBeEnteredBy(const CUnit* transport, const CUnit* unit);
 
+/// Checks if @p unit is under a Dark Swarm. This does NOT check whether the
+/// unit is a ground unit or a building.
+bool isUnderDarkSwarm(const CUnit *unit);
+
 /// StarCraft's internal function used to quickly calculate distances between
 /// two points (x1, y1) and (x2, y2).
 /// Warning: This function is inaccurate for long distances.

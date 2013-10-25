@@ -305,6 +305,14 @@ u8 CUnit::getArmorBonus() const {
   return armorBonus;
 }
 
+u8 CUnit::getActiveGroundWeapon() const {
+  assert(this);
+  if (this->id == UnitId::lurker && !(this->status & UnitStatus::Burrowed))
+    return WeaponId::None;
+  else
+    return Unit::GroundWeapon[this->id];
+}
+
 const u32 Func_UpdateSpeed = 0x00454310;
 void CUnit::updateSpeed() {
   assert(this);

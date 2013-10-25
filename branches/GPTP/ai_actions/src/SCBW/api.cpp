@@ -1,5 +1,6 @@
 #include "api.h"
 #include "scbwdata.h"
+#include <SCBW/UnitFinder.h>
 #include <algorithm>
 #include <cassert>
 
@@ -157,6 +158,22 @@ bool canBeEnteredBy(const CUnit* transport, const CUnit* unit) {
   }
 
   return result != 0;
+}
+
+//-------- isUnderDarkSwarm() --------//
+
+class DarkSwarmFinderProc: public UnitFinderCallbackMatchInterface {
+  public:
+    bool match(const CUnit *unit) {
+      return unit->id == UnitId::Spell_DarkSwarm;
+    }
+};
+
+bool isUnderDarkSwarm(const CUnit *unit) {
+  static UnitFinder darkSwarmFinder;
+  static DarkSwarmFinderProc dsFinder;
+  darkSwarmFinder.search(unit->getLeft(), unit->getTop(), unit->getRight(), unit->getBottom());
+  return darkSwarmFinder.getFirst(dsFinder) != NULL;
 }
 
 // Improved code from BWAPI's include/BWAPI/Position.h: getApproxDistance()

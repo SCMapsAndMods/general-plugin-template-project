@@ -85,6 +85,10 @@ struct CUnit {
   /// Returns the bonus armor this unit has (from upgrades).
   u8 getArmorBonus() const;
 
+  /// Returns the unit's ground weapon ID. If the unit is an unburrowed Lurker,
+  /// returns WeaponId::None instead.
+  u8 getActiveGroundWeapon() const;
+
   /// Updates the unit's actual speed. This function should be called after
   /// changing any properties and status effects that affect movement speed.
   void updateSpeed();
