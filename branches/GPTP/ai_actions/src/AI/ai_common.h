@@ -19,6 +19,10 @@ bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit);
 /// Determines whether the given @p playerId is in a UMS map (i.e. campaign mode).
 bool isUmsMode(s8 playerId);
 
+/// Determines if the @p unit is within a region that is not commanded by its
+/// controlling AI. Details are not really understood.
+bool isUnitInUnsafeRegion(const CUnit *unit);
+
 /// Test whether @p castingPlayer can use @p techId on the @p target.
 /// If successful, returns zero. If unsuccessful, returns the index of the
 /// appropriate error message string in stat_txt.tbl.

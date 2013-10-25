@@ -94,7 +94,9 @@ SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 
 SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);
 SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
+
 SCBW_DATA(AI_Main const*, AIScriptController,   0x0068FEE8);
+SCBW_DATA(AiCaptain* const*, AiRegionCaptains,  0x0069A604);
 
 //-------- Internal constants --------//
 

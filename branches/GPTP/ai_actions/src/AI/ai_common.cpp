@@ -72,6 +72,37 @@ bool isUmsMode(s8 playerId) {
   return AIScriptController[playerId].AI_Flags.isUseMapSettings;
 }
 
+//-------- isUnitInSafeRegion() --------//
+
+//Internal use only
+const u32 Func_GetRegionIdAtPosEx = 0x0049C9F0;
+u16 getRegionIdAtPosEx(s32 x, s32 y) {
+  static u16 result;
+
+  __asm {
+    PUSHAD
+    MOV EDI, x
+    MOV ECX, y
+    CALL Func_GetRegionIdAtPosEx
+    MOV result, AX
+    POPAD
+  }
+
+  return result;
+}
+
+//Based on code @ 0x00440BB0
+bool isUnitInUnsafeRegion(const CUnit *unit) {
+  u16 currentRegion = getRegionIdAtPosEx(unit->getX(), unit->getY());
+  AiCaptain *currentAiCaptain = &AiRegionCaptains[unit->playerId][currentRegion];
+  return currentAiCaptain->captainType == 3
+    || currentAiCaptain->unknown_0x1C
+    || currentAiCaptain->unknown_0x20
+    || currentAiCaptain->captainFlags & 0x20;
+}
+
+//-------- getTechUseErrorMessage() --------//
+
 //Internal use only
 const u32 Func_IsInfestable = 0x00402210;
 bool isInfestableCC(const CUnit *unit) {
@@ -148,6 +179,8 @@ u16 getTechUseErrorMessage(const CUnit *target, s8 castingPlayer, int techId) {
 
   return 0;             //No error
 }
+
+//-------- Unit stats shown in-game --------//
 
 int getCurrentHpInGame(const CUnit *unit) {
   return (unit->hitPoints + 255) / 256;

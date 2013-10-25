@@ -275,6 +275,8 @@ struct GuiOverlay {
 
 C_ASSERT(sizeof(GuiOverlay) == 44);
 
+//-------- AI related stuff --------//
+
 struct AI_Main {
   s32 oreCollection;
   s32 gasCollection;
@@ -332,5 +334,34 @@ struct AI_Main {
 };
 
 C_ASSERT(sizeof(AI_Main) == 1256);
+
+struct AiCaptain {
+  u16 region;
+  u16 unknown_0x2;
+  s8  playerId;
+  u8  captainType;
+  u8  unknown_0x6;
+  u8  unknown_0x7;
+  u8  captainFlags;
+  u8  unknown_0x9;
+  u8  unknown_0xA;
+  u8  unknown_0xB;
+  u16 unknown_0xC;
+  u16 unknown_0xE;
+  u16 regionGndStrength;
+  u16 regionAirStrength;
+  u16 fullGndStrength;
+  u16 fullAirStrength;
+  u16 unknown_0x18;
+  u16 unknown_0x1A;
+  u32 unknown_0x1C;
+  u32 unknown_0x20;
+  CUnit *slowestUnit;
+  CUnit *followTarget;
+  u32 unknown_0x2C;
+  void  *town;
+};
+
+C_ASSERT(sizeof(AiCaptain) == 52);
 
 #pragma pack()
