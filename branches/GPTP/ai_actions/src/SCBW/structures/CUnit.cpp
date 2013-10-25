@@ -123,18 +123,21 @@ void CUnit::orderTo(u8 orderId, u16 x, u16 y) {
 const u32 Func_Order = 0x00474810;
 void CUnit::order(u8 orderId, u16 x, u16 y, const CUnit *target, u16 targetUnitId, bool stopPreviousOrders) {
   assert(this);
-  Point16 pos;
+  static Point16 pos;
+  static u32 targetUnitId_;
   pos.x = x, pos.y = y;
+  targetUnitId_ = targetUnitId;
 
   __asm {
     PUSHAD
-    PUSH targetUnitId
+    PUSH targetUnitId_
     PUSH target
     PUSH pos
     MOVZX EAX, stopPreviousOrders
     MOV CL, orderId
     MOV EDX, this
     CALL Func_Order
+    POPAD
   }
 }
 
