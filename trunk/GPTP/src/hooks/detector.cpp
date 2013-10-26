@@ -5,7 +5,8 @@
 namespace hooks {
 
 /// Determines whether this unit can detect cloaked/burrowed units.
-/// This overrides the EXE edit settings for Detectors in FireGraft
+/// This affects CUnit::canDetect().
+/// This overrides the EXE edit settings for Detectors in FireGraft.
 bool unitCanDetectHook(const CUnit *unit) {
   //Default StarCraft behavior
   return Unit::BaseProperty[unit->id] & UnitProperty::Detector
@@ -23,8 +24,8 @@ u32 getCloakedTargetVisibility(const CUnit *unit, const CUnit* target) {
   if (target->status & UnitStatus::IsHallucination)
     return 0;
 
-  if (unitCanDetectHook(unit) && unit != target) {
-    if ((1 << unit->playerId) & target->sprite->visibilityFlags) {
+  if (unit->canDetect() && unit != target) {
+    if (target->sprite->isVisibleTo(unit->playerId)) {
       u32 detectionRange;
 
       if (unit->status & UnitStatus::GroundedBuilding)

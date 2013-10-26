@@ -80,6 +80,8 @@ void CUnit::reduceDefensiveMatrixHp(s32 amount) {
   }
 }
 
+//-------- Unit orders --------//
+
 const u32 Func_RemoveUnit = 0x00475710; //AKA orders_SelfDestructing()
 void CUnit::remove() {
   assert(this);
@@ -92,33 +94,49 @@ void CUnit::remove() {
   }
 }
 
-const u32 Func_OrderToUnit = 0x004752B0; //AKA AssignOrderWithTarget(); Primarily for use with orderNewUnitToRally(), but may have other uses.
-void CUnit::orderTo(u32 orderId, const CUnit *target) {
-  assert(this);
-  assert(target);
+//Helper function
+typedef void (__fastcall *OrderToIdleFunc)(CUnit*);
+OrderToIdleFunc orderToIdle = (OrderToIdleFunc) 0x00475000;
 
-  __asm {
-    PUSHAD
-    PUSH orderId
-    MOV EAX, target
-    MOV ESI, this
-    CALL Func_OrderToUnit
-    POPAD
-  }
+//Logically equivalent to function @ 0x004752B0
+void CUnit::orderTo(u8 orderId, const CUnit *target) {
+  assert(this);
+
+  this->userActionFlags |= 0x1;
+  if (target)
+    this->order(orderId, target->getX(), target->getY(), target, UnitId::None, true);
+  else
+    this->order(orderId, 0, 0, target, UnitId::None, true);
+  
+  orderToIdle(this);
 }
 
-const u32 Func_OrderToPos = 0x00475260; //AKA orderTarget(); Primarily for use with orderNewUnitToRally(), but may have other uses.
-void CUnit::orderTo(u32 orderId, u16 x, u16 y) {
+//Logically equivalent to function @ 0x00475260
+void CUnit::orderTo(u8 orderId, u16 x, u16 y) {
   assert(this);
-  const u32 x_ = x, y_ = y;
+
+  this->userActionFlags |= 0x1;
+  this->order(orderId, x, y, NULL, UnitId::None, true);
+  orderToIdle(this);
+}
+
+const u32 Func_Order = 0x00474810;
+void CUnit::order(u8 orderId, u16 x, u16 y, const CUnit *target, u16 targetUnitId, bool stopPreviousOrders) {
+  assert(this);
+  static Point16 pos;
+  static u32 targetUnitId_;
+  pos.x = x, pos.y = y;
+  targetUnitId_ = targetUnitId;
 
   __asm {
     PUSHAD
-    PUSH y_
-    PUSH x_
-    PUSH orderId
-    MOV ESI, this
-    CALL Func_OrderToPos
+    PUSH targetUnitId_
+    PUSH target
+    PUSH pos
+    MOVZX EAX, stopPreviousOrders
+    MOV CL, orderId
+    MOV EDX, this
+    CALL Func_Order
     POPAD
   }
 }
@@ -134,6 +152,8 @@ void CUnit::setSecondaryOrder(u8 orderId) {
   this->currentBuildUnit = NULL;
   this->secondaryOrderState = 0;
 }
+
+//-------- End of unit orders --------//
 
 const u32 Func_HasPathToTarget = 0x0049CBB0; //AKA unitHasPathToUnit()
 bool CUnit::hasPathToUnit(const CUnit *target) const {
@@ -190,6 +210,22 @@ bool CUnit::canUseTech(u8 techId, s8 playerId) const {
   return result != 0;
 }
 
+extern const u32 Func_CanDetect = 0x00403430;
+bool CUnit::canDetect() const {
+  assert(this);
+  static u32 result;
+
+  __asm {
+    PUSHAD
+    MOV EAX, this
+    CALL Func_CanDetect
+    MOV result, EAX
+    POPAD
+  }
+
+  return result != 0;
+}
+
 u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   using Unit::BaseProperty;
   assert(this);
@@ -234,7 +270,7 @@ u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
   return maxWeaponRange;
 }
 
-const u32 Func_GetSightRange = 0x004E5B40;
+extern const u32 Func_GetSightRange = 0x004E5B40;
 u32 CUnit::getSightRange(bool applyStatusEffects) const {
   assert(this);
 
@@ -252,7 +288,7 @@ u32 CUnit::getSightRange(bool applyStatusEffects) const {
   return sightRange;
 }
 
-const u32 Func_GetMaxEnergy = 0x00491870;
+extern const u32 Func_GetMaxEnergy = 0x00491870;
 u16 CUnit::getMaxEnergy() const {
   assert(this);
   
@@ -273,7 +309,7 @@ u8 CUnit::getArmor() const {
   return Unit::ArmorAmount[this->id] + this->getArmorBonus();
 }
 
-const u32 Func_GetArmorBonus = 0x00453FC0;
+extern const u32 Func_GetArmorBonus = 0x00453FC0;
 u8 CUnit::getArmorBonus() const {
   assert(this);
 
@@ -287,6 +323,14 @@ u8 CUnit::getArmorBonus() const {
   }
 
   return armorBonus;
+}
+
+u8 CUnit::getActiveGroundWeapon() const {
+  assert(this);
+  if (this->id == UnitId::lurker && !(this->status & UnitStatus::Burrowed))
+    return WeaponId::None;
+  else
+    return Unit::GroundWeapon[this->id];
 }
 
 const u32 Func_UpdateSpeed = 0x00454310;
@@ -428,4 +472,32 @@ s8 CUnit::getLastOwnerId() const {
     return this->sprite->playerId;
   else
     return this->playerId;
+}
+
+bool CUnit::isVisibleTo(s8 playerId) const {
+  assert(this);
+  return (this->visibilityStatus & (1 << playerId)) != 0;
+}
+
+CUnit* CUnit::getLoadedUnit(int index) const {
+  assert(0 <= index && index < 8);
+
+  CUnit *loadedUnit = CUnit::getFromIndex(this->loadedUnit[index].index);
+  if (loadedUnit && loadedUnit->sprite
+      && !(loadedUnit->mainOrderId == OrderId::Die && loadedUnit->mainOrderState == 1)
+      && loadedUnit->targetOrderSpecial == this->loadedUnit[index].unitId)
+    return loadedUnit;
+
+  return NULL;
+}
+
+//Logically equivalent to function @ 0x004E7110
+bool CUnit::hasLoadedUnit() const {
+  assert(this);
+
+  for (int i = 0; i < 8; ++i)
+    if (!getLoadedUnit(i))
+      return true;
+
+  return false;
 }

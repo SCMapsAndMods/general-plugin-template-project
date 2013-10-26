@@ -64,25 +64,9 @@ void doIrradiateDamageHook(CUnit *unit) {
     const CUnit *transport = unit->connectedUnit;
     if (transport != NULL) {
       for (int i = 0; i < Unit::SpaceProvided[transport->id]; ++i) {
-        CUnit *loadedUnit = CUnit::getFromIndex(transport->loadedUnit[i].index);
-
-        //Check if unit is valid
-        if (loadedUnit == NULL)
-          continue;
-
-        //Check if unit actually has a sprite
-        if (loadedUnit->sprite == NULL)
-          continue;
-
-        //Check if unit is not already dead
-        if (loadedUnit->mainOrderId == OrderId::Die && loadedUnit->mainOrderState == 1)
-          continue;
-
-        //Check loaded unit ID
-        if (loadedUnit->targetOrderSpecial != transport->loadedUnit[i].unitId)
-          continue;
-
-        irradiateProc.proc(loadedUnit);
+        CUnit *loadedUnit = transport->getLoadedUnit(i);
+        if (loadedUnit)
+          irradiateProc.proc(loadedUnit);
       }
     }
   }

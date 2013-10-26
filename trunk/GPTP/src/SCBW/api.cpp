@@ -1,5 +1,6 @@
 #include "api.h"
 #include "scbwdata.h"
+#include <SCBW/UnitFinder.h>
 #include <algorithm>
 #include <cassert>
 
@@ -70,6 +71,46 @@ u32 getUnitOverlayAdjustment(const CUnit* const unit) {
     return 0;
 }
 
+//-------- Weapon related --------//
+
+//Identical to function @ 0x00475CE0
+bool canWeaponTargetUnit(u8 weaponId, const CUnit *target, const CUnit *attacker) {
+  if (weaponId >= WEAPON_TYPE_COUNT)
+    return false;
+
+  if (target == NULL)
+    return Weapon::TargetFlags[weaponId].terrain;
+
+  if (target->status & UnitStatus::Invincible)
+    return false;
+
+  const TargetFlag tf = Weapon::TargetFlags[weaponId];
+  const u32 targetProps = Unit::BaseProperty[target->id];
+
+  if ((target->status & UnitStatus::InAir) ? !tf.air : !tf.ground)
+    return false;
+
+  if (tf.mechanical && !(targetProps & UnitProperty::Mechanical))
+    return false;
+
+  if (tf.organic && !(targetProps & UnitProperty::Organic))
+    return false;
+
+  if (tf.nonBuilding && (targetProps & UnitProperty::Building))
+    return false;
+
+  if (tf.nonRobotic && (targetProps & UnitProperty::RoboticUnit))
+    return false;
+
+  if (tf.orgOrMech && !(targetProps & (UnitProperty::Organic | UnitProperty::Mechanical)))
+    return false;
+
+  if (tf.playerOwned && target->playerId != attacker->playerId)
+    return false;
+
+  return true;
+}
+
 const u32 Func_FireUnitWeapon = 0x00479C90;
 void fireUnitWeapon(CUnit* unit, u8 weaponId) {
   if (weaponId >= WEAPON_TYPE_COUNT) return;
@@ -117,6 +158,22 @@ bool canBeEnteredBy(const CUnit* transport, const CUnit* unit) {
   }
 
   return result != 0;
+}
+
+//-------- isUnderDarkSwarm() --------//
+
+class DarkSwarmFinderProc: public UnitFinderCallbackMatchInterface {
+  public:
+    bool match(const CUnit *unit) {
+      return unit->id == UnitId::Spell_DarkSwarm;
+    }
+};
+
+bool isUnderDarkSwarm(const CUnit *unit) {
+  static UnitFinder darkSwarmFinder;
+  static DarkSwarmFinderProc dsFinder;
+  darkSwarmFinder.search(unit->getLeft(), unit->getTop(), unit->getRight(), unit->getBottom());
+  return darkSwarmFinder.getFirst(dsFinder) != NULL;
 }
 
 // Improved code from BWAPI's include/BWAPI/Position.h: getApproxDistance()
@@ -192,15 +249,18 @@ void refreshButtonSet() {
   *unknown2 = 0;
 }
 
-u32 randBetween(u32 min, u32 max) {
-  assert(min <= max);
+u16 random() {
   if (*IS_IN_GAME_LOOP) {
     *lastRandomNumber = 22695477 * (*lastRandomNumber) + 1;
-    u32 randomNumber = (*lastRandomNumber >> 16) % 32768;  //Make a number between 0 and 32767
-    return min + ((max - min + 1) * randomNumber >> 15);
+    return (*lastRandomNumber >> 16) % 32768;  //Make a number between 0 and 32767
   }
   else
-    return min;
+    return 0;
+}
+
+u32 randBetween(u32 min, u32 max) {
+  assert(min <= max);
+  return min + ((max - min + 1) * random() >> 15);
 }
 
 } //scbw

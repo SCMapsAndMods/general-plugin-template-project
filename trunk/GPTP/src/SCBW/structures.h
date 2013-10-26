@@ -3,6 +3,17 @@
 //Special thanks to Heinermann
 
 #pragma once
+
+const int PLAYER_COUNT        = 12;
+const int UNIT_ARRAY_LENGTH   = 1700;
+const int BULLET_ARRAY_LENGTH = 100;
+const int SPRITE_ARRAY_LENGTH = 2500;
+const int UNIT_TYPE_COUNT     = 228;
+const int TECH_TYPE_COUNT     = 44;
+const int UPGRADE_TYPE_COUNT  = 61;
+const int WEAPON_TYPE_COUNT   = 130;
+const int FLINGY_TYPE_COUNT   = 209;
+
 #include "structures/CUnit.h"
 #include "structures/CBullet.h"
 #include "structures/CSprite.h"
@@ -156,6 +167,8 @@ struct ACTION {
 
 typedef Bool32 (__fastcall *ActionPointer)(ACTION*);
 
+//-------- Flag structures --------//
+
 //Based on BWAPI's Offsets.h
 struct ActiveTile {
   u8 visibilityFlags;
@@ -178,17 +191,6 @@ struct ActiveTile {
 
 C_ASSERT(sizeof(ActiveTile) == 4);
 
-
-struct UnitFinderData {
-  s32 unitIndex;
-  s32 position;
-  bool operator < (const UnitFinderData& rhs) const {
-    return this->position < rhs.position;
-  }
-};
-
-C_ASSERT(sizeof(UnitFinderData) == 8);
-
 struct GroupFlag {
   u8 isZerg         : 1;
   u8 isTerran       : 1;
@@ -201,6 +203,32 @@ struct GroupFlag {
 };
 
 C_ASSERT(sizeof(GroupFlag) == 1);
+
+struct TargetFlag {
+  u16 air         : 1;
+  u16 ground      : 1;
+  u16 mechanical  : 1;
+  u16 organic     : 1;
+  u16 nonBuilding : 1;
+  u16 nonRobotic  : 1;
+  u16 terrain     : 1;
+  u16 orgOrMech   : 1;
+  u16 playerOwned : 1;
+};
+
+C_ASSERT(sizeof(TargetFlag) == 2);
+
+//-------- End of flag structures --------//
+
+struct UnitFinderData {
+  s32 unitIndex;
+  s32 position;
+  bool operator < (const UnitFinderData& rhs) const {
+    return this->position < rhs.position;
+  }
+};
+
+C_ASSERT(sizeof(UnitFinderData) == 8);
 
 struct Bounds {
   u16 left;
@@ -246,5 +274,94 @@ struct GuiOverlay {
 };
 
 C_ASSERT(sizeof(GuiOverlay) == 44);
+
+//-------- AI related stuff --------//
+
+struct AI_Main {
+  s32 oreCollection;
+  s32 gasCollection;
+  s32 supplyCollection;
+  s32 ore;
+  s32 gas;
+  s32 supply;
+  u8  unknown_0x18;
+  u8  newBuildType;
+  u16 nextBuildType;
+  void  *pTownMain;
+  u32 unknown_0x20[124];
+  u8  unknown_0x210;
+  u8  builtSomething;
+  u8  AI_NukeRate;
+  u8  AI_Attacks;
+  u32 AI_LastNukeTime;
+  struct {
+    u16 isSecureFinished  : 1;
+    u16 isTownStarted     : 1;
+    u16 isDefaultBuildOff : 1;
+    u16 isTransportsOff   : 1;
+    u16 isFarmsNotimingOn : 1;
+    u16 isUseMapSettings  : 1;
+    u16 flag_0x40         : 1;
+    u16 spreadCreep       : 1;
+    u16 flag_0x100        : 2;
+    u16 bUpgradesFinished : 1;
+    u16 bTargetExpansion  : 1;
+  } AI_Flags;
+  u16 AI_PanicBlock;
+  u16 AI_MaxForce;
+  u16 AI_AttackGroup;
+  u16 waitForceCount;
+  u8  AI_DefaultMin;
+  u8  unknown_0x223;
+  u32 lastIndividualUpdateTime;
+  u32 AI_AttackTimer;
+  u8  unknown_0x22C;
+  u8  spellcasterTimer;
+  u8  attackManagerTimer;
+  u8  AI_IfDif;
+  u16 AI_AttackGroups[64];
+  u32 AI_DefenseBuild_GG[10];
+  u32 AI_DefenseBuild_AG[10];
+  u32 AI_DefenseBuild_GA[10];
+  u32 AI_DefenseBuild_AA[10];
+  u32 AI_DefenseUse_GG[10];
+  u32 AI_DefenseUse_AG[10];
+  u32 AI_DefenseUse_GA[10];
+  u32 AI_DefenseUse_AA[10];
+  u8  AI_DefineMax[UNIT_TYPE_COUNT];
+  CUnit *mainMedic;
+  Box32 genCmdLoc;
+};
+
+C_ASSERT(sizeof(AI_Main) == 1256);
+
+struct AiCaptain {
+  u16 region;
+  u16 unknown_0x2;
+  s8  playerId;
+  u8  captainType;
+  u8  unknown_0x6;
+  u8  unknown_0x7;
+  u8  captainFlags;
+  u8  unknown_0x9;
+  u8  unknown_0xA;
+  u8  unknown_0xB;
+  u16 unknown_0xC;
+  u16 unknown_0xE;
+  u16 regionGndStrength;
+  u16 regionAirStrength;
+  u16 fullGndStrength;
+  u16 fullAirStrength;
+  u16 unknown_0x18;
+  u16 unknown_0x1A;
+  u32 unknown_0x1C;
+  u32 unknown_0x20;
+  CUnit *slowestUnit;
+  CUnit *followTarget;
+  CUnit *mainMedic;
+  void  *town;
+};
+
+C_ASSERT(sizeof(AiCaptain) == 52);
 
 #pragma pack()
