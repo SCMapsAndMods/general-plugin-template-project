@@ -37,10 +37,13 @@ struct CUnit {
   void remove();
 
   /// Issue the @p order to the unit, using the given @p target unit.
-  void orderTo(u32 orderId, const CUnit *target);
+  void orderTo(u8 orderId, const CUnit *target);
 
   /// Issue the @p order to the unit, using the given position as the target.
-  void orderTo(u32 orderId, u16 x, u16 y);
+  void orderTo(u8 orderId, u16 x, u16 y);
+
+  /// Issues a new order to the unit.
+  void order(u8 orderId, u16 x, u16 y, const CUnit *target, u16 targetUnitId, bool stopPreviousOrders);
 
   /// Used by several hooks.
   void setSecondaryOrder(u8 orderId);
@@ -59,6 +62,9 @@ struct CUnit {
   ///  * If the unit has enough energy (or energy cheat is enabled)
   ///  * If the unit is not stunned / is a hallucination / is being built
   bool canUseTech(u8 techId, s8 playerId) const;
+
+  /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
+  bool canDetect() const;
 
   /// Returns the distance between this unit and the @p target, taking unit
   /// collision size in units.dat into account.
@@ -81,6 +87,10 @@ struct CUnit {
 
   /// Returns the bonus armor this unit has (from upgrades).
   u8 getArmorBonus() const;
+
+  /// Returns the unit's ground weapon ID. If the unit is an unburrowed Lurker,
+  /// returns WeaponId::None instead.
+  u8 getActiveGroundWeapon() const;
 
   /// Updates the unit's actual speed. This function should be called after
   /// changing any properties and status effects that affect movement speed.
@@ -129,6 +139,16 @@ struct CUnit {
   /// this returns the correct player ID (instead of 11).
   s8 getLastOwnerId() const;
 
+  /// Checks whether this unit can be seen by @playerId (i.e. not covered by the
+  /// fog-of-war and is detectable).
+  bool isVisibleTo(s8 playerId) const;
+
+  /// Returns the loaded unit at @p index (value between 0-7). If no unit is
+  /// loaded at the slot, returns NULL instead.
+  CUnit* getLoadedUnit(int index) const;
+
+  /// Checks if this unit has other units loaded inside.
+  bool hasLoadedUnit() const;
 
 ////////////////////////////////////////////////////////////////
 // Actual data structure -- member variables and pointers
@@ -197,7 +217,7 @@ struct CUnit {
   u8        killCount;
   u8        lastAttackingPlayer;// the player that last attacked this unit
   u8        secondaryOrderTimer;
-  u8        aiActionFlag;       // Used internally by the AI
+  u8        aiActionFlags;      // Used internally by the AI
   u8        userActionFlags;    // some flags that change when the user interacts with the unit
                                 // 2 = issued an order, 3 = interrupted an order, 4 = hide self before death
   u16       currentButtonSet;   // The u16 is a guess, used to be u8

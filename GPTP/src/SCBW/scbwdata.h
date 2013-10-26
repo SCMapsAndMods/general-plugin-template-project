@@ -6,21 +6,9 @@
 #pragma once
 #include "../definitions.h"
 #include "structures.h"
-
 #pragma pack(1)
 
 #define SCBW_DATA(type, name, offset) type const name = (type)offset;
-
-const int PLAYER_COUNT        = 12;
-const int UNIT_ARRAY_LENGTH   = 1700;
-const int BULLET_ARRAY_LENGTH = 100;
-const int SPRITE_ARRAY_LENGTH = 2500;
-const int UNIT_TYPE_COUNT     = 228;
-const int TECH_TYPE_COUNT     = 44;
-const int UPGRADE_TYPE_COUNT  = 61;
-const int WEAPON_TYPE_COUNT   = 130;
-const int FLINGY_TYPE_COUNT   = 209;
-
 
 SCBW_DATA(CUnit*,       unitTable,    0x0059CCA8);
 SCBW_DATA(CBullet*,     bulletTable,  0x0064B2E8);
@@ -107,6 +95,9 @@ SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);
 SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
 
+SCBW_DATA(AI_Main*,       AIScriptController,   0x0068FEE8);
+SCBW_DATA(AiCaptain* const*, AiRegionCaptains,  0x0069A604);
+
 //-------- Internal constants --------//
 
 SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);
@@ -122,6 +113,7 @@ SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,      0x006D11C8);
 SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);
 SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
 SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING,  0x00640880);
+SCBW_DATA(const u32*,     elapsedTime,          0x0058D6F8);  //Elapsed game time in seconds
 
 //-------- DAT Files --------//
 
@@ -147,6 +139,12 @@ SCBW_DATA(u16*, MaxShieldPoints,    unitsDat[7].address);
 SCBW_DATA(s32*, MaxHitPoints,       unitsDat[8].address);
 SCBW_DATA(u8*,  Elevation,          unitsDat[9].address);
 SCBW_DATA(u8*,  MovementFlags,      unitsDat[10].address);
+SCBW_DATA(u8*,  Rank,               unitsDat[11].address);
+SCBW_DATA(u8*,  ComputerIdleOrder,  unitsDat[12].address);
+SCBW_DATA(u8*,  HumanIdleOrder,     unitsDat[13].address);
+SCBW_DATA(u8*,  ReturnToIdleOrder,  unitsDat[14].address);
+SCBW_DATA(u8*,  AttackUnitOrder,    unitsDat[15].address);
+SCBW_DATA(u8*,  AttackMoveOrder,    unitsDat[16].address);
 SCBW_DATA(u8*,  GroundWeapon,       unitsDat[17].address);
 SCBW_DATA(u8*,  MaxGroundHits,      unitsDat[18].address);
 SCBW_DATA(u8*,  AirWeapon,          unitsDat[19].address);
@@ -188,7 +186,7 @@ SCBW_DATA(const DatLoad*, weaponsDat, 0x00513868);
 
 SCBW_DATA(u16*, Label,              weaponsDat[0].address);
 SCBW_DATA(u32*, Graphic,            weaponsDat[1].address);
-SCBW_DATA(u16*, TargetFlags,        weaponsDat[3].address);
+SCBW_DATA(TargetFlag*, TargetFlags, weaponsDat[3].address);
 SCBW_DATA(u32*, MinRange,           weaponsDat[4].address);
 SCBW_DATA(u32*, MaxRange,           weaponsDat[5].address);
 SCBW_DATA(u8*,  DamageUpgrade,      weaponsDat[6].address);
@@ -231,6 +229,14 @@ SCBW_DATA(u16*, GasCost,            techdataDat[1].address);
 SCBW_DATA(u16*, TimeCost,           techdataDat[2].address);
 SCBW_DATA(u16*, EnergyCost,         techdataDat[3].address);
 SCBW_DATA(u16*, Label,              techdataDat[7].address);
+}
+
+namespace Order {
+SCBW_DATA(const DatLoad*, ordersDat, 0x00513EC8);
+
+SCBW_DATA(u16*, Label,              ordersDat[0].address);
+SCBW_DATA(u8*,  UseWeaponTargeting, ordersDat[1].address);
+SCBW_DATA(u8*,  TechUsed,           ordersDat[14].address);
 }
 
 

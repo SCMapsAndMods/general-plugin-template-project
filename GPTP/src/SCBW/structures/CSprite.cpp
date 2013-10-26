@@ -180,3 +180,11 @@ bool CSprite::hasOverlay(u16 imageId) const {
 
   return false;
 }
+
+//-------- Other --------//
+
+bool CSprite::isVisibleTo(s8 playerId) const {
+  assert(this);
+  return (this->visibilityFlags & (1 << playerId)) != 0;
+}
+

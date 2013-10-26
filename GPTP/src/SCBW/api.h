@@ -31,6 +31,15 @@ const char* getStatTxtTblString(u16 index);
 /// effects, such as Ensnare, Plague, and Defensive Matrix.
 u32 getUnitOverlayAdjustment(const CUnit* const unit);
 
+/// Checks weapons.dat targeting flags to see if the @p target can be hit by the
+/// @p weapon.
+///
+/// @param  weaponId  If this is an invalid weapons.dat ID, returns false.
+/// @param  target    If NULL, the function checks whether the weapon can target
+///                   a position on the ground. If @p target is invincible, the
+///                   function returns false.
+bool canWeaponTargetUnit(u8 weaponId, const CUnit *target = NULL, const CUnit *attacker = NULL);
+
 /// Makes the unit use the specified weapon to attack its current target unit in
 /// the CUnit::orderTarget member. This does not affect the unit's weapon
 /// cooldown. The spawned weapon sprite obeys the weapon behavior properties in
@@ -60,6 +69,10 @@ CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y);
 /// "change bunker size check to organic flag check" and
 /// "remove bunker size check" in FireGraft.
 bool canBeEnteredBy(const CUnit* transport, const CUnit* unit);
+
+/// Checks if @p unit is under a Dark Swarm. This does NOT check whether the
+/// unit is a ground unit or a building.
+bool isUnderDarkSwarm(const CUnit *unit);
 
 /// StarCraft's internal function used to quickly calculate distances between
 /// two points (x1, y1) and (x2, y2).
@@ -108,6 +121,11 @@ void refreshScreen();
 
 /// Something related to button sets, not completely understood.
 void refreshButtonSet();
+
+/// Generates a pseudorandom number between 0 and 32767, inclusive. This is
+/// identical to the function used internally by StarCraft, and is guaranteed to
+/// generate the same sequence in a replay.
+u16 random();
 
 /// Generates a pseudorandom number between min and max, inclusive. This is
 /// identical to the function used internally by StarCraft, and is guaranteed to

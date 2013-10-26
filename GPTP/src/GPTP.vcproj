@@ -40,6 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GPTP_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,6 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GPTP_EXPORTS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
@@ -176,6 +178,28 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\AI\ai_common.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath=".\SCBW\api.cpp"
 				>
@@ -257,6 +281,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\dark_swarm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\defensive_matrix.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\detector.cpp"
 				>
 			</File>
@@ -265,7 +297,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\disruption_web.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\draw_hook.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\emp_shockwave.cpp"
 				>
 			</File>
 			<File
@@ -274,6 +314,14 @@
 			</File>
 			<File
 				RelativePath=".\hooks\energy_regeneration_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\ensnare.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\feedback.cpp"
 				>
 			</File>
 			<File
@@ -297,6 +345,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\hallucination.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\harvest.cpp"
 				>
 			</File>
@@ -313,6 +365,28 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\irradiate.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\hooks\irradiate.cpp"
 				>
 			</File>
@@ -321,11 +395,39 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\launch_nuke.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\lockdown.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\maelstrom.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\max_unit_energy.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\hooks\max_unit_energy_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\mind_control.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\optical_flare.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\parasite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\plague.cpp"
 				>
 			</File>
 			<File
@@ -367,6 +469,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\psi_storm.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\rally_point.cpp"
 				>
 			</File>
@@ -375,11 +481,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\recall.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\recharge_shields.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\hooks\recharge_shields_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\restoration.cpp"
 				>
 			</File>
 			<File
@@ -395,11 +509,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\spawn_broodlings.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spellcasting.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spellcasting_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\spider_mine.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\hooks\spider_mine_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\stasis_field.cpp"
 				>
 			</File>
 			<File
@@ -466,12 +596,20 @@
 				RelativePath=".\hooks\weapon_range_inject.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\AI\spells\yamato_gun.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="헤더 파일"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\AI\ai_common.h"
+				>
+			</File>
 			<File
 				RelativePath=".\SCBW\api.h"
 				>
@@ -537,6 +675,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\dark_swarm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\defensive_matrix.h"
+				>
+			</File>
+			<File
 				RelativePath=".\definitions.h"
 				>
 			</File>
@@ -545,11 +691,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\disruption_web.h"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\draw_hook.h"
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\emp_shockwave.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\energy_regeneration.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\ensnare.h"
 				>
 			</File>
 			<File
@@ -558,6 +716,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\ExtendSightLimit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\feedback.h"
 				>
 			</File>
 			<File
@@ -581,6 +743,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\hallucination.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\harvest.h"
 				>
 			</File>
@@ -597,7 +763,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\irradiate.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\launch_nuke.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SCBW\structures\Layer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\lockdown.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\maelstrom.h"
 				>
 			</File>
 			<File
@@ -605,11 +787,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\mind_control.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MPQDraftPlugin.h"
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\optical_flare.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SCBW\enumerations\OrderId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\parasite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\plague.h"
 				>
 			</File>
 			<File
@@ -621,11 +819,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\psi_storm.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\rally_point.h"
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\recall.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\recharge_shields.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\restoration.h"
 				>
 			</File>
 			<File
@@ -641,7 +851,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AI\spells\spawn_broodlings.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spellcasting.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\spider_mine.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\stasis_field.h"
 				>
 			</File>
 			<File
@@ -706,6 +928,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\WeaponId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\AI\spells\yamato_gun.h"
 				>
 			</File>
 		</Filter>

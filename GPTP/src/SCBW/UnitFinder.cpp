@@ -25,7 +25,7 @@ CUnit* UnitFinder::getUnit(int index) const {
 // The heart and core of StarCraft's unit search engine.
 // Based on BWAPI's Shared/Templates.h
 void UnitFinder::search(int left, int top, int right, int bottom) {
-  u32 finderFlags[UNIT_ARRAY_LENGTH] = {0};
+  u8 finderFlags[UNIT_ARRAY_LENGTH + 1] = {0};
 
   int r = right, b = bottom;
   const bool isWidthExtended  = right - left - 1 < *MAX_UNIT_WIDTH;
@@ -59,63 +59,34 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
 
   // Iterate the X entries of the finder
   for (UnitFinderData *px = pLeft; px < pRight; ++px) {
-    const int actualUnitIndex = px->unitIndex - 1;
-    if (finderFlags[actualUnitIndex] == 0) {
-      if (isWidthExtended) {  // If width is small, check unit bounds
-        CUnit *unit = &unitTable[actualUnitIndex];
-        if (unit->getLeft() <= right)
-          finderFlags[actualUnitIndex] = 1;
-      }
-      else
-        finderFlags[actualUnitIndex] = 1;
+    if (finderFlags[px->unitIndex] == 0) {
+      // If width is small, check unit bounds
+      if (!isWidthExtended
+          || CUnit::getFromIndex(px->unitIndex)->getLeft() <= right)
+        finderFlags[px->unitIndex] = 1;
     }
   }
 
   // Iterate the Y entries of the finder
   this->unitCount = 0;
   for (UnitFinderData *py = pTop; py < pBottom; ++py) {
-    const int actualUnitIndex = py->unitIndex - 1;
-    //if (finderFlags[actualUnitIndex] == 1) {
-    //  if (isHeightExtended) { // If height is small, check unit bounds
-    //    CUnit *unit = &unitTable[actualUnitIndex];
-    //    if (unit->getTop() <= bottom) {
-    //      finderFlags[actualUnitIndex] = 2;
-    //    }
-    //  }
-    //  else
-    //    finderFlags[actualUnitIndex] = 2;
-    //}
-    if (finderFlags[actualUnitIndex] == 1) {
-      CUnit *unit = &unitTable[actualUnitIndex];
+    if (finderFlags[py->unitIndex] == 1) {
       // If height is small, check unit bounds
-      if (!isHeightExtended || unit->getTop() <= bottom)
-        finderFlags[actualUnitIndex] = 2;
-        //this->units[this->unitCount++] = unit;
+      if (!isHeightExtended
+          || CUnit::getFromIndex(py->unitIndex)->getTop() <= bottom)
+        finderFlags[py->unitIndex] = 2;
     }
   }
 
   // Final iteration
   for (UnitFinderData *px = pLeft; px < pRight; ++px) {
-    const int actualUnitIndex = px->unitIndex - 1;
-    if (finderFlags[actualUnitIndex] == 2) {
-      CUnit *unit = &unitTable[actualUnitIndex];
+    if (finderFlags[px->unitIndex] == 2) {
+      CUnit *unit = CUnit::getFromIndex(px->unitIndex);
       if (unit && unit->mainOrderId)
         this->units[this->unitCount++] = unit;
     }
-    finderFlags[actualUnitIndex] = 0; //Prevent duplicates
+    finderFlags[px->unitIndex] = 0; //Prevent duplicates
   }
-
-  //int unitsFoundCount = 0;
-  //for (UnitFinderData *px = pLeft; px < pRight; ++px) {
-  //  const int actualUnitIndex = px->unitIndex - 1;
-  //  if (finderFlags[actualUnitIndex] == 2) {
-  //    CUnit *unit = &unitTable[actualUnitIndex];
-  //    if (unit && unit->mainOrderId)
-  //      unitsFound.units[unitsFoundCount++] = unit;
-  //  }
-  //}
-
-  //unitsFound.count = unitsFoundCount;
 }
 
 void UnitFinder::forEach(scbw::UnitFinderCallbackProcInterface &callback) const {
@@ -262,6 +233,10 @@ CUnit* UnitFinder::getNearest(int x, int y, int left, int top, int right, int bo
   } while (canContinue);
 
   return bestUnit;
+}
+
+CUnit* UnitFinder::getNearest(int x, int y, UnitFinderCallbackMatchInterface &callback) {
+  return getNearest(x, y, 0, 0, mapTileSize->width * 32, mapTileSize->height * 32, callback);
 }
 
 } //scbw

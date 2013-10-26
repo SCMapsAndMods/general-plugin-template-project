@@ -62,6 +62,11 @@ class UnitFinder {
     /// This does NOT take unit size into account when calculating distance.
     static CUnit* getNearest(int x, int y, int left, int top, int right, int bottom,
                              UnitFinderCallbackMatchInterface &callback);
+    
+    /// Returns the unit nearest to (x, y) for which callback.match() returns
+    /// true, searching the entire map. If there are no matches, returns NULL.
+    /// This does NOT take unit size into account when calculating distance.
+    static CUnit* getNearest(int x, int y, UnitFinderCallbackMatchInterface &callback);
 
   private:
     int unitCount;
