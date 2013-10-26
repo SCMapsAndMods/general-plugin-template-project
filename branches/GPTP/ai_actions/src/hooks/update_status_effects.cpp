@@ -80,6 +80,7 @@ void updateStatusEffectsHook(CUnit *unit) {
   if (unit->isUnderStorm)
     unit->isUnderStorm--;
 
+  u8 previousAcidSporeCount = unit->acidSporeCount;
   for (int i = 0; i <= 8; ++i) {
     if (unit->acidSporeTime[i]) {
       unit->acidSporeTime[i]--;
@@ -96,7 +97,7 @@ void updateStatusEffectsHook(CUnit *unit) {
       unit->sprite->createTopOverlay(acidOverlayId);
     }
   }
-  else if (unit->acidSporeCount) {
+  else if (previousAcidSporeCount) {
     unit->removeOverlay(ImageId::AcidSpores_1_Overlay_Small, ImageId::AcidSpores_6_9_Overlay_Large);
   }
 }
