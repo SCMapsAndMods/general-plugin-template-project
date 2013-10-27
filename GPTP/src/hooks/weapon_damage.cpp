@@ -26,13 +26,13 @@ struct {
 namespace hooks {
 
 /// Hooks into the CUnit::damageWith() function.
-void damageWithHook(s32     damage,
-                    CUnit*  target,
-                    u8      weaponId,
-                    CUnit*  attacker,
-                    s8      attackingPlayer,
-                    s8      direction,
-                    u8      dmgDivisor) {
+void weaponDamageHook(s32     damage,
+                      CUnit*  target,
+                      u8      weaponId,
+                      CUnit*  attacker,
+                      s8      attackingPlayer,
+                      s8      direction,
+                      u8      dmgDivisor) {
   //Default StarCraft behavior
   using scbw::isCheatEnabled;
   using CheatFlags::PowerOverwhelming;

@@ -50,7 +50,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   hooks::injectConsumeHooks();
 
-  hooks::injectDamageWithHook();
   hooks::injectDetectorHooks();
 
   hooks::injectEnergyRegenerationHook();
@@ -74,7 +73,8 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectUpdateStatusEffects();
   hooks::injectUpdateUnitTimers();
 
-  hooks::injectWeaponCooldownHook();  
+  hooks::injectWeaponCooldownHook();
+  hooks::injectWeaponDamageHook();
   hooks::injectWeaponRangeHooks();
 
   hooks::injectUnitDestructorSpecial();
