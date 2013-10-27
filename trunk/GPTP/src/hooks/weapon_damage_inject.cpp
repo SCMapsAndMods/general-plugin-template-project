@@ -1,12 +1,12 @@
 #include "weapon_damage.h"
 #include "../hook_tools.h"
 
-extern const u32 Func_DamageWith; //Defined in CUnit.cpp
+extern const u32 Func_DoWeaponDamage; //Defined in CUnit.cpp
 
 namespace {
 
 //Inject with JmpPatch
-void __declspec(naked) damageWithWrapper() {
+void __declspec(naked) weaponDamageWrapper() {
   static CUnit *target, *attacker;
   static s32 damage;
   static u8 weaponId, damageDivisor;
@@ -29,8 +29,8 @@ void __declspec(naked) damageWithWrapper() {
     MOV attackingPlayer, BL
   }
 
-  hooks::damageWithHook(damage, target, weaponId, attacker, attackingPlayer,
-                        direction, damageDivisor);
+  hooks::weaponDamageHook(damage, target, weaponId, attacker, attackingPlayer,
+                          direction, damageDivisor);
 
   __asm {
     POPAD
@@ -42,8 +42,8 @@ void __declspec(naked) damageWithWrapper() {
 
 namespace hooks {
 
-void injectDamageWithHook() {
-  jmpPatch(damageWithWrapper, Func_DamageWith);
+void injectWeaponDamageHook() {
+  jmpPatch(weaponDamageWrapper, Func_DoWeaponDamage);
 }
 
 } //hooks
