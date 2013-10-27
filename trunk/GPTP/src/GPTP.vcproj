@@ -273,14 +273,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\damage_with.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\damage_with_inject.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AI\spells\dark_swarm.cpp"
 				>
 			</File>
@@ -365,6 +357,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -385,10 +381,6 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -589,6 +581,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\weapon_damage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\weapon_damage_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\weapon_range.cpp"
 				>
 			</File>
@@ -668,10 +668,6 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\structures\CUnit.h"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\damage_with.h"
 				>
 			</File>
 			<File
@@ -759,11 +755,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.h"
+				RelativePath=".\AI\spells\irradiate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\AI\spells\irradiate.h"
+				RelativePath=".\hooks\irradiate.h"
 				>
 			</File>
 			<File
@@ -920,6 +916,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\weapon_cooldown.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\weapon_damage.h"
 				>
 			</File>
 			<File

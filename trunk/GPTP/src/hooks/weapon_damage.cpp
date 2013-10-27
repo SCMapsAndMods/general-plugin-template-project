@@ -1,4 +1,4 @@
-#include "damage_with.h"
+#include "weapon_damage.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"

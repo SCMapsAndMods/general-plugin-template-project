@@ -1,4 +1,4 @@
-#include "damage_with.h"
+#include "weapon_damage.h"
 #include "../hook_tools.h"
 
 extern const u32 Func_DamageWith; //Defined in CUnit.cpp
