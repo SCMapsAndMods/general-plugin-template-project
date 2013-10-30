@@ -4,6 +4,11 @@
 #include "../../types.h"
 #pragma pack(1)
 
+struct Point8 {
+  s8 x;
+  s8 y;
+};
+
 struct Point16 {
   u16 x;
   u16 y;
@@ -35,7 +40,7 @@ struct Box32 {
   s32 bottom;
 };
 
-
+C_ASSERT(sizeof(Point8) == 2);
 C_ASSERT(sizeof(Point16) == 4);
 C_ASSERT(sizeof(Point32) == 8);
 C_ASSERT(sizeof(Box16) == 8);

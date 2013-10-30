@@ -7,6 +7,7 @@
 #pragma pack(1)
 
 struct CSprite;
+struct GrpHead;
 
 struct CImage {
 //Utility method definitions added by pastelmind
@@ -63,7 +64,7 @@ struct CImage {
   Point16     mapPosition;
   Point16     screenPosition;
   Box16       grpSize;
-  u32         grpOffset;
+  GrpHead     *grpOffset;
   void*       coloringData;        //?
   void*       renderFunction;
   void*       updateFunction;

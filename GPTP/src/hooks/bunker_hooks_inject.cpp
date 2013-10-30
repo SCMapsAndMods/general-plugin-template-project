@@ -27,12 +27,31 @@ void __declspec(naked) unitCanAttackInsideBunkerWrapper() {
   }
 }
 
+void __declspec(naked) applyBunkerAttackAnimationWrapper() {
+  static CUnit *unit;
+  __asm {
+    PUSHAD
+    MOV EBP, ESP
+    MOV unit, EAX
+  }
+
+  hooks::applyBunkerAttackAnimationHook(unit);
+
+  __asm {
+    POPAD
+    RETN
+  }
+}
+
+
+
 } //unnamed namespace
 
 namespace hooks {
 
 void injectBunkerHooks() {
   jmpPatch(unitCanAttackInsideBunkerWrapper, 0x004790A3);
+  callPatch(applyBunkerAttackAnimationWrapper, 0x00478CAF);
 }
 
 } //hooks

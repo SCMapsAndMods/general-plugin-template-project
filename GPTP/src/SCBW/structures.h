@@ -13,6 +13,7 @@ const int TECH_TYPE_COUNT     = 44;
 const int UPGRADE_TYPE_COUNT  = 61;
 const int WEAPON_TYPE_COUNT   = 130;
 const int FLINGY_TYPE_COUNT   = 209;
+const int IMAGE_TYPE_COUNT    = 999;
 
 #include "structures/CUnit.h"
 #include "structures/CBullet.h"
@@ -75,6 +76,13 @@ struct DOODAD {
       u16 doodatWidth;
       u16 _3;
       u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
+};
+
+struct CThingy {
+  CThingy *prev;
+  CThingy *next;
+  u32     unitType;
+  CSprite *sprite;
 };
 
 //---- Taken from locations.cpp ----//
@@ -166,6 +174,40 @@ struct ACTION {
 };
 
 typedef Bool32 (__fastcall *ActionPointer)(ACTION*);
+
+//GRP frame header
+struct GrpFrame {
+  s8  x;
+  s8  y;
+  s8  width;
+  s8  height;
+  u32 dataOffset;
+};
+
+C_ASSERT(sizeof(GrpFrame) == 8);
+
+//GRP file header
+struct GrpHead {
+  u16 frameCount;
+  s16 width;
+  s16 height;
+  GrpFrame frames[1];
+};
+
+C_ASSERT(sizeof(GrpHead) == 14);
+
+//LO* file header
+struct LO_Header {
+  u32 frameCount;
+  u32 overlayCount;
+  u32 frameOffsets[1];
+
+  Point8 getOffset(int frameNum, int overlayNum) const {
+    return ((Point8*)(this->frameOffsets[frameNum] + (u32)this))[overlayNum];
+  }
+};
+
+C_ASSERT(sizeof(LO_Header) == 12);
 
 //-------- Flag structures --------//
 
