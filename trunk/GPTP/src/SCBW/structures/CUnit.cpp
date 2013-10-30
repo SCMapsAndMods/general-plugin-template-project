@@ -192,10 +192,10 @@ bool CUnit::hasPathToPos(u32 x, u32 y) const {
 }
 
 const u32 Func_CanUseTech = 0x0046DD80;
-bool CUnit::canUseTech(u8 techId, s8 playerId) const {
+int CUnit::canUseTech(u8 techId, s8 playerId) const {
   assert(this);
   s32 playerId_ = playerId;
-  u32 result;
+  s32 result;
 
   __asm {
     PUSHAD
@@ -207,7 +207,7 @@ bool CUnit::canUseTech(u8 techId, s8 playerId) const {
     POPAD
   }
 
-  return result != 0;
+  return result;
 }
 
 extern const u32 Func_CanDetect = 0x00403430;

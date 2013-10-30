@@ -31,7 +31,7 @@ Bool32 __fastcall cloakingTechWrapper_IsCloaked(u32 _unused, s32 playerId) {
   for (int i = 0; i < 12; ++i) {
     CUnit *unit = clientSelectionGroup->unit[i];
     if (unit != NULL) {
-      if (!unit->canUseTech(hooks::getCloakingTech(unit), playerId))
+      if (unit->canUseTech(hooks::getCloakingTech(unit), playerId) != 1)
         return false;
 
       if (unit->status & UnitStatus::CloakingForFree
@@ -50,7 +50,7 @@ Bool32 __fastcall cloakingTechWrapper_CanCloak(u32 _unused, s32 playerId) {
   for (int i = 0; i < 12; ++i) {
     CUnit *unit = clientSelectionGroup->unit[i];
     if (unit != NULL) {
-      if (!unit->canUseTech(hooks::getCloakingTech(unit), playerId))
+      if (unit->canUseTech(hooks::getCloakingTech(unit), playerId) != 1)
         continue;
 
       if (unit->status & UnitStatus::CloakingForFree
@@ -82,14 +82,10 @@ void applyCloakingOrderHook(CUnit *unit) {
   }
 }
 
-u8* const selectionIndexStart = (u8*) 0x006284B6;
-typedef CUnit* (__cdecl *GetActivePlayerNextSelectionFunc)();
-GetActivePlayerNextSelectionFunc getActivePlayerNextSelection = (GetActivePlayerNextSelectionFunc) 0x0049A850;
-
 void __cdecl cloakingTechWrapper_CMDRECV_Cloak() {
   *selectionIndexStart = 0;  
   while (CUnit *unit = getActivePlayerNextSelection()) {
-    if (unit->canUseTech(hooks::getCloakingTech(unit), *ACTIVE_NATION_ID))
+    if (unit->canUseTech(hooks::getCloakingTech(unit), *ACTIVE_NATION_ID) == 1)
       applyCloakingOrderHook(unit);
   }
 }
@@ -103,7 +99,7 @@ void __declspec(naked) cloakingTechWrapper_AI_cloakUnit() {
   }
 
   if (!(unit->status & UnitStatus::RequiresDetection)) {
-    if (unit->canUseTech(hooks::getCloakingTech(unit), unit->playerId))
+    if (unit->canUseTech(hooks::getCloakingTech(unit), unit->playerId) == 1)
       applyCloakingOrderHook(unit);
   }
 
@@ -116,7 +112,7 @@ void __declspec(naked) cloakingTechWrapper_AI_cloakUnit() {
 void __cdecl cloakingTechWrapper_CMDRECV_Decloak() {
   *selectionIndexStart = 0;
   while (CUnit *unit = getActivePlayerNextSelection()) {
-    if (unit->canUseTech(hooks::getCloakingTech(unit), *ACTIVE_NATION_ID))
+    if (unit->canUseTech(hooks::getCloakingTech(unit), *ACTIVE_NATION_ID) == 1)
       unit->setSecondaryOrder(OrderId::Decloak);
   }
 }

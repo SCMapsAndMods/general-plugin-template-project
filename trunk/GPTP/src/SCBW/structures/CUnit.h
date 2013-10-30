@@ -61,7 +61,10 @@ struct CUnit {
   ///  * If the unit's owning player has the @p techId researched
   ///  * If the unit has enough energy (or energy cheat is enabled)
   ///  * If the unit is not stunned / is a hallucination / is being built
-  bool canUseTech(u8 techId, s8 playerId) const;
+  ///
+  /// If the unit can use the tech, returns 1. If the tech needs to be
+  /// researched, returns -1. If the unit cannot use the tech at all, returns 0.
+  int canUseTech(u8 techId, s8 playerId) const;
 
   /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
   bool canDetect() const;
