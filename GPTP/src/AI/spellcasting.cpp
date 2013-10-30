@@ -330,7 +330,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       energyReserve = std::min(energyReserve, unit->getMaxEnergy());
 
       if ((unit->energy >= energyReserve || scbw::isCheatEnabled(CheatFlags::TheGathering))
-          && unit->canUseTech(TechId::Maelstorm, unit->playerId))
+          && unit->canUseTech(TechId::Maelstorm, unit->playerId) != 1)
       {
         CUnit *target = findBestMaelstromTarget(unit, isUnitBeingAttacked);
         
@@ -376,7 +376,7 @@ bool canCastSpellOrder(const CUnit *unit, u8 techId, u8 orderId) {
     energyCost = Tech::EnergyCost[Order::TechUsed[orderId]] * 256;
 
   if (unit->energy >= energyCost || scbw::isCheatEnabled(CheatFlags::TheGathering))
-    return unit->canUseTech(techId, unit->playerId);
+    return unit->canUseTech(techId, unit->playerId) == 1;
 
   return false;
 }

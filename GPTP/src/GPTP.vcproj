@@ -537,6 +537,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\unit_morph.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\unit_speed.cpp"
 				>
 			</File>
@@ -755,11 +759,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AI\spells\irradiate.h"
+				RelativePath=".\hooks\irradiate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.h"
+				RelativePath=".\AI\spells\irradiate.h"
 				>
 			</File>
 			<File

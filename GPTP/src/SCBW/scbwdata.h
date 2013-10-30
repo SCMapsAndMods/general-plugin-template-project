@@ -54,6 +54,10 @@ SCBW_DATA(Units12*,     firstPlayerUnit,        0x006283F8);  //Indexed by playe
 SCBW_DATA(const Units12*, clientSelectionGroup, 0x00597208);
 SCBW_DATA(const u8*,    clientSelectionCount,   0x0059723D);
 
+SCBW_DATA(u8*,          selectionIndexStart,    0x006284B6);
+typedef CUnit* (__cdecl *GetActivePlayerNextSelectionFunc)();
+SCBW_DATA(GetActivePlayerNextSelectionFunc, getActivePlayerNextSelection, 0x0049A850);
+
 //Contains various info on the tiles.
 SCBW_DATA(ActiveTile**, activeTileArray,        0x006D1260);
 
