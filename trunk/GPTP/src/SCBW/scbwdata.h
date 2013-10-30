@@ -85,6 +85,15 @@ struct SpriteTileData {
 };
 SCBW_DATA(SpriteTileData*, spritesOnTileRow,    0x00629288);
 
+struct ImagesDatExtraOverlayLO_Files {
+  LO_Header* attackOverlays[IMAGE_TYPE_COUNT];
+  LO_Header* damageOverlays[IMAGE_TYPE_COUNT];
+  LO_Header* specialOverlays[IMAGE_TYPE_COUNT];
+  LO_Header* landingDustOverlays[IMAGE_TYPE_COUNT];
+  LO_Header* liftoffDustOverlays[IMAGE_TYPE_COUNT];
+};
+SCBW_DATA(const ImagesDatExtraOverlayLO_Files*, lo_files, 0x0051F2A8);
+
 template <typename T>
 struct PlayerFlags {
   T flags[PLAYER_COUNT];
