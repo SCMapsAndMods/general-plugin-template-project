@@ -225,6 +225,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\building_morph.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\building_morph_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\bunker_hooks.cpp"
 				>
 			</File>
@@ -357,10 +365,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -381,6 +385,10 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -635,6 +643,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\building_morph.h"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\bunker_hooks.h"
 				>
 			</File>
@@ -763,11 +775,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.h"
+				RelativePath=".\AI\spells\irradiate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\AI\spells\irradiate.h"
+				RelativePath=".\hooks\irradiate.h"
 				>
 			</File>
 			<File
