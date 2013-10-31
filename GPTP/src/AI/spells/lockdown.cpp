@@ -20,10 +20,7 @@ class LockdownFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (!scbw::canWeaponTargetUnit(WeaponId::Lockdown, target, caster))
         return false;
 
-      if (target->status & UnitStatus::Disabled
-          || target->lockdownTimer
-          || target->stasisTimer
-          || target->maelstromTimer)
+      if (target->isFrozen())
         return false;
 
       if (target->id == UnitId::dropship || target->id == UnitId::shuttle) {

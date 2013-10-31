@@ -23,7 +23,7 @@ void __declspec(naked) isMorphingBuildingWrapper() {
   }
 
   if (!(unit->status & UnitStatus::Completed)
-    && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot]))
+      && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot]))
   {
     __asm {
       POPAD
@@ -185,6 +185,38 @@ void __declspec(naked) isMorphedBuildingWrapper_ZergBuildSelf_SetTimer() {
   }
 }
 
+//-------- cancelZergBuilding --------//
+
+const u32 Hook_IsMorphedBuilding_CancelZergBuildingContinue = 0x0045DA93;
+const u32 Func_CancelZergBuildingRemorph = 0x0045D410;
+void __declspec(naked) isMorphedBuildingWrapper_CancelZergBuilding() {
+  static CUnit *unit;
+  __asm {
+    PUSHAD
+    MOV EBP, ESP
+    MOV unit, EBX
+  }
+
+  if (!(unit->status & UnitStatus::Completed)
+      && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot])) {
+    __asm {
+      POPAD
+      MOV EAX, EBX
+      CALL Func_CancelZergBuildingRemorph
+      POP EBX
+      MOV ESP, EBP
+      POP EBP
+      RETN 4
+    }
+  }
+  else {
+    __asm {
+      POPAD
+      JMP Hook_IsMorphedBuilding_CancelZergBuildingContinue
+    }
+  }
+}
+
 } //unnamed namespace
 
 namespace hooks {
@@ -196,6 +228,7 @@ void injectBuildingMorphHooks() {
   jmpPatch(isMorphedBuildingWrapper_ZergBuildSelf_GetType,  0x0045D505);
   callPatch(isMorphedBuildingWrapper_ZergBuildSelf_Complete, 0x0045D65D);
   jmpPatch(isMorphedBuildingWrapper_ZergBuildSelf_SetTimer, 0x0045D56C);
+  jmpPatch(isMorphedBuildingWrapper_CancelZergBuilding,     0x0045DA4A);
 }
 
 } //hooks
