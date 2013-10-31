@@ -78,6 +78,9 @@ struct CUnit {
   /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
   bool canDetect() const;
 
+  /// Checks if the unit is disabled / lockdowned / stasised / maelstromed.
+  bool isFrozen() const;
+
   /// Returns the distance between this unit and the @p target, taking unit
   /// collision size in units.dat into account.
   /// Internally, this function uses scbw::getDistanceFast().

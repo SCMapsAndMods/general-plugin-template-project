@@ -19,7 +19,6 @@
 #include "hooks/recharge_shields.h"
 #include "hooks/sight_range.h"
 #include "hooks/stim_packs.h"
-#include "hooks/unit_morph.h"
 #include "hooks/unit_speed.h"
 #include "hooks/unit_tooltip.h"
 #include "hooks/update_status_effects.h"
@@ -29,6 +28,8 @@
 #include "hooks/weapon_range.h"
 #include "hooks/unit_destructor_special.h"
 #include "hooks/psi_field.h"
+#include "hooks/unit_morph.h"
+#include "hooks/building_morph.h"
 
 #include "graphics/draw_hook.h"
 #include "AI/spellcasting.h"
@@ -67,8 +68,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectSightRangeHook();
   hooks::injectStimPacksHooks();
 
-  hooks::injectUnitMorphHooks();
-
   hooks::injectUnitSpeedHooks();
 
   hooks::injectUnitTooltipHook();
@@ -82,6 +81,9 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   hooks::injectUnitDestructorSpecial();
   hooks::injectPsiFieldHooks();
+
+  hooks::injectUnitMorphHooks();
+  hooks::injectBuildingMorphHooks();
 
   hooks::injectDrawHook();
   hooks::injectSpellcasterAI();

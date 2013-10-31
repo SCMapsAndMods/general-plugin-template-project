@@ -241,6 +241,13 @@ bool CUnit::canDetect() const {
   return result != 0;
 }
 
+//Identical to function @ 0x004020B0
+bool CUnit::isFrozen() const {
+  assert(this);
+  return this->status & UnitStatus::DoodadStatesThing
+    || this->lockdownTimer || this->stasisTimer || this->maelstromTimer;
+}
+
 u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   using Unit::BaseProperty;
   assert(this);
