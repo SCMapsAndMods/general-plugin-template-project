@@ -198,6 +198,31 @@ u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId) {
     return Upgrade::CurrentUpgBw->level[playerId][upgradeId - 46];
 }
 
+u32 getSupplyAvailable(u8 playerId, u8 raceId) {
+  assert(raceId <= 2);
+  assert(playerId < 12);
+
+  u32 supplyProvided;
+  if (isCheatEnabled(CheatFlags::FoodForThought))
+    supplyProvided = raceSupply[raceId].max[playerId];
+  else
+    supplyProvided = raceSupply[raceId].provided[playerId];
+  return supplyProvided - raceSupply[raceId].used[playerId];
+}
+
+u8 getRaceId(u16 unitId) {
+  assert(unitId < UNIT_TYPE_COUNT);
+  GroupFlag ugf = Unit::GroupFlags[unitId];
+  if (ugf.isZerg)
+    return 0;
+  else if (ugf.isTerran)
+    return 1;
+  else if (ugf.isProtoss)
+    return 2;
+  else
+    return 4;
+}
+
 const u32 Func_GetGroundHeightAtPos = 0x004BD0F0;
 u32 getGroundHeightAtPos(s32 x, s32 y) {
   u32 height;
@@ -235,16 +260,17 @@ void refreshScreen() {
   memset(refreshRegions, 1, 1200);
 }
 
-void refreshButtonSet() {
+//Logically equivalent to function @ 0x004C36C0
+void refreshConsole() {
   u32*  const bCanUpdateCurrentButtonSet      = (u32*)  0x0068C1B0;
   u8*   const bCanUpdateSelectedUnitPortrait  = (u8*)   0x0068AC74;
-  u8*   const unknown1                        = (u8*)   0x0068C1F8;
+  u8*   const bCanUpdateStatDataDialog        = (u8*)   0x0068C1F8;
   u32*  const someDialogUnknown               = (u32*)  0x0068C1E8;
   u32*  const unknown2                        = (u32*)  0x0068C1EC;
 
   *bCanUpdateCurrentButtonSet = 1;
   *bCanUpdateSelectedUnitPortrait = 1;
-  *unknown1 = 1;
+  *bCanUpdateStatDataDialog = 1;
   *someDialogUnknown = 0;
   *unknown2 = 0;
 }

@@ -126,5 +126,5 @@ void setResourceAmountCarried(CUnit *worker, u8 amountCarried, u32 chunkImageId,
   }
 
   worker->worker.resourceCarryAmount = amountCarried;
-  scbw::refreshButtonSet();
+  scbw::refreshConsole();
 }

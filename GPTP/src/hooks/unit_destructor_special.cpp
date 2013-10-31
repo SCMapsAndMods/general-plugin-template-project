@@ -143,10 +143,10 @@ void unitDestructorSpecialHook(CUnit *unit) {
   }
 
   if (unit->id == UnitId::nydus_canal) {
-    CUnit *nydusExit = unit->building.nydus.exit;
+    CUnit *nydusExit = unit->building.nydusExit;
     if (nydusExit) {
-      unit->building.nydus.exit = NULL;
-      nydusExit->building.nydus.exit = NULL;
+      unit->building.nydusExit = NULL;
+      nydusExit->building.nydusExit = NULL;
       nydusExit->remove();
     }
     return;

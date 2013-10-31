@@ -146,17 +146,8 @@ Bool32 __cdecl currentUnitSelectionCanCloakWrapper() {
         return true;
     }
   }
-  
-  GroupFlag gf = Unit::GroupFlags[(*activePortraitUnit)->id];
-  u8 race;
-  if (gf.isZerg)
-    race = 0;
-  else if (gf.isProtoss)
-    race = 2;
-  else if (gf.isTerran)
-    race = 1;
-  else
-    race = 4;
+
+  u8 race = scbw::getRaceId((*activePortraitUnit)->id);
 
   scbw::showErrorMessageWithSfx((*activePortraitUnit)->playerId, 864 + race, 156 + race);
   return false;

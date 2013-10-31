@@ -17,8 +17,13 @@ SCBW_DATA(UNITDEATHS*,  unit_deaths,  deathTable);
 SCBW_DATA(CSprite*,     spriteTable,  0x00629D98);
 
 //From resources.cpp
-RESOURCES*  const resourceTable   = (RESOURCES*)(0x0057F0F0);
-RESOURCES*  const resources       = &resourceTable[0];
+struct Resources {
+  int minerals[12];
+  int gas[12];
+  int cumulativeGas[12];
+  int cumulativeMinerals[12];
+};
+SCBW_DATA(Resources*,   resources,    0x0057F0F0);
 
 //From player.cpp
 PLAYER*     const playerTable     = (PLAYER*)(0x0057EEE0);
@@ -54,9 +59,13 @@ SCBW_DATA(Units12*,     firstPlayerUnit,        0x006283F8);  //Indexed by playe
 SCBW_DATA(const Units12*, clientSelectionGroup, 0x00597208);
 SCBW_DATA(const u8*,    clientSelectionCount,   0x0059723D);
 
+//Helper functions for several hooks
 SCBW_DATA(u8*,          selectionIndexStart,    0x006284B6);
 typedef CUnit* (__cdecl *GetActivePlayerNextSelectionFunc)();
 SCBW_DATA(GetActivePlayerNextSelectionFunc, getActivePlayerNextSelection, 0x0049A850);
+
+typedef void (__fastcall *PrepareForNextOrderFunc)(CUnit*);
+SCBW_DATA(PrepareForNextOrderFunc, prepareForNextOrder, 0x00475000);
 
 //Contains various info on the tiles.
 SCBW_DATA(ActiveTile**, activeTileArray,        0x006D1260);
@@ -110,6 +119,14 @@ SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
 
 SCBW_DATA(AI_Main*,       AIScriptController,   0x0068FEE8);
 SCBW_DATA(AiCaptain* const*, AiRegionCaptains,  0x0069A604);
+SCBW_DATA(u32*,           aiSupplyReserved,     0x006CA4BC);
+
+struct SupplyData {
+  u32 provided[PLAYER_COUNT];
+  u32 used[PLAYER_COUNT];
+  u32 max[PLAYER_COUNT];
+};
+SCBW_DATA(SupplyData*,    raceSupply,           0x00582144);  //Array; Use scbw::getRaceId() to get the index.
 
 //-------- Internal constants --------//
 
@@ -250,6 +267,14 @@ SCBW_DATA(const DatLoad*, ordersDat, 0x00513EC8);
 SCBW_DATA(u16*, Label,              ordersDat[0].address);
 SCBW_DATA(u8*,  UseWeaponTargeting, ordersDat[1].address);
 SCBW_DATA(u8*,  TechUsed,           ordersDat[14].address);
+}
+
+namespace Sprite {
+SCBW_DATA(const DatLoad*, spritesDat, 0x00513FB8);
+
+SCBW_DATA(u16*, ImageId,            spritesDat[0].address);
+SCBW_DATA(s8*,  HpBarSize,          spritesDat[1].address);
+SCBW_DATA(u8*,  IsVisible,          spritesDat[3].address);
 }
 
 

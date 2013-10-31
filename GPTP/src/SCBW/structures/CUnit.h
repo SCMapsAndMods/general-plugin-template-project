@@ -37,7 +37,7 @@ struct CUnit {
   void remove();
 
   /// Issue the @p order to the unit, using the given @p target unit.
-  void orderTo(u8 orderId, const CUnit *target);
+  void orderTo(u8 orderId, const CUnit *target = NULL);
 
   /// Issue the @p order to the unit, using the given position as the target.
   void orderTo(u8 orderId, u16 x, u16 y);
@@ -61,10 +61,19 @@ struct CUnit {
   ///  * If the unit's owning player has the @p techId researched
   ///  * If the unit has enough energy (or energy cheat is enabled)
   ///  * If the unit is not stunned / is a hallucination / is being built
+  ///  * If the unit meets the Use Tech Requirements (editable in FireGraft)
   ///
   /// If the unit can use the tech, returns 1. If the tech needs to be
   /// researched, returns -1. If the unit cannot use the tech at all, returns 0.
   int canUseTech(u8 techId, s8 playerId) const;
+
+  /// Checks if the @p unit can build / train / morph into @p unitId. This checks:
+  /// * If the unit is actually owned by the commanding @p playerId
+  /// * Whether the unit is stunned / disabled.
+  ///
+  /// If the unit can build / train / morph, returns 1. If the tech needs to be
+  /// researched, returns -1. If the unit cannot use the tech at all, returns 0.
+  int canBuild(u16 unitId, s8 playerId) const;
 
   /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
   bool canDetect() const;
@@ -288,7 +297,7 @@ struct CUnit {
 /*18*/    u8        resourceGroup;  // 18
 /*19*/    u8        resourceBelongsToAI;
         } resource;  /** When the unit is resource container */
-        struct { CUnit* exit; } nydus; /** connected nydius canal */
+        CUnit *nydusExit; /** connected nydus canal */
         struct { CUnit* nukeMissile; } ghost; //Tentative
         CSprite* pylonAura;
         struct{
