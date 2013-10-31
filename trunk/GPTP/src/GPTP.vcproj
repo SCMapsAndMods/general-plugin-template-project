@@ -541,6 +541,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\unit_morph_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\unit_speed.cpp"
 				>
 			</File>
@@ -888,6 +892,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\unit_destructor_special.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\unit_morph.h"
 				>
 			</File>
 			<File

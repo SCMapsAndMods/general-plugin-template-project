@@ -94,10 +94,6 @@ void CUnit::remove() {
   }
 }
 
-//Helper function
-typedef void (__fastcall *OrderToIdleFunc)(CUnit*);
-OrderToIdleFunc orderToIdle = (OrderToIdleFunc) 0x00475000;
-
 //Logically equivalent to function @ 0x004752B0
 void CUnit::orderTo(u8 orderId, const CUnit *target) {
   assert(this);
@@ -108,7 +104,7 @@ void CUnit::orderTo(u8 orderId, const CUnit *target) {
   else
     this->order(orderId, 0, 0, target, UnitId::None, true);
   
-  orderToIdle(this);
+  prepareForNextOrder(this);
 }
 
 //Logically equivalent to function @ 0x00475260
@@ -117,7 +113,7 @@ void CUnit::orderTo(u8 orderId, u16 x, u16 y) {
 
   this->userActionFlags |= 0x1;
   this->order(orderId, x, y, NULL, UnitId::None, true);
-  orderToIdle(this);
+  prepareForNextOrder(this);
 }
 
 const u32 Func_Order = 0x00474810;
@@ -195,7 +191,7 @@ const u32 Func_CanUseTech = 0x0046DD80;
 int CUnit::canUseTech(u8 techId, s8 playerId) const {
   assert(this);
   s32 playerId_ = playerId;
-  s32 result;
+  static s32 result;
 
   __asm {
     PUSHAD
@@ -203,6 +199,25 @@ int CUnit::canUseTech(u8 techId, s8 playerId) const {
     MOVZX DI, techId
     MOV EAX, this
     CALL Func_CanUseTech
+    MOV result, EAX
+    POPAD
+  }
+
+  return result;
+}
+
+const u32 Func_CanBuild = 0x0046E1C0;
+int CUnit::canBuild(u16 unitId, s8 playerId) const {
+  assert(this);
+  s32 playerId_ = playerId;
+  static s32 result;
+
+  __asm {
+    PUSHAD
+    PUSH playerId_
+    MOV AX, unitId
+    MOV ESI, this
+    CALL Func_CanBuild
     MOV result, EAX
     POPAD
   }

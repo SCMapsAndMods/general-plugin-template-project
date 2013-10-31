@@ -61,7 +61,7 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
   }
 
   if (needsButtonRefresh)
-    scbw::refreshButtonSet();
+    scbw::refreshConsole();
 }
 
 } //hooks
@@ -84,6 +84,6 @@ void secondaryOrder_Cloak(CUnit *unit) {
       (*firstBurrowedUnit)->previousBurrowedUnit = unit;
     *firstBurrowedUnit = unit;
 
-    scbw::refreshButtonSet();
+    scbw::refreshConsole();
   }
 }

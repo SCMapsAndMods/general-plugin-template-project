@@ -137,15 +137,6 @@ struct BUTTON_SET {
   u32        connectedUnit;
 };
 
-//---- Taken from resources.cpp ----//
-
-struct RESOURCES {
-  int        playerMin[12];
-  int        playerGas[12];
-  int        cumulativeGas[12];
-  int        cumulativeMinerals[12];
-};
-
 //---- Taken from triggers.h ----//
 struct CONDITION {
   u32        location;

@@ -83,6 +83,15 @@ u32 getDistanceFast(s32 x1, s32 y1, s32 x2, s32 y2);
 /// UpgradeId::Enum, instead of ScUpgrades::Enum and BwUpgrades::Enum.
 u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId);
 
+/// Returns the amount of available supply (total provided - total used) for the
+/// @p playerId, using @p raceId to determine the appropriate race to use.
+/// This is affected by the "Food For Thought" cheat flag.
+u32 getSupplyAvailable(u8 playerId, u8 raceId);
+
+/// Returns the race of the @p unitId.
+/// @return   0 = Zerg, 1 = Terran, 2 = Protoss, 4 = None.
+u8 getRaceId(u16 unitId);
+
 /// Returns the elevation of the tile at (x, y). 0 for low terrain, 1 for
 /// medium, and 2 for high terrain.
 u32 getGroundHeightAtPos(s32 x, s32 y);
@@ -119,8 +128,9 @@ void refreshScreen(int left, int top, int right, int bottom);
 /// Refreshes the entire screen.
 void refreshScreen();
 
-/// Something related to button sets, not completely understood.
-void refreshButtonSet();
+/// Tells StarCraft to refresh the console (current button set, unit portrait,
+/// and status bar). not completely understood.
+void refreshConsole();
 
 /// Generates a pseudorandom number between 0 and 32767, inclusive. This is
 /// identical to the function used internally by StarCraft, and is guaranteed to
