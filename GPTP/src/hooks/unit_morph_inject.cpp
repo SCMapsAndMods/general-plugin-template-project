@@ -34,7 +34,7 @@ void __stdcall unitMorphWrapper_CMDRECV_UnitMorph(u8 *commandData) {
         && unit->mainOrderId != OrderId::Morph1
         && addUnitToBuildQueue(unit, morphUnitId))
     {
-      unit->orderTo(OrderId::Morph1, NULL);
+      unit->orderTo(OrderId::Morph1);
     }
   }
 
