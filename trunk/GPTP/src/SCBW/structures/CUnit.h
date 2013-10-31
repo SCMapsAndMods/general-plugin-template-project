@@ -78,7 +78,7 @@ struct CUnit {
   /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
   bool canDetect() const;
 
-  /// Checks if the unit is disabled / lockdowned / stasised / maelstromed.
+  /// Checks if the unit is unpowered / lockdowned / stasised / maelstromed.
   bool isFrozen() const;
 
   /// Returns the distance between this unit and the @p target, taking unit

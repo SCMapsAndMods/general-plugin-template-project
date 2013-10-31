@@ -29,11 +29,9 @@ bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
     return false;
 
   //Check battery conditions
-  if (!(battery->status & UnitStatus::Completed)          //Is being warped in
-      || !battery->energy                                 //Does not have energy
-      || battery->status & UnitStatus::DoodadStatesThing  //Is unpowered
-      || battery->lockdownTimer || battery->stasisTimer || battery->maelstromTimer //Is frozen
-      )
+  if (!(battery->status & UnitStatus::Completed)  //Is being warped in
+      || !battery->energy                         //Does not have energy
+      || battery->isFrozen())                     //Is frozen
     return false; //Cannot recharge from this battery
 
   if (target->pAI) { //Separate check for AI-controlled units
