@@ -1,5 +1,21 @@
 #summary Changelog of GPTP
 
+= v2.36 Preview =
+
+ * New features
+  * Added hooks for controlling unit spellcasting AI. Because this module is quite large, it is placed in a separate directory (`AI/spellcasting.cpp`).
+  * Added hook functions for controlling unit console icon tooltip text (`hooks/unit_tooltip.cpp`).
+  * Added hook for controlling bunker attack overlays
+  * Added hooks for checking unit/building morph conditions.
+ * Hook changes
+  * The "Damage With" hook module has been renamed to "Weapon Damage" hook module. (File renamed from `damage_with.cpp` to `weapon_damage.cpp`.
+ * Library changes
+  * Added: `CUnit::getLastOwnerId(), CUnit::canDetect(), CUnit::getActiveGroundWeapon(), CUnit::isVisibleTo(), CUnit::getLoadedUnit(), CUnit::hasLoadedUnit(), CUnit::canBuild(), CUnit::isFrozen()`.
+  * `CUnit::canUseTech()` has been changed slightly.
+  * Added: `CSprite::isVisibleTo()`.
+  * `scbw::hasOverlay()` (in `SCBW/api.h`) has been replaced with `CUnit::hasOverlay()` and `CSprite::hasOverlay()`.
+  * The UnitFinder class now uses callback interface classes instead of templates for receiving callbacks. This should reduce executable code bloat by a little bit.
+
 = v2.35 =
 
  * New features
