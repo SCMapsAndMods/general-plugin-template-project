@@ -1,4 +1,5 @@
 #summary Documentation of the GPTP API functions
+#labels Phase-Implementation
 
 Header file: [http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/api.h SCBW/api.h]
 
@@ -83,13 +84,13 @@ bool canBeEnteredBy(const CUnit* transport, const CUnit* unit);
 
 Checks whether the `transport` (Dropship, Overlord, Shuttle, or Bunker) can load the `unit`. This checks:
 
-* Whether the `transport` has any status effects (Lockdown, Maelstrom, etc.)
-* If the `transport` and `unit` is owned by the same player
-* If the `transport` has enough cargo space for `unit`.
+ * Whether the `transport` has any status effects (Lockdown, Maelstrom, etc.)
+ * If the `transport` and `unit` is owned by the same player
+ * If the `transport` has enough cargo space for `unit`.
 
-It does NOT check whether `transport` is a hallucination, or is an Overlord without the transport upgrade, or whether the `unit` itself has any status effects. Note that this function is affected by the following EXE edits in FireGraft:
-* Change bunker size check to organic flag check
-* Remove bunker size check
+It does NOT check whether `transport` is a hallucination, or is an Overlord without the transport upgrade, or whether the `unit` itself has any status effects. Note that this function is affected by the following EXE edits in !FireGraft:
+ * Change bunker size check to organic flag check
+ * Remove bunker size check
 
 == getDistanceFast ==
 {{{
