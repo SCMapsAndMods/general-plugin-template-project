@@ -6,7 +6,6 @@
 /*
 Need to inject:
 0043352E (AI-related)
-0043507F (AI-related)
 */
 
 
@@ -73,6 +72,35 @@ void __declspec(naked) isMorphedBuildingWrapper_ConsoleProgressBarText() {
     MOV ECX, unit
     MOVZX EDX, tblErrorMessage
     JMP Hook_IsMorphedBuilding_ConsoleProgressBarTextBack
+  }
+}
+
+//-------- AI_MorphBehavior() --------//
+
+const u32 Hook_AI_MorphBehavior_IsMorphedBuildingYes = 0x0043508B;
+void __declspec(naked) isMorphedBuildingWrapper_AI_MorphBehavior() {
+  static u16 buildUnitId;
+  __asm {
+    PUSHAD
+    MOV EBP, ESP
+    MOV buildUnitId, DI
+  }
+
+  if (hooks::isMorphedBuildingHook(buildUnitId)) {
+    __asm {
+      POPAD
+      JMP Hook_AI_MorphBehavior_IsMorphedBuildingYes
+    }
+  }
+  else {  //Code at 0x00435122
+    __asm {
+      POPAD
+      POP EDI
+      XOR EAX, EAX
+      POP ESI
+      POP EBP
+      RETN 8
+    }
   }
 }
 
@@ -224,6 +252,7 @@ namespace hooks {
 void injectBuildingMorphHooks() {
   jmpPatch(isMorphingBuildingWrapper, 0x0045CD00);
   jmpPatch(isMorphedBuildingWrapper_ConsoleProgressBarText, 0x00426AA2);
+  jmpPatch(isMorphedBuildingWrapper_AI_MorphBehavior,       0x0043505F);
   jmpPatch(isMorphedBuildingWrapper_ConsoleWireFrameUpdate, 0x00456911);
   jmpPatch(isMorphedBuildingWrapper_ZergBuildSelf_GetType,  0x0045D505);
   callPatch(isMorphedBuildingWrapper_ZergBuildSelf_Complete, 0x0045D65D);

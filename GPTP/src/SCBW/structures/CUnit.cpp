@@ -476,6 +476,10 @@ s16 CUnit::getBottom() const {
   return this->getY() + Unit::UnitBounds[this->id].bottom;
 }
 
+const char* CUnit::getName() const {
+  assert(this);
+  return scbw::getStatTxtTblString(this->id + 1);
+}
 
 CUnit* CUnit::getFromIndex(u16 index) {
   if (1 <= index && index <= UNIT_ARRAY_LENGTH)

@@ -142,6 +142,9 @@ struct CUnit {
   s16 getTop() const;
   s16 getBottom() const;
 
+  /// Retrieves the in-game name of this unit from stat_txt.tbl.
+  const char* getName() const;
+
   /// Retrieves the unit pointer by @p index from the unit table (first unit is
   /// indexed at 1). If invalid, returns NULL instead.
   static CUnit* getFromIndex(u16 index);
