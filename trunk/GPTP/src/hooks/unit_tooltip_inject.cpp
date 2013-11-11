@@ -32,7 +32,7 @@ void __stdcall statdatalUserInteractWrapper(BinDlg *consoleIcon) {
   switch (gui->overlayType) {
     case 0:
       createContextHelpFromDialog(consoleIcon,
-        hooks::getWeaponTooltipString(gui->id, *activePortraitUnit));
+        hooks::getWeaponTooltipString((u8) gui->id, *activePortraitUnit));
       break;
     case 1:
       createContextHelpFromDialog(consoleIcon,

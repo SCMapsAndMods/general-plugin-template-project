@@ -55,14 +55,15 @@ u16 getUnitMorphEggTypeHook(u16 unitId) {
   return UnitId::None;
 }
 
-//Return the ID of unit to revert to when cancelling a morphing @p egg unit.
-u16 getCancelUnitChangeTypeHook(const CUnit *unit) {
+//Determine the type (unit ID) of the unit to revert to when cancelling an
+//@p eggUnit while it is morphing.
+u16 getCancelMorphRevertTypeHook(const CUnit *eggUnit) {
   //Default StarCraft behavior
 
-  if (unit->id == UnitId::cocoon)
+  if (eggUnit->id == UnitId::cocoon)
     return UnitId::mutalisk;
 
-  if (unit->id == UnitId::ZergLurkerEgg)
+  if (eggUnit->id == UnitId::ZergLurkerEgg)
     return UnitId::hydralisk;
 
   return UnitId::None;  //Default (no revert for larvae)
