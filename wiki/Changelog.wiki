@@ -18,6 +18,7 @@
    * Added `scbw::canWeaponTargetUnit(), scbw::random(), scbw::isUnderDarkSwarm()`.
   * Added: `CSprite::isVisibleTo()`.
   * The UnitFinder class now uses callback interface classes instead of templates for receiving callbacks. This should reduce executable code bloat by a little bit.
+ * Bug fix: The Sight Range Limit Extender will no longer crash games.
 
 = v2.35 =
 
