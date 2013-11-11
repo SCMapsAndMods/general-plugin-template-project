@@ -3,12 +3,6 @@
 #include <SCBW/api.h>
 #include <algorithm>
 
-/*
-Need to inject:
-0043352E (AI-related)
-*/
-
-
 namespace {
 
 //-------- isMorphingBuilding() --------//
@@ -245,6 +239,83 @@ void __declspec(naked) isMorphedBuildingWrapper_CancelZergBuilding() {
   }
 }
 
+//-------- AI_GetWaitBuildUnitCount --------//
+
+//Inject @ 0x004332B6
+const u32 Hook_AI_GetWaitBuildUnitCount_Return = 0x004333D3;
+void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount() {
+  static CUnit *unit;
+  static u16 unitId;
+  static Bool32 ignoreIncomplete;
+  static u32 unitCount;
+
+  __asm {
+    ADD [EBP - 4], EAX
+    PUSHAD
+    MOV ignoreIncomplete, EDX
+    MOV unitId, DI
+    MOV unit, ESI
+  }
+
+  unitCount = hooks::getMorphBuildingTypeCountHook(unit, unitId, ignoreIncomplete != 0);
+
+  __asm {
+    POPAD
+    MOV EAX, unitCount
+    JMP Hook_AI_GetWaitBuildUnitCount_Return
+  }
+}
+
+//-------- AI_GetUnitCount --------//
+
+//Inject @ 0x004334F4
+const u32 Hook_AI_GetUnitCount_Return = 0x00433588;
+void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_GetUnitCount() {
+  static CUnit *unit;
+  static u16 unitId;
+  static u32 unitCount;
+
+  __asm {
+    PUSHAD
+    MOV unitId, DI
+    MOV unit, ESI
+    MOV unitCount, EBX
+  }
+
+  unitCount += hooks::getMorphBuildingTypeCountHook(unit, unitId, false);
+
+  __asm {
+    POPAD
+    MOV EBX, unitCount
+    JMP Hook_AI_GetUnitCount_Return
+  }
+}
+
+//-------- AI_ManageBases --------//
+
+//Inject @ 0x00436455
+const u32 Hook_AI_ManageBases_Return = 0x004364F7;
+void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_ManageBases() {
+  static CUnit *unit;
+  static u16 unitId;
+  static u32 unitCount;
+
+  __asm {
+    PUSHAD
+    MOV unitId, DI
+    MOV unit, ESI
+    MOV unitCount, EBX
+  }
+
+  unitCount += hooks::getMorphBuildingTypeCountHook(unit, unitId, false);
+
+  __asm {
+    POPAD
+    MOV EBX, unitCount
+    JMP Hook_AI_ManageBases_Return
+  }
+}
+
 } //unnamed namespace
 
 namespace hooks {
@@ -258,6 +329,10 @@ void injectBuildingMorphHooks() {
   callPatch(isMorphedBuildingWrapper_ZergBuildSelf_Complete, 0x0045D65D);
   jmpPatch(isMorphedBuildingWrapper_ZergBuildSelf_SetTimer, 0x0045D56C);
   jmpPatch(isMorphedBuildingWrapper_CancelZergBuilding,     0x0045DA4A);
+  
+  jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount, 0x004332B6);
+  jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetUnitCount, 0x004334F4);
+  jmpPatch(getMorphBuildingTypeCountWrapper_AI_ManageBases, 0x00436455);
 }
 
 } //hooks
