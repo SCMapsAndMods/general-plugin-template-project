@@ -182,7 +182,7 @@ void __fastcall cancelUnitWrapper(CUnit *unit) {
     resources->gas[unit->playerId] += Unit::GasCost[refundUnitId];
   }
 
-  u16 cancelChangeUnitId = hooks::getCancelUnitChangeTypeHook(unit);
+  u16 cancelChangeUnitId = hooks::getCancelMorphRevertTypeHook(unit);
   if (cancelChangeUnitId == UnitId::None) {
     if (unit->id == UnitId::nuclear_missile) {
       CUnit *silo = unit->connectedUnit;
