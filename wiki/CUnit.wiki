@@ -10,7 +10,7 @@ The CUnit structure is used by !StarCraft to store all information regarding a u
 
 GPTP extends the CUnit structure with many useful methods. All methods are guaranteed to behave exactly as they do in !StarCraft, or obey the modified behavior enforced by hook modules.
 
-Note: The methods in GPTP may not necessarily be actual functions within !StarCraft, but a custom method that merely emulates a certain behavior
+Note: The methods in GPTP may not necessarily be actual functions within !StarCraft, but a custom method that merely emulates a certain behavior.
 
 == setHp ==
 {{{
@@ -25,7 +25,7 @@ void damageWith(s32 damage, u8 weaponId, CUnit *attacker = NULL,
   s8 attackingPlayer = -1, s8 direction = 0, u8 damageDivisor = 1);
 }}}
 
-Deals damage to this unit, using a specific weapons.dat ID.
+Deals damage to this unit, using a specific weapons.dat ID. The behavior of this function is controlled by the Weapon Damage hook module (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/weapon_damage.cpp hooks/weapon_damage.cpp]</tt>).
 
 === Parameters ===
  * damage: The amount of damage dealt to this unit.
@@ -62,11 +62,18 @@ unit->remove();
 
 == orderTo ==
 {{{
-void orderTo(u32 orderId, const CUnit *target);
+void orderTo(u32 orderId, const CUnit *target = NULL);
 void orderTo(u32 orderId, u16 x, u16 y);
 }}}
 
-Issue a new order to the unit, using either a target unit (`target`) or position (`x`, `y`).
+Issue a new order to the unit, using either a target unit (`target`) or position (`x`, `y`). Units ordered with this function are considered to be controlled by the user.
+
+== order ==
+{{{
+void order(u8 orderId, u16 x, u16 y, const CUnit *target, u16 targetUnitId, bool stopPreviousOrders);
+}}}
+
+Issues a new order to the unit. In general, <tt>[#orderTo orderTo()]</tt> should be used instead.
 
 == setSecondaryOrder ==
 {{{
@@ -80,7 +87,7 @@ Set the secondary order of this unit. Internally used by several hooks.
 bool hasPathToUnit(const CUnit *target) const;
 }}}
 
-Checks whether this unit can reach the @p target unit. This checks only the terrain layout, and does not consider obstacles (units and buildings).
+Checks whether this unit can reach the `target` unit. This checks only the terrain layout, and does not consider obstacles (units and buildings).
 
 == hasPathToPos ==
 {{{
@@ -91,7 +98,7 @@ Checks whether this unit can reach the target position. This checks only the ter
 
 == canUseTech ==
 {{{
-bool canUseTech(u8 techId, s8 playerId) const;
+int canUseTech(u8 techId, s8 playerId) const;
 }}}
 
 Checks the following:
@@ -99,13 +106,41 @@ Checks the following:
  * If the unit's owning player has the `techId` researched
  * If the unit has enough energy (or energy cheat is enabled)
  * If the unit is not stunned / is a hallucination / is being built
+ * If the unit meets the Use Tech Requirements (editable in !FireGraft)
+
+If the unit can use the tech, returns 1. If the tech needs to be researched, returns -1. If the unit cannot use the tech at all, returns 0.
+
+== canBuild ==
+{{{
+int canBuild(u16 unitId, s8 playerId) const;
+}}}
+
+Checks if the unit can build / train / morph into `unitId`. This checks:
+ * If the unit is actually owned by the commanding `playerId`
+ * Whether the unit is stunned / disabled.
+
+If the unit can build / train / morph, returns 1. If the tech needs to be researched, returns -1. If the unit cannot use the tech at all, returns 0.
+
+== canDetect ==
+{{{
+bool canDetect() const;
+}}}
+
+Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.). This function can be controlled by the Detector Hook module (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/detector.cpp hooks/detector.cpp]</tt>).
+
+== isFrozen ==
+{{{
+bool isFrozen() const;
+}}}
+
+Checks if the unit is unpowered / lockdowned / stasised / maelstromed.
 
 == getDistanceToTarget ==
 {{{
 u32 getDistanceToTarget(const CUnit *target) const;
 }}}
 
-Returns the distance between this unit and the @p target, taking unit collision size in units.dat into account.
+Returns the distance between this unit and the `target`, taking unit collision size in units.dat into account.
 
 Internally, this function uses `scbw::getDistanceFast()`.
 
@@ -143,6 +178,13 @@ u8 getArmorBonus() const;
 }}}
 
 Returns the bonus armor this unit has (from upgrades).
+
+== getActiveGroundWeapon() ==
+{{{
+u8 getActiveGroundWeapon() const;
+}}}
+
+Returns the unit's ground weapon ID. If the unit is an unburrowed Lurker, returns `WeaponId::None` instead.
 
 == updateSpeed ==
 {{{
@@ -201,6 +243,13 @@ s16 getBottom() const;
 
 Returns the absolute position of each of the unit's collision bounds.
 
+== getName ==
+{{{
+const char* getName() const;
+}}}
+
+Retrieves the in-game name of this unit from stat_txt.tbl.
+
 == getFromIndex ==
 {{{
 static CUnit* getFromIndex(u16 index);
@@ -214,3 +263,31 @@ u16 getIndex() const;
 }}}
 
 Returns the index of this unit in the unit table. First unit == index 1.
+
+== getLastOwnerId ==
+{{{
+s8 getLastOwnerId() const;
+}}}
+
+Returns the ID of the last player to own this unit. This is usually the same as `CUnit::playerId`, but if the unit belongs to a defeated player, this returns the correct player ID (instead of 11).
+
+== isVisibleTo ==
+{{{
+bool isVisibleTo(s8 playerId) const;
+}}}
+
+Checks whether this unit can be seen by `playerId` (i.e. not covered by the fog-of-war and is detectable).
+
+== getLoadedUnit ==
+{{{
+CUnit* getLoadedUnit(int index) const;
+}}}
+
+Returns the loaded unit at `index` (value between 0-7). If no unit is loaded at the slot, returns NULL instead.
+
+== hasLoadedUnit ==
+{{{
+bool hasLoadedUnit() const;
+}}}
+
+Checks if this unit has other units loaded inside.
