@@ -10,10 +10,13 @@
  * Hook changes
   * The "Damage With" hook module has been renamed to "Weapon Damage" hook module. (File renamed from `damage_with.cpp` to `weapon_damage.cpp`.
  * Library changes
-  * Added: `CUnit::getLastOwnerId(), CUnit::canDetect(), CUnit::getActiveGroundWeapon(), CUnit::isVisibleTo(), CUnit::getLoadedUnit(), CUnit::hasLoadedUnit(), CUnit::canBuild(), CUnit::isFrozen(), CUnit::getName()`.
-  * `CUnit::canUseTech()` has been changed slightly.
+  * [CUnit]
+   * Added: `CUnit::getLastOwnerId(), CUnit::canDetect(), CUnit::getActiveGroundWeapon(), CUnit::isVisibleTo(), CUnit::order(), CUnit::getLoadedUnit(), CUnit::hasLoadedUnit(), CUnit::canBuild(), CUnit::isFrozen(), CUnit::getName()`.
+   * `CUnit::canUseTech()` has been slightly tweaked.
+  * API functions:
+   * `scbw::hasOverlay()` has been replaced with `CUnit::hasOverlay()` and `CSprite::hasOverlay()`.
+   * Added `scbw::canWeaponTargetUnit(), scbw::random(), scbw::isUnderDarkSwarm()`.
   * Added: `CSprite::isVisibleTo()`.
-  * `scbw::hasOverlay()` (in `SCBW/api.h`) has been replaced with `CUnit::hasOverlay()` and `CSprite::hasOverlay()`.
   * The UnitFinder class now uses callback interface classes instead of templates for receiving callbacks. This should reduce executable code bloat by a little bit.
 
 = v2.35 =
