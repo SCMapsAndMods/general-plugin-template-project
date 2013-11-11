@@ -1,4 +1,4 @@
-General Plugin Template Project v2.35
+General Plugin Template Project v2.36
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -17,9 +17,9 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
    hooks/game_hooks.cpp.
 
 2. The hooks/ directory contains many hook functions that control various
-   aspects of the StarCraft engine. These are disabled by default, but you can
-   enable them by adding the hooking code in initialize.h. Most of the time, you
-   will only have to interact with these two files.
+   aspects of the StarCraft engine. All hooks are enabled by default, but you
+   disable and remove them by removing the the hooking code in initialize.h.
+   Most of the time, you will only have to interact with these two files.
 
 3. As before, you can edit the plugin's name and ID in definitions.h.
 
@@ -34,6 +34,36 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 == Changes ==
 
 For the full changelog, see http://code.google.com/p/gptp/wiki/Changelog
+
+v2.36
+ + New hooks
+   + Unit spellcasting AI hook: Because this module is quite large, it is placed
+     in a separate directory (AI/spellcasting.cpp).
+   + hooks/unit_tooltip.cpp: Customize the tooltip text of the weapon, armor,
+     and shield icons in the unit console.
+   + hooks/bunker_hooks.cpp: Control bunker attack overlays for specific unit
+     types.
+   + Added hooks for fine-tuning unit/building morph conditions
+     (hooks/unit_morph.cpp and hooks/building_morph.cpp). 
+ * Hook changes
+   * The "Damage With" hook module has been renamed to "Weapon Damage" hook
+     module (File renamed from damage_with.cpp to weapon_damage.cpp).
+ * Library changes
+   * CUnit
+     + Added: CUnit::getLastOwnerId(), CUnit::canDetect(),
+       CUnit::getActiveGroundWeapon(), CUnit::isVisibleTo(), CUnit::order(),
+       CUnit::getLoadedUnit(), CUnit::hasLoadedUnit(), CUnit::canBuild(),
+       CUnit::isFrozen(), CUnit::getName().
+     * CUnit::canUseTech() has been slightly tweaked.
+   * API functions
+     * scbw::hasOverlay() has been replaced with CUnit::hasOverlay() and
+       CSprite::hasOverlay().
+     + Added scbw::canWeaponTargetUnit(), scbw::random(),
+       scbw::isUnderDarkSwarm().
+   + Added: CSprite::isVisibleTo().
+   * The UnitFinder class now uses callback interface classes instead of
+     templates for receiving callbacks. This should reduce executable code bloat
+     by a little bit.
 
 v2.35
  + New hooks
