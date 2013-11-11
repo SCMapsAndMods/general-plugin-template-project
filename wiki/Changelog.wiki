@@ -2,15 +2,15 @@
 
 = v2.36 Preview =
 
- * New features
-  * Added hooks for controlling unit spellcasting AI. Because this module is quite large, it is placed in a separate directory (`AI/spellcasting.cpp`).
-  * Added hook functions for controlling unit console icon tooltip text (`hooks/unit_tooltip.cpp`).
-  * Added hook for controlling bunker attack overlays
-  * Added hooks for checking unit/building morph conditions.
+ * New hooks
+  * Unit spellcasting AI hook: Because this module is quite large, it is placed in a separate directory (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/AI/spellcasting.cpp AI/spellcasting.cpp]</tt>).
+  * <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/unit_tooltip.cpp hooks/unit_tooltip.cpp]</tt>: Customize the tooltip text of the weapon, armor, and shield icons in the unit console.
+  * <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/bunker_hooks.cpp hooks/bunker_hooks.cpp]</tt>: Control bunker attack overlays for specific unit types.
+  * Added hooks for fine-tuning unit/building morph conditions (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/unit_morph.cpp hooks/unit_morph.cpp]</tt> and <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/building_morph.cpp hooks/building_morph.cpp]</tt>).
  * Hook changes
   * The "Damage With" hook module has been renamed to "Weapon Damage" hook module. (File renamed from `damage_with.cpp` to `weapon_damage.cpp`.
  * Library changes
-  * Added: `CUnit::getLastOwnerId(), CUnit::canDetect(), CUnit::getActiveGroundWeapon(), CUnit::isVisibleTo(), CUnit::getLoadedUnit(), CUnit::hasLoadedUnit(), CUnit::canBuild(), CUnit::isFrozen()`.
+  * Added: `CUnit::getLastOwnerId(), CUnit::canDetect(), CUnit::getActiveGroundWeapon(), CUnit::isVisibleTo(), CUnit::getLoadedUnit(), CUnit::hasLoadedUnit(), CUnit::canBuild(), CUnit::isFrozen(), CUnit::getName()`.
   * `CUnit::canUseTech()` has been changed slightly.
   * Added: `CSprite::isVisibleTo()`.
   * `scbw::hasOverlay()` (in `SCBW/api.h`) has been replaced with `CUnit::hasOverlay()` and `CSprite::hasOverlay()`.
