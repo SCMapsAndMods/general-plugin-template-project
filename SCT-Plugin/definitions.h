@@ -9,3 +9,4 @@
 
 //Custom plugin stuff
 #define UPGRADE_FIRST_AID_PACKS 45
+#define IMAGE_STIM_PACKS_EFFECT 930
