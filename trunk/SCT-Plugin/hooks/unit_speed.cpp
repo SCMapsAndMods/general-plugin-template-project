@@ -13,8 +13,13 @@ namespace hooks {
 u32 getModifiedUnitSpeedHook(const CUnit* unit, u32 baseSpeed) {
 	u32 speed = baseSpeed;
 
-  if (unit->stimTimer || unit->status & UnitStatus::SpeedUpgrade)
-    speed = CLAMP(speed + speed / 2, 853u, 2133u);  // +50% speed; minimum 3.33, maximum 8.33
+  if (unit->stimTimer || unit->status & UnitStatus::SpeedUpgrade) {
+    speed += speed / 2; // +50% speed
+    
+    //Apply maximum only if flingy is not iscript-controlled; intended to target Vultures and Scouts
+    if (Flingy::MovementControl[Unit::Graphic[unit->id]] != 1)
+      speed = CLAMP(speed, 853u, 2133u);  //minimum 3.33, maximum 8.33
+  }
 
   if (unit->ensnareTimer)
     speed -= speed / 4; // -25% speed
