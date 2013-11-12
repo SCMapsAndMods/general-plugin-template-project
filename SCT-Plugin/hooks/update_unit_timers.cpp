@@ -15,8 +15,6 @@ namespace hooks {
 /// Updates unit timers, regenerates hp and shields, and burns down Terran buildings.
 /// Logically equivalent to function @ 0x004EC290
 void updateUnitTimersHook(CUnit* unit) {
-  //Default StarCraft logic
-
   //Timers
   if (unit->mainOrderTimer)
     unit->mainOrderTimer--;
@@ -64,10 +62,16 @@ void updateUnitTimersHook(CUnit* unit) {
   if (unit->status & UnitStatus::Completed) {
     //HP regeneration
     if (Unit::BaseProperty[unit->id] & UnitProperty::RegeneratesHP
-        && unit->hitPoints > 0
-        && unit->hitPoints != Unit::MaxHitPoints[unit->id]
-        )
+        || (Unit::GroupFlags[unit->id].isTerran
+            && Unit::BaseProperty[unit->id] & UnitProperty::Organic 
+            && !(Unit::BaseProperty[unit->id] & UnitProperty::Mechanical)
+            && (scbw::getUpgradeLevel(unit->playerId, UPGRADE_FIRST_AID_PACKS)
+                || Unit::BaseProperty[unit->id] & UnitProperty::Hero)
+            )
+        ) {
+      if (unit->hitPoints > 0 && unit->hitPoints != Unit::MaxHitPoints[unit->id])
         unit->setHp(unit->hitPoints + 4);
+    }
 
     //Energy regeneration
     //Call the function in StarCraft.exe; do NOT directly call the hook function.

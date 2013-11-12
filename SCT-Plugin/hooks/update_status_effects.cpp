@@ -3,6 +3,7 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/scbwdata.h"
 #include "irradiate.h"
+#include <algorithm>
 
 namespace {
 //Helper functions that should be used only in this file

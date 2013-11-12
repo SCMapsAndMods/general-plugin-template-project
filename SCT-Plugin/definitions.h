@@ -6,3 +6,6 @@
 
 //What is the plugin's name (and version)?
 #define PLUGIN_NAME "SCT Plugin v1.2"
+
+//Custom plugin stuff
+#define UPGRADE_FIRST_AID_PACKS 45
