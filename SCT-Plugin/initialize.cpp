@@ -15,7 +15,6 @@
 #include "hooks/harvest.h"
 #include "hooks/irradiate.h"
 #include "hooks/max_unit_energy.h"
-#include "hooks/rally_point.h"
 #include "hooks/recharge_shields.h"
 #include "hooks/sight_range.h"
 #include "hooks/stim_packs.h"
@@ -62,7 +61,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   hooks::injectUnitMaxEnergyHook();
 
-  hooks::injectRallyHooks();
   hooks::injectRechargeShieldsHooks();
 
   hooks::injectSightRangeHook();
