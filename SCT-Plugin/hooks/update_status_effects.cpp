@@ -15,8 +15,6 @@ namespace hooks {
 //Original function address: 0x00492F70 (SCBW 1.16.1)
 //Note: this function is called every 8 ticks (when unit->cycleCounter reaches 8 == 0)
 void updateStatusEffectsHook(CUnit *unit) {
-  //Default StarCraft logic
-
   if (unit->stasisTimer) {
     unit->stasisTimer--;
     if (unit->stasisTimer == 0)
@@ -69,9 +67,10 @@ void updateStatusEffectsHook(CUnit *unit) {
   if (unit->plagueTimer) {
     unit->plagueTimer--;
     if (!(unit->status & UnitStatus::Invincible)) {
-      s32 damage = (Weapon::DamageAmount[WeaponId::Plague] << 8) / 76;
-      if (unit->hitPoints > damage)
-        unit->damageHp(damage);
+      //Try to reduce the unit's HP to 1/256 without killing it
+      const s32 damage = (Weapon::DamageAmount[WeaponId::Plague] << 8) / 75;
+      if (unit->hitPoints > 1)
+        unit->damageHp(std::min(damage, unit->hitPoints - 1));
     }
     if (unit->plagueTimer == 0)
       unit->removeOverlay(ImageId::PlagueOverlay_Small, ImageId::PlagueOverlay_Large);
