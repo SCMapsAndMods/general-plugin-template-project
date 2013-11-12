@@ -1,6 +1,7 @@
 #include "weapon_cooldown.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
+#include <algorithm>
 
 namespace hooks {
 
@@ -8,26 +9,20 @@ namespace hooks {
 ///
 /// @return		The modified cooldown value.
 u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId) {
-	//Default StarCraft behavior
 	u32 cooldown = Weapon::Cooldown[weaponId];
 
 	if (unit->acidSporeCount) {
-		u32 increaseAmt = cooldown >> 3;
-		if (increaseAmt < 3) increaseAmt = 3;
-		cooldown += increaseAmt * unit->acidSporeCount;
+    //Use proper rounding to better simulate the 12.5%-per-spore
+    cooldown += (unit->acidSporeCount * cooldown + 4) / 8;
 	}
 
-	int cooldownModifier = (unit->stimTimer ? 1 : 0) - (unit->ensnareTimer ? 1 : 0)
-		+ (unit->status & UnitStatus::CooldownUpgrade ? 1 : 0);
-	if (cooldownModifier > 0)
-		cooldown >>= 1;
-	else if (cooldownModifier < 0)
-		cooldown += cooldown >> 2;
+  //Ensnare always overrides Stim Packs and Adrenal Glands
+  if (unit->ensnareTimer)
+    cooldown += (cooldown + 2) / 4;     // +25%, rounded properly
+  else if (unit->stimTimer != 0 || unit->status & UnitStatus::CooldownUpgrade)
+    cooldown = (cooldown * 4 + 3) / 6;  // -66.7%, rounded properly
 
-	if (cooldown > 250) cooldown = 250;
-	else if (cooldown < 5) cooldown = 5;
-
-	return cooldown;
+	return CLAMP(cooldown, 5u, 250u);
 }
 
 } //hooks
