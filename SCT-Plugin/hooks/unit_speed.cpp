@@ -49,7 +49,7 @@ u32 getModifiedUnitTurnSpeedHook(const CUnit* unit) {
 	else if (modifier < 0)
 		turnSpeed -= turnSpeed >> 2;
 
-  return std::max(turnSpeed, 127u); //To prevent jerky movement bug
+  return std::min(turnSpeed, 127u); //To prevent jerky movement bug
 }
 
 } //hooks
