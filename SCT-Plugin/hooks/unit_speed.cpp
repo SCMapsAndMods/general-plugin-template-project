@@ -3,6 +3,7 @@
 #include "unit_speed.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/scbwdata.h"
+#include <algorithm>
 
 namespace hooks {
 
@@ -10,21 +11,14 @@ namespace hooks {
 ///
 /// @return		The modified speed value.
 u32 getModifiedUnitSpeedHook(const CUnit* unit, u32 baseSpeed) {
-	//Default StarCraft behavior
 	u32 speed = baseSpeed;
-	int speedModifier = (unit->stimTimer ? 1 : 0) - (unit->ensnareTimer ? 1 : 0)
-                      + (unit->status & UnitStatus::SpeedUpgrade ? 1 : 0);
-	if (speedModifier > 0) {
-		if (unit->id == UnitId::scout || unit->id == UnitId::Hero_Mojo || unit->id == UnitId::Hero_Artanis)
-      speed = 1707;
-		else {
-			speed += speed >> 1;
-			if (speed < 853)
-        speed = 853;
-		}
-	}
-	else if (speedModifier < 0)
-		speed >>= 1;
+
+  if (unit->stimTimer || unit->status & UnitStatus::SpeedUpgrade)
+    speed = CLAMP(speed + speed / 2, 853u, 2133u);  // +50% speed; minimum 3.33, maximum 8.33
+
+  if (unit->ensnareTimer)
+    speed -= speed / 4; // -25% speed
+
 	return speed;
 }
 
@@ -47,7 +41,6 @@ u32 getModifiedUnitAccelerationHook(const CUnit* unit) {
 ///
 /// @return		The modified turning speed value.
 u32 getModifiedUnitTurnSpeedHook(const CUnit* unit) {
-	//Default StarCraft behavior
 	u32 turnSpeed = Flingy::TurnSpeed[Unit::Graphic[unit->id]];
 	int modifier = (unit->stimTimer ? 1 : 0) - (unit->ensnareTimer ? 1 : 0)
                  + (unit->status & UnitStatus::SpeedUpgrade ? 1 : 0);
@@ -55,7 +48,8 @@ u32 getModifiedUnitTurnSpeedHook(const CUnit* unit) {
 		turnSpeed <<= 1;
 	else if (modifier < 0)
 		turnSpeed -= turnSpeed >> 2;
-	return turnSpeed;
+
+  return std::max(turnSpeed, 127u); //To prevent jerky movement bug
 }
 
 } //hooks
