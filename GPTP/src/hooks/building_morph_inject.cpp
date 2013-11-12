@@ -241,7 +241,7 @@ void __declspec(naked) isMorphedBuildingWrapper_CancelZergBuilding() {
 
 //-------- AI_GetWaitBuildUnitCount --------//
 
-//Inject @ 0x004332B6
+//Inject @ 0x00433286
 const u32 Hook_AI_GetWaitBuildUnitCount_Return = 0x004333D3;
 void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount() {
   static CUnit *unit;
@@ -250,7 +250,6 @@ void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount
   static u32 unitCount;
 
   __asm {
-    ADD [EBP - 4], EAX
     PUSHAD
     MOV ignoreIncomplete, EDX
     MOV unitId, DI
@@ -268,7 +267,7 @@ void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount
 
 //-------- AI_GetUnitCount --------//
 
-//Inject @ 0x004334F4
+//Inject @ 0x004334D9
 const u32 Hook_AI_GetUnitCount_Return = 0x00433588;
 void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_GetUnitCount() {
   static CUnit *unit;
@@ -293,7 +292,7 @@ void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_GetUnitCount() {
 
 //-------- AI_ManageBases --------//
 
-//Inject @ 0x00436455
+//Inject @ 0x00436439
 const u32 Hook_AI_ManageBases_Return = 0x004364F7;
 void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_ManageBases() {
   static CUnit *unit;
@@ -302,7 +301,8 @@ void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_ManageBases() {
 
   __asm {
     PUSHAD
-    MOV unitId, DI
+    MOV EAX, [EBP-16]
+    MOV unitId, AX
     MOV unit, ESI
     MOV unitCount, EBX
   }
@@ -330,9 +330,9 @@ void injectBuildingMorphHooks() {
   jmpPatch(isMorphedBuildingWrapper_ZergBuildSelf_SetTimer, 0x0045D56C);
   jmpPatch(isMorphedBuildingWrapper_CancelZergBuilding,     0x0045DA4A);
   
-  jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount, 0x004332B6);
-  jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetUnitCount, 0x004334F4);
-  jmpPatch(getMorphBuildingTypeCountWrapper_AI_ManageBases, 0x00436455);
+  jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount, 0x00433286);
+  jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetUnitCount, 0x004334D9);
+  jmpPatch(getMorphBuildingTypeCountWrapper_AI_ManageBases, 0x00436439);
 }
 
 } //hooks
