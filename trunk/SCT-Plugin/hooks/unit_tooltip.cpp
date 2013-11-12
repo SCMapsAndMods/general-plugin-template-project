@@ -35,11 +35,11 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrI
   char damageTypeColor = '\x01'; //Default
   switch (Weapon::DamageType[weaponId]) {
     case DamageType::Independent: //Venomous damage (purple)
-      damageTypeColor = '\x16'; break;
+      damageTypeColor = '\x10'; break;
     case DamageType::Explosive:   //Explosive damage (orange)
-      damageTypeColor = '\x17'; break;
-    case DamageType::Concussive:  //Concussive damage (light green)
-      damageTypeColor = '\x15'; break;
+      damageTypeColor = '\x11'; break;
+    case DamageType::Concussive:  //Concussive damage (teal)
+      damageTypeColor = '\x0F'; break;
   }
 
   if (bonusDamage > 0)
