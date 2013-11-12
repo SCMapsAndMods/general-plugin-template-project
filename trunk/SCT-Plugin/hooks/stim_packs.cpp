@@ -1,6 +1,7 @@
 #include "stim_packs.h"
 #include "../SCBW/api.h"
 
+//Use separate HP cost for Fiends (Firebat / Gui Montag)
 const s32 getStimPacksHpCost(const CUnit *unit) {
   if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag)
     return 20 * 256;
@@ -20,6 +21,10 @@ void useStimPacksHook(CUnit *unit) {
       unit->stimTimer = 37;
       unit->updateSpeed();
     }
+
+    //Add Stim Packs effect overlay
+    if (!unit->hasOverlay(IMAGE_STIM_PACKS_EFFECT))
+      unit->sprite->createTopOverlay(IMAGE_STIM_PACKS_EFFECT);
   }
 }
 

@@ -24,8 +24,10 @@ void updateStatusEffectsHook(CUnit *unit) {
 
   if (unit->stimTimer) {
     unit->stimTimer--;
-    if (unit->stimTimer == 0)
+    if (unit->stimTimer == 0) {
       unit->updateSpeed();
+      unit->removeOverlay(IMAGE_STIM_PACKS_EFFECT); //Remove Stim Packs effect overlay
+    }
   }
 
   if (unit->ensnareTimer) {
