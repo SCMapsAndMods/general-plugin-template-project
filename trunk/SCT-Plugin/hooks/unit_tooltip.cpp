@@ -1,5 +1,5 @@
 #include "../SCBW/api.h"
-#include "../SCBW/enumerations/WeaponId.h"
+#include "../SCBW/enumerations.h"
 #include <cstdio>
 
 
@@ -8,13 +8,14 @@ char buffer[128];
 //Returns the special damage multiplier factor for units that don't use the
 //"Damage Factor" property in weapons.dat.
 u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
-  //Default StarCraft behavior
-  if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag
-      || unit->id == UnitId::zealot || unit->id == UnitId::fenix_zealot)
-    return 2;
+  u8 maxHits = 0;
+  if (Unit::GroundWeapon[unit->id] == weaponId)
+    maxHits = Unit::MaxGroundHits[unit->id];
+  else if (Unit::AirWeapon[unit->id] == weaponId)
+    maxHits = Unit::MaxAirHits[unit->id];
 
-  if (unit->id == UnitId::valkyrie)
-    return 1;
+  if (maxHits > 1)
+    return maxHits * Weapon::DamageFactor[weaponId];
 
   return Weapon::DamageFactor[weaponId];
 }
@@ -23,8 +24,6 @@ u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
 //This function is used for weapon icons and special icons.
 //Precondition: @p entryStrIndex is a stat_txt.tbl string index.
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrIndex) {
-  //Default StarCraft behavior
-
   const char *entryName = scbw::getStatTxtTblString(entryStrIndex);
   const char *damageStr = scbw::getStatTxtTblString(777);         //"Damage:"
 
@@ -33,24 +32,22 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrI
   const u16 baseDamage = Weapon::DamageAmount[weaponId] * damageFactor;
   const u16 bonusDamage = Weapon::DamageBonus[weaponId] * damageFactor * upgradeLevel;
 
-  if (weaponId == WeaponId::HaloRockets) {
-    if (bonusDamage > 0) {
-      const char *perRocketStr = scbw::getStatTxtTblString(1301); //"per rocket"
-      sprintf_s(buffer, sizeof(buffer), "%s\n%s %d+%d %s",
-                entryName, damageStr, baseDamage, bonusDamage, perRocketStr);
-    }
-    else
-      sprintf_s(buffer, sizeof(buffer), "%s\n%s %d %s",
-                entryName, damageStr, baseDamage, bonusDamage);
+  char damageTypeColor = '\x01'; //Default
+  switch (Weapon::DamageType[weaponId]) {
+    case DamageType::Independent: //Venomous damage (purple)
+      damageTypeColor = '\x16'; break;
+    case DamageType::Explosive:   //Explosive damage (orange)
+      damageTypeColor = '\x17'; break;
+    case DamageType::Concussive:  //Concussive damage (light green)
+      damageTypeColor = '\x15'; break;
   }
-  else {
-    if (bonusDamage > 0)
-      sprintf_s(buffer, sizeof(buffer), "%s\n%s %d+%d",
-                entryName, damageStr, baseDamage, bonusDamage);
-    else
-      sprintf_s(buffer, sizeof(buffer), "%s\n%s %d",
-                entryName, damageStr, baseDamage);
-  }
+
+  if (bonusDamage > 0)
+    sprintf_s(buffer, sizeof(buffer), "%c%s\x01\n%s %d+%d",
+              damageTypeColor, entryName, damageStr, baseDamage, bonusDamage);
+  else
+    sprintf_s(buffer, sizeof(buffer), "%c%s\x01\n%s %d",
+              damageTypeColor, entryName, damageStr, baseDamage);
 
   return buffer;
 }
@@ -58,8 +55,24 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrI
 namespace hooks {
 
 //Returns the C-string for the tooltip text of the unit's weapon icon.
+//Added: Range parameter
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
-  return getWeaponTooltipString(weaponId, unit, Weapon::Label[weaponId]);
+  static char buffer2[200];
+
+  u32 baseRangeTile = (Weapon::MaxRange[weaponId] + 16) / 32;
+  u32 modifiedRangeTile = (unit->getMaxWeaponRange(weaponId) + 16) / 32;
+
+  const char* baseTooltipStr = getWeaponTooltipString(weaponId, unit, Weapon::Label[weaponId]);
+  if (baseRangeTile == modifiedRangeTile) {
+    sprintf_s(buffer2, sizeof(buffer2), "%s\nRange: %d",
+              baseTooltipStr, baseRangeTile);
+  }
+  else {
+    sprintf_s(buffer2, sizeof(buffer2), "%s\nRange: %d+%d",
+              baseTooltipStr, baseRangeTile, modifiedRangeTile - baseRangeTile);
+  }
+
+  return buffer2;
 }
 
 //Returns the C-string for the tooltip text of the unit's armor icon.
