@@ -17,7 +17,7 @@ u32 getModifiedUnitSpeedHook(const CUnit* unit, u32 baseSpeed) {
     speed += speed / 2; // +50% speed
     
     //Apply maximum only if flingy is not iscript-controlled; intended to target Vultures and Scouts
-    if (Flingy::MovementControl[Unit::Graphic[unit->id]] != 1)
+    if (Flingy::MovementControl[Unit::Graphic[unit->id]] != 2)
       speed = CLAMP(speed, 853u, 2133u);  //minimum 3.33, maximum 8.33
   }
 
