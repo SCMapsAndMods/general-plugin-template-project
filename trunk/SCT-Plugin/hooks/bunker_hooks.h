@@ -4,7 +4,7 @@
 namespace hooks {
 
 bool unitCanAttackInsideBunkerHook(const CUnit *unit);
-void applyBunkerAttackAnimationHook(CUnit *unit);
+void createBunkerAttackThingy(const CUnit *unit);
 
 void injectBunkerHooks();
 
