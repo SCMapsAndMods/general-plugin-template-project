@@ -38,6 +38,16 @@ bool isEggUnitHook(u16 unitId) {
   return false;
 }
 
+//Check if @p unitId is an egg unit that can be rallied
+bool isRallyableEggUnitHook(u16 unitId) {
+  //Default StarCraft behavior
+
+  if (unitId == UnitId::cocoon || unitId == UnitId::ZergLurkerEgg)
+    return false;
+
+  return true;
+}
+
 //Return the ID of the egg unit to use when morphing @p unitId.
 //If the unit cannot morph, return UnitId::None.
 u16 getUnitMorphEggTypeHook(u16 unitId) {
@@ -67,6 +77,32 @@ u16 getCancelMorphRevertTypeHook(const CUnit *eggUnit) {
     return UnitId::hydralisk;
 
   return UnitId::None;  //Default (no revert for larvae)
+}
+
+//Determines the vertical (Y) offset by which the @p unit will be shifted to
+//when it finishes morphing.
+s16 getUnitVerticalOffsetOnBirth(const CUnit *unit) {
+  //Default StarCraft behavior
+
+  //No offset, birth offset is handled elsewhere
+  if (Unit::BaseProperty[unit->id] & UnitProperty::TwoUnitsIn1Egg)
+    return 0;
+
+  //No offset, since the morphed unit should stay where it is
+  if (unit->displayedUnitId == UnitId::cocoon)
+    return 0;
+
+  //Hovering units (?) float 7 pixels above ground
+  //Note: This is not a mistake; SC actually uses a "==" comparison to check flags (I know it's a WTF).
+  if (Unit::MovementFlags[unit->id] == (0x01 | 0x40 | 0x80))
+    return -7;
+
+  //Air units float 42 pixels above ground
+  if (unit->status & UnitStatus::InAir)
+    return -42;
+
+  //Default for ground units
+  return 0;
 }
 
 //Check if @p playerId has enough supplies to build @p unitId.
