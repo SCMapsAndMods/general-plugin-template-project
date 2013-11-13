@@ -4,7 +4,6 @@
 namespace {
 
 //Inject with jmpPatch()
-const u32 Hook_GetSeekRange       = 0x00476000;
 void __declspec(naked) getSeekRangeWrapper() {
   CUnit *unit;
   u8 seekRange;
@@ -50,11 +49,12 @@ void __declspec(naked) getMaxWeaponRangeWrapper() {
 
 //Defined in SCBW/structures/CUnit.cpp
 extern const u32 Func_GetMaxWeaponRange;
+extern const u32 Func_GetSeekRange;
 
 namespace hooks {
 
 void injectWeaponRangeHooks() {
-  jmpPatch(getSeekRangeWrapper,       Hook_GetSeekRange);
+  jmpPatch(getSeekRangeWrapper,       Func_GetSeekRange);
   jmpPatch(getMaxWeaponRangeWrapper,  Func_GetMaxWeaponRange);
 }
 
