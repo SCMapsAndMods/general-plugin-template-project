@@ -14,9 +14,9 @@ struct {
   s32 damageType;
   s32 unitSizeFactor[4];   //Order: {independent, small, medium, large}
 } const damageFactor[5] = {
-  {0, 0, 0, 0, 0},        //Independent
+  {0, 0, 256, 320, 384},  //Independent (Venomous)
   {1, 0, 128, 192, 256},  //Explosive
-  {2, 0, 256, 128, 64},   //Concussive
+  {2, 0, 256, 192, 128},  //Concussive
   {3, 0, 256, 256, 256},  //Normal
   {4, 0, 256, 256, 256}   //IgnoreArmor
 };
@@ -44,6 +44,21 @@ void weaponDamageHook(s32     damage,
   if (isCheatEnabled(PowerOverwhelming)                           //If Power Overwhelming is enabled
       && playerTable[attackingPlayer].type != PlayerType::Human)  //and the attacker is not a human player
     damage = 0;
+
+  //If the unit is protected by Dark Swarm, reduce the damage by 50%
+  if (!(target->status & UnitStatus::InAir)
+      && !(Unit::BaseProperty[target->id] & UnitProperty::Building))
+  {
+    if (Weapon::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit
+        || Weapon::Behavior[weaponId] == WeaponBehavior::Bounce
+        || Weapon::Behavior[weaponId] == WeaponBehavior::Fly_DoNotFollowTarget
+        || Weapon::Behavior[weaponId] == WeaponBehavior::Fly_FollowTarget)
+    {
+      if (weaponId != WeaponId::YamatoGun && weaponId != WeaponId::SpawnBroodlings
+          && scbw::isUnderDarkSwarm(target))
+        damage /= 2;
+    }
+  }
 
   if (target->status & UnitStatus::IsHallucination)
     damage *= 2;
@@ -93,7 +108,7 @@ void weaponDamageHook(s32     damage,
   //Reduce shields (finally)
   if (shieldReduceAmount != 0) {
     target->shields -= shieldReduceAmount;
-    if (damageType != DamageType::Independent && target->shields != 0)
+    if (weaponId != WeaponId::Plague && target->shields != 0)
       createShieldOverlay(target, direction);
   }
 
