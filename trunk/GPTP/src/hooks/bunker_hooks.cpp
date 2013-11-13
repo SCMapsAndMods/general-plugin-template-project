@@ -31,31 +31,24 @@ bool unitCanAttackInsideBunkerHook(const CUnit *unit) {
     return false;
 }
 
-void applyBunkerAttackAnimationHook(CUnit *unit) {
+void createBunkerAttackThingy(const CUnit *unit) {
   CImage *bunkerImage = unit->connectedUnit->sprite->mainGraphic;
-  Point8 offset;
+
+  u8 frameDirection = (unit->currentDirection1 + 16) / 32 % 8;
+  const LO_Header *loFile = lo_files->attackOverlays[bunkerImage->id];
+  Point8 offset = loFile->getOffset(bunkerImage->frameIndex, frameDirection);
+  
+  if (bunkerImage->flags & 0x2) //Is inverted
+    offset.x = -offset.x;
+
   u8 frameAngle;
   u16 spriteId;
 
   if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag) {
-    u8 frameDirection = (unit->currentDirection1 + 16) / 32 % 8;
-    const LO_Header *loFile = lo_files->attackOverlays[bunkerImage->id];
-    offset = loFile->getOffset(bunkerImage->frameIndex, frameDirection);
-
-    if (bunkerImage->flags & 0x2) //Is inverted
-      offset.x = -offset.x;
-
     frameAngle = ((unit->currentDirection1 + 8) / 16 % 16) * 16;
     spriteId = 378; //Firebat flamethrower graphics
   }
   else {
-    u8 frameDirection = (unit->currentDirection1 + 16) / 32 % 8;
-    const LO_Header *loFile = lo_files->attackOverlays[bunkerImage->id];
-    offset = loFile->getOffset(bunkerImage->frameIndex, frameDirection);
-
-    if (bunkerImage->flags & 0x2) //Is inverted
-      offset.x = -offset.x;
-
     frameAngle = frameDirection * 32;
     spriteId = 377; //Bunker attack overlay
   }
