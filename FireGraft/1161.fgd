@@ -11827,3 +11827,14 @@ UpgradeDat=0x1145c0
 2219Offset=0x76392
 2219Size=2
 2219Type=Jump
+
+2220Change=0xEB
+2220Entry=Units,Properties,Bunker,Remove race restriction
+2220Offset=0xE6E7C
+2220Size=2
+2220Type=Jump
+2221Entry=Units,Properties,Bunker,Race ID allowed to enter
+2221Hint=Allowed values: 0 - Zerg, 1 - Terran, 2 - Protoss. This EXE edit has no effect if the one above is active.
+2221Offset=0xE6E7B
+2221Size=1
+2221Type=Const
