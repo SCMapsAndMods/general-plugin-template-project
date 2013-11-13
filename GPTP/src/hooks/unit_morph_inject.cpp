@@ -1,4 +1,5 @@
 #include "unit_morph.h"
+#include "building_morph.h"
 #include <hook_tools.h>
 #include <SCBW/api.h>
 #include <cassert>
@@ -139,7 +140,8 @@ void replaceSpriteImages(CSprite *sprite, u16 imageId, u8 imageDirection) {
   }
 }
 
-//Cancel a unit being morphed or constructed.
+//-------- cancelUnit --------//
+
 void __fastcall cancelUnitWrapper(CUnit *unit) {
   //Default StarCraft behavior
   if (!unit->sprite) return;
@@ -207,6 +209,35 @@ void __fastcall cancelUnitWrapper(CUnit *unit) {
   }
 }
 
+//-------- getRemainingBuildTimePct --------//
+
+s32 getRemainingBuildTimePctHook(const CUnit *unit) {
+  u16 unitId = unit->id;
+  if (hooks::isEggUnitHook(unitId) || hooks::isMorphingBuildingHook(unit))
+    unitId = unit->buildQueue[unit->buildQueueSlot];
+
+  return 100 * (Unit::TimeCost[unitId] - unit->remainingBuildTime) / Unit::TimeCost[unitId];
+}
+
+//Inject @ 0x004669E0
+void __declspec(naked) getRemainingBuildTimePctWrapper() {
+  static CUnit *unit;
+  static s32 percentage;
+  __asm {
+    PUSHAD
+    MOV unit, ESI
+    MOV EBP, ESP
+  }
+
+  percentage = getRemainingBuildTimePctHook(unit);
+
+  __asm {
+    POPAD
+    MOV EAX, percentage
+    RETN
+  }
+}
+
 } //unnamed namespace
 
 namespace hooks {
@@ -218,6 +249,7 @@ void injectUnitMorphHooks() {
   jmpPatch(unitMorphWrapper_Orders_Morph1_EggType,  0x0045E019);
   jmpPatch(hasSuppliesForUnitWrapper,               0x0042CF70);
   jmpPatch(cancelUnitWrapper,                       0x00468280);
+  jmpPatch(getRemainingBuildTimePctWrapper,         0x004669E0);
 }
 
 } //hooks

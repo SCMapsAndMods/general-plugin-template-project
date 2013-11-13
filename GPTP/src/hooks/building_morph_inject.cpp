@@ -15,9 +15,7 @@ void __declspec(naked) isMorphingBuildingWrapper() {
     MOV unit, EAX
   }
 
-  if (!(unit->status & UnitStatus::Completed)
-      && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot]))
-  {
+  if (hooks::isMorphingBuildingHook(unit)) {
     __asm {
       POPAD
       MOV EAX, 1
@@ -219,8 +217,7 @@ void __declspec(naked) isMorphedBuildingWrapper_CancelZergBuilding() {
     MOV unit, EBX
   }
 
-  if (!(unit->status & UnitStatus::Completed)
-      && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot])) {
+  if (!hooks::isMorphingBuildingHook(unit)) {
     __asm {
       POPAD
       MOV EAX, EBX
@@ -333,6 +330,11 @@ void injectBuildingMorphHooks() {
   jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount, 0x00433286);
   jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetUnitCount, 0x004334D9);
   jmpPatch(getMorphBuildingTypeCountWrapper_AI_ManageBases, 0x00436439);
+}
+
+bool isMorphingBuildingHook(const CUnit *unit) {
+  return !(unit->status & UnitStatus::Completed)
+    && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot]);
 }
 
 } //hooks
