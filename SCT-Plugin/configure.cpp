@@ -19,7 +19,14 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\nBuilt on " __DATE__ " " __TIME__
     "\n"
     "\n[Features]"
-    "\n - Add your own text here"
+    "\n - Stim Packs: 20HP cost for Fiends, add effect overlay"
+    "\n - Plague: Deal full damage, always reduce HP to 1 / 256"
+    "\n - First Aid Packs upgrade: Terran infantry HP regen"
+    "\n - Changed cooldown modifiers for Acid Spore / Ensnare / Stim Packs"
+    "\n - Changed unit speed modifiers for Ensnare and Stim Packs"
+    "\n - Improved unit weapon tooltip text"
+    "\n"
+    "\nNote: This plugin is compatible with the Smart Rally plugin."
     ,
     PLUGIN_NAME,
     MB_TASKMODAL
