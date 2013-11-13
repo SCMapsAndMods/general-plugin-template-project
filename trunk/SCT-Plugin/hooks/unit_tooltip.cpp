@@ -121,14 +121,30 @@ const char* getShieldTooltipString(const CUnit *unit) {
 //Scarab icon (Reavers), Nuclear Missile icon (Nuclear Silos), and Spider Mine
 //icon (Vultures).
 const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
-  //Default StarCraft behavior
+  static char buffer2[200];
 
-  if (iconUnitId == UnitId::interceptor) {
-    return getWeaponTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
-  }
+  //Add range parameter for Carriers and Reavers
+  if (iconUnitId == UnitId::interceptor || iconUnitId == UnitId::ProtossScarab) {
+    const char *damageTooltipStr;
+    if (iconUnitId == UnitId::interceptor)
+      damageTooltipStr = getWeaponTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
+    else
+      damageTooltipStr = getWeaponTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
+    
+    //Carriers and Reavers use the Target Seek Range
+    const u32 baseRange = Unit::SeekRange[unit->id];
+    const u32 modifiedRange = unit->getSeekRange();
 
-  if (iconUnitId == UnitId::ProtossScarab) {
-    return getWeaponTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
+    if (baseRange == modifiedRange) {
+      sprintf_s(buffer2, sizeof(buffer2), "%s\nRange: %d",
+                damageTooltipStr, baseRange);
+    }
+    else {
+      sprintf_s(buffer2, sizeof(buffer2), "%s\nRange: %d+%d",
+                damageTooltipStr, baseRange, modifiedRange - baseRange);
+    }
+
+    return buffer2;
   }
 
   if (iconUnitId == UnitId::nuclear_missile) {
