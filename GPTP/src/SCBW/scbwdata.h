@@ -106,6 +106,7 @@ struct ImagesDatExtraOverlayLO_Files {
   LO_Header* liftoffDustOverlays[IMAGE_TYPE_COUNT];
 };
 SCBW_DATA(const ImagesDatExtraOverlayLO_Files*, lo_files, 0x0051F2A8);
+SCBW_DATA(const LO_Header* const*, shieldOverlays, 0x0052E5C8);
 
 template <typename T>
 struct PlayerFlags {
