@@ -274,7 +274,7 @@ u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   return scbw::getDistanceFast(0, 0, dx, dy);
 }
 
-const u32 Func_GetMaxWeaponRange = 0x00475870;
+extern const u32 Func_GetMaxWeaponRange = 0x00475870;
 u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
   assert(this);
   assert(weaponId < WEAPON_TYPE_COUNT);
@@ -290,6 +290,22 @@ u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
   }
 
   return maxWeaponRange;
+}
+
+extern const u32 Func_GetSeekRange = 0x00476000;
+u8 CUnit::getSeekRange() const {
+  assert(this);
+
+  static u8 seekRange;
+  __asm {
+    PUSHAD
+    MOV EDX, this
+    CALL Func_GetSeekRange
+    MOV seekRange, AL
+    POPAD
+  }
+
+  return seekRange;
 }
 
 extern const u32 Func_GetSightRange = 0x004E5B40;

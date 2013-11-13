@@ -9,6 +9,7 @@ namespace hooks {
 
 /// Returns the modified seek range (AKA target acquisition range) for the unit.
 /// Note: Seek ranges are measured in matrices (1 matrix = 32 pixels).
+/// This hook affects the behavior of CUnit::getSeekRange().
 u8 getSeekRangeHook(const CUnit *unit) {
   //Default StarCraft behavior
   using UnitStatus::Cloaked;
@@ -62,6 +63,7 @@ u8 getSeekRangeHook(const CUnit *unit) {
 
 /// Returns the modified max range for the weapon, which is assumed to be
 /// attached to the given unit.
+/// This hook affects the behavior of CUnit::getMaxWeaponRange().
 /// Note: Weapon ranges are measured in pixels.
 ///
 /// @param  weapon    The weapons.dat ID of the weapon.

@@ -27,7 +27,7 @@ void __declspec(naked) unitCanAttackInsideBunkerWrapper() {
   }
 }
 
-void __declspec(naked) applyBunkerAttackAnimationWrapper() {
+void __declspec(naked) createBunkerAttackThingyAnimationWrapper() {
   static CUnit *unit;
   __asm {
     PUSHAD
@@ -35,7 +35,7 @@ void __declspec(naked) applyBunkerAttackAnimationWrapper() {
     MOV unit, EAX
   }
 
-  hooks::applyBunkerAttackAnimationHook(unit);
+  hooks::createBunkerAttackThingy(unit);
 
   __asm {
     POPAD
@@ -51,7 +51,7 @@ namespace hooks {
 
 void injectBunkerHooks() {
   jmpPatch(unitCanAttackInsideBunkerWrapper, 0x004790A3);
-  callPatch(applyBunkerAttackAnimationWrapper, 0x00478CAF);
+  callPatch(createBunkerAttackThingyAnimationWrapper, 0x00478CAF);
 }
 
 } //hooks

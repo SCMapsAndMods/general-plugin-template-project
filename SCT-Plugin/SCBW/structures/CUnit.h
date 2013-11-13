@@ -86,9 +86,14 @@ struct CUnit {
   /// Internally, this function uses scbw::getDistanceFast().
   u32 getDistanceToTarget(const CUnit *target) const;
 
-  /// Returns the maximum range of a weapon. The weapon is assumed to be
-  /// attached to this unit for calculating upgrade effects.
+  /// Returns the maximum range of a weapon in pixels. The weapon is assumed to
+  /// be attached to this unit for calculating upgrade effects.
+  /// This is affected by the Weapon Range hook module.
   u32 getMaxWeaponRange(u8 weaponId) const;
+
+  /// Returns the unit's seek range (AKA target acquisition range) in matrices.
+  /// This is affected by the Weapon Range hook module.
+  u8 getSeekRange() const;
 
   /// Returns the sight range of this unit (with upgrades).
   /// If @p applyStatusEffects is true, also factors in status effects.
