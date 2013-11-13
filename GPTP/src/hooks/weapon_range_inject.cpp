@@ -25,7 +25,6 @@ void __declspec(naked) getSeekRangeWrapper() {
 }
 
 //Inject with jmpPatch()
-const u32 Hook_GetMaxWeaponRange  = 0x00475870;
 void __declspec(naked) getMaxWeaponRangeWrapper() {
   CUnit *unit;
   u8 weaponId;
@@ -49,11 +48,14 @@ void __declspec(naked) getMaxWeaponRangeWrapper() {
 
 } //unnamed namespace
 
+//Defined in SCBW/structures/CUnit.cpp
+extern const u32 Func_GetMaxWeaponRange;
+
 namespace hooks {
 
 void injectWeaponRangeHooks() {
   jmpPatch(getSeekRangeWrapper,       Hook_GetSeekRange);
-  jmpPatch(getMaxWeaponRangeWrapper,  Hook_GetMaxWeaponRange);
+  jmpPatch(getMaxWeaponRangeWrapper,  Func_GetMaxWeaponRange);
 }
 
 } //hooks
