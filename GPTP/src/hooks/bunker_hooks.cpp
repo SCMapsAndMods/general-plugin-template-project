@@ -56,7 +56,7 @@ void applyBunkerAttackAnimationHook(CUnit *unit) {
     if (bunkerImage->flags & 0x2) //Is inverted
       offset.x = -offset.x;
 
-    frameAngle = frameDirection * 16;
+    frameAngle = frameDirection * 32;
     spriteId = 377; //Bunker attack overlay
   }
 
