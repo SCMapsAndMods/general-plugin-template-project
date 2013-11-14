@@ -19,6 +19,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\nBuilt on " __DATE__ " " __TIME__
     "\n"
     "\n[Features]"
+    "\n- SCVs auto-repair nearby units"
     "\n- Bunker shows no attack graphic for Fiends"
     "\n- Stim Packs: 20HP cost for Fiends, add effect overlay"
     "\n- Plague: Deal full damage, always reduce HP to 1 / 256"
