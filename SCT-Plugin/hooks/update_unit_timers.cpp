@@ -28,7 +28,7 @@ void updateUnitTimersHook(CUnit* unit) {
   //Shield regeneration
   if (Unit::ShieldsEnabled[unit->id]) {
     s32 maxShields = (s32)(Unit::MaxShieldPoints[unit->id]) << 8;
-    if (unit->shields != maxShields) {
+    if (unit->shields < maxShields) {
       unit->shields += 7;
       if (unit->shields > maxShields)
         unit->shields = maxShields;
