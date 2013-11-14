@@ -3,25 +3,6 @@
 
 namespace {
 
-//Inject with callPatch
-const u32 Hook_RechargeShieldsProc = 0x00493ED2;
-void __declspec(naked) rechargeShieldsProcWrapper() {
-  CUnit *target, *battery;
-  __asm {
-    PUSHAD
-    MOV EBP, ESP
-    MOV battery, EBX
-    MOV target, ECX
-  }
-
-  hooks::rechargeShieldsProcHook(target, battery);
-
-  __asm {
-    POPAD
-    RETN
-  }
-}
-
 //Inject with jmpPatch
 const u32 Hook_UnitCanRechargeShields = 0x00493520;
 void __declspec(naked) unitCanRechargeShieldsWrapper() {
@@ -49,31 +30,19 @@ void __declspec(naked) unitCanRechargeShieldsWrapper() {
   }
 }
 
-//Inject with jmpPatch
-const u32 Hook_CanStopRechargeShields = 0x00493ED7;
-const u32 Hook_CanStopRechargeShieldsYes = 0x00493EF7;
-void __declspec(naked) canStopRechargeShieldsWrapper() {
-  CUnit *target, *battery;
+//Inject with callPatch
+void __declspec(naked) orderRechargeShieldsWrapper() {
+  static CUnit *unit;
   __asm {
     PUSHAD
-    MOV EBP, ESP
-    MOV battery, EBX
-    MOV target, EDI
+    MOV unit, EDI
   }
 
-  if (hooks::canStopRechargeShieldsHook(target, battery)) {
-    __asm {
-      POPAD
-      JMP Hook_CanStopRechargeShieldsYes
-    }
-  }
-  else {
-    __asm {
-      POPAD
-      POP ESI
-      POP EBX
-      RETN
-    }
+  hooks::orderRechargeShieldsHook(unit);
+
+  __asm {
+    POPAD
+    RETN
   }
 }
 
@@ -82,9 +51,8 @@ void __declspec(naked) canStopRechargeShieldsWrapper() {
 namespace hooks {
 
 void injectRechargeShieldsHooks() {
-  callPatch(rechargeShieldsProcWrapper,   Hook_RechargeShieldsProc);
   jmpPatch(unitCanRechargeShieldsWrapper, Hook_UnitCanRechargeShields);
-  jmpPatch(canStopRechargeShieldsWrapper, Hook_CanStopRechargeShields);
+  callPatch(orderRechargeShieldsWrapper,  0x00493DD0);
 }
 
 } //hooks

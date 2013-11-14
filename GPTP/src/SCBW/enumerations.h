@@ -98,7 +98,7 @@ enum Enum {
   IsUnit                = 0x00010000,  // canAttack? /**< @todo Unknown */
   IsBuilding            = 0x00020000,
   IgnoreTileCollision   = 0x00040000,
-  UNKNOWN4              = 0x00080000,
+  Unmovable             = 0x00080000,
   IsNormal              = 0x00100000,  /**< 1 for "normal" units, 0 for hallucinated units */
   NoCollide             = 0x00200000, // ++if set, other units wont collide with the unit (like burrowed units)
   UNKNOWN5              = 0x00400000,
