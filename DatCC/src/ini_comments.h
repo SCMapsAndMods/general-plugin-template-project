@@ -3,6 +3,8 @@
 
 namespace datcc {
 
+typedef std::string (*CommentFunc)(int, size_t);
+
 //Value describes data from text files
 std::string makeUnitComment   (int unitId,    size_t keyStrSize);
 std::string makeWeaponComment (int weaponId,  size_t keyStrSize);

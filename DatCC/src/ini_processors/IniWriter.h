@@ -1,5 +1,6 @@
 #pragma once
 #include "IniProcessor.h"
+#include "../flags.h"
 
 namespace datcc {
 
@@ -10,11 +11,11 @@ class IniWriter: public IniProcessor {
     template <class T>
     int process(const T &t, const std::string &key);
 
-    template <class T, typename CallbackT>
-    int process(const T &t, const std::string &key, CallbackT &commenter);
+    template <class T>
+    int process(const T &t, const std::string &key, CommentFunc commenter);
 
     template <class T>
-    int processFlags(const T &t, const std::string &key);
+    int process(const T &t, const std::string &key, const FlagNames<T> &flagNames);
 
     int saveTo(const std::string &fileName) const;
 };
@@ -35,14 +36,14 @@ int IniWriter::process(const Point16 &p, const std::string &key);
 template <>
 int IniWriter::process(const Box16 &b, const std::string &key);
 
-template <class T, typename CallbackT>
-int IniWriter::process(const T &t, const std::string &key, CallbackT &commenter) {
+template <class T>
+int IniWriter::process(const T &t, const std::string &key, CommentFunc commenter) {
   return process(commenter(t, key.size()), key);
 }
 
 template <class T>
-int IniWriter::processFlags(const T &t, const std::string &key) {
-  return process(std::string(convertFlagsToStr(t)), key);
+int IniWriter::process(const T &t, const std::string &key, const FlagNames<T> &flagNames) {
+  return process(flagNames.makeCommentString(t), key);
 }
 
 } //datcc

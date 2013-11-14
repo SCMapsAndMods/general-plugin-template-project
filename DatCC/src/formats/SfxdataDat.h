@@ -1,6 +1,7 @@
 #include "DatInterface.h"
 #include <sstream>
 #include "TblFile.h"
+#include "../flags.h"
 
 namespace datcc {
 
@@ -42,8 +43,8 @@ void SfxdataDat::processIni(IniProcT &iniProc) {
     iniProc.setSection(sectionName.str(), "");
 
     iniProc.process(data.soundFile[soundId],    "Sound File", makeSfxdataTblComment);
-    iniProc.processFlags(data.flags1[soundId],  "Flags 1");
-    iniProc.processFlags(data.flags2[soundId],  "Flags 2");
+    iniProc.process(data.flags1[soundId],  "Flags 1", unknownFlags8);
+    iniProc.process(data.flags2[soundId],  "Flags 2", unknownFlags8);
     iniProc.process(data.race[soundId],         "Race");
     iniProc.process(data.muteVolume[soundId],   "Mute Volume %");
   }

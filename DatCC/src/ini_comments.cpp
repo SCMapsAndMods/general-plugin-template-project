@@ -1,5 +1,6 @@
 #include "ini_comments.h"
 #include "data.h"
+#include "flags.h"
 #include <sstream>
 #include <vector>
 
