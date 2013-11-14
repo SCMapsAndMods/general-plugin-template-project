@@ -11,7 +11,6 @@ namespace hooks {
 /// Note: Seek ranges are measured in matrices (1 matrix = 32 pixels).
 /// This hook affects the behavior of CUnit::getSeekRange().
 u8 getSeekRangeHook(const CUnit *unit) {
-  //Default StarCraft behavior
   using UnitStatus::Cloaked;
   using UnitStatus::RequiresDetection;
   using scbw::getUpgradeLevel;
@@ -56,7 +55,17 @@ u8 getSeekRangeHook(const CUnit *unit) {
       if (scbw::isBroodWarMode())
         bonusAmount = 3;
       break;
+    
+    //Added
+    case UnitId::spider_mine:
+      if (getUpgradeLevel(unit->playerId, UPGRADE_THERMAL_SENSORS))
+        bonusAmount = 1;
+      break;
   }
+
+  //Added: Ocular Implants adds a flat +1 seek range
+  if (unit->isBlind)
+    bonusAmount += 1;
 
   return Unit::SeekRange[unitId] + bonusAmount;
 }
@@ -69,7 +78,6 @@ u8 getSeekRangeHook(const CUnit *unit) {
 /// @param  weapon    The weapons.dat ID of the weapon.
 /// @param  unit      The unit that owns the weapon. Use this to check upgrades.
 u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
-  //Default StarCraft behavior
   using scbw::getUpgradeLevel;
 
   u32 bonusAmount = 0;
@@ -108,6 +116,10 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
         bonusAmount += 96;
       break;
   }
+
+  //Added: Ocular Implants adds a flat +32 weapon range
+  if (unit->isBlind)
+    bonusAmount += 32;
 
   return Weapon::MaxRange[weaponId] + bonusAmount;
 }
