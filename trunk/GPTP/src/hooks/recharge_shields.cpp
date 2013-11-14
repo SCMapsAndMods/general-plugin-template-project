@@ -127,11 +127,11 @@ void orderRechargeShieldsHook(CUnit *unit) {
           return;
       }
 
-    //State 2: Prepare to recharge shields (and return to harvesting when it is over)
+    //State 2: Prepare to recharge shields
     case 2:
       battery->setSecondaryOrder(OrderId::ShieldBattery);
       unit->sprite->createOverlay(ImageId::RechargeShields_Small + scbw::getUnitOverlayAdjustment(unit));
-      insertFirstOrder(unit, OrderId::Harvest5);
+      insertFirstOrder(unit, OrderId::Harvest5);  //Stop workers harvesting
       unit->mainOrderState = 3;
 
     //State 3: Recharge unit shields
