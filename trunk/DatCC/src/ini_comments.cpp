@@ -16,6 +16,14 @@ std::string makeCommentPadding(int id, size_t keyStrSize) {
   return os.str();
 }
 
+std::string makeCommentPadding(const char *flagStr, size_t keyStrSize) {
+  std::ostringstream os;
+  os << flagStr;
+  os.width(31 - os.tellp() - keyStrSize); //Align to 32 characters
+  os << "; ";
+  return os.str();
+}
+
 std::string makeUnitComment(int unitId, size_t keyStrSize) {
   return makeCommentPadding(unitId, keyStrSize) + getUnitName(unitId);
 }

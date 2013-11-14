@@ -43,7 +43,7 @@ int IniWriter::process(const T &t, const std::string &key, CommentFunc commenter
 
 template <class T>
 int IniWriter::process(const T &t, const std::string &key, const FlagNames<T> &flagNames) {
-  return process(flagNames.makeCommentString(t), key);
+  return process(flagNames.makeCommentString(t, key.size()), key);
 }
 
 } //datcc
