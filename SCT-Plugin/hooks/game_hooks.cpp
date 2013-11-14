@@ -21,6 +21,8 @@ class RepairTargetFinder: public scbw::UnitFinderCallbackMatchInterface {
         return false;
       if (unit->playerId != scv->playerId)
         return false;
+      if (unit == scv)
+        return false; //Prevent repairing self
 
       GroupFlag gf = Unit::GroupFlags[unit->id];
       if (!gf.isTerran || gf.isZerg || gf.isProtoss)
@@ -75,12 +77,12 @@ bool nextFrame() {
       //Write your code here
 
       //Auto-Repair
-      if (unit->id == UnitId::scv || unit->mainOrderId == OrderId::PlayerGuard) {
+      if (unit->id == UnitId::scv && unit->mainOrderId == OrderId::PlayerGuard) {
         repairTargetFinder.setScv(unit);
         const CUnit *repairTarget = scbw::UnitFinder::getNearest(
           unit->getX(), unit->getY(),
-          unit->getX() - 160, unit->getY() - 160,
-          unit->getX() + 160, unit->getY() + 160,
+          unit->getX() - 200, unit->getY() - 200,
+          unit->getX() + 200, unit->getY() + 200,
           repairTargetFinder);
 
         if (repairTarget)
