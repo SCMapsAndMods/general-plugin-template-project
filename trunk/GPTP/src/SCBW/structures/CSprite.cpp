@@ -169,16 +169,17 @@ void CSprite::removeOverlay(u32 imageId) {
   }
 }
 
-//-------- Has overlay --------//
+//-------- Get overlay --------//
 
-bool CSprite::hasOverlay(u16 imageId) const {
+//Identical to function @ 0x00497460
+CImage* CSprite::getOverlay(u16 imageId) const {
   assert(this);
 
   for (CImage *image = this->imageHead; image; image = image->link.next)
     if (image->id == imageId)
-      return true;
+      return image;
 
-  return false;
+  return NULL;
 }
 
 //-------- Other --------//
