@@ -32,7 +32,10 @@ bool unitCanAttackInsideBunkerHook(const CUnit *unit) {
 }
 
 void createBunkerAttackThingyHook(const CUnit *unit) {
-  //Default StarCraft behavior
+  //Skip Fiends
+  if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag)
+    return;
+
   CImage *bunkerImage = unit->connectedUnit->sprite->mainGraphic;
 
   u8 frameDirection = (unit->currentDirection1 + 16) / 32 % 8;
@@ -42,19 +45,7 @@ void createBunkerAttackThingyHook(const CUnit *unit) {
   if (bunkerImage->flags & 0x2) //Is inverted
     offset.x = -offset.x;
 
-  u8 frameAngle;
-  u16 spriteId;
-
-  if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag) {
-    frameAngle = ((unit->currentDirection1 + 8) / 16 % 16) * 16;
-    spriteId = 378; //Firebat flamethrower graphics
-  }
-  else {
-    frameAngle = frameDirection * 32;
-    spriteId = 377; //Bunker attack overlay
-  }
-
-  CThingy *bunkerAttackEffect = createThingy(spriteId,
+  CThingy *bunkerAttackEffect = createThingy(377,   //Bunker attack overlay
                                              offset.x + unit->getX(),
                                              offset.y + unit->getY());
   if (!bunkerAttackEffect) return;
@@ -62,7 +53,7 @@ void createBunkerAttackThingyHook(const CUnit *unit) {
   bunkerAttackEffect->sprite->elevationLevel = unit->sprite->elevationLevel + 1;
   for (CImage *image = bunkerAttackEffect->sprite->imageHead;
        image; image = image->link.next) {
-    setImageDirection(image, frameAngle);
+    setImageDirection(image, frameDirection * 32);
   }
   setThingyVisibilityFlags(bunkerAttackEffect);
 }
