@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\flags.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ini_comments.cpp"
 				>
 			</File>
@@ -290,6 +294,10 @@
 			</File>
 			<File
 				RelativePath=".\formats\DatInterface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\flags.h"
 				>
 			</File>
 			<File

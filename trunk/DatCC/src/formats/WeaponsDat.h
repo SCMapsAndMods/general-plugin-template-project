@@ -63,7 +63,7 @@ void WeaponsDat::processIni(IniProcT &iniProc) {
 
     iniProc.process(data.techHint[weaponId],        "Tech Hint", makeTechComment);
 
-    iniProc.processFlags(data.targetFlags[weaponId], "Target Flags");
+    iniProc.process(data.targetFlags[weaponId],     "Target Flags", weaponTargetFlags);
     iniProc.process(data.targetErrorMsg[weaponId],  "Target Error Message", makeStatTxtTblComment);
 
     iniProc.process(data.minRange[weaponId],        "Minimum Range", makeWeaponRangeComment);

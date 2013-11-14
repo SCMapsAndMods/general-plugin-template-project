@@ -1,6 +1,7 @@
 #pragma once
 #include "DatInterface.h"
 #include "../coord_structs.h"
+#include "../flags.h"
 #include <sstream>
 
 namespace datcc {
@@ -103,7 +104,7 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.armorUpgrade[unitId],      "Armor Upgrade", makeUpgradeComment);
 
     iniProc.process(data.elevationLevel[unitId],    "Elevation Level");
-    iniProc.processFlags(data.movementFlags[unitId], "Movement Flags");
+    iniProc.process(data.movementFlags[unitId],     "Movement Flags", unitMovementFlags);
 
     //AI-related
     iniProc.process(data.rank[unitId],              "Rank");
@@ -117,11 +118,11 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.rightClickAction[unitId],  "Right-Click Action");
     iniProc.process(data.aiInternalFlags[unitId],   "AI Internal Flags");
 
-    iniProc.process(data.groundWeapon[unitId],      "Ground Weapon");
+    iniProc.process(data.groundWeapon[unitId],      "Ground Weapon", makeWeaponComment);
     iniProc.process(data.maxGroundHits[unitId],     "Ground Weapon Hits");
-    iniProc.process(data.airWeapon[unitId],         "Air Weapon");
+    iniProc.process(data.airWeapon[unitId],         "Air Weapon", makeWeaponComment);
     iniProc.process(data.maxAirHits[unitId],        "Air Weapon Hits");
-    iniProc.processFlags(data.prototypeFlags[unitId], "Prototype Flags");
+    iniProc.process(data.prototypeFlags[unitId],    "Prototype Flags", unitPrototypeFlags);
 
     //Sounds
     iniProc.process(data.whatFirstSfx[unitId],      "What Sound (First)");
@@ -143,7 +144,7 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.buildTime[unitId],         "Build Time", makeTimeComment);
     iniProc.process(data.unknown[unitId],           "Unknown");
 
-    iniProc.processFlags(data.groupFlags[unitId],   "Group Flags");
+    iniProc.process(data.groupFlags[unitId],        "Group Flags", unitGroupFlags);
 
     iniProc.process(data.supplyProvided[unitId],    "Supply Provided", makeSupplyComment);
     iniProc.process(data.supplyCost[unitId],        "Supply Cost", makeSupplyComment);
@@ -154,7 +155,7 @@ void UnitsDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.mapString[unitId],         "Map String");
     iniProc.process(data.isBroodWarUnit[unitId],    "Is Brood War Unit");
 
-    iniProc.processFlags(data.availabilityFlags[unitId], "Availability Flags");
+    iniProc.process(data.availabilityFlags[unitId], "Availability Flags", unitAvailabilityFlags);
     
     //Process building-specific data
     if (106 <= unitId && unitId <= 201) {

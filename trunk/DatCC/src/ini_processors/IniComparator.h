@@ -11,13 +11,9 @@ class IniComparator: public IniWriter {
     template <class T>
     int process(const T &t, const std::string &key);
 
-    // Callbacks must be of the form:
-    //    std::string func(int val, size_t keyStrSize);
-    template <class T, typename CallbackT>
-    int process(const T &t, const std::string &key, CallbackT &commenter);
-
-    template <class T>
-    int processFlags(const T &t, const std::string &key);
+    //Process callbacks and FlagNames structures
+    template <class T, class T2>
+    int process(const T &t, const std::string &key, const T2 &dummy);
 
     int setSection(const std::string &section, const std::string &comment);
 
@@ -61,32 +57,9 @@ int IniComparator::process(const Point16 &p, const std::string &key);
 template <>
 int IniComparator::process(const Box16 &b, const std::string &key);
 
-template <class T, typename CallbackT>
-int IniComparator::process(const T &t, const std::string &key, CallbackT &commenter) {
-  if (isLoadingBaseDat)
-    return baseIni.SetLongValue(currentSection.c_str(), key.c_str(), t);
-
-  const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
-  if (baseVal != t) {
-    writeSection();
-    return IniWriter::process(t, key, commenter);
-  }
-  else
-    return 0; //Identical, no write
-}
-
-template <class T>
-int IniComparator::processFlags(const T &t, const std::string &key) {
-  if (isLoadingBaseDat)
-    return baseIni.SetLongValue(currentSection.c_str(), key.c_str(), t);
-
-  const T baseVal = (T) baseIni.GetLongValue(currentSection.c_str(), key.c_str(), t);
-  if (baseVal != t) {
-    writeSection();
-    return IniWriter::processFlags(t, key);
-  }
-  else
-    return 0; //Identical, no write
+template <class T, class T2>
+int IniComparator::process(const T &t, const std::string &key, const T2 &dummy) {
+  return process(t, key);
 }
 
 } //datcc

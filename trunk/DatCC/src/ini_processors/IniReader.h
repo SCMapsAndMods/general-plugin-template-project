@@ -1,6 +1,7 @@
 #pragma once
 #include "IniProcessor.h"
 #include "parser.h"
+#include "../flags.h"
 
 namespace datcc {
 
@@ -11,11 +12,11 @@ class IniReader: public IniProcessor {
     template <class T>
     int process(T &t, const std::string &key);
 
-    template <class T, typename CallbackT>
-    int process(T &t, const std::string &key, CallbackT &commenter);
+    template <class T>
+    int process(T &t, const std::string &key, CommentFunc commenter);
 
     template <class T>
-    int processFlags(T &t, const std::string &key);
+    int process(T &t, const std::string &key, const FlagNames<T> &flagNames);
 
     int loadFrom(const std::string &fileName);
 };
@@ -37,16 +38,16 @@ int IniReader::process(Point16 &p, const std::string &key);
 template <>
 int IniReader::process(Box16 &b, const std::string &key);
 
-template <class T, typename CallbackT>
-int IniReader::process(T &t, const std::string &key, CallbackT &commenter) {
+template <class T>
+int IniReader::process(T &t, const std::string &key, CommentFunc commenter) {
   return process(t, key);
 }
 
 template <class T>
-int IniReader::processFlags(T &t, const std::string &key) {
+int IniReader::process(T &t, const std::string &key, const FlagNames<T> &flagNames) {
   const char* flagStr = ini.GetValue(currentSection.c_str(), key.c_str());
   if (flagStr != NULL)
-    t = (T) datcc::convertToFlags(flagStr);
+    t = (T) strtoul(flagStr, NULL, 2);
   return 0;
 }
 

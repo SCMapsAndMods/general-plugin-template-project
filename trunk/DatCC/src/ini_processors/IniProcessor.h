@@ -3,6 +3,7 @@
 #include <string>
 #include "../types.h"
 #include "../coord_structs.h"
+#include "../ini_comments.h"
 
 namespace datcc {
 
@@ -15,10 +16,11 @@ class IniProcessor {
     //template <class T>
     //int process(T &t, const std::string &key);
 
-    // Callbacks must be of the form:
-    //    std::string func(int val, size_t keyStrSize);
-    //template <class T, typename CallbackT>
-    //int process(T &t, const std::string &key, CallbackT &commenter);
+    //template <class T>
+    //int process(T &t, const std::string &key, CommentFunc commenter);
+
+    //template <class T>
+    //int process(T &t, const std::string &key, FlagNames<T> &flagNames);
 
     //template <class T>
     //int processFlags(T &t, const std::string &key);
