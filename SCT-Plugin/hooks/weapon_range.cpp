@@ -117,8 +117,8 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
       break;
   }
 
-  //Added: Ocular Implants adds a flat +32 weapon range
-  if (unit->isBlind)
+  //Added: Ocular Implants adds a flat +32 weapon range (to ranged units only)
+  if (unit->isBlind && Weapon::MaxRange[weaponId] >= 64)
     bonusAmount += 32;
 
   return Weapon::MaxRange[weaponId] + bonusAmount;
