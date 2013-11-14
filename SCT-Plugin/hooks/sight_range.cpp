@@ -1,6 +1,7 @@
 #include "sight_range.h"
 #include "../SCBW/enumerations.h"
-#include "../SCBW/scbwdata.h"
+#include <SCBW/api.h>
+#include <algorithm>
 
 namespace {
 /// Helper function: checks if the unit is a building morphing into another building.
@@ -15,42 +16,59 @@ namespace hooks {
 /// and Hallucination (but not when launching Nukes).
 /// Note: sight ranges cannot exceed 11, unless extended.
 u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
-  //Default StarCraft logic
-  using UnitStatus::GroundedBuilding;
-  using UnitStatus::Completed;
-  using Upgrade::CurrentUpgSc;
+  using scbw::getUpgradeLevel;
 
   //Check if the unit is a constructing building (exclude remorphing buildings)
-  if (unit->status & GroundedBuilding && !(unit->status & Completed)
+  if (unit->status & UnitStatus::GroundedBuilding
+      && !(unit->status & UnitStatus::Completed)
       && !isRemorphingBuilding(unit))
     return 4;
 
-  //Check if the unit is blinded (don't bother if this is for spellcasting)
-  if (!isForSpellCasting && unit->isBlind)
-    return 2;
+  //Upgrades and Ocular Implants do not affect spellcasting range
+  if (isForSpellCasting)
+    return Unit::SightRange[unit->id];
+
+  u32 sightRangeBonus = 0;
+
+  //Ocular Implants provides a +2 sight range boost
+  if (unit->isBlind)
+    sightRangeBonus += 2;
 
   //Sight range upgrades
   switch (unit->id) {
-    case UnitId::ghost:
-      if (CurrentUpgSc->level[unit->playerId][ScUpgrade::OcularImplants])
-        return 11;
+    case UnitId::spider_mine:
+      if (getUpgradeLevel(unit->playerId, UPGRADE_THERMAL_SENSORS))
+        sightRangeBonus += 2;
       break;
+
     case UnitId::overlord:
-      if (CurrentUpgSc->level[unit->playerId][ScUpgrade::Antennae])
-        return 11;
+    case UnitId::scourge:
+    case UnitId::mutalisk:
+    case UnitId::queen:
+    case UnitId::guardian:
+    case UnitId::devourer:
+      if (getUpgradeLevel(unit->playerId, UpgradeId::Antennae))
+        sightRangeBonus += 2;
       break;
+
     case UnitId::observer:
-      if (CurrentUpgSc->level[unit->playerId][ScUpgrade::SensorArray])
-        return 11;
+      if (getUpgradeLevel(unit->playerId, UpgradeId::SensorArray))
+        sightRangeBonus += 2;
       break;
-    case UnitId::scout:
-      if (CurrentUpgSc->level[unit->playerId][ScUpgrade::ApialSensors])
-        return 11;
+
+    case UnitId::zealot:
+    case UnitId::dragoon:
+    case UnitId::high_templar:
+    case UnitId::dark_templar:
+    case UnitId::archon:
+    case UnitId::dark_archon:
+      if (getUpgradeLevel(unit->playerId, UPGRADE_PRESCIENCE))
+        sightRangeBonus += 2;
       break;
   }
 
-  //Default
-  return Unit::SightRange[unit->id];
+  //Hard cap
+  return std::min(11u, Unit::SightRange[unit->id] + sightRangeBonus);
 }
 
 } //hooks

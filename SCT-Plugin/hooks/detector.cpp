@@ -8,11 +8,10 @@ namespace hooks {
 /// This affects CUnit::canDetect().
 /// This overrides the EXE edit settings for Detectors in FireGraft.
 bool unitCanDetectHook(const CUnit *unit) {
-  //Default StarCraft behavior
   return Unit::BaseProperty[unit->id] & UnitProperty::Detector
          && unit->status & UnitStatus::Completed    // Is completed
-         && !unit->isFrozen()
-         && !unit->isBlind;
+         && !unit->isFrozen();
+         //&& !unit->isBlind;
 }
 
 //Check if the @p unit can see the @p target (assuming target is cloaked).

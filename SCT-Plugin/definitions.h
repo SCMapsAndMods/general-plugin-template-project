@@ -8,5 +8,7 @@
 #define PLUGIN_NAME "SCT Plugin v1.2"
 
 //Custom plugin stuff
+#define UPGRADE_THERMAL_SENSORS 20
+#define UPGRADE_PRESCIENCE      41
 #define UPGRADE_FIRST_AID_PACKS 45
 #define IMAGE_STIM_PACKS_EFFECT 930
