@@ -333,10 +333,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\parser.h"
-				>
-			</File>
-			<File
 				RelativePath=".\formats\SfxdataDat.h"
 				>
 			</File>
