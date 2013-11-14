@@ -2,7 +2,6 @@
 #include <SimpleIni.h>
 #include <string>
 #include "../types.h"
-#include "../coord_structs.h"
 #include "../ini_comments.h"
 
 namespace datcc {

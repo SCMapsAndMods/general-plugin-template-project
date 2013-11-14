@@ -1,6 +1,5 @@
 #pragma once
 #include "DatInterface.h"
-#include "../coord_structs.h"
 #include "../flags.h"
 #include <sstream>
 
