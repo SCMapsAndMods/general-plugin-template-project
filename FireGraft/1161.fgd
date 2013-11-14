@@ -11839,6 +11839,6 @@ UpgradeDat=0x1145c0
 2221Type=Const
 2222Change=0xEBCC8BC78A5E60EB05909090EBF4E80297FEFF8BC89090
 2222Entry=Abilities,Target,Subterranean Spines,Use modified weapon range
-2222Offset=0x8c167
+2222Offset=0x8C15B
 2222Size=23
 2222Type=Code
