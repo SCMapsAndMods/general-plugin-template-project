@@ -11827,7 +11827,6 @@ UpgradeDat=0x1145c0
 2219Offset=0x76392
 2219Size=2
 2219Type=Jump
-
 2220Change=0xEB
 2220Entry=Units,Properties,Bunker,Remove race restriction
 2220Offset=0xE6E7C
@@ -11838,3 +11837,8 @@ UpgradeDat=0x1145c0
 2221Offset=0xE6E7B
 2221Size=1
 2221Type=Const
+2222Change=0x8A5E60E80197FEFF8BC890
+2222Entry=Abilities,Target,Subterranean Spines,Use modified weapon range
+2222Offset=0x8c167
+2222Size=11
+2222Type=Code
