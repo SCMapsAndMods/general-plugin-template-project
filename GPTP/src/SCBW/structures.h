@@ -200,6 +200,15 @@ struct LO_Header {
 
 C_ASSERT(sizeof(LO_Header) == 12);
 
+//Image Remapping Data
+struct ColorShiftData {
+  u32 index;
+  void* data;
+  char name[12];
+};
+
+C_ASSERT(sizeof(ColorShiftData) == 20);
+
 //-------- Flag structures --------//
 
 //Based on BWAPI's Offsets.h

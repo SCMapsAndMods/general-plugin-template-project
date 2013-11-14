@@ -289,3 +289,17 @@ enum Enum {
   GoToMaxRange          = 9   //Lurker Subterranean Spines
 };
 }
+
+//Use with colorShift
+namespace ColorRemapping {
+enum Enum {
+  None        = 0,
+  OFire       = 1,
+  GFire       = 2,
+  BFire       = 3,
+  BExpl       = 4,
+  Trans50     = 5,  //Special - OwnCloak
+  Red_Crash   = 6,
+  Green_Crash = 7,
+};
+}
