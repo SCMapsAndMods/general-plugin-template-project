@@ -86,7 +86,7 @@ void __declspec(naked) hideAllPsiFieldsOnUnselectWrapper() {
 
 const u32 packUnitData_PsiProvider_Return = 0x004E3961;
 void __declspec(naked) packUnitData_PsiProvider() {
-  CUnit *unit; u16 unitId;
+  static CUnit *unit; u16 unitId;
   
   __asm {
     PUSHAD
@@ -96,9 +96,8 @@ void __declspec(naked) packUnitData_PsiProvider() {
   }
 
   if (hooks::canMakePsiField(unitId)) {
-    const CSprite *psiFieldSprite = unit->building.pylonAura;
-    if (psiFieldSprite)
-      *(u32*)&unit->building.pylonAura = (psiFieldSprite - spriteTable) / sizeof(CSprite) + 1;
+    if (unit->building.pylonAura)
+      *(u32*)&unit->building.pylonAura = (unit->building.pylonAura - spriteTable) / sizeof(CSprite) + 1;
   }
 
   __asm {
@@ -109,7 +108,7 @@ void __declspec(naked) packUnitData_PsiProvider() {
 
 const u32 unpackUnitData_PsiProvider_Return = 0x004E31A3;
 void __declspec(naked) unpackUnitData_PsiProvider() {
-  CUnit *unit; u16 unitId;
+  static CUnit *unit; u16 unitId;
 
   __asm {
     PUSHAD
