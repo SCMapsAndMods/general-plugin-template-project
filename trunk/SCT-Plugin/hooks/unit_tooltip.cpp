@@ -59,17 +59,23 @@ namespace hooks {
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
   static char buffer2[200];
 
-  u32 baseRangeTile = (Weapon::MaxRange[weaponId] + 16) / 32;
-  u32 modifiedRangeTile = (unit->getMaxWeaponRange(weaponId) + 16) / 32;
+  u32 baseRange = (Weapon::MaxRange[weaponId] + 16) / 32;
+  u32 modifiedRange = (unit->getMaxWeaponRange(weaponId) + 16) / 32;
+
+  //Display activation range when Spider Mines are selected
+  if (weaponId == WeaponId::SpiderMines) {
+    baseRange = Unit::SeekRange[unit->id];
+    modifiedRange = unit->getSeekRange();
+  }
 
   const char* baseTooltipStr = getWeaponTooltipString(weaponId, unit, Weapon::Label[weaponId]);
-  if (baseRangeTile == modifiedRangeTile) {
+  if (baseRange == modifiedRange) {
     sprintf_s(buffer2, sizeof(buffer2), "%s\nRange: %d",
-              baseTooltipStr, baseRangeTile);
+              baseTooltipStr, baseRange);
   }
   else {
     sprintf_s(buffer2, sizeof(buffer2), "%s\nRange: %d+%d",
-              baseTooltipStr, baseRangeTile, modifiedRangeTile - baseRangeTile);
+              baseTooltipStr, baseRange, modifiedRange - baseRange);
   }
 
   return buffer2;
