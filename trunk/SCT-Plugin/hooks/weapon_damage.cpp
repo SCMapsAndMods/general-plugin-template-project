@@ -23,6 +23,40 @@ struct {
 
 } //unnamed namespace
 
+//Custom helper function
+bool isProtectedByDarkSwarm(const CUnit *target, u8 weaponId) {
+  //Dark Swarm does not protect buildings and air units
+  if (target->status & UnitStatus::InAir
+      || Unit::BaseProperty[target->id] & UnitProperty::Building)
+    return false;
+
+  if (Weapon::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit
+      || Weapon::Behavior[weaponId] == WeaponBehavior::Bounce
+      || Weapon::Behavior[weaponId] == WeaponBehavior::Fly_DoNotFollowTarget
+      || Weapon::Behavior[weaponId] == WeaponBehavior::Fly_FollowTarget)
+  {
+    //Exception weapons (spells)
+    if (weaponId != WeaponId::YamatoGun && weaponId != WeaponId::SpawnBroodlings
+        && scbw::isUnderDarkSwarm(target))
+      return true;
+  }
+
+  return false;
+}
+
+bool isTargetProtectedByTerrain(const CUnit *target, const CUnit *attacker) {
+  if (attacker && attacker->status & UnitStatus::InAir
+      && target->status & UnitStatus::InAir)
+  {
+    u32 targetGndLevel = scbw::getGroundHeightAtPos(target->getX(), target->getY());
+    u32 attackerGndLevel = scbw::getGroundHeightAtPos(attacker->getX(), attacker->getY());
+    if (targetGndLevel > attackerGndLevel)
+      return true;
+  }
+
+  return scbw::getActiveTileAt(target->getX(), target->getY()).hasDoodadCover;
+}
+
 namespace hooks {
 
 /// Hooks into the CUnit::damageWith() function.
@@ -46,19 +80,11 @@ void weaponDamageHook(s32     damage,
     damage = 0;
 
   //If the unit is protected by Dark Swarm, reduce the damage by 50%
-  if (!(target->status & UnitStatus::InAir)
-      && !(Unit::BaseProperty[target->id] & UnitProperty::Building))
-  {
-    if (Weapon::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit
-        || Weapon::Behavior[weaponId] == WeaponBehavior::Bounce
-        || Weapon::Behavior[weaponId] == WeaponBehavior::Fly_DoNotFollowTarget
-        || Weapon::Behavior[weaponId] == WeaponBehavior::Fly_FollowTarget)
-    {
-      if (weaponId != WeaponId::YamatoGun && weaponId != WeaponId::SpawnBroodlings
-          && scbw::isUnderDarkSwarm(target))
-        damage /= 2;
-    }
-  }
+  if (isProtectedByDarkSwarm(target, weaponId))
+    damage /= 2;
+  //If the unit is protected by terrain features, reduce the damage by 25%
+  else if (isTargetProtectedByTerrain(target, attacker))
+    damage -= damage / 4;
 
   if (target->status & UnitStatus::IsHallucination)
     damage *= 2;
