@@ -38,8 +38,9 @@ struct CSprite {
   /// Removes the first image overlay with the given image ID.
   void removeOverlay(u32 imageId);
 
-  /// Checks whether the sprite has an overlay with the given @p imageId.
-  bool hasOverlay(u16 imageId) const;
+  /// Returns the overlay image of this sprite that has the given @p imageId.
+  /// If the image cannot be found, returns NULL.
+  CImage* getOverlay(u16 imageId) const;
 
   /// Checks whether this sprite is visible to @p playerId (i.e. not covered by
   /// the fog of war). This does NOT check detectability.

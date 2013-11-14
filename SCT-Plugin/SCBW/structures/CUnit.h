@@ -6,6 +6,7 @@
 #include "../enumerations.h"
 #pragma pack(1)
 
+struct CImage;
 struct CSprite;
 struct COrder;
 
@@ -135,9 +136,9 @@ struct CUnit {
   /// Removes the first image overlay with the given image ID.
   void removeOverlay(u32 imageId);
 
-  /// Checks whether the unit (or its subunit) has an overlay with the given
-  /// image ID.
-  bool hasOverlay(u16 imageId) const;
+  /// Returns the overlay image of this unit's sprite (or its subunit's sprite)
+  /// that has the given @p imageId. If the image cannot be found, returns NULL.
+  CImage* getOverlay(u16 imageId) const;
 
   u16 getX() const;
   u16 getY() const;
