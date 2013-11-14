@@ -16,20 +16,18 @@ class IrradiateProc: public scbw::UnitFinderCallbackProcInterface {
 
 //Applied to each unit affected by Irradiate splash damage
 void IrradiateProc::proc(CUnit *unit) {
-  //Default StarCraft behavior
 
   const u32 unitProps = Unit::BaseProperty[unit->id];
-  
-  //Damage organic units only
-  if (!(unitProps & UnitProperty::Organic))
-    return;
 
   //Don't damage buildings
   if (unitProps & UnitProperty::Building)
     return;
 
-  //Don't damage larvae, eggs, and lurker eggs
-  if (unit->id == UnitId::larva || unit->id == UnitId::egg || unit->id == UnitId::ZergLurkerEgg)
+  //Don't damage larvae, eggs, lurker eggs, and Science Vessels
+  if (unit->id == UnitId::larva
+      || unit->id == UnitId::egg
+      || unit->id == UnitId::ZergLurkerEgg
+      || unit->id == UnitId::science_vessel)
     return;
 
   //Irradiate splash damage does not affect burrowed units
