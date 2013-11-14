@@ -35,6 +35,13 @@ bool nextFrame() {
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
+
+      //Set nexus color
+      if (unit->id == UnitId::nexus) {
+        if (scbw::getUpgradeLevel(unit->playerId, UPGRADE_PARTICLE_FILTER)
+            && unit) {
+        }
+      }
     }
 
     //Draw attack radius circles for Siege Mode Tanks in current selection
