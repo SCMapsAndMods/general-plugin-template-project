@@ -205,22 +205,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\apply_upgrade_flags.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\apply_upgrade_flags_inject.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\armor_bonus.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\armor_bonus_inject.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\graphics\Bitmap.cpp"
 				>
 			</File>
@@ -253,23 +237,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\cloak_tech.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\cloak_tech_inject.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\configure.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\consume.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\consume_inject.cpp"
 				>
 			</File>
 			<File
@@ -365,10 +333,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -389,6 +353,10 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -623,14 +591,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\apply_upgrade_flags.h"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\armor_bonus.h"
-				>
-			</File>
-			<File
 				RelativePath=".\graphics\Bitmap.h"
 				>
 			</File>
@@ -659,15 +619,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\cloak_tech.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SCBW\structures\common.h"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\consume.h"
 				>
 			</File>
 			<File
