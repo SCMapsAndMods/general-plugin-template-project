@@ -19,7 +19,7 @@ bool nextFrame() {
     hooks::updatePsiFieldProviders();
 
     if (firstRun) {
-      scbw::printText("Hello, world!");
+      //scbw::printText("Hello, world!");
       firstRun = false;
     }
 
@@ -35,6 +35,16 @@ bool nextFrame() {
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
+    }
+
+    //Draw attack radius circles for Siege Mode Tanks in current selection
+    for (int i = 0; i < *clientSelectionCount; ++i) {
+      CUnit *selUnit = clientSelectionGroup->unit[i];
+      if (selUnit->id == UnitId::siege_tank_s) {
+        graphics::drawCircle(selUnit->getX(), selUnit->getY(),
+          selUnit->getMaxWeaponRange(Unit::GroundWeapon[selUnit->subunit->id]) + 30,
+          graphics::TEAL, graphics::ON_MAP);
+      }
     }
 
     // Loop through the bullet table.
