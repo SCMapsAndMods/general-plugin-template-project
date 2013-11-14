@@ -31,7 +31,8 @@ bool unitCanAttackInsideBunkerHook(const CUnit *unit) {
     return false;
 }
 
-void createBunkerAttackThingy(const CUnit *unit) {
+void createBunkerAttackThingyHook(const CUnit *unit) {
+  //Default StarCraft behavior
   CImage *bunkerImage = unit->connectedUnit->sprite->mainGraphic;
 
   u8 frameDirection = (unit->currentDirection1 + 16) / 32 % 8;
