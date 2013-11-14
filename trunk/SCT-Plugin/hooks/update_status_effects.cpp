@@ -84,7 +84,7 @@ void updateStatusEffectsHook(CUnit *unit) {
 
   //Add Ocular Implants effect overlay
   if (unit->isBlind) {
-    if (!unit->hasOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT))
+    if (!unit->getOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT))
       unit->sprite->createOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT, 0, -20);
   }
 

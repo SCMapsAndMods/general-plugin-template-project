@@ -23,7 +23,7 @@ void useStimPacksHook(CUnit *unit) {
     }
 
     //Add Stim Packs effect overlay
-    if (!unit->hasOverlay(IMAGE_STIM_PACKS_EFFECT))
+    if (!unit->getOverlay(IMAGE_STIM_PACKS_EFFECT))
       unit->sprite->createTopOverlay(IMAGE_STIM_PACKS_EFFECT);
   }
 }
