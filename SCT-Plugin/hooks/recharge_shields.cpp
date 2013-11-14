@@ -85,13 +85,6 @@ bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
   return true;
 }
 
-/// Determines when to stop the shield recharge process
-bool canStopRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
-  //Default StarCraft behavior
-  return target->shields >= (Unit::MaxShieldPoints[target->id] << 8)  //Shields are fully recharged
-         || battery->energy == 0; //Shield Battery is drained
-}
-
 //The order process run by a unit when recharging shields
 void orderRechargeShieldsHook(CUnit *unit) {
   //Default StarCraft behavior
