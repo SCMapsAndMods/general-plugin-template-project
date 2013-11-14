@@ -19,6 +19,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\nBuilt on " __DATE__ " " __TIME__
     "\n"
     "\n[Features]"
+    "\n- Bunker shows no attack graphic for Fiends"
     "\n- Stim Packs: 20HP cost for Fiends, add effect overlay"
     "\n- Plague: Deal full damage, always reduce HP to 1 / 256"
     "\n- First Aid Packs upgrade: Terran infantry HP regen"
@@ -33,6 +34,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\n- Energy upgrades provide +25% energy regeneration"
     "\n- Ocular Implants spell: +2 sight range, +1 attack range"
     "\n- Sight range upgrades: Thermal Sensors, Prescience, Antennae"
+    "\n- Nexus Cannon: Change attack graphic when upgraded"
     "\n"
     "\nNote: This plugin is compatible with the Smart Rally plugin."
     ,
