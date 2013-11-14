@@ -6,9 +6,47 @@
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/ExtendSightLimit.h"
 #include "psi_field.h"
+#include <SCBW/UnitFinder.h>
 #include <cstdio>
 
 bool firstRun = true;
+
+//Custom helper class
+class RepairTargetFinder: public scbw::UnitFinderCallbackMatchInterface {
+  const CUnit *scv;
+  public:
+    void setScv(const CUnit *scv) { this->scv = scv; }
+    bool match(const CUnit *unit) {
+      if (!unit)
+        return false;
+      if (unit->playerId != scv->playerId)
+        return false;
+
+      GroupFlag gf = Unit::GroupFlags[unit->id];
+      if (!gf.isTerran || gf.isZerg || gf.isProtoss)
+        return false;
+      
+      if (scv->getDistanceToTarget(unit) > 128) //Repair distance
+        return false;
+
+      if (unit->hitPoints >= Unit::MaxHitPoints[unit->id])
+        return false;
+      if (unit->stasisTimer)
+        return false;
+      if (unit->status & UnitStatus::InTransport)
+        return false;
+      if (!(Unit::BaseProperty[unit->id] & UnitProperty::Mechanical))
+        return false;
+      if (!(unit->status & UnitStatus::Completed))
+        return false;
+      if (!scv->hasPathToUnit(unit))
+        return false;
+
+      return true;
+    }
+};
+
+RepairTargetFinder repairTargetFinder;
 
 namespace hooks {
 
@@ -35,6 +73,19 @@ bool nextFrame() {
     // Guarantees that [unit] points to an actual unit.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
       //Write your code here
+
+      //Auto-Repair
+      if (unit->id == UnitId::scv || unit->mainOrderId == OrderId::PlayerGuard) {
+        repairTargetFinder.setScv(unit);
+        const CUnit *repairTarget = scbw::UnitFinder::getNearest(
+          unit->getX(), unit->getY(),
+          unit->getX() - 160, unit->getY() - 160,
+          unit->getX() + 160, unit->getY() + 160,
+          repairTargetFinder);
+
+        if (repairTarget)
+          unit->orderTo(OrderId::Repair1, repairTarget);
+      }
 
       //Set nexus color
       if (unit->id == UnitId::nexus
