@@ -82,6 +82,12 @@ void updateStatusEffectsHook(CUnit *unit) {
   if (unit->isUnderStorm)
     unit->isUnderStorm--;
 
+  //Add Ocular Implants effect overlay
+  if (unit->isBlind) {
+    if (!unit->hasOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT))
+      unit->sprite->createOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT, 0, -20);
+  }
+
   u8 previousAcidSporeCount = unit->acidSporeCount;
   for (int i = 0; i <= 8; ++i) {
     if (unit->acidSporeTime[i]) {
