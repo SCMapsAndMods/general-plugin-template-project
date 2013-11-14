@@ -116,6 +116,22 @@ void CUnit::orderTo(u8 orderId, u16 x, u16 y) {
   prepareForNextOrder(this);
 }
 
+//Logically equivalent to function @ 0x004753A0
+void CUnit::orderToIdle() {
+  assert(this);
+
+  if (this->orderQueueHead) {
+    this->userActionFlags |= 1;
+    prepareForNextOrder(this);
+  }
+  else {
+    if (this->pAI)
+      this->orderTo(OrderId::ComputerAI);
+    else
+      this->orderTo(Unit::ReturnToIdleOrder[this->id]);
+  }
+}
+
 const u32 Func_Order = 0x00474810;
 void CUnit::order(u8 orderId, u16 x, u16 y, const CUnit *target, u16 targetUnitId, bool stopPreviousOrders) {
   assert(this);

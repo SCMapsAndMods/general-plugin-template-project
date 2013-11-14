@@ -42,6 +42,9 @@ struct CUnit {
   /// Issue the @p order to the unit, using the given position as the target.
   void orderTo(u8 orderId, u16 x, u16 y);
 
+  /// Causes the unit to become idle.
+  void orderToIdle();
+
   /// Issues a new order to the unit.
   void order(u8 orderId, u16 x, u16 y, const CUnit *target, u16 targetUnitId, bool stopPreviousOrders);
 

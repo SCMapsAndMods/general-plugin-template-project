@@ -3,9 +3,8 @@
 
 namespace hooks {
 
-void rechargeShieldsProcHook(CUnit *target, CUnit *battery);
 bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery);
-bool canStopRechargeShieldsHook(const CUnit *target, const CUnit *battery);
+void orderRechargeShieldsHook(CUnit *unit);
 
 void injectRechargeShieldsHooks();
 
