@@ -27,7 +27,6 @@ namespace hooks {
 
 /// This hook handles energy regeneration, as well as energy drain for cloaking.
 void regenerateEnergyHook(CUnit *unit) {
-  //Default StarCraft behavior
   using scbw::isCheatEnabled;
   using CheatFlags::TheGathering;
 
@@ -56,12 +55,13 @@ void regenerateEnergyHook(CUnit *unit) {
         && unit->mainOrderId == OrderId::CompletingArchonSummon
         && !(unit->mainOrderState)
         )
-      maxEnergy = 12800;  //50 * 256; Identical to energy amount on spawn
+      maxEnergy = unit->getMaxEnergy() / 4;  //Energy amount on spawn; 50 without and 62.5 with upgrades.
     else
       maxEnergy = unit->getMaxEnergy();
 
     if (unit->energy != maxEnergy) {
-      u16 energy = unit->energy + 8;
+      //+25% energy regen if the unit has energy upgrade
+      u16 energy = unit->energy + (maxEnergy == 64000 ? 10 : 8);
       if (energy > maxEnergy)
         energy = maxEnergy;
       unit->energy = energy;
