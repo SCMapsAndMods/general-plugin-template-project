@@ -37,10 +37,12 @@ bool nextFrame() {
       //Write your code here
 
       //Set nexus color
-      if (unit->id == UnitId::nexus) {
-        if (scbw::getUpgradeLevel(unit->playerId, UPGRADE_PARTICLE_FILTER)
-            && unit) {
-        }
+      if (unit->id == UnitId::nexus
+          && scbw::getUpgradeLevel(unit->playerId, UPGRADE_PARTICLE_FILTER))
+      {
+        CImage *nexusAttackOverlay = unit->getOverlay(IMAGE_NEXUS_ATTACK_OVERLAY);
+        if (nexusAttackOverlay)
+          nexusAttackOverlay->coloringData = colorShift[ColorRemapping::GFire].data;
       }
     }
 
