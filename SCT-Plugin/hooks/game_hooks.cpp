@@ -99,13 +99,52 @@ bool nextFrame() {
       }
     }
 
-    //Draw attack radius circles for Siege Mode Tanks in current selection
     for (int i = 0; i < *clientSelectionCount; ++i) {
-      CUnit *selUnit = clientSelectionGroup->unit[i];
+      const CUnit *selUnit = clientSelectionGroup->unit[i];
+
+      //Draw attack radius circles for Siege Mode Tanks in current selection
       if (selUnit->id == UnitId::siege_tank_s) {
         graphics::drawCircle(selUnit->getX(), selUnit->getY(),
           selUnit->getMaxWeaponRange(Unit::GroundWeapon[selUnit->subunit->id]) + 30,
           graphics::TEAL, graphics::ON_MAP);
+      }
+
+      //Display rally points for factories selected
+      if (selUnit->status & UnitStatus::GroundedBuilding
+          && Unit::GroupFlags[selUnit->id].isFactory
+          && selUnit->playerId == *LOCAL_NATION_ID) //Doesn't work if it's not your own building
+      {
+        const CUnit *rallyUnit = selUnit->rally.unit;
+        //Rallied to self; disable rally altogether
+        if (rallyUnit != selUnit) {
+          //Is usable rally unit
+          if (rallyUnit && rallyUnit->playerId == selUnit->playerId) {
+            graphics::drawLine(selUnit->getX(), selUnit->getY(),
+              rallyUnit->getX(), rallyUnit->getY(),
+              graphics::GREEN, graphics::ON_MAP);
+            graphics::drawCircle(rallyUnit->getX(), rallyUnit->getY(), 10,
+              graphics::GREEN, graphics::ON_MAP);
+          }
+          //Use map position instead
+          else if (selUnit->rally.pt.x != 0) {
+            graphics::drawLine(selUnit->getX(), selUnit->getY(),
+              selUnit->rally.pt.x, selUnit->rally.pt.y,
+              graphics::YELLOW, graphics::ON_MAP);
+            graphics::drawCircle(selUnit->rally.pt.x, selUnit->rally.pt.y, 10,
+              graphics::YELLOW, graphics::ON_MAP);
+          }
+        }
+
+        //Show worker rally point
+        const CUnit *workerRallyUnit = selUnit->moveTarget.unit;
+        if (workerRallyUnit) {
+          graphics::drawLine(selUnit->getX(), selUnit->getY(),
+            workerRallyUnit->getX(), workerRallyUnit->getY(),
+            graphics::ORANGE, graphics::ON_MAP);
+          graphics::drawCircle(
+            workerRallyUnit->getX(), workerRallyUnit->getY(), 10,
+            graphics::ORANGE, graphics::ON_MAP);
+        }
       }
     }
 
