@@ -149,7 +149,7 @@ const char iscriptAnimations[][50] = {
   "Unused1",
   "GndAttkRpt",
   "AirAttkRpt",
-  "CastSpell"
+  "CastSpell",
   "GndAttkToIdle",
   "AirAttkToIdle",
   "Unused2",
