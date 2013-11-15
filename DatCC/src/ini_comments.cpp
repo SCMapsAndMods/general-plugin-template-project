@@ -131,6 +131,69 @@ std::string makeRemappingComment(int id, size_t keyStrSize) {
     return makeCommentPadding(id, keyStrSize) + "Invalid value";
 }
 
+const char damageTypes[][20] = {
+  "Independent", "Explosive", "Concussive", "Normal", "Ignore Armor"
+};
+std::string makeDamageTypeComment(int id, size_t keyStrSize) {
+  if (0 <= id && id < ARRAY_LEN(damageTypes))
+    return makeCommentPadding(id, keyStrSize) + damageTypes[id];
+  else
+    return makeCommentPadding(id, keyStrSize) + "Invalid value";
+}
+
+const char weaponFlingyActions[][30] = {
+  "Fly & don't follow",
+  "Fly & follow",
+  "Appear on target unit",
+  "Persist on target site",
+  "Appear on target site",
+  "Appear on attacker",
+  "Attack & Self-Destruct",
+  "Bounce",
+  "Attack 3x3 Area",
+  "Go to max range"
+};
+std::string makeWeaponFlingyActionComment(int id, size_t keyStrSize) {
+  if (0 <= id && id < ARRAY_LEN(weaponFlingyActions))
+    return makeCommentPadding(id, keyStrSize) + weaponFlingyActions[id];
+  else
+    return makeCommentPadding(id, keyStrSize) + "Invalid value";
+}
+
+const char weaponEffects[][20] = {
+  "None",
+  "Normal Hit",
+  "Splash (Radial)",
+  "Splash (Enemy)",
+  "Lockdown",
+  "Nuclear Missile",
+  "Parasite",
+  "Broodlings",
+  "EMP Shockwave",
+  "Irradiate",
+  "Ensnare",
+  "Plague",
+  "Stasis Field",
+  "Dark Swarm",
+  "Consume",
+  "Yamato Gun",
+  "Restoration",
+  "Disruption Web",
+  "Corrosive Acid",
+  "Mind Control",
+  "Feedback",
+  "Optical Flare",
+  "Maelstrom",
+  "Unknown (Crash)",
+  "Splash (Air)",
+};
+std::string makeWeaponEffectComment(int id, size_t keyStrSize) {
+  if (0 <= id && id < ARRAY_LEN(weaponEffects))
+    return makeCommentPadding(id, keyStrSize) + weaponEffects[id];
+  else
+    return makeCommentPadding(id, keyStrSize) + "Invalid value";
+}
+
 const char flingyDatControlTypes[][50] = {
   "Accelerate / decelerate", "Accelerate / instant stop", "Iscript-controlled"
 };
@@ -141,7 +204,7 @@ std::string makeFlingyControlTypeComment(int id, size_t keyStrSize) {
     return makeCommentPadding(id, keyStrSize) + "Invalid value";
 }
 
-const char iscriptAnimations[][50] = {
+const char iscriptAnimations[][20] = {
   "Init",
   "Death",
   "GndAttkInit",
