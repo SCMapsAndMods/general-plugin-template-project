@@ -33,3 +33,5 @@ struct Box16 {
 
 C_ASSERT(sizeof(Point16) == 4);
 C_ASSERT(sizeof(Box16) == 8);
+
+#define ARRAY_LEN(arr) (sizeof(arr) / sizeof((arr)[0]))

@@ -69,7 +69,7 @@ void OrdersDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.unused12[orderId],         "Unused12");
     iniProc.process(data.targetingWeapon[orderId],  "Targeting Weapon", makeWeaponComment);
     iniProc.process(data.energyCostTech[orderId],   "Energy Cost Tech", makeTechComment);
-    iniProc.process(data.iscriptAnimation[orderId], "Iscript Animation");
+    iniProc.process(data.iscriptAnimation[orderId], "Iscript Animation", makeIscriptAnimComment);
     iniProc.process(data.hilightedIcon[orderId],    "Highlighted Icon", makeIconNameComment);
     iniProc.process(data.unknown17[orderId],        "Unknown17");
     iniProc.process(data.obscuredOrder[orderId],    "Obscured Order", makeOrderComment);

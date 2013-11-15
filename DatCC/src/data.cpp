@@ -80,14 +80,14 @@ void loadNameFile(const char *basePath, std::vector<std::string> &names) {
 }
 
 void loadData() {
-  loadNameFile("data/units.txt",    unitNames,    sizeof(unitNames) / sizeof(std::string));
-  loadNameFile("data/weapons.txt",  weaponNames,  sizeof(weaponNames) / sizeof(std::string));
-  loadNameFile("data/flingy.txt",   flingyNames,  sizeof(flingyNames) / sizeof(std::string));
-  loadNameFile("data/sprites.txt",  spriteNames,  sizeof(spriteNames) / sizeof(std::string));
-  loadNameFile("data/images.txt",   imageNames,   sizeof(imageNames) / sizeof(std::string));
-  loadNameFile("data/upgrades.txt", upgradeNames, sizeof(upgradeNames) / sizeof(std::string));
-  loadNameFile("data/techdata.txt", techNames,    sizeof(techNames) / sizeof(std::string));
-  loadNameFile("data/orders.txt",   orderNames,   sizeof(orderNames) / sizeof(std::string));
+  loadNameFile("data/units.txt",    unitNames,    ARRAY_LEN(unitNames));
+  loadNameFile("data/weapons.txt",  weaponNames,  ARRAY_LEN(weaponNames));
+  loadNameFile("data/flingy.txt",   flingyNames,  ARRAY_LEN(flingyNames));
+  loadNameFile("data/sprites.txt",  spriteNames,  ARRAY_LEN(spriteNames));
+  loadNameFile("data/images.txt",   imageNames,   ARRAY_LEN(imageNames));
+  loadNameFile("data/upgrades.txt", upgradeNames, ARRAY_LEN(upgradeNames));
+  loadNameFile("data/techdata.txt", techNames,    ARRAY_LEN(techNames));
+  loadNameFile("data/orders.txt",   orderNames,   ARRAY_LEN(orderNames));
   
   loadNameFile("data/icons.txt",    iconNames);
 
@@ -115,49 +115,49 @@ void loadData() {
 static const std::string invalidIndexMsg("invalid index");
 
 const std::string& getUnitName(int unitId) {
-  if (0 <= unitId && unitId < sizeof(unitNames))
+  if (0 <= unitId && unitId < ARRAY_LEN(unitNames))
     return unitNames[unitId];
   return invalidIndexMsg;
 }
 
 const std::string& getWeaponName(int weaponId) {
-  if (0 <= weaponId && weaponId < sizeof(weaponNames))
+  if (0 <= weaponId && weaponId < ARRAY_LEN(weaponNames))
     return weaponNames[weaponId];
   return invalidIndexMsg;
 }
 
 const std::string& getFlingyName(int flingyId) {
-  if (0 <= flingyId && flingyId < sizeof(flingyNames))
+  if (0 <= flingyId && flingyId < ARRAY_LEN(flingyNames))
     return flingyNames[flingyId];
   return invalidIndexMsg;
 }
 
 const std::string& getSpriteName(int spriteId) {
-  if (0 <= spriteId && spriteId < sizeof(spriteNames))
+  if (0 <= spriteId && spriteId < ARRAY_LEN(spriteNames))
     return spriteNames[spriteId];
   return invalidIndexMsg;
 }
 
 const std::string& getImageName(int imageId) {
-  if (0 <= imageId && imageId < sizeof(imageNames))
+  if (0 <= imageId && imageId < ARRAY_LEN(imageNames))
     return imageNames[imageId];
   return invalidIndexMsg;
 }
 
 const std::string& getUpgradeName(int upgradeId) {
-  if (0 <= upgradeId && upgradeId < sizeof(upgradeNames))
+  if (0 <= upgradeId && upgradeId < ARRAY_LEN(upgradeNames))
     return upgradeNames[upgradeId];
   return invalidIndexMsg;
 }
 
 const std::string& getTechName(int techId) {
-  if (0 <= techId && techId < sizeof(techNames))
+  if (0 <= techId && techId < ARRAY_LEN(techNames))
     return techNames[techId];
   return invalidIndexMsg;
 }
 
 const std::string& getOrderName(int orderId) {
-  if (0 <= orderId && orderId < sizeof(orderNames))
+  if (0 <= orderId && orderId < ARRAY_LEN(orderNames))
     return orderNames[orderId];
   return invalidIndexMsg;
 }

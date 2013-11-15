@@ -131,4 +131,51 @@ std::string makeRemappingComment(int id, size_t keyStrSize) {
     return makeCommentPadding(id, keyStrSize) + "Invalid value";
 }
 
+const char flingyDatControlTypes[][50] = {
+  "Accelerate / decelerate", "Accelerate / instant stop", "Iscript-controlled"
+};
+std::string makeFlingyControlTypeComment(int id, size_t keyStrSize) {
+  if (0 <= id && id < ARRAY_LEN(flingyDatControlTypes))
+    return makeCommentPadding(id, keyStrSize) + flingyDatControlTypes[id];
+  else
+    return makeCommentPadding(id, keyStrSize) + "Invalid value";
+}
+
+const char iscriptAnimations[][50] = {
+  "Init",
+  "Death",
+  "GndAttkInit",
+  "AirAttkInit",
+  "Unused1",
+  "GndAttkRpt",
+  "AirAttkRpt",
+  "CastSpell"
+  "GndAttkToIdle",
+  "AirAttkToIdle",
+  "Unused2",
+  "Walking",
+  "WalkingToIdle",
+  "SpecialState1",
+  "SpecialState2",
+  "AlmostBuilt",
+  "Built",
+  "Landing",
+  "LiftOff",
+  "IsWorking",
+  "WorkingToIdle",
+  "WarpIn",
+  "Unused3",
+  "StarEditInit",
+  "Disable",
+  "Burrow",
+  "Unburrow",
+  "Enable"
+};
+std::string makeIscriptAnimComment(int id, size_t keyStrSize) {
+  if (0 <= id && id < ARRAY_LEN(iscriptAnimations))
+    return makeCommentPadding(id, keyStrSize) + iscriptAnimations[id];
+  else
+    return makeCommentPadding(id, keyStrSize) + "Invalid value";
+}
+
 } //datcc

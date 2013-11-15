@@ -46,7 +46,7 @@ void FlingyDat::processIni(IniProcT &iniProc) {
     iniProc.process(data.acceleration[flingyId], "Acceleration");
     iniProc.process(data.haltDistance[flingyId], "Halt Distance");
     iniProc.process(data.turnSpeed[flingyId],    "Turn Speed");
-    iniProc.process(data.moveControl[flingyId],  "Move Control");
+    iniProc.process(data.moveControl[flingyId],  "Move Control", makeFlingyControlTypeComment);
     iniProc.process(data.unused[flingyId],       "Unused");
   }
 }
