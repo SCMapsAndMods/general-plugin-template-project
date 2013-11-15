@@ -168,26 +168,6 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       break;
 
     case UnitId::queen:
-      //Parasite
-      if (isUmsMode(unit->playerId) && scbw::random() % 256 == 1
-          || unit->getMaxEnergy() == unit->energy)
-      {
-        if (canCastSpellOrder(unit, TechId::Parasite, OrderId::CastParasite)) {
-          CUnit *target = findBestParasiteTarget(unit, isUnitBeingAttacked);
-          
-          if (unit->mainOrderId == OrderId::CastParasite
-              && unit->orderTarget.unit == target)
-            return false;
-
-          if (aiCastSpellOrder(unit, target, OrderId::CastParasite, 4))
-            return true;
-
-          return false;
-        }
-        if (isUmsMode(unit->playerId))
-          return false;
-      }
-
       //Spawn Broodlings
       if (canCastSpellOrder(unit, TechId::SpawnBroodlings, OrderId::SummonBroodlings)) {
         CUnit *target = findBestSpawnBroodlingsTarget(unit, isUnitBeingAttacked);
@@ -345,6 +325,22 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       break;
 
     case UnitId::corsair:
+      //Telepathic Trace
+      if (isUmsMode(unit->playerId) && scbw::random() % 256 == 1
+          || unit->getMaxEnergy() == unit->energy)
+      {
+        if (canCastSpellOrder(unit, TechId::Parasite, OrderId::CastParasite)) {
+          CUnit *target = findBestParasiteTarget(unit, isUnitBeingAttacked);
+          
+          if (unit->mainOrderId == OrderId::CastParasite
+              && unit->orderTarget.unit == target)
+            return false;
+
+          if (aiCastSpellOrder(unit, target, OrderId::CastParasite, 4))
+            return true;
+        }
+      }
+
       //Disruption Web
       if (canCastSpellOrder(unit, TechId::DisruptionWeb, OrderId::CastDisruptionWeb)) {
         CUnit *target = findBestDisruptionWebTarget(unit, isUnitBeingAttacked);
