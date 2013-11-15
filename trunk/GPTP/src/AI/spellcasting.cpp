@@ -258,7 +258,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       }
 
       //Hallucination
-      if (unit->getMaxEnergy() != unit->energy
+      if (unit->getMaxEnergy() == unit->energy
           && canCastSpellOrder(unit, TechId::Hallucination, OrderId::Hallucianation1)) {
         CUnit *target = findBestHallucinationTarget(unit, isUnitBeingAttacked);
 
