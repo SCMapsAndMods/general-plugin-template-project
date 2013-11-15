@@ -23,8 +23,8 @@ class IrradiateTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (!scbw::canWeaponTargetUnit(WeaponId::Irradiate, target, caster))
         return false;
 
-      if (!(Unit::BaseProperty[target->id] & UnitProperty::Organic))
-        return false;
+      //if (!(Unit::BaseProperty[target->id] & UnitProperty::Organic))
+      //  return false;
 
       if (Unit::BaseProperty[target->id] & UnitProperty::Building)
         return false;
@@ -40,7 +40,10 @@ class IrradiateTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (Unit::BaseProperty[target->id] & UnitProperty::Worker)
         return true;
 
-      if (target->id == UnitId::overlord || target->id == UnitId::medic)
+      //if (target->id == UnitId::overlord || target->id == UnitId::medic)
+      //  return true;
+
+      if (Unit::DestroyScore[target->id] >= 600)
         return true;
 
       return false;
