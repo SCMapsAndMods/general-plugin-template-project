@@ -34,4 +34,7 @@ std::string makeAngleComment    (int brad,    size_t keyStrSize);
 std::string makeDrawingFunctionComment(int id, size_t keyStrSize);
 std::string makeRemappingComment      (int id, size_t keyStrSize);
 
+std::string makeFlingyControlTypeComment(int id, size_t keyStrSize);
+std::string makeIscriptAnimComment(int id, size_t keyStrSize);
+
 } //datcc
