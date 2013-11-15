@@ -14,37 +14,42 @@ class MindControlTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface
       if (target == caster)
         return false;
 
+      //Air units cannot be Mind Controlled
+      if (target->status & UnitStatus::InAir)
+        return false;
+
       if (!isTargetWorthHitting(target, caster))
         return false;
 
       if (Unit::BaseProperty[target->id] & UnitProperty::Hero)
         return false;
 
-      if (target->id == UnitId::shuttle || target->id == UnitId::dropship)
-        if (target->hasLoadedUnit())
-          return true;
+      //if (target->id == UnitId::shuttle || target->id == UnitId::dropship)
+      //  if (target->hasLoadedUnit())
+      //    return true;
 
       switch (target->id) {
-        case UnitId::shuttle:
-        case UnitId::dropship:
-          if (target->hasLoadedUnit())
-            return true;
-          break;
+        //case UnitId::shuttle:
+        //case UnitId::dropship:
+        //  if (target->hasLoadedUnit())
+        //    return true;
+        //  break;
 
         case UnitId::siege_tank:
         case UnitId::siege_tank_s:
-        case UnitId::science_vessel:
-        case UnitId::battlecruiser:
+        //case UnitId::science_vessel:
+        //case UnitId::battlecruiser:
         case UnitId::medic:
-        case UnitId::overlord:
+        case UnitId::ghost: //Added
+        //case UnitId::overlord:
         case UnitId::ultralisk:
-        case UnitId::queen:
+        //case UnitId::queen:
         case UnitId::defiler:
-        case UnitId::devourer:
+        //case UnitId::devourer:
         case UnitId::dark_archon:
         case UnitId::high_templar:
-        case UnitId::arbiter:
-        case UnitId::carrier:
+        //case UnitId::arbiter:
+        //case UnitId::carrier:
         case UnitId::reaver:
         case UnitId::lurker:
           return true;
