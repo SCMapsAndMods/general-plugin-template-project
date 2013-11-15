@@ -16,10 +16,14 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     hParentWnd,
     PLUGIN_NAME " (ID: " STR(PLUGIN_ID) ")"
     "\nMade by pastelmind"
+    "\nSpecial thanks to RavenWolf"
     "\nBuilt on " __DATE__ " " __TIME__
+    "\nCreated with GPTP v2.37"
     "\n"
     "\n[Features]"
-    "\n - Add your own text here"
+    "\n- Workers auto-harvest when rallied to minerals or gas."
+    "\n  - Note: Workers and units use separate rally points."
+    "\n- Units auto-enter transports and bunkers when rallied."
     ,
     PLUGIN_NAME,
     MB_TASKMODAL
