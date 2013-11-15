@@ -108,7 +108,7 @@ s16 getUnitVerticalOffsetOnBirth(const CUnit *unit) {
 //Check if @p playerId has enough supplies to build @p unitId.
 bool hasSuppliesForUnitHook(s8 playerId, u16 unitId, bool canShowErrorMessage) {
   //Default StarCraft behavior
-  u32 supplyCost = Unit::SupplyRequired[unitId];
+  s32 supplyCost = Unit::SupplyRequired[unitId];
 
   if (Unit::BaseProperty[unitId] & UnitProperty::TwoUnitsIn1Egg)
     supplyCost *= 2;
@@ -134,7 +134,7 @@ bool hasSuppliesForUnitHook(s8 playerId, u16 unitId, bool canShowErrorMessage) {
   }
 
   //Supply limit exceeded
-  if (supplyCost > scbw::getSupplyAvailable(playerId, raceId)) {
+  if (supplyCost > scbw::getSupplyRemaining(playerId, raceId)) {
     if (canShowErrorMessage)
       scbw::showErrorMessageWithSfx(playerId, 844 + raceId, 153 + raceId);
     return false;
