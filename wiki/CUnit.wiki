@@ -1,6 +1,6 @@
 #summary Documentation of the CUnit struct
 
-Structure header file: [http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/structures/CUnit.h SCBW/structures/CUnit.h]
+Structure header file: <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/structures/CUnit.h SCBW/structures/CUnit.h]</tt>
 
 The CUnit structure is used by !StarCraft to store all information regarding a unit's state, such as its HP amount, controlling player, Stim Packs timer, and units loaded inside a transport.
 
@@ -151,6 +151,17 @@ u32 getMaxWeaponRange(u8 weaponId) const;
 
 Returns the maximum range of a weapon. The weapon is assumed to be attached to this unit for calculating upgrade effects.
 
+_Note: This is affected by the Weapon Range hook module._
+
+== getSeekRange ==
+{{{
+u8 getSeekRange() const;
+}}}
+
+Returns the unit's seek range (AKA target acquisition range) in matrices.
+
+_Note: This is affected by the Weapon Range hook module._
+
 == getSightRange ==
 {{{
 u32 getSightRange(bool applyStatusEffects = false) const;
@@ -216,6 +227,13 @@ void removeOverlay(u32 imageId);
 }}}
 
 Removes the first image overlay found that has an ID value between `imageIdStart` and `imageIdEnd.` The one-parameter versino removes the first image overlay with the `imageId`.
+
+== getOverlay ==
+{{{
+CImage* getOverlay(u16 imageId) const;
+}}
+
+Returns the overlay image of this unit's sprite (or its subunit's sprite) that has the given @p imageId. If the image cannot be found, returns `NULL`.
 
 == getX, getY ==
 {{{
