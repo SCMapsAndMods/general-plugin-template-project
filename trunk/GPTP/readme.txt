@@ -1,4 +1,4 @@
-General Plugin Template Project v2.36
+General Plugin Template Project v2.37
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -34,6 +34,22 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 == Changes ==
 
 For the full changelog, see http://code.google.com/p/gptp/wiki/Changelog
+
+v2.37
+ * Library changes
+   + Added CUnit::getSeekRange(), CUnit::orderToIdle().
+   * CUnit::hasOverlay() and CSprite::hasOverlay() has been replaced with
+     CUnit::getOverlay() and CSprite::getOverlay().
+   * Added structures and data constants for changing image color remappings.
+ * Hook changes
+   * Recharge Shields hook now supports modifying the recharge distance.
+ * Bug fixes
+   * AI: AI High Templars will no longer waste energy on Hallucinations.
+   * Psi Field hooks: Fixed a bug that caused a crash when saving a game.
+   * Bunker hooks: The weapon firing effect for Marines and Ghosts in bunkers
+     are now displayed properly.
+   * Unit Morph hook: Added some missing hook functions.
+   * Building Morph hook: Zerg melee AI no longer freezes.
 
 v2.36
  + New hooks
