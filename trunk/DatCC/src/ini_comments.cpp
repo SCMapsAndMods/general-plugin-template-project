@@ -169,7 +169,8 @@ const char iscriptAnimations[][50] = {
   "Disable",
   "Burrow",
   "Unburrow",
-  "Enable"
+  "Enable",
+  "None"
 };
 std::string makeIscriptAnimComment(int id, size_t keyStrSize) {
   if (0 <= id && id < ARRAY_LEN(iscriptAnimations))
