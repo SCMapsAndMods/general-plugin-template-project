@@ -198,15 +198,15 @@ u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId) {
     return Upgrade::CurrentUpgBw->level[playerId][upgradeId - 46];
 }
 
-u32 getSupplyAvailable(u8 playerId, u8 raceId) {
+s32 getSupplyRemaining(u8 playerId, u8 raceId) {
   assert(raceId <= 2);
   assert(playerId < 12);
 
-  u32 supplyProvided;
+  s32 supplyProvided;
   if (isCheatEnabled(CheatFlags::FoodForThought))
     supplyProvided = raceSupply[raceId].max[playerId];
   else
-    supplyProvided = raceSupply[raceId].provided[playerId];
+    supplyProvided = std::min(raceSupply[raceId].max[playerId], raceSupply[raceId].provided[playerId]);
   return supplyProvided - raceSupply[raceId].used[playerId];
 }
 
