@@ -5,6 +5,28 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
+/// Custom function:
+///   Checks whether the @p resource unit can be harvested by \p playerId.
+bool canBeHarvestedBy(const CUnit* resource, u8 playerId) {
+  using Unit::BaseProperty;
+
+  if (resource != NULL
+      && BaseProperty[resource->id] & UnitProperty::ResourceContainer) {
+
+    //Mineral fields can be harvested by anyone
+    if (UnitId::ResourceMineralField <= resource->id
+        && resource->id <= UnitId::ResourceMineralFieldType3)
+      return true;
+
+    //Gas buildings can only be harvested if it is owned by the current player
+    if (resource->status & UnitStatus::Completed
+        && resource->playerId == playerId)
+      return true;
+  }
+
+  return false;
+}
+
 namespace hooks {
 
 /// Orders newly-produced units to rally, based upon the properties of the
@@ -13,16 +35,39 @@ namespace hooks {
 /// @param  unit      The unit that needs to receive rally orders.
 /// @param  factory   The unit (building) that created the given unit.
 void orderNewUnitToRally(CUnit* unit, CUnit* factory) {
-  //Default StarCraft behavior
+  using Unit::BaseProperty;
+
+  CUnit* rallyTarget = factory->rally.unit;
 
   //Do nothing if the rally target is the factory itself or the rally target position is 0
-  if (factory->rally.unit == factory || !(factory->rally.pt.x)) return;
+  if (rallyTarget == factory || !(factory->rally.pt.x)) return;
+
+  //Added: If unit is a worker and the factory has a worker rally set, use it.
+  if (BaseProperty[unit->id] & UnitProperty::Worker
+      && canBeHarvestedBy(factory->moveTarget.unit, unit->playerId))
+  {
+    unit->orderTo(OrderId::Harvest1, factory->moveTarget.unit);
+    return;
+  }
 
   //Following should be allowed only on friendly units
-  if (factory->rally.unit && factory->rally.unit->playerId == unit->playerId)
-    unit->orderTo(OrderId::Follow, factory->rally.unit);
-  else
-    unit->orderTo(OrderId::Move, factory->rally.pt.x, factory->rally.pt.y);
+  if (rallyTarget) {
+    //Enter transport
+    if (scbw::canBeEnteredBy(rallyTarget, unit)) {
+      unit->orderTo(OrderId::EnterTransport, rallyTarget);
+      return;
+    }
+
+    //Follow rally target
+    if (rallyTarget->playerId == unit->playerId) {
+      unit->orderTo(OrderId::Follow, rallyTarget);
+      return;
+    }
+
+    //Cannot use rallyTarget, so move on
+  }
+
+  unit->orderTo(OrderId::Move, factory->rally.pt.x, factory->rally.pt.y);
 }
 
 /// Called when the player sets the rally point on the ground.
@@ -35,11 +80,16 @@ void setRallyPosition(CUnit *unit, u16 x, u16 y) {
 
 /// Called when the player sets the rally point on a unit.
 void setRallyUnit(CUnit *unit, CUnit *target) {
-  //Default StarCraft behavior
   if (!target) target = unit;
   unit->rally.unit = target;
   unit->rally.pt.x = target->getX();
   unit->rally.pt.y = target->getY();
+
+  //Added code for worker rally
+  if (canBeHarvestedBy(target, unit->playerId))
+    unit->moveTarget.unit = target; //Scavenge moveTarget.unit for worker rally
+  else if (target == unit)
+    unit->moveTarget.unit = NULL;   //If rallied to self, clear worker rally
 }
 
 } //hooks
