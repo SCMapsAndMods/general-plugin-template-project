@@ -20,7 +20,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -43,10 +43,10 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SMARTRALLY_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -60,7 +60,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\$(ProjectName).qdp"
 				LinkIncremental="2"
+				ModuleDefinitionFile="$(ProjectDir)plugin.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -95,7 +97,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -116,10 +118,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SMARTRALLY_EXPORTS"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -133,7 +135,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				OutputFile="$(OutDir)\$(ProjectName).qdp"
 				LinkIncremental="1"
+				ModuleDefinitionFile="$(ProjectDir)plugin.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -174,12 +178,168 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath=".\SCBW\api.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\CImage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\configure.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\CSprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\CUnit.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hook_tools.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\initialize.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Plugin.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\plugin_main.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\rally_point.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\rally_point_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\UnitFinder.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="헤더 파일"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\SCBW\api.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\CBullet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\CImage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\CList.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\common.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\COrder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\CSprite.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\CUnit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\definitions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\enumerations.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\ExtendSightLimit.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hook_tools.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\enumerations\ImageId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\Layer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MPQDraftPlugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\enumerations\OrderId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Plugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\rally_point.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\scbwdata.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\structures\Target.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\enumerations\TechId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\types.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\UnitFinder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\enumerations\UnitId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\enumerations\UpgradeId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SCBW\enumerations\WeaponId.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="리소스 파일"
