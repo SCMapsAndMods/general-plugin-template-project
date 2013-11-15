@@ -231,8 +231,7 @@ class EnemyLifeSumProc: public UnitStatSumProc {
       if (weaponId == WeaponId::Plague)
         sum += getCurrentHpInGame(target);
       else if (weaponId == WeaponId::Maelstrom) {
-        if (Unit::BaseProperty[target->id] & UnitProperty::Organic
-            && target->maelstromTimer == 0) {
+        if (target->maelstromTimer == 0) {
           sum += getCurrentLifeInGame(target);
         }
       }

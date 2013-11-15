@@ -20,8 +20,8 @@ class MaelstromTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (!scbw::canWeaponTargetUnit(WeaponId::Maelstrom, target, caster))
         return false;
 
-      if (!(Unit::BaseProperty[target->id] & UnitProperty::Organic))
-        return false;
+      //if (!(Unit::BaseProperty[target->id] & UnitProperty::Organic))
+      //  return false;
 
       if (target->maelstromTimer)
         return false;
