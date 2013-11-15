@@ -1,6 +1,21 @@
 #summary Changelog of GPTP
 
-= v2.36 Preview =
+= v2.37 =
+
+ * Library changes
+  * Added `CUnit::getSeekRange(), CUnit::orderToIdle()`
+  * `CUnit::hasOverlay()` and `CSprite::hasOverlay()` has been replaced with `CUnit::getOverlay()` and `CSprite::getOverlay()`.
+  * Added structures and data constants for changing image color remappings.
+ * Hook changes
+  * Recharge Shields hook now supports modifying the recharge distance.
+ * Bug fixes
+  * AI: AI High Templars will no longer waste energy on Hallucinations.
+  * Psi Field hooks: Fixed a bug that caused a crash when saving a game.
+  * Bunker hooks: The weapon firing effect for Marines and Ghosts in bunkers are now displayed properly.
+  * Unit Morph hook: Added some missing hook functions.
+  * Building Morph hook: Zerg melee AI no longer freezes.
+
+= v2.36 =
 
  * New hooks
   * Unit spellcasting AI hook: Because this module is quite large, it is placed in a separate directory (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/AI/spellcasting.cpp AI/spellcasting.cpp]</tt>).
