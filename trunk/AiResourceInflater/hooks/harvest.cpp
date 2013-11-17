@@ -1,6 +1,7 @@
 #include "harvest.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
+#include <Plugin.h>
 
 //Helper functions
 void updateMineralPatchImage(CUnit *mineralPatch);
@@ -12,32 +13,63 @@ namespace hooks {
 
 //Harvests minerals/gas from the @p resource and returns the amount that a
 //worker should carry.
-u8 harvestResourceFrom(CUnit *resource, bool isMineral) {
-  //Default StarCraft behavior
+u8 harvestResourceFrom(CUnit *resource, bool isMineral, CUnit *worker) {
+  //If worker is AI-controlled, use separate code
+  if (worker->pAI) {
+    const u16 harvestAmount = isMineral ? plugin.AI_mineralMined : plugin.AI_gasMined;
 
-  if (resource->building.resource.resourceAmount < 8) {
-    if (isMineral) {
-      resource->remove();
-      return (u8) resource->building.resource.resourceAmount;
+    if (resource->building.resource.resourceAmount < harvestAmount) {
+      if (isMineral) {
+        resource->remove();
+        return (u8) resource->building.resource.resourceAmount;
+      }
+      else {
+        resource->building.resource.resourceAmount = 0;
+        return plugin.AI_depletedGasGain;
+      }
     }
     else {
-      resource->building.resource.resourceAmount = 0;
-      return 2;
+      resource->building.resource.resourceAmount -= harvestAmount;
+      
+      if (isMineral) {
+        if (resource->building.resource.resourceAmount > 0)
+          updateMineralPatchImage(resource);
+        else
+          resource->remove();
+      }
+      else if (resource->building.resource.resourceAmount < 8)
+        scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
+      
+      return isMineral ? plugin.AI_mineralGain : plugin.AI_gasGain;
     }
   }
+
+  //Code for player-controlled workers
   else {
-    resource->building.resource.resourceAmount -= 8;
-    
-    if (isMineral) {
-      if (resource->building.resource.resourceAmount > 0)
-        updateMineralPatchImage(resource);
-      else
+    if (resource->building.resource.resourceAmount < 8) {
+      if (isMineral) {
         resource->remove();
+        return (u8) resource->building.resource.resourceAmount;
+      }
+      else {
+        resource->building.resource.resourceAmount = 0;
+        return 2;
+      }
     }
-    else if (resource->building.resource.resourceAmount < 8)
-      scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
-    
-    return 8;
+    else {
+      resource->building.resource.resourceAmount -= 8;
+      
+      if (isMineral) {
+        if (resource->building.resource.resourceAmount > 0)
+          updateMineralPatchImage(resource);
+        else
+          resource->remove();
+      }
+      else if (resource->building.resource.resourceAmount < 8)
+        scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
+      
+      return 8;
+    }
   }
 }
 
@@ -61,7 +93,7 @@ void transferResourceToWorkerHook(CUnit *worker, CUnit *resource) {
   else
     return;
 
-  u8 resourceAmount = harvestResourceFrom(resource, isMineral);
+  u8 resourceAmount = harvestResourceFrom(resource, isMineral, worker);
   if (resourceAmount < 8)
     chunkImageId += 1;  //Use depleted (smaller) chunk image
 
