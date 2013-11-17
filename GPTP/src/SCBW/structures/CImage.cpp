@@ -1,7 +1,7 @@
 #include "CImage.h"
 #include "CSprite.h"
-#include "../api.h"
-#include "../scbwdata.h"
+#include <SCBW/api.h>
+#include <SCBW/scbwdata.h>
 #include <cassert>
 
 void CImage::playIscriptAnim(IscriptAnimation::Enum animation) {
@@ -35,4 +35,10 @@ void CImage::free() {
   this->grpOffset = NULL;
 
   unusedImages.insertAfterHead(this);
+}
+
+//Loosely based on code at @ 0x004D5A50
+void CImage::setRemapping(ColorRemapping::Enum remapping) {
+  assert(this);
+  this->coloringData = colorShift[remapping].data;
 }
