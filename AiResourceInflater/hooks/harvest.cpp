@@ -37,7 +37,7 @@ u8 harvestResourceFrom(CUnit *resource, bool isMineral, CUnit *worker) {
         else
           resource->remove();
       }
-      else if (resource->building.resource.resourceAmount < 8)
+      else if (resource->building.resource.resourceAmount < harvestAmount)
         scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
       
       return isMineral ? plugin.AI_mineralGain : plugin.AI_gasGain;
