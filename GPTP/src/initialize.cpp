@@ -18,6 +18,7 @@
 #include "hooks/rally_point.h"
 #include "hooks/recharge_shields.h"
 #include "hooks/sight_range.h"
+#include "hooks/spider_mine.h"
 #include "hooks/stim_packs.h"
 #include "hooks/unit_speed.h"
 #include "hooks/unit_tooltip.h"
@@ -66,12 +67,11 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectRechargeShieldsHooks();
 
   hooks::injectSightRangeHook();
+  hooks::injectSpiderMineHooks();
   hooks::injectStimPacksHooks();
 
   hooks::injectUnitSpeedHooks();
-
   hooks::injectUnitTooltipHook();
-
   hooks::injectUpdateStatusEffects();
   hooks::injectUpdateUnitTimers();
 
