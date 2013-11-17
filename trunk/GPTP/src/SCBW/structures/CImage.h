@@ -25,6 +25,10 @@ struct CImage {
   /// Set the color remapping of this image to @ remapping.
   void setRemapping(ColorRemapping::Enum remapping);
 
+  /// Resets most of the data member values. This is meant to be used in other
+  /// functions, and should not be used by modders.
+  void initializeData(CSprite *parent, u16 imageId, s8 x, s8 y);
+
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure

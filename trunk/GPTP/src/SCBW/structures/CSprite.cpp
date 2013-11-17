@@ -57,22 +57,6 @@ void CSprite::setPosition(u16 x, u16 y) {
 
 //-------- Create overlay --------//
 
-void initializeImageData(CImage *image, CSprite *sprite, u32 imageId, s8 x, s8 y) {
-  const u32 Func_initializeImageData = 0x004D5A50;
-  s32 x_ = x, y_ = y;
-
-  __asm {
-    PUSHAD
-    PUSH y_
-    PUSH x_
-    MOV ESI, imageId
-    MOV EDI, sprite
-    MOV EAX, image
-    CALL Func_initializeImageData
-    POPAD
-  }
-}
-
 void createUpdateImageSomething(CImage *image) {
   const u32 Func_createUpdateImageSomething = 0x004D66B0;
 
@@ -113,7 +97,7 @@ CImage* CSprite::createOverlay(u32 imageId, s8 x, s8 y, u32 direction) {
       images.insertAfterHead(overlay);
     }
 
-    initializeImageData(overlay, this, imageId, x, y);
+    overlay->initializeData(this, imageId, x, y);
     createUpdateImageSomething(overlay);
     updateImageDirection(overlay, direction);
   }
@@ -135,7 +119,7 @@ CImage* CSprite::createTopOverlay(u32 imageId, s8 x, s8 y, u32 direction) {
       images.insertAfterHead(overlay);
     }
 
-    initializeImageData(overlay, this, imageId, x, y);
+    overlay->initializeData(this, imageId, x, y);
     createUpdateImageSomething(overlay);
     updateImageDirection(overlay, direction);
   }
