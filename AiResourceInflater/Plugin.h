@@ -20,3 +20,5 @@ class Plugin: public IMPQDraftPlugin {
     unsigned int AI_gasGain;
     unsigned int AI_depletedGasGain;
 };
+
+extern Plugin plugin;
