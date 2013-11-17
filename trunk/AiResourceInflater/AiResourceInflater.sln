@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual C++ Express 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPTP", "GPTP.vcproj", "{BAE0A287-3166-4C79-9F90-0C6A6DDB5A69}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AiResourceInflater", "AiResourceInflater.vcproj", "{BAE0A287-3166-4C79-9F90-0C6A6DDB5A69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
