@@ -57,8 +57,15 @@ BOOL WINAPI Plugin::GetModules(MPQDRAFTPLUGINMODULE *lpPluginModules, LPDWORD lp
     return FALSE;
   }
 
-  //By default, the plugin uses no modules
-  *lpnNumModules = 0;
+  //Tell MPQDraft that this plugin uses 1 module file.
+  *lpnNumModules = 1;
+
+  if (lpnNumModules != NULL) {
+    //Pass the plugin module information to MPQDraft
+    lpPluginModules[0].dwComponentID = PLUGIN_ID;
+    lpPluginModules[0].dwModuleID = SETTINGS_INI_ID;
+  }
+
   return TRUE;
 }
 
