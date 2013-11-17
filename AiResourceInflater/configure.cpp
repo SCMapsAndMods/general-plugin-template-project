@@ -18,8 +18,11 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\nMade by pastelmind"
     "\nBuilt on " __DATE__ " " __TIME__
     "\n"
-    "\n[Features]"
-    "\n - Add your own text here"
+    "\nThis plugin reads AI resource harvest values from " SETTINGS_INI_FILENAME
+    ", which was automatically incorporated into your mod when you added this plugin in MPQDraft or FireGraft."
+    " Thus, you do not need to include a copy of " SETTINGS_INI_FILENAME " with your mod executable for distribution."
+    "\nTo change the harvest amount settings, you need to edit " SETTINGS_INI_FILENAME
+    ", then remove and add the plugin again."
     ,
     PLUGIN_NAME,
     MB_TASKMODAL
