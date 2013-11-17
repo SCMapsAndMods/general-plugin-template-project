@@ -13,4 +13,10 @@ class Plugin: public IMPQDraftPlugin {
     BOOL WINAPI GetModules(MPQDRAFTPLUGINMODULE *lpPluginModules, LPDWORD lpnNumModules);
     BOOL WINAPI InitializePlugin(IMPQDraftServer *lpMPQDraftServer);
     BOOL WINAPI TerminatePlugin();
+
+    unsigned int AI_mineralMined;
+    unsigned int AI_mineralGain;
+    unsigned int AI_gasMined;
+    unsigned int AI_gasGain;
+    unsigned int AI_depletedGasGain;
 };
