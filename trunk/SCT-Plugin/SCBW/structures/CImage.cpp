@@ -1,7 +1,7 @@
 #include "CImage.h"
 #include "CSprite.h"
-#include "../api.h"
-#include "../scbwdata.h"
+#include <SCBW/api.h>
+#include <SCBW/scbwdata.h>
 #include <cassert>
 
 void CImage::playIscriptAnim(IscriptAnimation::Enum animation) {
@@ -35,4 +35,40 @@ void CImage::free() {
   this->grpOffset = NULL;
 
   unusedImages.insertAfterHead(this);
+}
+
+//Loosely based on code at @ 0x004D5A50
+void CImage::setRemapping(ColorRemapping::Enum remapping) {
+  assert(this);
+  this->coloringData = colorShift[remapping].data;
+}
+
+//Identical to function @ 0x004D5A50
+void CImage::initializeData(CSprite *parent, u16 imageId, s8 x, s8 y) {
+  assert(this);
+  this->id = imageId;
+  this->grpOffset = imageGrpGraphics[imageId];
+  this->flags = ((Image::IsTurnable[imageId] & 1) << 3) | ((Image::IsClickable[imageId] & 1) << 5);
+  this->frameSet = 0;
+  this->direction = 0;
+  this->frameIndex = 0;
+  this->animation = 0;
+  this->parentSprite = parent;
+  this->horizontalOffset = x;
+  this->verticalOffset = y;
+  this->grpSize = Box16();
+  this->coloringData = 0;
+
+  //Initialize iscript data
+  this->iscriptHeaderOffset = 0;
+  this->iscriptOffset = 0;
+  this->unknown2[0] = 0;
+  this->unknown2[1] = 0;
+  this->animation = 0;
+  this->wait = 0;
+
+  if (Image::RLE_Function[imageId] == 14)
+    *(u32*)(&this->coloringData) = parent->playerId;
+  if (Image::RLE_Function[imageId] == 9)
+    this->coloringData = colorShift[Image::Remapping[imageId]].data;
 }

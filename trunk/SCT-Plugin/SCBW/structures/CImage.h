@@ -3,7 +3,7 @@
 #pragma once
 #include "common.h"
 #include "CList.h"
-#include "../enumerations.h"
+#include <SCBW/enumerations.h>
 #pragma pack(1)
 
 struct CSprite;
@@ -21,6 +21,13 @@ struct CImage {
   /// from a class destructor, since CImage objects are stored in a static array
   /// and never truly destroyed.
   void free();
+
+  /// Set the color remapping of this image to @ remapping.
+  void setRemapping(ColorRemapping::Enum remapping);
+
+  /// Resets most of the data member values. This is meant to be used in other
+  /// functions, and should not be used by modders.
+  void initializeData(CSprite *parent, u16 imageId, s8 x, s8 y);
 
 
 ////////////////////////////////////////////////////////////////

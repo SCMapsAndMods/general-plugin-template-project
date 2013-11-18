@@ -3,8 +3,8 @@
 
 namespace hooks {
 
+CUnit* findBestSpiderMineTargetHook(const CUnit *mine);
 u8 getSpiderMineBurrowTimeHook(const CUnit *spiderMine);
-bool spiderMineCanTargetUnitHook(const CUnit *target, const CUnit *spiderMine);
 
 void injectSpiderMineHooks();
 
