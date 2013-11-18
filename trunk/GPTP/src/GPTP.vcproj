@@ -541,6 +541,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\tech_target_check.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\tech_target_check_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\unit_destructor_special.cpp"
 				>
 			</File>
@@ -775,11 +783,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AI\spells\irradiate.h"
+				RelativePath=".\hooks\irradiate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.h"
+				RelativePath=".\AI\spells\irradiate.h"
 				>
 			</File>
 			<File
@@ -892,6 +900,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\structures\Target.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\tech_target_check.h"
 				>
 			</File>
 			<File
