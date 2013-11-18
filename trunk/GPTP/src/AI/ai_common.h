@@ -23,11 +23,6 @@ bool isUmsMode(s8 playerId);
 /// controlling AI. Details are not really understood.
 bool isUnitInUnsafeRegion(const CUnit *unit);
 
-/// Test whether @p castingPlayer can use @p techId on the @p target.
-/// If successful, returns zero. If unsuccessful, returns the index of the
-/// appropriate error message string in stat_txt.tbl.
-u16 getTechUseErrorMessage(const CUnit *target, s8 castingPlayer, int techId);
-
 /// Returns the total HP shown in-game.
 int getCurrentHpInGame(const CUnit *unit);
 
