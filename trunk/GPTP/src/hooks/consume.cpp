@@ -4,7 +4,6 @@
 //hooks/tech_target_check.cpp
 
 #include "consume.h"
-#include <SCBW/api.h>
 #include <SCBW/scbwdata.h>
 #include <SCBW/enumerations.h>
 #include "tech_target_check.h"
