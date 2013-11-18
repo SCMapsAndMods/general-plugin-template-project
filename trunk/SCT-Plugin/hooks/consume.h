@@ -1,11 +1,13 @@
+//The header file for the Consume hook module.
 #pragma once
-#include "../SCBW/structures/CUnit.h"
+#include <SCBW/structures/CUnit.h>
 
 namespace hooks {
 
-bool unitIsConsumable(const CUnit* unit, u8 consumingPlayer);
-void onConsumeUnit(CUnit* caster, CUnit *target);
+//This function is injected into StarCraft.
+void consumeHitHook(CUnit *target, CUnit* caster);
 
+//The injector function for this hook module.
 void injectConsumeHooks();
 
 } //hooks
