@@ -52,10 +52,9 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
         sightRangeBonus += 2;
       break;
 
-    //Sensor Array: Apply to all Robotics Facility units (including Scarabs!)
+    //Sensor Array: Apply to all Robotics Facility units (excluding Scarabs)
     case UnitId::observer:
     case UnitId::reaver:
-    case UnitId::ProtossScarab:
     case UnitId::shuttle:
       if (getUpgradeLevel(unit->playerId, UpgradeId::SensorArray))
         sightRangeBonus += 2;
