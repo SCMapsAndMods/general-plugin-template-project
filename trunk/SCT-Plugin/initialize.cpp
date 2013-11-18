@@ -6,7 +6,6 @@
 #include "hooks/game_hooks.h"
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
-#include "hooks/consume.h"
 #include "hooks/detector.h"
 #include "hooks/energy_regeneration.h"
 #include "hooks/irradiate.h"
@@ -42,7 +41,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectBunkerHooks();
   
   hooks::injectCloakNearbyUnits();
-  hooks::injectConsumeHooks();
 
   hooks::injectDetectorHooks();
 
