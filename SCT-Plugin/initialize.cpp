@@ -22,8 +22,6 @@
 #include "hooks/weapon_cooldown.h"
 #include "hooks/weapon_damage.h"
 #include "hooks/weapon_range.h"
-#include "hooks/unit_destructor_special.h"
-#include "hooks/psi_field.h"
 #include "hooks/unit_morph.h"
 #include "hooks/building_morph.h"
 
@@ -66,9 +64,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectWeaponCooldownHook();
   hooks::injectWeaponDamageHook();
   hooks::injectWeaponRangeHooks();
-
-  hooks::injectUnitDestructorSpecial();
-  hooks::injectPsiFieldHooks();
 
   hooks::injectUnitMorphHooks();
   hooks::injectBuildingMorphHooks();

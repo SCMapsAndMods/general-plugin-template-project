@@ -325,6 +325,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -345,10 +349,6 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -396,36 +396,6 @@
 			</File>
 			<File
 				RelativePath=".\plugin_main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\psi_field.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						ObjectFile="$(IntDir)\$(InputName)1.obj"
-						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\hooks\psi_field_inject.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\psi_field_util.cpp"
 				>
 			</File>
 			<File
@@ -498,10 +468,6 @@
 			</File>
 			<File
 				RelativePath=".\hooks\tech_target_check_inject.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\unit_destructor_special.cpp"
 				>
 			</File>
 			<File
@@ -715,11 +681,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AI\spells\irradiate.h"
+				RelativePath=".\hooks\irradiate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.h"
+				RelativePath=".\AI\spells\irradiate.h"
 				>
 			</File>
 			<File
@@ -768,10 +734,6 @@
 			</File>
 			<File
 				RelativePath=".\Plugin.h"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\psi_field.h"
 				>
 			</File>
 			<File
@@ -840,10 +802,6 @@
 			</File>
 			<File
 				RelativePath=".\types.h"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\unit_destructor_special.h"
 				>
 			</File>
 			<File
