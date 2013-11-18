@@ -317,14 +317,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\harvest.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\harvest_inject.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\hook_tools.cpp"
 				>
 			</File>
@@ -704,10 +696,6 @@
 			</File>
 			<File
 				RelativePath=".\AI\spells\hallucination.h"
-				>
-			</File>
-			<File
-				RelativePath=".\hooks\harvest.h"
 				>
 			</File>
 			<File
