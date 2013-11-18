@@ -4,15 +4,10 @@
 
 //Hook header files
 #include "hooks/game_hooks.h"
-//#include "hooks/apply_upgrade_flags.h"
-//#include "hooks/armor_bonus.h"
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
-//#include "hooks/cloak_tech.h"
-//#include "hooks/consume.h"
 #include "hooks/detector.h"
 #include "hooks/energy_regeneration.h"
-#include "hooks/harvest.h"
 #include "hooks/irradiate.h"
 #include "hooks/max_unit_energy.h"
 #include "hooks/recharge_shields.h"
@@ -48,8 +43,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectDetectorHooks();
 
   hooks::injectEnergyRegenerationHook();
-
-  hooks::injectHarvestResource();
 
   hooks::injectIrradiateHook();
 
