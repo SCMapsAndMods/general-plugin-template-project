@@ -14,9 +14,10 @@ void __declspec(naked) getTechUseErrorMessageWrapper() {
 
   __asm {
     PUSHAD
+    MOV EBP, ESP
     MOV target, EAX
     MOV castingPlayer, BL
-    MOV EAX, [EBP + 4]
+    MOV EAX, [ESP + 36]   ;// (PUSHAD saves 32) + (CALL saves 4) == 36
     MOV techId, AX
   }
 
