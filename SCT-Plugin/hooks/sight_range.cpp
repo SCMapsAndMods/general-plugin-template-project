@@ -41,6 +41,7 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
         sightRangeBonus += 2;
       break;
 
+    //Antennae: Apply to all Zerg air units
     case UnitId::overlord:
     case UnitId::scourge:
     case UnitId::mutalisk:
@@ -51,11 +52,16 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
         sightRangeBonus += 2;
       break;
 
+    //Sensor Array: Apply to all Robotics Facility units (including Scarabs!)
     case UnitId::observer:
+    case UnitId::reaver:
+    case UnitId::ProtossScarab:
+    case UnitId::shuttle:
       if (getUpgradeLevel(unit->playerId, UpgradeId::SensorArray))
         sightRangeBonus += 2;
       break;
 
+    //Prescience: Apply to all Gateway units (including Archons and Dark Archons)
     case UnitId::zealot:
     case UnitId::dragoon:
     case UnitId::high_templar:
