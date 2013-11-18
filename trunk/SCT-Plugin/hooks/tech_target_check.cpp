@@ -69,7 +69,8 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
       if (Unit::BaseProperty[target->id] & UnitProperty::Building
           || target->playerId != castingPlayer
           || !(Unit::GroupFlags[target->id].isZerg)
-          || target->id == UnitId::larva)
+          || target->id == UnitId::larva
+          || target->id == UnitId::broodling) //Prevent Consuming Broodlings since they are a "free" unit now
         return 897;     //Invalid target.<0>
       break;
   }
