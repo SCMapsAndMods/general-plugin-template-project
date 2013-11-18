@@ -5,7 +5,6 @@
 #include "../SCBW/api.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/ExtendSightLimit.h"
-#include "psi_field.h"
 #include <SCBW/UnitFinder.h>
 #include <cstdio>
 
@@ -56,7 +55,6 @@ namespace hooks {
 bool nextFrame() {
   if (!scbw::isGamePaused()) { //If the game is not paused
     graphics::resetAllGraphics();
-    hooks::updatePsiFieldProviders();
 
     if (firstRun) {
       //scbw::printText("Hello, world!");
