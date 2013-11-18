@@ -241,6 +241,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\consume.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\consume_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SCBW\structures\CSprite.cpp"
 				>
 			</File>
@@ -325,6 +333,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -345,10 +357,6 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -615,6 +623,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\consume.h"
+				>
+			</File>
+			<File
 				RelativePath=".\SCBW\structures\COrder.h"
 				>
 			</File>
@@ -707,11 +719,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.h"
+				RelativePath=".\AI\spells\irradiate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\AI\spells\irradiate.h"
+				RelativePath=".\hooks\irradiate.h"
 				>
 			</File>
 			<File
