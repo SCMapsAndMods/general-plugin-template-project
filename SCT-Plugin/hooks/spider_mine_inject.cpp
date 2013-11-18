@@ -4,11 +4,10 @@
 namespace {
 
 void __declspec(naked) getSpiderMineBurrowTimeWrapper() {
-  CUnit *mine;
+  static CUnit *mine;
   __asm {
     PUSHAD
-    MOV EBP, ESP
-    MOV mine, ESI
+    MOV mine, EDI
   }
 
   mine->groundWeaponCooldown = hooks::getSpiderMineBurrowTimeHook(mine);
@@ -20,8 +19,20 @@ void __declspec(naked) getSpiderMineBurrowTimeWrapper() {
   }
 }
 
-bool __fastcall spiderMineCanTargetUnitWrapper(const CUnit* target, const CUnit* mine) {
-  return hooks::spiderMineCanTargetUnitHook(target, mine);
+void __declspec(naked) findBestSpiderMineTargetWrapper() {
+  static CUnit *spiderMine, *target;
+  __asm {
+    PUSHAD
+    MOV spiderMine, ESI
+  }
+
+  target = hooks::findBestSpiderMineTargetHook(spiderMine);
+
+  __asm {
+    POPAD
+    MOV EAX, target
+    RETN
+  }
 }
 
 } //unnamed namespace
@@ -29,8 +40,8 @@ bool __fastcall spiderMineCanTargetUnitWrapper(const CUnit* target, const CUnit*
 namespace hooks {
 
 void injectSpiderMineHooks() {
-  callPatch(getSpiderMineBurrowTimeWrapper, 0x00463E08, 3);
-  memoryPatch(0x0044127F, &spiderMineCanTargetUnitWrapper);
+  callPatch(getSpiderMineBurrowTimeWrapper,   0x00463E08, 3);
+  callPatch(findBestSpiderMineTargetWrapper,  0x00463E63);
 }
 
 } //hooks

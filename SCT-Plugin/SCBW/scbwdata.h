@@ -98,6 +98,7 @@ struct SpriteTileData {
 };
 SCBW_DATA(SpriteTileData*, spritesOnTileRow,    0x00629288);
 
+//Image-related
 struct ImagesDatExtraOverlayLO_Files {
   LO_Header* attackOverlays[IMAGE_TYPE_COUNT];
   LO_Header* damageOverlays[IMAGE_TYPE_COUNT];
@@ -109,6 +110,7 @@ SCBW_DATA(const ImagesDatExtraOverlayLO_Files*, lo_files, 0x0051F2A8);
 SCBW_DATA(const LO_Header* const*, shieldOverlays, 0x0052E5C8);
 
 SCBW_DATA(const ColorShiftData*, colorShift, 0x005128F8); //Use ColorRemapping::Enum as index
+SCBW_DATA(GrpHead* const*, imageGrpGraphics, 0x0051CED0);
 
 template <typename T>
 struct PlayerFlags {
@@ -283,8 +285,10 @@ SCBW_DATA(u8*,  IsVisible,          spritesDat[3].address);
 namespace Image {
 SCBW_DATA(const DatLoad*, imagesDat, 0x00514010);
 
-SCBW_DATA(u8*,  RLE_Function,       imagesDat[5].address);
-SCBW_DATA(u8*,  Remapping,          imagesDat[6].address);
+SCBW_DATA(const u8*,  IsTurnable,   imagesDat[1].address);
+SCBW_DATA(const u8*,  IsClickable,  imagesDat[2].address);
+SCBW_DATA(const u8*,  RLE_Function, imagesDat[5].address);
+SCBW_DATA(const u8*,  Remapping,    imagesDat[6].address);
 }
 
 
