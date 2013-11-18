@@ -1,4 +1,5 @@
 #include "defensive_matrix.h"
+#include <hooks/tech_target_check.h>
 
 namespace AI {
 
@@ -32,7 +33,7 @@ class DefensiveMatrixTargetFinderProc: public scbw::UnitFinderCallbackMatchInter
       if (target->status & UnitStatus::Invincible)
         return false;
 
-      if (getTechUseErrorMessage(target, caster->playerId, TechId::DefensiveMatrix) != 0)
+      if (hooks::getTechUseErrorMessage(target, caster->playerId, TechId::DefensiveMatrix) != 0)
         return false;
 
       return true;

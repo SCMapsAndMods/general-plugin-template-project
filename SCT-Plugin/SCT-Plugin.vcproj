@@ -333,10 +333,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -357,6 +353,10 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -498,6 +498,14 @@
 			</File>
 			<File
 				RelativePath=".\hooks\stim_packs_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\tech_target_check.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\tech_target_check_inject.cpp"
 				>
 			</File>
 			<File
@@ -832,6 +840,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\structures\Target.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\tech_target_check.h"
 				>
 			</File>
 			<File

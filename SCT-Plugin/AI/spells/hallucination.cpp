@@ -1,4 +1,5 @@
 #include "psi_storm.h"
+#include <hooks/tech_target_check.h>
 
 namespace AI {
 
@@ -20,7 +21,7 @@ class HallucinationTargetFinderProc: public scbw::UnitFinderCallbackMatchInterfa
       if (target->status & UnitStatus::Invincible)
         return false;
 
-      if (getTechUseErrorMessage(target, caster->playerId, TechId::Hallucination) != 0)
+      if (hooks::getTechUseErrorMessage(target, caster->playerId, TechId::Hallucination) != 0)
         return false;
 
       if (target->id == UnitId::carrier
