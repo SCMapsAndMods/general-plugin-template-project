@@ -95,7 +95,7 @@ bool nextFrame() {
       {
         CImage *nexusAttackOverlay = unit->getOverlay(IMAGE_NEXUS_ATTACK_OVERLAY);
         if (nexusAttackOverlay)
-          nexusAttackOverlay->coloringData = colorShift[ColorRemapping::BFire].data;
+          nexusAttackOverlay->setRemapping(ColorRemapping::BFire);
       }
     }
 
