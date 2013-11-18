@@ -1,61 +1,32 @@
+//The injector source file for the Consume hook module.
 #include "consume.h"
-#include "../hook_tools.h"
+#include <hook_tools.h>
 
-//Inject with jmpPatch
-void __declspec(naked) unitIsConsumableWrapper() {
-	CUnit* unit;
-	u8 defilerOwner;
-	__asm {
-		PUSHAD
-		MOV EBP, ESP
-		MOV unit, EAX
-		MOV defilerOwner, BL
-	}
+namespace {
 
-  if (hooks::unitIsConsumable(unit, defilerOwner)) {
-		__asm {
-			POPAD
-			XOR AX, AX	;//Equivalent to MOV AX, 0
-			POP EBP
-			RETN 4
-		}
-	}
-	else {
-		__asm {
-			POPAD
-			MOV AX, 897	;//stat_txt.tbl string: Invalid target.<0>
-			POP EBP
-			RETN 4
-		}
-	}
-}
-
-//Inject with jmpPatch()
-void __declspec(naked) onConsumeUnitWrapper() {
-	CUnit *caster, *target;
+void __declspec(naked) consumeHitWrapper() {
+	CUnit *target, *caster;
 
 	__asm {
 		PUSHAD
-		MOV EBP, ESP
 		MOV caster, ESI
-		MOV target, EDI
+		MOV target, EAX
 	}
 
-  hooks::onConsumeUnit(caster, target);
+  hooks::consumeHitHook(target, caster);
 
 	__asm {
 	  POPAD
-	  POP EBX
-	  POP EDI
 	  RETN
 	}
 }
 
+} //Unnamed namespace
+
 namespace hooks {
 
 void injectConsumeHooks() {
-  jmpPatch(unitIsConsumableWrapper, 0x00491F51);
-  jmpPatch(onConsumeUnitWrapper,    0x004F47DE);
+  callPatch(consumeHitWrapper, 0x0048BB27);
 }
 
 } //hooks
