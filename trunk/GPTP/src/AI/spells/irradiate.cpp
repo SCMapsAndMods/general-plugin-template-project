@@ -31,7 +31,7 @@ class IrradiateTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
 
       if (target->id == UnitId::larva
           || target->id == UnitId::egg
-          || target->id == UnitId::ZergLurkerEgg)
+          || target->id == UnitId::lurker_egg)
         return false;
 
       if (isUnderAttack || !isUmsMode(caster->playerId))

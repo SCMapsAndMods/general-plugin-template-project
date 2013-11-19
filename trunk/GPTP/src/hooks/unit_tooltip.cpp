@@ -114,7 +114,7 @@ const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
     return getWeaponTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
   }
 
-  if (iconUnitId == UnitId::ProtossScarab) {
+  if (iconUnitId == UnitId::scarab) {
     return getWeaponTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
   }
 
