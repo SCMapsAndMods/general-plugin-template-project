@@ -189,6 +189,52 @@ u32 getDistanceFast(s32 x1, s32 y1, s32 x2, s32 y2) {
   return (dMin * 3 >> 3) + (dMin * 3 >> 8) + dMax - (dMax >> 4) - (dMax >> 6);
 }
 
+//Identical to function @ 0x00494C10
+int arctangent(int slope) {
+  const unsigned int tangentTable[] = {
+       7,   13,   19,   26,   32,   38,   45,   51,
+      58,   65,   71,   78,   85,   92,   99,  107, 
+     114,  122,  129,  137,  146,  154,  163,  172,
+     181,  190,  200,  211,  221,  233,  244,  256,
+     269,  283,  297,  312,  329,  346,  364,  384,
+     405,  428,  452,  479,  509,  542,  578,  619,
+     664,  716,  775,  844,  926, 1023, 1141, 1287,
+    1476, 1726, 2076, 2600, 3471, 5211, 10429, -1
+  };
+
+  bool isNegative = false;
+  if (slope < 0) {
+    isNegative = true;
+    slope -= slope;
+  }
+
+  int min = 0, max = 64, angle = 32;
+
+  do {
+    if ((unsigned int) slope <= tangentTable[angle])
+      max = angle;
+    else
+      min = angle + 1;
+    angle = (min + max) / 2;
+  } while (min != max);
+
+  return (isNegative ? -angle : angle);
+}
+
+//Identical to function @ 0x00495300
+s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail) {
+  s32 dx = xHead - xTail, dy = yHead - yTail;
+  
+  if (dx == 0)
+    return dy > 0 ? 128 : 0;
+
+  s32 angle = arctangent((dy << 8) / dx);
+  if (dx < 0)
+    return (angle == 64 ? 0 : angle + 192);
+  else
+    return angle + 64;
+}
+
 u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId) {
   assert(playerId < PLAYER_COUNT);
   assert(upgradeId < 61);
