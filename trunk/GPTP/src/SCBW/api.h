@@ -79,6 +79,10 @@ bool isUnderDarkSwarm(const CUnit *unit);
 /// Warning: This function is inaccurate for long distances.
 u32 getDistanceFast(s32 x1, s32 y1, s32 x2, s32 y2);
 
+/// Calculates the angle (in binary radians) of the arrow that starts at
+/// (xTail, yTail) and ends at (xHead, yHead).
+s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
+
 /// Returns the player's upgrade level of [upgradeId]. Note that this uses
 /// UpgradeId::Enum, instead of ScUpgrades::Enum and BwUpgrades::Enum.
 u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId);
