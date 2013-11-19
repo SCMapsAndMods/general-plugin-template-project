@@ -1,6 +1,7 @@
 #include "sight_range.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/scbwdata.h"
+#include <SCBW/enumerations.h>
+#include <SCBW/scbwdata.h>
+#include <SCBW/api.h>
 
 namespace {
 /// Helper function: checks if the unit is a building morphing into another building.
@@ -16,12 +17,11 @@ namespace hooks {
 /// Note: sight ranges cannot exceed 11, unless extended.
 u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
   //Default StarCraft logic
-  using UnitStatus::GroundedBuilding;
-  using UnitStatus::Completed;
-  using Upgrade::CurrentUpgSc;
+  using scbw::getUpgradeLevel;
 
   //Check if the unit is a constructing building (exclude remorphing buildings)
-  if (unit->status & GroundedBuilding && !(unit->status & Completed)
+  if (unit->status & UnitStatus::GroundedBuilding
+      && !(unit->status & UnitStatus::Completed)
       && !isRemorphingBuilding(unit))
     return 4;
 
@@ -32,19 +32,19 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
   //Sight range upgrades
   switch (unit->id) {
     case UnitId::ghost:
-      if (CurrentUpgSc->level[unit->playerId][ScUpgrade::OcularImplants])
+      if (getUpgradeLevel(unit->playerId, UpgradeId::OcularImplants))
         return 11;
       break;
     case UnitId::overlord:
-      if (CurrentUpgSc->level[unit->playerId][ScUpgrade::Antennae])
+      if (getUpgradeLevel(unit->playerId, UpgradeId::Antennae))
         return 11;
       break;
     case UnitId::observer:
-      if (CurrentUpgSc->level[unit->playerId][ScUpgrade::SensorArray])
+      if (getUpgradeLevel(unit->playerId, UpgradeId::SensorArray))
         return 11;
       break;
     case UnitId::scout:
-      if (CurrentUpgSc->level[unit->playerId][ScUpgrade::ApialSensors])
+      if (getUpgradeLevel(unit->playerId, UpgradeId::ApialSensors))
         return 11;
       break;
   }
