@@ -223,23 +223,56 @@ s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail) {
     return angle + 64;
 }
 
-u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId) {
+u8 getUpgradeLevel(u8 playerId, u8 upgradeId) {
+  using Upgrade::UpgSc;
+  using Upgrade::UpgBw;
+
   assert(playerId < PLAYER_COUNT);
-  assert(upgradeId < 61);
-  if (upgradeId < 46)
-    return Upgrade::CurrentUpgSc->level[playerId][upgradeId];
+  assert(upgradeId < UpgradeId::None);
+
+  if (upgradeId < UpgradeId::UnusedUpgrade46)
+    return Upgrade::UpgSc->currentLevel[playerId][upgradeId];
   else
-    return Upgrade::CurrentUpgBw->level[playerId][upgradeId - 46];
+    return Upgrade::UpgBw->currentLevel[playerId][upgradeId - UpgradeId::UnusedUpgrade46];
+}
+
+void setUpgradeLevel(u8 playerId, u8 upgradeId, u8 level) {
+  using Upgrade::UpgSc;
+  using Upgrade::UpgBw;
+
+  assert(playerId < PLAYER_COUNT);
+  assert(upgradeId < UpgradeId::None);
+
+  if (upgradeId < UpgradeId::UnusedUpgrade46)
+    Upgrade::UpgSc->currentLevel[playerId][upgradeId] = level;
+  else
+    Upgrade::UpgBw->currentLevel[playerId][upgradeId - UpgradeId::UnusedUpgrade46] = level;
 }
 
 bool hasTechResearched(u8 playerId, u16 techId) {
+  using Tech::TechSc;
+  using Tech::TechBw;
+
   assert(playerId < PLAYER_COUNT);
   assert(techId < TechId::None);
 
   if (techId < TechId::Restoration)
-    return Tech::ResearchedSc->enabled[playerId][techId] != 0;
+    return TechSc->isResearched[playerId][techId] != 0;
   else
-    return Tech::ResearchedBw->enabled[playerId][techId - TechId::Restoration] != 0;
+    return TechBw->isResearched[playerId][techId - TechId::Restoration] != 0;
+}
+
+void setTechResearchState(u8 playerId, u16 techId, bool isResearched) {
+  using Tech::TechSc;
+  using Tech::TechBw;
+
+  assert(playerId < PLAYER_COUNT);
+  assert(techId < TechId::None);
+
+  if (techId < TechId::Restoration)
+    TechSc->isResearched[playerId][techId] = isResearched;
+  else
+    TechBw->isResearched[playerId][techId - TechId::Restoration] = isResearched;
 }
 
 s32 getSupplyRemaining(u8 playerId, u8 raceId) {

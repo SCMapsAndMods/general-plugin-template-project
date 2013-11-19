@@ -72,13 +72,21 @@ u32 getDistanceFast(s32 x1, s32 y1, s32 x2, s32 y2);
 /// (xTail, yTail) and ends at (xHead, yHead).
 s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
 
-/// Returns the player's upgrade level of [upgradeId]. Note that this uses
+/// Returns the player's upgrade level of @p upgradeId. Note that this uses
 /// UpgradeId::Enum, instead of ScUpgrades::Enum and BwUpgrades::Enum.
-u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId);
+u8 getUpgradeLevel(u8 playerId, u8 upgradeId);
 
-/// Checks whether the @p playerId has the @p techId researched. Note that this
-/// uses TechId::Enum, instead of ScTech::Enum and BwTech::Enum.
+/// Sets the player's upgrade level of @p upgradeId. Note that this uses
+/// UpgradeId::Enum, instead of ScUpgrades::Enum and BwUpgrades::Enum.
+void setUpgradeLevel(u8 playerId, u8 upgradeId, u8 level);
+
+/// Checks whether the @p playerId has the @p techId researched.
+/// Note: This uses TechId::Enum, instead of ScTech::Enum and BwTech::Enum.
 bool hasTechResearched(u8 playerId, u16 techId);
+
+/// Sets the player's tech research state for @p techId to @p isResearched.
+/// Note: This uses TechId::Enum, instead of ScTech::Enum and BwTech::Enum.
+void setTechResearchState(u8 playerId, u16 techId, bool isResearched);
 
 /// Returns the amount of remaining supply (total available - total used) for
 /// the @p playerId, using @p raceId to determine the appropriate race to use.
