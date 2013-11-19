@@ -549,6 +549,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\transfer_tech_upgrades.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\unit_destructor_special.cpp"
 				>
 			</File>
@@ -916,6 +920,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\enumerations\TechId.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\transfer_tech_upgrades.h"
 				>
 			</File>
 			<File

@@ -232,6 +232,16 @@ u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId) {
     return Upgrade::CurrentUpgBw->level[playerId][upgradeId - 46];
 }
 
+bool hasTechResearched(u8 playerId, u16 techId) {
+  assert(playerId < PLAYER_COUNT);
+  assert(techId < TechId::None);
+
+  if (techId < TechId::Restoration)
+    return Tech::ResearchedSc->enabled[playerId][techId] != 0;
+  else
+    return Tech::ResearchedBw->enabled[playerId][techId - TechId::Restoration] != 0;
+}
+
 s32 getSupplyRemaining(u8 playerId, u8 raceId) {
   assert(raceId <= 2);
   assert(playerId < 12);

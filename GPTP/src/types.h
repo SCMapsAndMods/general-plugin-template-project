@@ -11,6 +11,8 @@
 //Include <algorithm> to use this
 #define CLAMP(x, minVal, maxVal) (std::min(std::max((x), (minVal)), (maxVal)))
 
+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+
 #ifdef _MSC_VER
 typedef unsigned __int32  u32;
 typedef __int32           s32;
