@@ -1,5 +1,6 @@
+//Injector source file for the Apply Upgrade Flags hook module.
 #include "apply_upgrade_flags.h"
-#include "../hook_tools.h"
+#include <hook_tools.h>
 
 void __declspec(naked) applyUpgradeFlagsToNewUnitWrapper() {
   static CUnit *unit;
@@ -38,9 +39,21 @@ void __declspec(naked) applyUpgradeFlagsToExistingUnitsWrapper() {
 
 namespace hooks {
 
+const u32 Hook_ApplyUpgradeFlagsToExistingUnits = 0x00454540;
+
 void injectApplyUpgradeFlags() {
   jmpPatch(applyUpgradeFlagsToNewUnitWrapper, 0x00454370);
-  jmpPatch(applyUpgradeFlagsToExistingUnitsWrapper, 0x00454540);
+  jmpPatch(applyUpgradeFlagsToExistingUnitsWrapper, Hook_ApplyUpgradeFlagsToExistingUnits);
+}
+
+void applyUpgradeFlagsToExistingUnits(const CUnit *unit, u8 upgradeId) {
+  __asm {
+    PUSHAD
+    PUSH unit
+    MOV AL, upgradeId
+    CALL Hook_ApplyUpgradeFlagsToExistingUnits
+    POPAD
+  }
 }
 
 } //hooks
