@@ -297,23 +297,31 @@ SCBW_DATA(const u8*,  Remapping,    imagesDat[6].address);
 //-------- Tech levels --------//
 
 namespace Tech {
-struct _scTechs { u8 enabled[PLAYER_COUNT][24]; };
-struct _bwTechs { u8 enabled[PLAYER_COUNT][20]; };
-SCBW_DATA(_scTechs*, AvailableSc,   0x0058CE24); //Use with ScTech::Enum
-SCBW_DATA(_scTechs*, ResearchedSc,  0x0058CF44); //Use with ScTech::Enum
-SCBW_DATA(_bwTechs*, AvailableBw,   0x0058F050); //Use with BwTech::Enum
-SCBW_DATA(_bwTechs*, ResearchedBw,  0x0058F140); //Use with BwTech::Enum
+struct _scTechs {
+  u8 isEnabled[PLAYER_COUNT][24];
+  u8 isresearched[PLAYER_COUNT][24];
+};
+struct _bwTechs {
+  u8 isEnabled[PLAYER_COUNT][20];
+  u8 isResearched[PLAYER_COUNT][20];
+};
+SCBW_DATA(_scTechs*, ScTech,   0x0058CE24); //Use with ScTech::Enum
+SCBW_DATA(_bwTechs*, BwTech,   0x0058F050); //Use with BwTech::Enum
 }
 
 //-------- Upgrade levels --------//
 
 namespace Upgrade {
-struct _scUpgrs { u8 level[PLAYER_COUNT][46];  };
-struct _bwUpgrs { u8 level[PLAYER_COUNT][15];  };
-SCBW_DATA(_scUpgrs*, MaximumUpgSc,  0x0058D088); //Use with ScUpgrade::Enum
-SCBW_DATA(_scUpgrs*, CurrentUpgSc,  0x0058D2B0); //Use with ScUpgrade::Enum
-SCBW_DATA(_bwUpgrs*, MaximumUpgBw,  0x0058F24A); //Use with BwUpgrade::Enum
-SCBW_DATA(_bwUpgrs*, CurrentUpgBw,  0x0058F32C); //Use with BwUpgrade::Enum
+struct _scUpgrs {
+  u8 maxLevel[PLAYER_COUNT][46];
+  u8 currentLevel[PLAYER_COUNT][46];
+};
+struct _bwUpgrs {
+  u8 maxLevel[PLAYER_COUNT][15];
+  u8 currentLevel[PLAYER_COUNT][15];
+};
+SCBW_DATA(_scUpgrs*, UpgSc,  0x0058D088); //Use with ScUpgrade::Enum
+SCBW_DATA(_bwUpgrs*, UpgBw,  0x0058F278); //Use with BwUpgrade::Enum
 }
 
 #undef SCBW_DATA
