@@ -1,9 +1,9 @@
 #include "stim_packs.h"
 #include "../SCBW/api.h"
 
-//Use separate HP cost for Fiends (Firebat / Gui Montag)
+//Use separate HP cost for Fiends (Fiend / Gui Montag)
 const s32 getStimPacksHpCost(const CUnit *unit) {
-  if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag)
+  if (unit->id == UNIT_FIEND || unit->id == UnitId::gui_montag)
     return 20 * 256;
   else
     return 10 * 256;

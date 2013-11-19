@@ -130,7 +130,7 @@ const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
   static char buffer2[200];
 
   //Add range parameter for Carriers and Reavers
-  if (iconUnitId == UnitId::interceptor || iconUnitId == UnitId::ProtossScarab) {
+  if (iconUnitId == UnitId::interceptor || iconUnitId == UnitId::scarab) {
     const char *damageTooltipStr;
     if (iconUnitId == UnitId::interceptor)
       damageTooltipStr = getWeaponTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
