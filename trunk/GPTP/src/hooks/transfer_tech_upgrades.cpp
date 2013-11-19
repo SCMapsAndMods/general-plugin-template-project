@@ -101,8 +101,8 @@ void transferUnitTechToPlayerHook(const CUnit *source, u8 targetPlayerId) {
     const TechTransferData *data = &techTransferData[i];
 
     if (source->id == data->unitId) {
-      for (int t = 0; t < ARRAY_SIZE(data->relatedTech); ++i) {
-        u16 techId = data->relatedTech[t];
+      for (int techIndex = 0; techIndex < ARRAY_SIZE(data->relatedTech); ++techIndex) {
+        u16 techId = data->relatedTech[techIndex];
         if (techId == TechId::None) break;
 
         if (scbw::hasTechResearched(source->playerId, techId)
@@ -127,8 +127,8 @@ void transferUnitUpgradesToPlayerHook(const CUnit *source, u8 targetPlayerId) {
     const UpgradeTransferData *data = &upgradeTransferData[i];
 
     if (source->id == data->unitId) {
-      for (int t = 0; t < ARRAY_SIZE(data->relatedUpgrades); ++i) {
-        u8 upgradeId = data->relatedUpgrades[t];
+      for (int upgIndex = 0; upgIndex < ARRAY_SIZE(data->relatedUpgrades); ++upgIndex) {
+        u8 upgradeId = data->relatedUpgrades[upgIndex];
         if (upgradeId == UpgradeId::None) break;
 
         u8 sourceUpgradeLevel = scbw::getUpgradeLevel(source->playerId, upgradeId);
@@ -153,8 +153,8 @@ void applyUnitUpgradeFlagsToAllFriendlyUnitsHook(CUnit *unit) {
     const UpgradeTransferData *data = &upgradeTransferData[i];
 
     if (unit->id == data->unitId) {
-      for (int t = 0; t < ARRAY_SIZE(data->relatedUpgrades); ++i) {
-        u8 upgradeId = data->relatedUpgrades[t];
+      for (int upgIndex = 0; upgIndex < ARRAY_SIZE(data->relatedUpgrades); ++upgIndex) {
+        u8 upgradeId = data->relatedUpgrades[upgIndex];
         if (upgradeId == UpgradeId::None) break;
 
         if (scbw::getUpgradeLevel(unit->playerId, upgradeId))
