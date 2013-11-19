@@ -111,20 +111,6 @@ bool canWeaponTargetUnit(u8 weaponId, const CUnit *target, const CUnit *attacker
   return true;
 }
 
-const u32 Func_FireUnitWeapon = 0x00479C90;
-void fireUnitWeapon(CUnit* unit, u8 weaponId) {
-  if (weaponId >= WEAPON_TYPE_COUNT) return;
-  u32 _weaponId = weaponId;
-
-  __asm {
-    PUSHAD
-    PUSH _weaponId
-    MOV ESI, unit
-    CALL Func_FireUnitWeapon
-    POPAD
-  }
-}
-
 const u32 Func_CreateUnitAtPos = 0x004CD360; //AKA createUnitXY()
 CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y) {
   if (unitType >= UNIT_TYPE_COUNT) return NULL;
