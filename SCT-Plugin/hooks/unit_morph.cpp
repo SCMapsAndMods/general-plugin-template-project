@@ -32,7 +32,7 @@ bool isEggUnitHook(u16 unitId) {
 
   if (unitId == UnitId::egg
       || unitId == UnitId::cocoon
-      || unitId == UnitId::ZergLurkerEgg)
+      || unitId == UnitId::lurker_egg)
     return true;
 
   return false;
@@ -42,7 +42,7 @@ bool isEggUnitHook(u16 unitId) {
 bool isRallyableEggUnitHook(u16 unitId) {
   //Default StarCraft behavior
 
-  if (unitId == UnitId::cocoon || unitId == UnitId::ZergLurkerEgg)
+  if (unitId == UnitId::cocoon || unitId == UnitId::lurker_egg)
     return false;
 
   return true;
@@ -60,7 +60,7 @@ u16 getUnitMorphEggTypeHook(u16 unitId) {
     return UnitId::cocoon;
 
   if (unitId == UnitId::hydralisk)
-    return UnitId::ZergLurkerEgg;
+    return UnitId::lurker_egg;
 
   return UnitId::None;
 }
@@ -73,7 +73,7 @@ u16 getCancelMorphRevertTypeHook(const CUnit *eggUnit) {
   if (eggUnit->id == UnitId::cocoon)
     return UnitId::mutalisk;
 
-  if (eggUnit->id == UnitId::ZergLurkerEgg)
+  if (eggUnit->id == UnitId::lurker_egg)
     return UnitId::hydralisk;
 
   return UnitId::None;  //Default (no revert for larvae)

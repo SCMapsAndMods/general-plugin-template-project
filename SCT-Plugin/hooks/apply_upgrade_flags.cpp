@@ -1,12 +1,15 @@
+//Source file for the Apply Upgrade Flags hook module.
+//This file is directly responsible for applying movement speed / attack speed
+//upgrades to units.
 #include "apply_upgrade_flags.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include <SCBW/scbwdata.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 namespace hooks {
 
-/// This function is called when creating a new unit.
-void applyUpgradeFlagsToNewUnitHook(CUnit* const unit) {
+//This hook function is called when creating a new unit.
+void applyUpgradeFlagsToNewUnitHook(CUnit *unit) {
   //Default StarCraft behavior
   using scbw::getUpgradeLevel;
 
@@ -69,9 +72,9 @@ void applyUpgradeFlagsToNewUnitHook(CUnit* const unit) {
   }
 }
 
-/// This function is called when an upgrade is finished, or when transferring a
-/// unit's ownership from one player to another (via triggers or Mind Control).
-void applyUpgradeFlagsToExistingUnitsHook(const u8 playerId, const u8 upgradeId) {
+//This function is called when an upgrade is finished, or when transferring a
+//unit's ownership from one player to another (via triggers or Mind Control).
+void applyUpgradeFlagsToExistingUnitsHook(u8 playerId, u8 upgradeId) {
   //Default StarCraft logic
   bool isSpeedUpgrade = true, isCooldownUpgrade = false;
   u16 validUnitId1 = -1, validUnitId2 = -1;

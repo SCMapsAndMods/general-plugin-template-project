@@ -32,7 +32,7 @@ class IrradiateTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       //Immune units (mostly for balance issues)
       if (target->id == UnitId::larva
           || target->id == UnitId::egg
-          || target->id == UnitId::ZergLurkerEgg)
+          || target->id == UnitId::lurker_egg)
         return false;
 
       //Science Vessels are immune to Irradiate

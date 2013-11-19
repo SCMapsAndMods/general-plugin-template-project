@@ -75,6 +75,8 @@ SCBW_DATA(UnitFinderData*, unitOrderingX,       0x0066FF78);
 SCBW_DATA(UnitFinderData*, unitOrderingY,       0x006769B8);
 SCBW_DATA(const u32*,   unitOrderingCount,      0x0066FF74);
 
+SCBW_DATA(const Point32*, angleDistance,        0x00512D28);
+
 // Font & Drawing
 namespace graphics { class Font; class Bitmap; }
 SCBW_DATA(graphics::Font**, fontBase,           0x006CE0F4);
@@ -220,7 +222,7 @@ namespace Weapon {
 SCBW_DATA(const DatLoad*, weaponsDat, 0x00513868);
 
 SCBW_DATA(u16*, Label,              weaponsDat[0].address);
-SCBW_DATA(u32*, Graphic,            weaponsDat[1].address);
+SCBW_DATA(u32*, FlingyId,           weaponsDat[1].address);
 SCBW_DATA(TargetFlag*, TargetFlags, weaponsDat[3].address);
 SCBW_DATA(u32*, MinRange,           weaponsDat[4].address);
 SCBW_DATA(u32*, MaxRange,           weaponsDat[5].address);
@@ -238,8 +240,8 @@ SCBW_DATA(u8*,  Cooldown,           weaponsDat[16].address);
 SCBW_DATA(u8*,  DamageFactor,       weaponsDat[17].address);
 SCBW_DATA(u8*,  AttackDirection,    weaponsDat[18].address);
 SCBW_DATA(u8*,  LaunchSpin,         weaponsDat[19].address);
-SCBW_DATA(u8*,  Xoffset,            weaponsDat[20].address);
-SCBW_DATA(u8*,  Yoffset,            weaponsDat[21].address);
+SCBW_DATA(u8*,  ForwardOffset,      weaponsDat[20].address);
+SCBW_DATA(u8*,  VerticalOffset,     weaponsDat[21].address);
 }
 
 namespace Upgrade {
@@ -295,23 +297,31 @@ SCBW_DATA(const u8*,  Remapping,    imagesDat[6].address);
 //-------- Tech levels --------//
 
 namespace Tech {
-struct _scTechs { u8 enabled[PLAYER_COUNT][24]; };
-struct _bwTechs { u8 enabled[PLAYER_COUNT][20]; };
-SCBW_DATA(_scTechs*, AvailableSc,   0x0058CE24); //Use with ScTech::Enum
-SCBW_DATA(_scTechs*, ResearchedSc,  0x0058CF44); //Use with ScTech::Enum
-SCBW_DATA(_bwTechs*, AvailableBw,   0x0058F050); //Use with BwTech::Enum
-SCBW_DATA(_bwTechs*, ResearchedBw,  0x0058F140); //Use with BwTech::Enum
+struct _scTechs {
+  u8 isEnabled[PLAYER_COUNT][24];
+  u8 isResearched[PLAYER_COUNT][24];
+};
+struct _bwTechs {
+  u8 isEnabled[PLAYER_COUNT][20];
+  u8 isResearched[PLAYER_COUNT][20];
+};
+SCBW_DATA(_scTechs*, TechSc,   0x0058CE24); //Use with ScTech::Enum
+SCBW_DATA(_bwTechs*, TechBw,   0x0058F050); //Use with BwTech::Enum
 }
 
 //-------- Upgrade levels --------//
 
 namespace Upgrade {
-struct _scUpgrs { u8 level[PLAYER_COUNT][46];  };
-struct _bwUpgrs { u8 level[PLAYER_COUNT][15];  };
-SCBW_DATA(_scUpgrs*, MaximumUpgSc,  0x0058D088); //Use with ScUpgrade::Enum
-SCBW_DATA(_scUpgrs*, CurrentUpgSc,  0x0058D2B0); //Use with ScUpgrade::Enum
-SCBW_DATA(_bwUpgrs*, MaximumUpgBw,  0x0058F24A); //Use with BwUpgrade::Enum
-SCBW_DATA(_bwUpgrs*, CurrentUpgBw,  0x0058F32C); //Use with BwUpgrade::Enum
+struct _scUpgrs {
+  u8 maxLevel[PLAYER_COUNT][46];
+  u8 currentLevel[PLAYER_COUNT][46];
+};
+struct _bwUpgrs {
+  u8 maxLevel[PLAYER_COUNT][15];
+  u8 currentLevel[PLAYER_COUNT][15];
+};
+SCBW_DATA(_scUpgrs*, UpgSc,  0x0058D088); //Use with ScUpgrade::Enum
+SCBW_DATA(_bwUpgrs*, UpgBw,  0x0058F278); //Use with BwUpgrade::Enum
 }
 
 #undef SCBW_DATA

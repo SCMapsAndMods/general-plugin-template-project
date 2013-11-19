@@ -26,7 +26,7 @@ void IrradiateProc::proc(CUnit *unit) {
   //Don't damage larvae, eggs, lurker eggs, and Science Vessels
   if (unit->id == UnitId::larva
       || unit->id == UnitId::egg
-      || unit->id == UnitId::ZergLurkerEgg
+      || unit->id == UnitId::lurker_egg
       || unit->id == UnitId::science_vessel)
     return;
 

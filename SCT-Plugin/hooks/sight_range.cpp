@@ -1,5 +1,6 @@
 #include "sight_range.h"
-#include "../SCBW/enumerations.h"
+#include <SCBW/enumerations.h>
+#include <SCBW/scbwdata.h>
 #include <SCBW/api.h>
 #include <algorithm>
 
