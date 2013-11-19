@@ -40,17 +40,6 @@ u32 getUnitOverlayAdjustment(const CUnit* const unit);
 ///                   function returns false.
 bool canWeaponTargetUnit(u8 weaponId, const CUnit *target = NULL, const CUnit *attacker = NULL);
 
-/// Makes the unit use the specified weapon to attack its current target unit in
-/// the CUnit::orderTarget member. This does not affect the unit's weapon
-/// cooldown. The spawned weapon sprite obeys the weapon behavior properties in
-/// weapons.dat.
-///
-/// @param  unit        The unit that uses the weapon. If NULL, the function
-///                     returns without error.
-/// @param  weaponId    ID of the weapon in weapons.dat. If same or bigger than
-///                     WEAPON_TYPE_COUNT, the function returns without error.
-void fireUnitWeapon(CUnit* unit, u8 weaponId);
-
 /// Attempts to create a unit at the specified coordinates. If the unit cannot
 /// be created (e.g. there is no space), this function displays an error message
 /// and returns NULL instead. This function is the same one used for creating
