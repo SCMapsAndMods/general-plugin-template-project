@@ -4,6 +4,7 @@
 
 //Hook header files
 #include "hooks/game_hooks.h"
+#include "hooks/apply_upgrade_flags.h"
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
 #include "hooks/detector.h"
@@ -35,6 +36,7 @@
 
 BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectGameHooks();
+  hooks::injectApplyUpgradeFlags();
 
   hooks::injectBunkerHooks();
   

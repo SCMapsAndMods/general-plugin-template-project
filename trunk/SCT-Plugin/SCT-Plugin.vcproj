@@ -205,6 +205,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\apply_upgrade_flags.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\apply_upgrade_flags_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\graphics\Bitmap.cpp"
 				>
 			</File>
@@ -349,6 +357,10 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -554,6 +566,10 @@
 			</File>
 			<File
 				RelativePath=".\SCBW\api.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks\apply_upgrade_flags.h"
 				>
 			</File>
 			<File
