@@ -26,6 +26,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\n- Changed unit speed modifiers for Ensnare and Stim Packs"
     "\n- Damage types: Venomous - 100%/125%/150%, Concussive - 100%/75%/50%"
     "\n- Recharge Shields: overcharge, +distance, +efficiency"
+    "\n- Improved weapon accuracy for Lurkers and Vultures"
     "\n"
     "\n[Tech and Upgrades]"
     "\n- Stim Packs: 20HP cost for Fiends, add effect overlay"
