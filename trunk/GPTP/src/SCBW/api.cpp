@@ -205,7 +205,7 @@ int arctangent(int slope) {
   bool isNegative = false;
   if (slope < 0) {
     isNegative = true;
-    slope -= slope;
+    slope = -slope;
   }
 
   int min = 0, max = 64, angle = 32;
@@ -229,8 +229,10 @@ s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail) {
     return dy > 0 ? 128 : 0;
 
   s32 angle = arctangent((dy << 8) / dx);
-  if (dx < 0)
-    return (angle == 64 ? 0 : angle + 192);
+  if (dx < 0) {
+    angle += 192;
+    return angle == 256 ? 0 : angle;
+  }
   else
     return angle + 64;
 }
