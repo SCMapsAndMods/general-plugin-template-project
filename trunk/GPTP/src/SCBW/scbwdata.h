@@ -75,6 +75,8 @@ SCBW_DATA(UnitFinderData*, unitOrderingX,       0x0066FF78);
 SCBW_DATA(UnitFinderData*, unitOrderingY,       0x006769B8);
 SCBW_DATA(const u32*,   unitOrderingCount,      0x0066FF74);
 
+SCBW_DATA(const Point32*, angleDistance,        0x00512D28);
+
 // Font & Drawing
 namespace graphics { class Font; class Bitmap; }
 SCBW_DATA(graphics::Font**, fontBase,           0x006CE0F4);
@@ -220,7 +222,7 @@ namespace Weapon {
 SCBW_DATA(const DatLoad*, weaponsDat, 0x00513868);
 
 SCBW_DATA(u16*, Label,              weaponsDat[0].address);
-SCBW_DATA(u32*, Graphic,            weaponsDat[1].address);
+SCBW_DATA(u32*, FlingyId,           weaponsDat[1].address);
 SCBW_DATA(TargetFlag*, TargetFlags, weaponsDat[3].address);
 SCBW_DATA(u32*, MinRange,           weaponsDat[4].address);
 SCBW_DATA(u32*, MaxRange,           weaponsDat[5].address);
@@ -238,8 +240,8 @@ SCBW_DATA(u8*,  Cooldown,           weaponsDat[16].address);
 SCBW_DATA(u8*,  DamageFactor,       weaponsDat[17].address);
 SCBW_DATA(u8*,  AttackDirection,    weaponsDat[18].address);
 SCBW_DATA(u8*,  LaunchSpin,         weaponsDat[19].address);
-SCBW_DATA(u8*,  Xoffset,            weaponsDat[20].address);
-SCBW_DATA(u8*,  Yoffset,            weaponsDat[21].address);
+SCBW_DATA(u8*,  ForwardOffset,      weaponsDat[20].address);
+SCBW_DATA(u8*,  VerticalOffset,     weaponsDat[21].address);
 }
 
 namespace Upgrade {
