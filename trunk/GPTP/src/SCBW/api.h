@@ -76,6 +76,10 @@ s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
 /// UpgradeId::Enum, instead of ScUpgrades::Enum and BwUpgrades::Enum.
 u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId);
 
+/// Checks whether the @p playerId has the @p techId researched. Note that this
+/// uses TechId::Enum, instead of ScTech::Enum and BwTech::Enum.
+bool hasTechResearched(u8 playerId, u16 techId);
+
 /// Returns the amount of remaining supply (total available - total used) for
 /// the @p playerId, using @p raceId to determine the appropriate race to use.
 /// This is affected by the "Food For Thought" cheat flag.

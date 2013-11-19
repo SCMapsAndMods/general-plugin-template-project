@@ -330,7 +330,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
       energyReserve = std::min(energyReserve, unit->getMaxEnergy());
 
       if ((unit->energy >= energyReserve || scbw::isCheatEnabled(CheatFlags::TheGathering))
-          && unit->canUseTech(TechId::Maelstorm, unit->playerId) != 1)
+          && unit->canUseTech(TechId::Maelstrom, unit->playerId) != 1)
       {
         CUnit *target = findBestMaelstromTarget(unit, isUnitBeingAttacked);
         
