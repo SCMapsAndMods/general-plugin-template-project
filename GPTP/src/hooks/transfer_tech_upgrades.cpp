@@ -2,6 +2,7 @@
 //This controls how technologies and upgrades are transferred when units are
 //passed from one player to another, either by triggers or casting Mind Control.
 #include "transfer_tech_upgrades.h"
+#include "apply_upgrade_flags.h"
 #include <SCBW/api.h>
 
 namespace {
@@ -46,7 +47,7 @@ const TechTransferData techTransferData[] = {
 
 struct UpgradeTransferData {
   u16 unitId;
-  u16 relatedUpgrades[4]; //Maximum number of tech (use UpgradeId::None to mark a premature end-of-list)
+  u8 relatedUpgrades[4]; //Maximum number of tech (use UpgradeId::None to mark a premature end-of-list)
 };
 
 const UpgradeTransferData upgradeTransferData[] = {
@@ -127,12 +128,37 @@ void transferUnitUpgradesToPlayerHook(const CUnit *source, u8 targetPlayerId) {
 
     if (source->id == data->unitId) {
       for (int t = 0; t < ARRAY_SIZE(data->relatedUpgrades); ++i) {
-        u16 upgradeId = data->relatedUpgrades[t];
+        u8 upgradeId = data->relatedUpgrades[t];
         if (upgradeId == UpgradeId::None) break;
 
         u8 sourceUpgradeLevel = scbw::getUpgradeLevel(source->playerId, upgradeId);
         if (sourceUpgradeLevel > scbw::getUpgradeLevel(targetPlayerId, upgradeId))
           scbw::setUpgradeLevel(targetPlayerId, upgradeId, sourceUpgradeLevel);
+      }
+    }
+  }
+}
+
+//Transfers all upgrade flags related to the @p unit to the unit's owner.
+void transferUnitUpgradeFlagsToPlayerHook(const CUnit *unit) {
+  //Default StarCraft behavior
+
+  //Stop if the source unit does not exist
+  if (!unit) {
+    SErrSetLastError(87);
+    return;
+  }
+
+  for (int i = 0; i < ARRAY_SIZE(upgradeTransferData); ++i) {
+    const UpgradeTransferData *data = &upgradeTransferData[i];
+
+    if (unit->id == data->unitId) {
+      for (int t = 0; t < ARRAY_SIZE(data->relatedUpgrades); ++i) {
+        u8 upgradeId = data->relatedUpgrades[t];
+        if (upgradeId == UpgradeId::None) break;
+
+        if (scbw::getUpgradeLevel(unit->playerId, upgradeId))
+          hooks::applyUpgradeFlagsToExistingUnits(unit, upgradeId);
       }
     }
   }
