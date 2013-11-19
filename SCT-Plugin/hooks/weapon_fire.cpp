@@ -3,6 +3,7 @@
 #include "weapon_fire.h"
 #include <SCBW/scbwdata.h>
 #include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 
 //-------- Helper function declarations. Do NOT modify! ---------//
@@ -22,7 +23,6 @@ namespace hooks {
 //This hook affects the following iscript opcodes: attackwith, attack, castspell
 //This also affects CUnit::fireWeapon().
 void fireWeaponHook(const CUnit *unit, u8 weaponId) {
-  //Default StarCraft behavior
 
   //Retrieve the spawning position for the bullet.
   s32 x, y;
@@ -49,8 +49,16 @@ void fireWeaponHook(const CUnit *unit, u8 weaponId) {
         - Weapon::VerticalOffset[weaponId];
   }
 
-  if (Weapon::FlingyId[weaponId])
-    createBullet(weaponId, unit, x, y, unit->playerId, unit->currentDirection1);
+  if (Weapon::FlingyId[weaponId]) {
+    u8 bulletDirection = unit->currentDirection1;
+    //Make Vultures and Lurkers always fire at the target direction
+    if (Weapon::Behavior[weaponId] == WeaponBehavior::GoToMaxRange
+        && unit->orderTarget.unit)
+      bulletDirection = scbw::getAngle(unit->getX(), unit->getY(),
+        unit->orderTarget.unit->getX(), unit->orderTarget.unit->getY());
+
+    createBullet(weaponId, unit, x, y, unit->playerId, bulletDirection);
+  }
 }
 
 } //hooks
