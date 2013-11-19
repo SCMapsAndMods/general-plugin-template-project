@@ -140,7 +140,7 @@ void transferUnitUpgradesToPlayerHook(const CUnit *source, u8 targetPlayerId) {
 }
 
 //Transfers all upgrade flags related to the @p unit to the unit's owner.
-void transferUnitUpgradeFlagsToPlayerHook(const CUnit *unit) {
+void applyUnitUpgradeFlagsToAllFriendlyUnitsHook(CUnit *unit) {
   //Default StarCraft behavior
 
   //Stop if the source unit does not exist

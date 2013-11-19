@@ -553,6 +553,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\transfer_tech_upgrades_inject.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks\unit_destructor_special.cpp"
 				>
 			</File>
