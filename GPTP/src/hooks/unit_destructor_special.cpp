@@ -23,7 +23,7 @@ void killAllHangarUnits(CUnit *unit) {
     childOutside->interceptor.next = NULL;
 
     //Kill interceptors only (Scarabs will defuse anyway)
-    if (childOutside->id != UnitId::ProtossScarab) {
+    if (childOutside->id != UnitId::scarab) {
       const u16 deathTimer = scbw::randBetween(15, 45);
       if (childOutside->removeTimer == 0
           || childOutside->removeTimer > deathTimer)
@@ -82,7 +82,7 @@ void unitDestructorSpecialHook(CUnit *unit) {
   }
 
   //Is a harvestable mineral patch or gas building
-  if (UnitId::ResourceMineralField <= unit->id && unit->id <= UnitId::ResourceMineralFieldType3
+  if (UnitId::mineral_field_1 <= unit->id && unit->id <= UnitId::mineral_field_3
       || (unit->id == UnitId::refinery || unit->id == UnitId::assimilator || unit->id == UnitId::extractor)
          && unit->status & UnitStatus::Completed
       ) {
@@ -91,7 +91,7 @@ void unitDestructorSpecialHook(CUnit *unit) {
   }
 
   //Is a scarab or interceptor
-  if (unit->id == UnitId::ProtossScarab || unit->id == UnitId::interceptor) {
+  if (unit->id == UnitId::scarab || unit->id == UnitId::interceptor) {
     if (unit->status & UnitStatus::Completed) {
       if (unit->interceptor.parent) {
         if (unit->interceptor.next)

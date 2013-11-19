@@ -40,8 +40,8 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
           || target->id == UnitId::egg
           || target->id == UnitId::cocoon
           || target->id == UnitId::interceptor
-          || target->id == UnitId::ProtossScarab
-          || target->id == UnitId::ZergLurkerEgg)
+          || target->id == UnitId::scarab
+          || target->id == UnitId::lurker_egg)
         return 876;     //Invalid target.<0>
       break;
 

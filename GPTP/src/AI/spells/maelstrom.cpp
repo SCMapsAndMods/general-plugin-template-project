@@ -38,7 +38,7 @@ class MaelstromTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
           && target->id != UnitId::larva
           && target->id != UnitId::egg
           && target->id != UnitId::cocoon
-          && target->id != UnitId::ZergLurkerEgg) {
+          && target->id != UnitId::lurker_egg) {
 
         const int totalEnemyLife = getTotalEnemyLifeInArea(target->getX(), target->getY(), 96, caster, WeaponId::Maelstrom);
         if (!isUnderAttack && totalEnemyLife < 250)

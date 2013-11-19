@@ -29,7 +29,7 @@ void IrradiateProc::proc(CUnit *unit) {
     return;
 
   //Don't damage larvae, eggs, and lurker eggs
-  if (unit->id == UnitId::larva || unit->id == UnitId::egg || unit->id == UnitId::ZergLurkerEgg)
+  if (unit->id == UnitId::larva || unit->id == UnitId::egg || unit->id == UnitId::lurker_egg)
     return;
 
   //Irradiate splash damage does not affect burrowed units

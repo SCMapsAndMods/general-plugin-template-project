@@ -19,7 +19,7 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
   if (scbw::isAlliedTo(attacker->playerId, target->getLastOwnerId()))
     return false;
 
-  if (target->id == UnitId::ProtossScarab
+  if (target->id == UnitId::scarab
       || target->id == UnitId::spider_mine
       || target->id == UnitId::interceptor)
     return false;
