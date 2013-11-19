@@ -30,7 +30,7 @@ u8 getSeekRangeHook(const CUnit *unit) {
   u8 bonusAmount = 0;
   switch (unitId) {
     case UnitId::marine:
-    case UnitId::firebat:
+    case UNIT_FIEND:
       if (getUpgradeLevel(unit->playerId, UpgradeId::U_238Shells))
         bonusAmount = 1;
       break;
@@ -89,7 +89,7 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
 
   switch (unit->id) {
     case UnitId::marine:
-    case UnitId::firebat:
+    case UNIT_FIEND:
       if (getUpgradeLevel(unit->playerId, UpgradeId::U_238Shells))
         bonusAmount += 32;
       break;

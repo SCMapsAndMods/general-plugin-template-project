@@ -18,7 +18,7 @@ struct TechTransferData {
 const TechTransferData techTransferData[] = {
   //Terran
   {UnitId::marine, TechId::Stimpacks, TechId::None},
-  {UnitId::firebat, TechId::Stimpacks, TechId::None},
+  {UNIT_FIEND, TechId::Stimpacks, TechId::None},
   {UnitId::ghost, TechId::Lockdown, TechId::PersonnelCloaking, TechId::None},
   {UnitId::medic, TechId::Healing, TechId::Restoration, TechId::OpticalFlare, TechId::None},
   {UnitId::vulture, TechId::SpiderMines, TechId::None},
@@ -29,7 +29,7 @@ const TechTransferData techTransferData[] = {
   {UnitId::battlecruiser, TechId::YamatoGun, TechId::None},
 
   //Zerg
-  {UnitId::queen, TechId::Infestation, TechId::Parasite, TechId::SpawnBroodlings, TechId::Ensnare, TechId::None},
+  {UnitId::queen, TechId::Infestation, TechId::SpawnBroodlings, TechId::Ensnare, TechId::None},
   {UnitId::defiler, TechId::Burrowing, TechId::DarkSwarm, TechId::Plague, TechId::Consume, TechId::None},
   {UnitId::drone, TechId::Burrowing, TechId::None},
   {UnitId::zergling, TechId::Burrowing, TechId::None},
@@ -40,7 +40,7 @@ const TechTransferData techTransferData[] = {
   //Protoss
   {UnitId::high_templar, TechId::ArchonWarp, TechId::PsionicStorm, TechId::Hallucination, TechId::None},
   {UnitId::arbiter, TechId::Recall, TechId::StasisField, TechId::None},
-  {UnitId::corsair, TechId::DisruptionWeb, TechId::None},
+  {UnitId::corsair, TECH_TELEPATHIC_TRACE, TechId::DisruptionWeb, TechId::None},
   {UnitId::dark_templar, TechId::DarkArchonMeld, TechId::None},
   {UnitId::dark_archon, TechId::MindControl, TechId::Feedback, TechId::Maelstrom, TechId::None},
 };
@@ -52,10 +52,12 @@ struct UpgradeTransferData {
 
 const UpgradeTransferData upgradeTransferData[] = {
   //Terran
-  {UnitId::marine, UpgradeId::U_238Shells, UpgradeId::None},
-  {UnitId::ghost, UpgradeId::OcularImplants, UpgradeId::MoebiusReactor, UpgradeId::None},
-  {UnitId::medic, UpgradeId::CaduceusReactor, UpgradeId::None},
-  {UnitId::vulture, UpgradeId::IonThrusters, UpgradeId::None},
+  {UnitId::marine, UPGRADE_FIRST_AID_PACKS, UpgradeId::U_238Shells, UpgradeId::None},
+  {UNIT_FIEND, UPGRADE_FIRST_AID_PACKS, UpgradeId::U_238Shells, UpgradeId::None},
+  {UnitId::ghost, UPGRADE_FIRST_AID_PACKS, UpgradeId::MoebiusReactor, UpgradeId::None},
+  {UnitId::medic, UPGRADE_FIRST_AID_PACKS, UpgradeId::CaduceusReactor, UpgradeId::None},
+  {UnitId::vulture, UpgradeId::IonThrusters, UPGRADE_THERMAL_SENSORS, UpgradeId::None},
+  {UnitId::spider_mine, UPGRADE_THERMAL_SENSORS, UpgradeId::None},
   {UnitId::goliath, UpgradeId::CharonBooster, UpgradeId::None},
   {UnitId::science_vessel, UpgradeId::TitanReactor, UpgradeId::None},
   {UnitId::wraith, UpgradeId::ApolloReactor, UpgradeId::None},
@@ -65,22 +67,29 @@ const UpgradeTransferData upgradeTransferData[] = {
   {UnitId::overlord, UpgradeId::VentralSacs, UpgradeId::Antennae, UpgradeId::None},
   {UnitId::zergling, UpgradeId::MetabolicBoost, UpgradeId::AdrenalGlands, UpgradeId::None},
   {UnitId::hydralisk, UpgradeId::MuscularAugments, UpgradeId::GroovedSpines, UpgradeId::None},
-  {UnitId::queen, UpgradeId::GameteMeiosis, UpgradeId::None},
+  {UnitId::mutalisk, UpgradeId::Antennae, UpgradeId::None},
+  {UnitId::scourge, UpgradeId::Antennae, UpgradeId::None},
+  {UnitId::guardian, UpgradeId::Antennae, UpgradeId::None},
+  {UnitId::devourer, UpgradeId::Antennae, UpgradeId::None},
+  {UnitId::queen, UpgradeId::Antennae, UpgradeId::GameteMeiosis, UpgradeId::None},
   {UnitId::defiler, UpgradeId::MetasynapticNode, UpgradeId::None},
   {UnitId::ultralisk, UpgradeId::AnabolicSynthesis, UpgradeId::ChitinousPlating, UpgradeId::None},
 
   //Protoss
-  {UnitId::zealot, UpgradeId::LegEnhancements, UpgradeId::None},
-  {UnitId::dragoon, UpgradeId::SingularityCharge, UpgradeId::None},
-  {UnitId::high_templar, UpgradeId::KhaydarinAmulet, UpgradeId::None},
-  {UnitId::dark_archon, UpgradeId::ArgusTalisman, UpgradeId::None},
-  {UnitId::reaver, UpgradeId::ScarabDamage, UpgradeId::ReaverCapacity, UpgradeId::None},
-  {UnitId::shuttle, UpgradeId::GraviticDrive, UpgradeId::None},
+  {UnitId::zealot, UPGRADE_PRESCIENCE, UpgradeId::LegEnhancements, UpgradeId::None},
+  {UnitId::dragoon, UPGRADE_PRESCIENCE, UpgradeId::SingularityCharge, UpgradeId::None},
+  {UnitId::high_templar, UPGRADE_PRESCIENCE, UpgradeId::KhaydarinAmulet, UpgradeId::None},
+  {UnitId::archon, UPGRADE_PRESCIENCE, UpgradeId::None},
+  {UnitId::dark_templar, UPGRADE_PRESCIENCE, UpgradeId::None},
+  {UnitId::dark_archon, UPGRADE_PRESCIENCE, UpgradeId::ArgusTalisman, UpgradeId::None},
+  {UnitId::reaver, UpgradeId::SensorArray, UPGRADE_CONCENTRATED_PAYLOAD, UpgradeId::None},
+  {UnitId::shuttle, UpgradeId::SensorArray, UpgradeId::GraviticDrive, UpgradeId::None},
   {UnitId::observer, UpgradeId::SensorArray, UpgradeId::GraviticBoosters, UpgradeId::None},
   {UnitId::scout, UpgradeId::ApialSensors, UpgradeId::GraviticThrusters, UpgradeId::None},
   {UnitId::carrier, UpgradeId::CarrierCapacity, UpgradeId::None},
   {UnitId::arbiter, UpgradeId::KhaydarinCore, UpgradeId::None},
   {UnitId::corsair, UpgradeId::ArgusJewel, UpgradeId::None},
+  {UnitId::nexus, UPGRADE_PARTICLE_FILTER, UpgradeId::None},
 };
 
 } //Unnamed namespace

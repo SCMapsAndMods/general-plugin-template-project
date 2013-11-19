@@ -33,7 +33,7 @@ bool unitCanAttackInsideBunkerHook(const CUnit *unit) {
 
 void createBunkerAttackThingyHook(const CUnit *unit) {
   //Skip Fiends
-  if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag)
+  if (unit->id == UNIT_FIEND || unit->id == UnitId::gui_montag)
     return;
 
   CImage *bunkerImage = unit->connectedUnit->sprite->mainGraphic;
