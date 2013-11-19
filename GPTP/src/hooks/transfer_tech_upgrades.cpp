@@ -106,12 +106,7 @@ void transferUnitTechToPlayerHook(const CUnit *source, u8 targetPlayerId) {
 
         if (scbw::hasTechResearched(source->playerId, techId)
             && !scbw::hasTechResearched(targetPlayerId, techId))
-        {
-          if (techId < TechId::Restoration)
-            Tech::ResearchedSc->enabled[targetPlayerId][techId] = 1;
-          else if (scbw::isBroodWarMode())
-            Tech::ResearchedBw->enabled[targetPlayerId][techId] = 1;
-        }
+          scbw::setTechResearchState(targetPlayerId, techId, true);
       }
     }
   }
@@ -137,12 +132,7 @@ void transferUnitUpgradesToPlayerHook(const CUnit *source, u8 targetPlayerId) {
 
         u8 sourceUpgradeLevel = scbw::getUpgradeLevel(source->playerId, upgradeId);
         if (sourceUpgradeLevel > scbw::getUpgradeLevel(targetPlayerId, upgradeId))
-        {
-          if (upgradeId < UpgradeId::UnusedUpgrade46)
-            Upgrade::CurrentUpgSc->level[targetPlayerId][upgradeId] = sourceUpgradeLevel;
-          else if (scbw::isBroodWarMode())
-            Upgrade::CurrentUpgBw->level[targetPlayerId][upgradeId - UpgradeId::UnusedUpgrade46] = sourceUpgradeLevel;
-        }
+          scbw::setUpgradeLevel(targetPlayerId, upgradeId, sourceUpgradeLevel);
       }
     }
   }
