@@ -2,6 +2,8 @@
 #include "apply_upgrade_flags.h"
 #include <hook_tools.h>
 
+namespace {
+
 void __declspec(naked) applyUpgradeFlagsToNewUnitWrapper() {
   static CUnit *unit;
   __asm {
@@ -37,6 +39,8 @@ void __declspec(naked) applyUpgradeFlagsToExistingUnitsWrapper() {
   }
 }
 
+} //Unnamed namespace
+
 namespace hooks {
 
 const u32 Hook_ApplyUpgradeFlagsToExistingUnits = 0x00454540;
@@ -46,7 +50,7 @@ void injectApplyUpgradeFlags() {
   jmpPatch(applyUpgradeFlagsToExistingUnitsWrapper, Hook_ApplyUpgradeFlagsToExistingUnits);
 }
 
-void applyUpgradeFlagsToExistingUnits(const CUnit *unit, u8 upgradeId) {
+void applyUpgradeFlagsToExistingUnits(CUnit *unit, u8 upgradeId) {
   __asm {
     PUSHAD
     PUSH unit

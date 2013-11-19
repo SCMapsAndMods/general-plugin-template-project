@@ -21,6 +21,7 @@
 #include "hooks/spider_mine.h"
 #include "hooks/stim_packs.h"
 #include "hooks/tech_target_check.h"
+#include "hooks/transfer_tech_upgrades.h"
 #include "hooks/unit_speed.h"
 #include "hooks/unit_tooltip.h"
 #include "hooks/update_status_effects.h"
@@ -73,6 +74,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectStimPacksHooks();
 
   hooks::injectTechTargetCheckHooks();
+  hooks::injectTransferTechAndUpgradesHooks();
 
   hooks::injectUnitSpeedHooks();
   hooks::injectUnitTooltipHook();
