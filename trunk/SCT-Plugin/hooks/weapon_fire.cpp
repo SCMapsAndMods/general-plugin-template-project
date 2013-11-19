@@ -54,8 +54,9 @@ void fireWeaponHook(const CUnit *unit, u8 weaponId) {
     //Make Vultures and Lurkers always fire at the target direction
     if (Weapon::Behavior[weaponId] == WeaponBehavior::GoToMaxRange
         && unit->orderTarget.unit)
-      bulletDirection = scbw::getAngle(unit->getX(), unit->getY(),
-        unit->orderTarget.unit->getX(), unit->orderTarget.unit->getY());
+      bulletDirection = scbw::getAngle(
+        unit->orderTarget.unit->getX(), unit->orderTarget.unit->getY(),
+        unit->getX(), unit->getY());
 
     createBullet(weaponId, unit, x, y, unit->playerId, bulletDirection);
   }
