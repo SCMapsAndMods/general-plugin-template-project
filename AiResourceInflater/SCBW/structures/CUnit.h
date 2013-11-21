@@ -52,6 +52,13 @@ struct CUnit {
   /// Used by several hooks.
   void setSecondaryOrder(u8 orderId);
 
+  /// Makes the unit use the specified weapon to attack its current target unit
+  /// stored in the CUnit::orderTarget.unit member. This does not affect the
+  /// unit's weapon cooldown. The spawned weapon sprite obeys the weapon
+  /// behavior properties in weapons.dat.
+  /// Note: This function is affected by the Fire Weapon hook module.
+  void fireWeapon(u8 weaponId) const;
+
   /// Checks whether this unit can reach the @p target unit. This checks only
   /// for terrain, and does not consider obstacles (units and buildings).
   bool hasPathToUnit(const CUnit *target) const;
