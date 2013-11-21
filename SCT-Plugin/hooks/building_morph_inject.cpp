@@ -217,7 +217,7 @@ void __declspec(naked) isMorphedBuildingWrapper_CancelZergBuilding() {
     MOV unit, EBX
   }
 
-  if (!hooks::isMorphingBuildingHook(unit)) {
+  if (hooks::isMorphingBuildingHook(unit)) {
     __asm {
       POPAD
       MOV EAX, EBX
