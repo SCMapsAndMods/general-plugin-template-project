@@ -84,8 +84,10 @@ void updateStatusEffectsHook(CUnit *unit) {
 
   //Add Ocular Implants effect overlay
   if (unit->isBlind) {
-    if (!unit->getOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT))
-      unit->sprite->createOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT, 0, -20);
+    //Display the sprite over the Siege Tank's turret
+    CUnit *theUnit = unit->subunit ? unit->subunit : unit;
+    if (!theUnit->getOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT))
+      theUnit->sprite->createOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT, 0, -20);
   }
 
   u8 previousAcidSporeCount = unit->acidSporeCount;
