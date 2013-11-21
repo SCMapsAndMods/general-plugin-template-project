@@ -107,6 +107,13 @@ bool nextFrame() {
           graphics::TEAL, graphics::ON_MAP);
       }
 
+      //Draw attack radius circles for Nexuses
+      if (selUnit->id == UnitId::nexus) {
+        graphics::drawCircle(selUnit->getX(), selUnit->getY(),
+          selUnit->getMaxWeaponRange(Unit::GroundWeapon[selUnit->id]) + 72,
+          graphics::CYAN, graphics::ON_MAP);
+      }
+
       //Display rally points for factories selected
       if (selUnit->status & UnitStatus::GroundedBuilding
           && Unit::GroupFlags[selUnit->id].isFactory

@@ -41,7 +41,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\n"
     "\n[Interface Features]"
     "\n- Improved unit weapon tooltip text"
-    "\n- Display attack range circle for Siege Mode Tanks selected"
+    "\n- Display attack range circle for Siege Mode Tanks and Nexuses selected"
     "\n- Display rally points for selected buildings"
     "\n"
     "\nNote: This plugin is compatible with the Smart Rally plugin and the AI Resource Inflater plugin."
