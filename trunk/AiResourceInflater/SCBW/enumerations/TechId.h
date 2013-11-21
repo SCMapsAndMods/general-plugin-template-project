@@ -34,7 +34,7 @@ enum Enum {
   DarkArchonMeld    = 0x1C, // (default)
   Feedback          = 0x1D, // (default)
   OpticalFlare      = 0x1E,
-  Maelstorm         = 0x1F,
+  Maelstrom         = 0x1F,
   LurkerAspect      = 0x20,
   UnusedTech33      = 0x21, // (default; possibly liftoff)
   Healing           = 0x22, // (default)
@@ -92,7 +92,7 @@ enum Enum {
   DarkArchonMeld    = 4, // (default)
   Feedback          = 5, // (default)
   OpticalFlare      = 6,
-  Maelstorm         = 7,
+  Maelstrom         = 7,
   LurkerAspect      = 8,
   UnusedTech33      = 9, // (default; possibly liftoff)
   Healing           = 10, // (default)

@@ -40,17 +40,6 @@ u32 getUnitOverlayAdjustment(const CUnit* const unit);
 ///                   function returns false.
 bool canWeaponTargetUnit(u8 weaponId, const CUnit *target = NULL, const CUnit *attacker = NULL);
 
-/// Makes the unit use the specified weapon to attack its current target unit in
-/// the CUnit::orderTarget member. This does not affect the unit's weapon
-/// cooldown. The spawned weapon sprite obeys the weapon behavior properties in
-/// weapons.dat.
-///
-/// @param  unit        The unit that uses the weapon. If NULL, the function
-///                     returns without error.
-/// @param  weaponId    ID of the weapon in weapons.dat. If same or bigger than
-///                     WEAPON_TYPE_COUNT, the function returns without error.
-void fireUnitWeapon(CUnit* unit, u8 weaponId);
-
 /// Attempts to create a unit at the specified coordinates. If the unit cannot
 /// be created (e.g. there is no space), this function displays an error message
 /// and returns NULL instead. This function is the same one used for creating
@@ -79,9 +68,25 @@ bool isUnderDarkSwarm(const CUnit *unit);
 /// Warning: This function is inaccurate for long distances.
 u32 getDistanceFast(s32 x1, s32 y1, s32 x2, s32 y2);
 
-/// Returns the player's upgrade level of [upgradeId]. Note that this uses
+/// Calculates the angle (in binary radians) of the arrow that starts at
+/// (xTail, yTail) and ends at (xHead, yHead).
+s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
+
+/// Returns the player's upgrade level of @p upgradeId. Note that this uses
 /// UpgradeId::Enum, instead of ScUpgrades::Enum and BwUpgrades::Enum.
-u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId);
+u8 getUpgradeLevel(u8 playerId, u8 upgradeId);
+
+/// Sets the player's upgrade level of @p upgradeId. Note that this uses
+/// UpgradeId::Enum, instead of ScUpgrades::Enum and BwUpgrades::Enum.
+void setUpgradeLevel(u8 playerId, u8 upgradeId, u8 level);
+
+/// Checks whether the @p playerId has the @p techId researched.
+/// Note: This uses TechId::Enum, instead of ScTech::Enum and BwTech::Enum.
+bool hasTechResearched(u8 playerId, u16 techId);
+
+/// Sets the player's tech research state for @p techId to @p isResearched.
+/// Note: This uses TechId::Enum, instead of ScTech::Enum and BwTech::Enum.
+void setTechResearchState(u8 playerId, u16 techId, bool isResearched);
 
 /// Returns the amount of remaining supply (total available - total used) for
 /// the @p playerId, using @p raceId to determine the appropriate race to use.

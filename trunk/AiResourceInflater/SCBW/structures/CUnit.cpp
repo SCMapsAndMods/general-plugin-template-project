@@ -167,6 +167,20 @@ void CUnit::setSecondaryOrder(u8 orderId) {
 
 //-------- End of unit orders --------//
 
+extern const u32 Func_FireUnitWeapon = 0x00479C90;
+
+void CUnit::fireWeapon(u8 weaponId) const {
+  assert(this);
+  static u32 weaponId_ = weaponId;
+  __asm {
+    PUSHAD
+    PUSH weaponId_
+    MOV ESI, this
+    CALL Func_FireUnitWeapon
+    POPAD
+  }
+}
+
 const u32 Func_HasPathToTarget = 0x0049CBB0; //AKA unitHasPathToUnit()
 bool CUnit::hasPathToUnit(const CUnit *target) const {
   assert(this);
