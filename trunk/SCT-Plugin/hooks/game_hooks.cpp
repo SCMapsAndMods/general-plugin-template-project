@@ -117,7 +117,7 @@ bool nextFrame() {
       //Display rally points for factories selected
       if (selUnit->status & UnitStatus::GroundedBuilding
           && Unit::GroupFlags[selUnit->id].isFactory
-          && (selUnit->playerId == *LOCAL_NATION_ID || *IS_IN_REPLAY)) //Doesn't work if it's not your own building or the game is in replay mode
+          && (selUnit->playerId == *LOCAL_NATION_ID || scbw::isInReplay())) //Show only if unit is your own or the game is in replay mode
       {
         const CUnit *rallyUnit = selUnit->rally.unit;
         //Rallied to self; disable rally altogether
