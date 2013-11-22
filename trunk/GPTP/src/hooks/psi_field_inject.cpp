@@ -2,8 +2,9 @@
 //Do NOT modify any functions in this file!
 
 #include "psi_field.h"
-#include "../SCBW/scbwdata.h"
-#include "../hook_tools.h"
+#include <hook_tools.h>
+#include <SCBW/scbwdata.h>
+#include <SCBW/api.h>
 
 //-------- Unit selection hooks --------//
 
@@ -29,7 +30,7 @@ void hideAllPsiFields() {
 
 //If @p unit is a psi provider, make all psi field graphics visible.
 void showAllPsiFieldsOnSelect(CUnit *unit) {
-  if (!(*IS_IN_REPLAY) && unit->playerId == (*LOCAL_NATION_ID)) {
+  if (!scbw::isInReplay() && unit->playerId == *LOCAL_NATION_ID) {
     if ((unit->status & UnitStatus::Completed) && hooks::isReadyToMakePsiField(unit)) {
        showAllPsiFields();
     }
@@ -38,7 +39,7 @@ void showAllPsiFieldsOnSelect(CUnit *unit) {
 
 //If @p unit is a psi provider, make all psi field graphics invisible.
 void hideAllPsiFieldsOnUnselect(CUnit *unit) {
-  if (!(*IS_IN_REPLAY) && unit->playerId == (*LOCAL_NATION_ID)) {
+  if (!scbw::isInReplay() && unit->playerId == *LOCAL_NATION_ID) {
     if ((unit->status & UnitStatus::Completed) && hooks::isReadyToMakePsiField(unit)) {
        hideAllPsiFields();
     }
