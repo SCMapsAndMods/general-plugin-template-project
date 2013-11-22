@@ -152,18 +152,18 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
         }
       }
 
-      //Optical Flare
-      //if (unit->getMaxEnergy() == unit->energy
-      //    && canCastSpellOrder(unit, TechId::OpticalFlare, OrderId::CastOpticalFlare)) {
-      //  CUnit *target = findBestOpticalFlareTarget(unit, isUnitBeingAttacked);
-      //  
-      //  if (unit->mainOrderId == OrderId::CastOpticalFlare
-      //      && unit->orderTarget.unit == target)
-      //    return false;
+      //Ocular Implants (spell)
+      if (unit->getMaxEnergy() == unit->energy
+          && canCastSpellOrder(unit, TechId::OpticalFlare, OrderId::CastOpticalFlare)) {
+        CUnit *target = findBestOpticalFlareTarget(unit, isUnitBeingAttacked);
+        
+        if (unit->mainOrderId == OrderId::CastOpticalFlare
+            && unit->orderTarget.unit == target)
+          return false;
 
-      //  if (aiCastSpellOrder(unit, target, OrderId::CastOpticalFlare))
-      //    return true;
-      //}
+        if (aiCastSpellOrder(unit, target, OrderId::CastOpticalFlare))
+          return true;
+      }
 
       break;
 

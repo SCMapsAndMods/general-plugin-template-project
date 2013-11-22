@@ -14,7 +14,8 @@ class OpticalFlareTargetFinderProc: public scbw::UnitFinderCallbackMatchInterfac
       if (target == caster)
         return false;
 
-      if (!isTargetWorthHitting(target, caster))
+      //Cast Ocular Implants only on friendly units
+      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
         return false;
 
       if (Unit::BaseProperty[target->id] & UnitProperty::Building)
@@ -26,7 +27,8 @@ class OpticalFlareTargetFinderProc: public scbw::UnitFinderCallbackMatchInterfac
       if (target->canDetect())
         return true;
 
-      if (getCurrentLifeInGame(target) > 80)
+      //Cast Ocular Implants only on expensive units
+      if (Unit::DestroyScore[target->id] >= 300)
         return true;
 
       return false;
