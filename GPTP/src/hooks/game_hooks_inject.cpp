@@ -1,6 +1,6 @@
 #include "game_hooks.h"
-#include "../SCBW/api.h"
-#include "../hook_tools.h"
+#include <SCBW/api.h>
+#include <hook_tools.h>
 
 bool isGameOn = false;
 
