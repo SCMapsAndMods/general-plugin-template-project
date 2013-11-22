@@ -1,10 +1,10 @@
 /// This is where the magic happens; program your plug-in's core behavior here.
 
 #include "game_hooks.h"
-#include "../graphics/graphics.h"
-#include "../SCBW/api.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/ExtendSightLimit.h"
+#include <graphics/graphics.h>
+#include <SCBW/api.h>
+#include <SCBW/scbwdata.h>
+#include <SCBW/ExtendSightLimit.h>
 #include <SCBW/UnitFinder.h>
 #include <cstdio>
 
