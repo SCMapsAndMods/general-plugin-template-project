@@ -57,7 +57,7 @@ Checks whether the unit has an image overlay that matches the given ID.
 u32 getUnitOverlayAdjustment(const CUnit* const unit);
 }}}
 
-Calculates the images.dat overlay ID adjustment for the given unit. This piece of code is used throughout StarCraft.exe for various status effects, such as Ensnare, Plague, and Defensive Matrix.
+Calculates the images.dat overlay ID adjustment for the given unit. This piece of code is used throughout !StarCraft.exe for various status effects, such as Ensnare, Plague, and Defensive Matrix.
 
 == canWeaponTargetUnit ==
 {{{
@@ -225,14 +225,14 @@ Refreshes the screen position within the given rectangle area in pixels. If no a
 void refreshConsole();
 }}}
 
-Tells StarCraft to refresh the console (current button set, unit portrait, and status bar). not completely understood.
+Tells !StarCraft to refresh the console (current button set, unit portrait, and status bar). not completely understood.
 
 == random ==
 {{{
 u16 random();
 }}}
 
-Generates a pseudorandom number between 0 and 32767, inclusive. This is identical to the function used internally by StarCraft, and is guaranteed to generate the same sequence in a replay.
+Generates a pseudorandom number between 0 and 32767, inclusive. This is identical to the function used internally by !StarCraft, and is guaranteed to generate the same sequence in a replay.
 
 == randBetween ==
 {{{
