@@ -23,7 +23,7 @@ Constructors for the `UnitFinder` class. The four-parameter version immediately 
 void search(int left, int top, int right, int bottom);
 }}}
 
-Searches for all units within the given bounds, using !StarCraft's internal data structures. This is much more efficient than manually looping through the entire unit table or linked list.
+Searches for all units within the given bounds, using !StarCraft's internal data structures. This is much more efficient than manually looping through the entire unit table or linked list. The search result is stored in the current instance of the class, and can be used with other member functions.
 
 == getUnitCount ==
 
@@ -45,37 +45,55 @@ Returns the unit at the given index. Invalid index returns `NULL` instead.
 == forEach ==
 
 {{{
-template <typename callback>
-void forEach(callback &proc) const;
+void forEach(UnitFinderCallbackProcInterface &callback) const;
 }}}
 
-Iterates through all units found, calling `proc()` once for each unit.
+Iterates through all units found, calling `callback.proc()` once for each unit.
 
 === Parameters ===
- * `proc`: A callback function that accepts a `CUnit` pointer.
+ * `callback`: A callback class that inherits from the `UnitFinderCallbackProcInterface` class.
 
 
 == getFirst ==
 
 {{{
-template <typename callback>
-CUnit* getFirst(callback &match) const;
+CUnit* getFirst(UnitFinderCallbackMatchInterface &callback) const;
 }}}
 
-Returns the first unit for which `match()` returns true. If there are no matches, returns `NULL`.
+Returns the first unit for which `callback.match()` returns true. If there are no matches, returns `NULL`.
 
 === Parameters ===
- *  `match`: A callback function that accepts a `CUnit` pointer and returns true/false.
+ * `callback`: A callback class that inherits from the `UnitFinderCallbackMatchInterface` class.
 
 
 == getBest ==
 
 {{{
-template <typename callback>
-CUnit* getBest(callback &score) const;
+CUnit* getBest(UnitFinderCallbackScoreInterface &callback) const;
 }}}
 
-Returns the unit for which `score()` returns the highest nonnegative score. If there are no units, returns `NULL`.
+Returns the unit for which `callback.score()` returns the highest nonnegative score. If a unit receives negative score, it is excluded from the search. If there are no units, returns `NULL`.
 
 === Parameters ===
- * `score`: A callback function that accepts a `CUnit` pointer and returns an int value as the unit's "score". If the score is less than zero, the unit is ignored.
+ * `score`: A callback class that inherits from the `UnitFinderCallbackScoreInterface` class.
+
+
+== getNearest ==
+
+{{{
+static CUnit* getNearest(int x, int y, int left, int top, int right, int bottom, UnitFinderCallbackMatchInterface &callback);
+static CUnit* getNearest(int x, int y, UnitFinderCallbackMatchInterface &callback);
+}}}
+
+Returns the unit nearest to (`x`, `y`) for which `callback.match()` returns `true`, using the given map bounds (`left`, `top`, `right`, `bottom`). If there are no matches, returns `NULL`.
+
+The 3-parameter version searches the entire map. Depending on the number of units in the game, it may be significantly slower than the version that uses custom search boundaries.
+
+_Note: This does NOT take unit size into account when calculating distance._
+
+_Note: This is a static member function, and does NOT require an instance of the class._
+
+=== Parameters ===
+ * `x`, `y`: The "goal" of the search point.
+ * `left`, `top`, `right`, `bottom`: Specifies the search bounds on the map. If omitted, the function searches the entire map.
+ * `callback`: A callback class that inherits from the `UnitFinderCallbackMatchInterface ` class.
