@@ -284,6 +284,8 @@ static CUnit* getFromIndex(u16 index);
 
 Retrieves the unit pointer by `index` from the unit table (first unit is indexed at 1). If invalid, returns `NULL` instead.
 
+_Note: This is a static member function, and does NOT require an instance of the class._
+
 == getIndex ==
 {{{
 u16 getIndex() const;
