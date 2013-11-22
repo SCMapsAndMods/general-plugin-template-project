@@ -1,4 +1,4 @@
-General Plugin Template Project v2.37
+General Plugin Template Project v2.38
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -34,6 +34,26 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 == Changes ==
 
 For the full changelog, see http://code.google.com/p/gptp/wiki/Changelog
+
+v2.38
+ + New hook modules
+   + Tech Target Check: Determine whether a tech spell can be used on a unit,
+     and if not, what error messages should be used.
+   + Fire Weapon: Control how weapons are fired. This affects the behavior of
+     CUnit::fireWeapon().
+   + Transfer Tech & Upgrades: Determine which technologies and upgrades are
+     transferred when a unit's ownership is passed to another player via
+     triggers or Mind Control.
+ * Library changes
+   * Added scbw::getAngle(), scbw::isInReplay(), scbw::setUpgradeLevel(),
+     scbw::hasTechResearched(), scbw::setTechResearchState(),
+     CImage::setRemapping().
+   * scbw::fireUnitWeapon() has been replaced with CUnit::fireWeapon().
+   * Added more enumeration members to UnitId::Enum (SCBW/enumerations/UnitId.h)
+ * Bug fixes
+   * Fixed a bug that caused the Spider Mine hooks to crash the game.
+   * Fixed a bug that caused Zerg buildings to be completed when attempting to
+     cancel them.
 
 v2.37
  * Library changes
