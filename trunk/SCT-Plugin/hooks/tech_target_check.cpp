@@ -42,6 +42,8 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
           || target->id == UnitId::scarab
           || target->id == UnitId::lurker_egg)
         return 876;     //Invalid target.<0>
+      if (target->status & UnitStatus::InAir)
+        return 1568;    //Must target ground units.<0>
       break;
 
     case TechId::Hallucination:
@@ -57,6 +59,8 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::OpticalFlare:
       if (Unit::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
+      if (target->isBlind)
+        return 1569;    //Target already has Ocular Implants.<0>
       break;
 
     case TechId::Infestation:
