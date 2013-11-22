@@ -1,7 +1,7 @@
 #summary Documentation of the GPTP API functions
 #labels Phase-Implementation
 
-Header file: [http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/api.h SCBW/api.h]
+Header file: <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/api.h SCBW/api.h]</tt>
 
 GPTP provides many useful functions for modding in the `scbw` namespace. Many of these functions wrap !StarCraft's internal functions.
 
@@ -59,17 +59,6 @@ u32 getUnitOverlayAdjustment(const CUnit* const unit);
 
 Calculates the images.dat overlay ID adjustment for the given unit. This piece of code is used throughout StarCraft.exe for various status effects, such as Ensnare, Plague, and Defensive Matrix.
 
-== fireUnitWeapon ==
-{{{
-void fireUnitWeapon(CUnit* unit, u8 weaponId);
-}}}
-
-Makes the unit use the specified weapon to attack its current target unit in the `CUnit::orderTarget` member. This does not affect the unit's weapon cooldown. The spawned weapon sprite obeys the weapon behavior properties in `weapons.dat`.
-
-=== Parameters ===
- * `unit`: The unit that uses the weapon. If NULL, the function returns without error.
- * `weaponId`: ID of the weapon `in weapons.dat`. If same or bigger than `WEAPON_TYPE_COUNT`, the function returns without error.
-
 == createUnitAtPos ==
 {{{
 CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y);
@@ -101,12 +90,51 @@ u32 getDistanceFast(s32 x1, s32 y1, s32 x2, s32 y2);
 
 _Warning: This function is inaccurate for long distances._
 
+== getAngle ==
+{{{
+s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
+}}}
+
+Calculates the angle (in binary radians) of the arrow that starts at (`xTail`, `yTail`) and ends at (`xHead`, `yHead`).
+
 == getUpgradeLevel ==
 {{{
-u8 getUpgradeLevel(const u8 playerId, const u8 upgradeId);
+u8 getUpgradeLevel(8 playerId, u8 upgradeId);
 }}}
 
 Returns the player's upgrade level of `upgradeId`. Note that this uses `UpgradeId::Enum`, instead of `ScUpgrades::Enum` and `BwUpgrades::Enum`.
+
+== setUpgradeLevel ==
+{{{
+void setUpgradeLevel(u8 playerId, u8 upgradeId, u8 level);
+}}}
+
+Sets the player's upgrade level of `upgradeId`. Note that this uses `UpgradeId::Enum`, instead of `ScUpgrades::Enum` and `BwUpgrades::Enum`.
+
+== hasTechResearched ==
+{{{
+bool hasTechResearched(u8 playerId, u16 techId);
+}}}
+
+Checks whether the `playerId` has the `techId` researched.
+
+Note: This uses `TechId::Enum`, instead of `ScTech::Enum` and `BwTech::Enum`.
+
+== setTechResearchState ==
+{{{
+void setTechResearchState(u8 playerId, u16 techId, bool isResearched);
+}}}
+
+Sets the player's tech research state for `techId` to `isResearched`.
+
+Note: This uses `TechId::Enum`, instead of `ScTech::Enum` and `BwTech::Enum`.
+
+== getSupplyRemaining ==
+{{{
+s32 getSupplyRemaining(u8 playerId, u8 raceId);
+}}}
+
+Returns the amount of remaining supply (total available - total used) for the `playerId`, using `raceId` to determine the appropriate race to use. This is affected by the "Food For Thought" cheat flag.
 
 == getGroundHeightAtPos ==
 {{{
@@ -141,6 +169,13 @@ bool isBroodWarMode();
 }}}
 
 Checks whether the game is in Brood War mode.
+
+== isInReplay() ==
+{{{
+bool isInReplay();
+}}}
+
+Checks whether the game is in replay mode.
 
 == isAlliedTo ==
 {{{
