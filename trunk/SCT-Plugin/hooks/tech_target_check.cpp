@@ -34,7 +34,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
         return 1327;    //Must target enemy units<0>
       if (Unit::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
-      if (target->id == UnitId::vulture
+      if (target->id == UnitId::spider_mine
           || target->id == UnitId::larva
           || target->id == UnitId::egg
           || target->id == UnitId::cocoon
