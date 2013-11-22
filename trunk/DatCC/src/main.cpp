@@ -4,7 +4,7 @@
 #include <iostream>
 
 int main(const int argc, const char* argv[]) {
-  std::cout << "DatCC v0.1 created by pastelmind\n" << std::endl;
+  std::cout << "DatCC v0.2 created by pastelmind\n" << std::endl;
   datcc::setCurrentProgramDir(argv[0]);
 
   try {
