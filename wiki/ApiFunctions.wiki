@@ -170,7 +170,7 @@ bool isBroodWarMode();
 
 Checks whether the game is in Brood War mode.
 
-== isInReplay() ==
+== isInReplay ==
 {{{
 bool isInReplay();
 }}}
