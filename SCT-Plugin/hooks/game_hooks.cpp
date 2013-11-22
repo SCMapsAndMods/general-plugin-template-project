@@ -87,7 +87,7 @@ bool nextFrame() {
           unit->orderTo(OrderId::Repair1, repairTarget);
       }
 
-      //Set nexus color
+      //Set nexus attack overlay color
       if (unit->id == UnitId::nexus
           && scbw::getUpgradeLevel(unit->playerId, UPGRADE_PARTICLE_FILTER))
       {
@@ -117,7 +117,7 @@ bool nextFrame() {
       //Display rally points for factories selected
       if (selUnit->status & UnitStatus::GroundedBuilding
           && Unit::GroupFlags[selUnit->id].isFactory
-          && selUnit->playerId == *LOCAL_NATION_ID) //Doesn't work if it's not your own building
+          && (selUnit->playerId == *LOCAL_NATION_ID || *IS_IN_REPLAY)) //Doesn't work if it's not your own building or the game is in replay mode
       {
         const CUnit *rallyUnit = selUnit->rally.unit;
         //Rallied to self; disable rally altogether
