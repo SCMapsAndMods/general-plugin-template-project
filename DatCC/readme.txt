@@ -30,6 +30,8 @@ DatCC makes use of the following 3rd-party libraries:
 
 == License ==
 
+DatCC is released under the New BSD License.
+
 Copyright (c) 2013, pastelmind
 All rights reserved.
 
@@ -43,9 +45,8 @@ are permitted provided that the following conditions are met:
    this list of conditions and the following disclaimer in the documentation
    and/or other materials provided with the distribution.
 
-3. Neither the name of the <ORGANIZATION> nor the names of its contributors may
-   be used to endorse or promote products derived from this software without
-   specific prior written permission.
+3. The name of pastelmind may not be used to endorse or promote products derived
+   from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
