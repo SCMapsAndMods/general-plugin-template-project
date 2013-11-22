@@ -116,9 +116,14 @@ inline bool isGamePaused() {
   return (*IS_GAME_PAUSED) != 0;
 }
 
-/// Checks whether the game is in Brood War mode.
+/// Checks whether the game is in Brood War mode (instead of vanilla StarCraft).
 inline bool isBroodWarMode() {
   return (*IS_BROOD_WAR) != 0;
+}
+
+/// Checks whether the game is in replay mode.
+inline bool isInReplay() {
+  return (*IS_IN_REPLAY) != 0;
 }
 
 /// Checks whether @p playerB is recognized by @p playerA as an ally.
