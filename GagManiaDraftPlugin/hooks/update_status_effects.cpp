@@ -15,18 +15,32 @@ namespace hooks {
 //Original function address: 0x00492F70 (SCBW 1.16.1)
 //Note: this function is called every 8 ticks (when unit->cycleCounter reaches 8 == 0)
 void updateStatusEffectsHook(CUnit *unit) {
-
-  //스파이더 마인 재충전
+  
+  //벌처의 스파이더 마인 재충전 타이머 겸
+  //드라군의 과부하 이후 마비 타이머 겸
+  //각종 건물의 시간 증폭 타이머
   if (unit->unusedTimer) {
-		unit->unusedTimer--;
-		if (unit->unusedTimer == 0
-        && unit->id == UnitId::vulture
-        && unit->mainOrderId != OrderId::Die
-        && unit->vulture.spiderMineCount)
-    {
-			unit->vulture.spiderMineCount++;
-		}
-	}
+    unit->unusedTimer--;
+    if (unit->unusedTimer == 0) {
+      //벌처의 스파이더 마인 재충전
+      if (unit->id == UnitId::vulture)
+        unit->vulture.spiderMineCount++;
+
+      //드라군의 마비가 풀림 => 일정 시간 동안 과부하 스킬 사용 못함
+      else if (unit->id == UnitId::dragoon) {
+        unit->status &= ~(UnitStatus::Disabled | UnitStatus::CanNotReceiveOrders);  //마비 해제
+        unit->sprite->playerId = unit->playerId;  //플레이어 컬러 원상복귀
+        unit->spellCooldown = 200;  //과부하 쿨다운
+      }
+    }
+  }
+
+  //스파이더 마인 재충전 시작 (하나 이상 남아있을 때 최대 5개까지 충전)
+  if (unit->unusedTimer == 0 && unit->id == UnitId::vulture
+      && 0 < unit->vulture.spiderMineCount && unit->vulture.spiderMineCount < 5)
+  {
+    unit->unusedTimer = 30; //충전 시간
+  }
 
   if (unit->stasisTimer) {
     unit->stasisTimer--;
@@ -38,6 +52,26 @@ void updateStatusEffectsHook(CUnit *unit) {
     unit->stimTimer--;
     if (unit->stimTimer == 0)
       unit->updateSpeed();
+    
+    //드라군의 과부하 지속 및 종료 단계
+    if (unit->id == UnitId::dragoon) {
+      //플레이어 컬러에서 검정색으로 빠르게 깜박이는 효과
+      if (unit->stimTimer) {
+        if (unit->stimTimer % 2)
+          unit->sprite->playerId = unit->playerId;
+        else
+          unit->sprite->playerId = 160; //색깔을 검정색으로 바꿈
+      }
+      else {
+        //과부하 종료 => 일정 시간 마비
+        unit->orderToIdle();
+        unit->unusedTimer = 30; //마비 시간
+        unit->status |= UnitStatus::Disabled;
+        unit->removeOverlay(IMAGE_DRAGOON_OVERLOAD_EFFECT); //과부하 그래픽 효과 제거
+        unit->playIscriptAnim(IscriptAnimation::Unused2);
+        unit->sprite->playerId = 160; //플레이어 컬러를 검정색으로 고정
+      }
+    }
   }
 
   if (unit->ensnareTimer) {

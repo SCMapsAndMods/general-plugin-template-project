@@ -15,7 +15,6 @@ namespace hooks {
 /// Updates unit timers, regenerates hp and shields, and burns down Terran buildings.
 /// Logically equivalent to function @ 0x004EC290
 void updateUnitTimersHook(CUnit* unit) {
-  //Default StarCraft logic
 
   //Timers
   if (unit->mainOrderTimer)
@@ -24,8 +23,14 @@ void updateUnitTimersHook(CUnit* unit) {
     unit->groundWeaponCooldown--;
   if (unit->airWeaponCooldown)
     unit->airWeaponCooldown--;
-  if (unit->spellCooldown)
+
+  if (unit->spellCooldown) {
     unit->spellCooldown--;
+
+    //드라군의 과부하 쿨다운이 돌아왔으니 버튼셋을 원래대로
+    if (unit->id == UnitId::dragoon)
+      unit->currentButtonSet = unit->id;
+  }
 
   //Shield regeneration
   if (Unit::ShieldsEnabled[unit->id]) {
