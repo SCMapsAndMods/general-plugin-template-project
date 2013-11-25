@@ -10,7 +10,6 @@ namespace hooks {
 
 //This hook function is called when creating a new unit.
 void applyUpgradeFlagsToNewUnitHook(CUnit *unit) {
-  //Default StarCraft behavior
   using scbw::getUpgradeLevel;
 
   u8 speedUpgradeLevel = 0, cooldownUpgradeLevel = 0;

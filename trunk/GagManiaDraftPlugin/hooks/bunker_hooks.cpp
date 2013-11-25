@@ -1,19 +1,8 @@
-#include "bunker_hooks.h"
-#include "weapon_range.h"
-#include "../SCBW/api.h"
+﻿#include "bunker_hooks.h"
 #include <SCBW/scbwdata.h>
 #include "../SCBW/enumerations.h"
-/*
-if (unitId == UnitId::TerranMarine
-      || unitId == UnitId::Hero_JimRaynorMarine
-      || unitId == UnitId::TerranGhost
-      || unitId == UnitId::Hero_SarahKerrigan
-      || unitId == UnitId::Hero_AlexeiStukov
-      || unitId == UnitId::Hero_SamirDuran
-      || unitId == UnitId::Hero_InfestedDuran
-      || unitId == UnitId::TerranFirebat
-      || unitId == UnitId::Hero_GuiMontag)
-*/
+#include <SCBW/api.h>
+
 //Helper function declarations. Do NOT modify!
 namespace {
 
@@ -27,19 +16,27 @@ namespace hooks {
 
 /// Checks whether the unit can attack from inside a bunker.
 bool unitCanAttackInsideBunkerHook(const CUnit *unit) {
-  //Default StarCraft behavior
-  const u16 unitId = unit->id;
-  
-  if ((Unit::AirWeapon[unit->id]<130||Unit::GroundWeapon[unit->id]<130)&&(unit->id!=UnitId::infested_terran&&unit->id!=UnitId::lurker)&&(Weapon::MaxRange[Unit::GroundWeapon[unit->id]]>=32||Weapon::MaxRange[Unit::AirWeapon[unit->id]]>=32))
-    return true;
-  else
+  //인페스티드 테란과 러커는 제외
+  if (unit->id == UnitId::infested_terran || unit->id == UnitId::lurker)
     return false;
+
+  const u8 groundWeapon = Unit::GroundWeapon[unit->id];
+  const u8 airWeapon = Unit::AirWeapon[unit->id];
+
+  //무기가 없으면 공격 못하게 함
+  if (groundWeapon == WeaponId::None && airWeapon == WeaponId::None)
+    return false;
+
+  //지상 무기, 공중 무기 중 사거리가 어느 정도 길어야만 공격 가능
+  if (unit->getMaxWeaponRange(groundWeapon) < 32
+      || unit->getMaxWeaponRange(airWeapon) < 32)
+    return false;
+
+  return true;
 }
 
 void createBunkerAttackThingyHook(const CUnit *unit) {
-  //Default StarCraft behavior
   CImage *bunkerImage = unit->connectedUnit->sprite->mainGraphic;
-  u16 unitId=unit->id;
 
   u8 frameDirection = (unit->currentDirection1 + 16) / 32 % 8;
   const LO_Header *loFile = lo_files->attackOverlays[bunkerImage->id];
@@ -50,27 +47,39 @@ void createBunkerAttackThingyHook(const CUnit *unit) {
 
   u8 frameAngle;
   u16 spriteId;
+  bool isBlueFlame = false;
 
   if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag) {
     frameAngle = ((unit->currentDirection1 + 8) / 16 % 16) * 16;
     spriteId = 378; //Firebat flamethrower graphics
+
+    //파이어뱃 불꽃 업그레이드 체크
+    if (scbw::getUpgradeLevel(unit->playerId, UPGRADE_FIREBAT_BLUE_FLAME))
+      isBlueFlame = true;
   }
-  else if (unitId == UnitId::TerranMarine
-      || unitId == UnitId::Hero_JimRaynorMarine
-	  || unitId == UnitId::civilian
-      || unitId == UnitId::TerranGhost
-      || unitId == UnitId::Hero_SarahKerrigan
-      || unitId == UnitId::Hero_AlexeiStukov
-      || unitId == UnitId::Hero_SamirDuran
-      || unitId == UnitId::Hero_InfestedDuran){
+  //침 뱉는 유닛들
+  else if (unit->id == UnitId::hydralisk
+           || unit->id == UnitId::hunter_killer
+           || unit->id == UnitId::drone)
+  {
+    frameAngle = ((unit->currentDirection1 + 8) / 16 % 16) * 16;
+    spriteId = 332; //히드라, 드론이 침뱉는 이미지
+  }
+  //총 쏘는 유닛들
+  else if (unit->id == UnitId::marine
+           || unit->id == UnitId::jim_raynor_marine
+           || unit->id == UnitId::civilian
+           || unit->id == UnitId::ghost
+           || unit->id == UnitId::sarah_kerrigan
+           || unit->id == UnitId::alexei_stukov
+           || unit->id == UnitId::samir_duran
+           || unit->id == UnitId::Hero_InfestedDuran)
+  {
     frameAngle = frameDirection * 32;
     spriteId = 377; //Bunker attack overlay
   }
-  else if (unit->id == UnitId::hydralisk || unit->id == UnitId::Hero_HunterKiller || unit->id == UnitId::drone) {
-    frameAngle = ((unit->currentDirection1 + 8) / 16 % 16) * 16;
-    spriteId = 332; //Firebat flamethrower graphics
-  }
-  else {return;}
+  else
+    return;
 
   CThingy *bunkerAttackEffect = createThingy(spriteId,
                                              offset.x + unit->getX(),
@@ -82,8 +91,11 @@ void createBunkerAttackThingyHook(const CUnit *unit) {
        image; image = image->link.next) {
     setImageDirection(image, frameAngle);
   }
-  if(unit->id==UnitId::firebat&&(Unit::GroundWeapon[unit->id]==WeaponId::FlameThrower)&&scbw::getUpgradeLevel(unit->playerId,UpgradeId::UnusedUpgrade59)&&spriteId==378)bunkerAttackEffect->sprite->mainGraphic->coloringData=colorShift[ColorRemapping::BExpl].data;
   setThingyVisibilityFlags(bunkerAttackEffect);
+
+  //파이어뱃 파란불꽃 설정
+  if (isBlueFlame)
+    bunkerAttackEffect->sprite->mainGraphic->setRemapping(ColorRemapping::BExpl);
 }
 
 } //hooks
