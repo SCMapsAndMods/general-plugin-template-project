@@ -32,19 +32,19 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
 
     //서로 클로킹 하지 않음
     if (unit->secondaryOrderId == OrderId::CloakNearbyUnits) 
-		  continue;
+      continue;
 
     //핵미사일은 제외
     if (unit->id == UnitId::nuclear_missile)
       continue;
 
     //동력 끊긴 유닛은 제외
-	  if (unit->status & UnitStatus::DoodadStatesThing)
-		  continue;
+    if (unit->status & UnitStatus::DoodadStatesThing)
+      continue;
 
     //사이오닉 망 동력을 공급하는 유닛은 제외
-	  if (unit->building.pylonAura)
-		  continue;
+    if (unit->building.pylonAura)
+      continue;
 
     //Don't cloak buildings and neutral accessories (?)
     if (Unit::BaseProperty[unit->id] & UnitProperty::NeutralAccessories)
