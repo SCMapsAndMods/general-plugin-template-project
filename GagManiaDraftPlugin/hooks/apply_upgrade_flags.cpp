@@ -1,25 +1,28 @@
+﻿//Source file for the Apply Upgrade Flags hook module.
+//This file is directly responsible for applying movement speed / attack speed
+//upgrades to units.
 #include "apply_upgrade_flags.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include <SCBW/scbwdata.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 namespace hooks {
 
-/// This function is called when creating a new unit.
-void applyUpgradeFlagsToNewUnitHook(CUnit* const unit) {
+//This hook function is called when creating a new unit.
+void applyUpgradeFlagsToNewUnitHook(CUnit *unit) {
   //Default StarCraft behavior
   using scbw::getUpgradeLevel;
 
   u8 speedUpgradeLevel = 0, cooldownUpgradeLevel = 0;
 
- switch (unit->id) {
+  switch (unit->id) {
     case UnitId::vulture:
     case UnitId::jim_raynor_vulture:
       speedUpgradeLevel = getUpgradeLevel(unit->playerId, UpgradeId::IonThrusters);
       break;
-	case UnitId::battlecruiser:
-		speedUpgradeLevel = getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade45);
-		break;
+    case UnitId::battlecruiser: //배틀크루저 이속업 적용
+      speedUpgradeLevel = getUpgradeLevel(unit->playerId, UPGRADE_BATTLECRUISER_SPEED);
+      break;
     case UnitId::overlord:
       speedUpgradeLevel = getUpgradeLevel(unit->playerId, UpgradeId::PneumatizedCarapace);
       break;
@@ -45,9 +48,9 @@ void applyUpgradeFlagsToNewUnitHook(CUnit* const unit) {
     case UnitId::observer:
       speedUpgradeLevel = getUpgradeLevel(unit->playerId, UpgradeId::GraviticBoosters);
       break;
-	case UnitId::arbiter:
-	  cooldownUpgradeLevel = getUpgradeLevel(unit->playerId,UpgradeId::UnusedUpgrade46);
-	  break;
+    case UnitId::arbiter:       //아비터 공속업 적용
+      cooldownUpgradeLevel = getUpgradeLevel(unit->playerId, UPGRADE_ARBITER_ATTK_SPEED);
+      break;
     case UnitId::Hero_DevouringOne:
       cooldownUpgradeLevel = 1;
       speedUpgradeLevel = 1;
@@ -75,9 +78,9 @@ void applyUpgradeFlagsToNewUnitHook(CUnit* const unit) {
   }
 }
 
-/// This function is called when an upgrade is finished, or when transferring a
-/// unit's ownership from one player to another (via triggers or Mind Control).
-void applyUpgradeFlagsToExistingUnitsHook(const u8 playerId, const u8 upgradeId) {
+//This function is called when an upgrade is finished, or when transferring a
+//unit's ownership from one player to another (via triggers or Mind Control).
+void applyUpgradeFlagsToExistingUnitsHook(u8 playerId, u8 upgradeId) {
   //Default StarCraft logic
   bool isSpeedUpgrade = true, isCooldownUpgrade = false;
   u16 validUnitId1 = -1, validUnitId2 = -1;
@@ -87,9 +90,9 @@ void applyUpgradeFlagsToExistingUnitsHook(const u8 playerId, const u8 upgradeId)
       validUnitId1 = UnitId::vulture;
       validUnitId2 = UnitId::jim_raynor_vulture;
       break;
-	case UpgradeId::UnusedUpgrade45:
-		validUnitId1 = UnitId::battlecruiser;
-		break;
+    case UPGRADE_BATTLECRUISER_SPEED: //배틀크루저 속업
+      validUnitId1 = UnitId::battlecruiser;
+      break;
     case UpgradeId::PneumatizedCarapace:
       validUnitId1 = UnitId::overlord;
       break;
@@ -111,11 +114,11 @@ void applyUpgradeFlagsToExistingUnitsHook(const u8 playerId, const u8 upgradeId)
     case UpgradeId::GraviticBoosters:
       validUnitId1 = UnitId::observer;
       break;
-	case UpgradeId::UnusedUpgrade46:
-		validUnitId1 = UnitId::arbiter;
-		isSpeedUpgrade = false;
-        isCooldownUpgrade = true;
-		break;
+    case UPGRADE_ARBITER_ATTK_SPEED:  //아비터 공속업
+      validUnitId1 = UnitId::arbiter;
+      isSpeedUpgrade = false;
+      isCooldownUpgrade = true;
+      break;
     case UpgradeId::AnabolicSynthesis:
       validUnitId1 = UnitId::ultralisk;
       validUnitId2 = UnitId::torrasque;
