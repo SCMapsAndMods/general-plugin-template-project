@@ -1,4 +1,4 @@
-#include "cloak_nearby_units.h"
+﻿#include "cloak_nearby_units.h"
 #include "weapon_range.h"
 #include "../SCBW/UnitFinder.h"
 #include "../SCBW/enumerations.h"
@@ -13,10 +13,9 @@ namespace hooks {
 
 //Cloak all units near @p cloaker.
 void cloakNearbyUnitsHook(CUnit *cloaker) {
-  //Default StarCraft behavior
 
-  //Use the unit's air weapon range
-  const unsigned int cloakRadius = 160;//cloaker->getMaxWeaponRange(Unit::AirWeapon[cloaker->id]);
+  //사거리는 5로 고정
+  const unsigned int cloakRadius = 160; //cloaker->getMaxWeaponRange(Unit::AirWeapon[cloaker->id]);
 
   //Run the unit finder
   int left    = cloaker->getX() - cloakRadius;
@@ -30,21 +29,25 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
 
   for (int i = 0; i < unitsToCloak.getUnitCount(); ++i) {
     CUnit *unit = unitsToCloak.getUnit(i);
-    //Don't cloak fellow Arbiters and Nukes
-	if (unit->secondaryOrderId==OrderId::CloakNearbyUnits) 
-		continue;
 
+    //서로 클로킹 하지 않음
+    if (unit->secondaryOrderId == OrderId::CloakNearbyUnits) 
+		  continue;
+
+    //핵미사일은 제외
     if (unit->id == UnitId::nuclear_missile)
       continue;
 
-	if (unit->status & UnitStatus::DoodadStatesThing)
-		continue;
+    //동력 끊긴 유닛은 제외
+	  if (unit->status & UnitStatus::DoodadStatesThing)
+		  continue;
 
-	if (unit->building.pylonAura)
-		continue;
-	
+    //사이오닉 망 동력을 공급하는 유닛은 제외
+	  if (unit->building.pylonAura)
+		  continue;
+
     //Don't cloak buildings and neutral accessories (?)
-    if (Unit::BaseProperty[unit->id] & (UnitProperty::NeutralAccessories))
+    if (Unit::BaseProperty[unit->id] & UnitProperty::NeutralAccessories)
       continue;
     //Hallucinations are not affected
     if (unit->status & UnitStatus::IsHallucination)
@@ -52,9 +55,10 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
     //Not sure. Perhaps to prevent warping-in units and buildings from being cloaked?
     if (unit->mainOrderId == OrderId::Warpin)
       continue;
-
-    //Only cloak units owned by the same player
-	if (!(scbw::isAlliedTo(unit->playerId,cloaker->playerId)&&scbw::isAlliedTo(cloaker->playerId,unit->playerId)))
+    
+    //서로 동맹인 경우에만 클로킹해줌
+    if (!(scbw::isAlliedTo(unit->playerId, cloaker->playerId)
+          && scbw::isAlliedTo(cloaker->playerId, unit->playerId)))
       continue;
     
     //Distance check
@@ -70,7 +74,6 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
 
   if (needsButtonRefresh)
     scbw::refreshConsole();
-
 }
 
 } //hooks
@@ -94,6 +97,5 @@ void secondaryOrder_Cloak(CUnit *unit) {
     *firstBurrowedUnit = unit;
 
     scbw::refreshConsole();
-
   }
 }
