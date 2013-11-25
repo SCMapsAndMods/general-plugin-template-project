@@ -87,7 +87,7 @@ void updateStatusEffectsHook(CUnit *unit) {
     //Display the sprite over the Siege Tank's turret
     CUnit *theUnit = unit->subunit ? unit->subunit : unit;
     if (!theUnit->getOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT))
-      theUnit->sprite->createOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT, 0, -20);
+      theUnit->sprite->createTopOverlay(IMAGE_OCULAR_IMPLANTS_EFFECT, 0, -20);
   }
 
   u8 previousAcidSporeCount = unit->acidSporeCount;
