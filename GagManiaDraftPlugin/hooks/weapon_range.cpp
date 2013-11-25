@@ -1,4 +1,4 @@
-//Contains hooks that control attack range and seek range (AKA target acquisition range).
+﻿//Contains hooks that control attack range and seek range (AKA target acquisition range).
 
 #include "weapon_range.h"
 #include "../SCBW/scbwdata.h"
@@ -9,8 +9,9 @@ namespace hooks {
 
 /// Returns the modified seek range (AKA target acquisition range) for the unit.
 /// Note: Seek ranges are measured in matrices (1 matrix = 32 pixels).
+/// This hook affects the behavior of CUnit::getSeekRange().
 u8 getSeekRangeHook(const CUnit *unit) {
-  //Default StarCraft behavior
+
   using UnitStatus::Cloaked;
   using UnitStatus::RequiresDetection;
   using scbw::getUpgradeLevel;
@@ -26,8 +27,10 @@ u8 getSeekRangeHook(const CUnit *unit) {
       && unit->status & (Cloaked | RequiresDetection)
       && unit->mainOrderId != OrderId::HoldPosition2)
     return 0;
-   
-  if(unit->id==UnitId::lurker&&unit->status & UnitStatus::HoldingPosition)return 0;
+
+  //홀드 러커
+  if (unitId == UnitId::lurker && unit->status & UnitStatus::HoldingPosition)
+    return 0;
 
   u8 bonusAmount = 0;
   switch (unitId) {
@@ -43,10 +46,10 @@ u8 getSeekRangeHook(const CUnit *unit) {
       if (getUpgradeLevel(unit->playerId, UpgradeId::SingularityCharge))
         bonusAmount = 2;
       break;
-	  case UnitId::arbiter:
-		if (getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade50))
-			bonusAmount=2;
-		break;
+    case UnitId::arbiter: //아비터 사거리업 적용
+      if (getUpgradeLevel(unit->playerId, UPGRADE_ARBITER_WPN_RANGE))
+        bonusAmount = 2;
+      break;
     case UnitId::fenix_dragoon:
       if (scbw::isBroodWarMode())
         bonusAmount = 2;
@@ -60,11 +63,11 @@ u8 getSeekRangeHook(const CUnit *unit) {
     case UnitId::alan_schezar_turret:
       if (scbw::isBroodWarMode())
         bonusAmount = 3;
-	  break;
-	  case UnitId::lurker:
-		if((getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade55))) 
-			bonusAmount = 3;
-		break;
+      break;
+    case UnitId::lurker:  //러커 사거리업 적용
+      if (getUpgradeLevel(unit->playerId, UPGRADE_LURKER_RANGE))
+        bonusAmount = 3;
+      break;
   }
 
   return Unit::SeekRange[unitId] + bonusAmount;
@@ -72,6 +75,7 @@ u8 getSeekRangeHook(const CUnit *unit) {
 
 /// Returns the modified max range for the weapon, which is assumed to be
 /// attached to the given unit.
+/// This hook affects the behavior of CUnit::getMaxWeaponRange().
 /// Note: Weapon ranges are measured in pixels.
 ///
 /// @param  weapon    The weapons.dat ID of the weapon.
@@ -99,10 +103,10 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
       if (getUpgradeLevel(unit->playerId, UpgradeId::SingularityCharge))
         bonusAmount += 64;
       break;
-	  case UnitId::arbiter:
-		if (getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade50))
-			bonusAmount+=64;
-		break;
+    case UnitId::arbiter: //아비터 사거리업 적용
+      if (getUpgradeLevel(unit->playerId, UPGRADE_ARBITER_WPN_RANGE))
+        bonusAmount += 64;  //사거리 2 추가
+      break;
     case UnitId::fenix_dragoon:
       if (scbw::isBroodWarMode())
         bonusAmount += 64;
@@ -113,21 +117,16 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
           && getUpgradeLevel(unit->playerId, UpgradeId::CharonBooster))
         bonusAmount += 96;
       break;
-
     case UnitId::alan_schezar:
     case UnitId::alan_schezar_turret:
       if (weaponId == WeaponId::HellfireMissilePack_AlanSchezar
           && scbw::isBroodWarMode())
         bonusAmount += 96;
       break;
-	  case UnitId::lurker:
-		if((getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade55)))
-			bonusAmount += 96;
-		break;
-		//case 124:
-			//if(getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade59))
-			//bonusAmount += 32;
-			//break;
+    case UnitId::lurker:  //러커 사거리업 적용
+      if (getUpgradeLevel(unit->playerId, UPGRADE_LURKER_RANGE))
+        bonusAmount += 96;  //사거리 3 추가
+      break;
   }
 
   return Weapon::MaxRange[weaponId] + bonusAmount;

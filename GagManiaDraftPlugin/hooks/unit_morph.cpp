@@ -1,4 +1,4 @@
-#include "unit_morph.h"
+﻿#include "unit_morph.h"
 #include <SCBW/scbwdata.h>
 #include <SCBW/enumerations/TechId.h>
 #include <SCBW/api.h>
@@ -28,12 +28,11 @@ bool unitCanMorphHook(const CUnit *unit, u16 morphUnitId) {
 
 //Check if @p unitId is an egg unit.
 bool isEggUnitHook(u16 unitId) {
-  //Default StarCraft behavior
 
   if (unitId == UnitId::egg
       || unitId == UnitId::cocoon
       || unitId == UnitId::lurker_egg
-	  || unitId == UnitId::UnusedMiningPlatform)
+      || unitId == UNIT_KUKULZA_COCOON)  //쿠쿨자 변태용 코쿤 추가
     return true;
 
   return false;
@@ -41,9 +40,10 @@ bool isEggUnitHook(u16 unitId) {
 
 //Check if @p unitId is an egg unit that can be rallied
 bool isRallyableEggUnitHook(u16 unitId) {
-  //Default StarCraft behavior
 
-	if (unitId == UnitId::cocoon || unitId == UnitId::lurker_egg || unitId == UnitId::UnusedMiningPlatform)
+	if (unitId == UnitId::cocoon
+      || unitId == UnitId::lurker_egg
+      || unitId == UNIT_KUKULZA_COCOON)
     return false;
 
   return true;
@@ -52,7 +52,6 @@ bool isRallyableEggUnitHook(u16 unitId) {
 //Return the ID of the egg unit to use when morphing @p unitId.
 //If the unit cannot morph, return UnitId::None.
 u16 getUnitMorphEggTypeHook(u16 unitId) {
-  //Default StarCraft behavior
 
   if (unitId == UnitId::larva)
     return UnitId::egg;
@@ -63,8 +62,8 @@ u16 getUnitMorphEggTypeHook(u16 unitId) {
   if (unitId == UnitId::hydralisk)
     return UnitId::lurker_egg;
 
-  if (unitId == UnitId::Hero_KukulzaMutalisk)
-	  return UnitId::UnusedMiningPlatform;
+  if (unitId == UnitId::kukulza_mutalisk)   //뮤탈 영웅 변태시 사용하는 코쿤 유닛
+	  return UNIT_KUKULZA_COCOON;
 
   return UnitId::None;
 }
@@ -72,7 +71,6 @@ u16 getUnitMorphEggTypeHook(u16 unitId) {
 //Determine the type (unit ID) of the unit to revert to when cancelling an
 //@p eggUnit while it is morphing.
 u16 getCancelMorphRevertTypeHook(const CUnit *eggUnit) {
-  //Default StarCraft behavior
 
   if (eggUnit->id == UnitId::cocoon)
     return UnitId::mutalisk;
@@ -80,8 +78,8 @@ u16 getCancelMorphRevertTypeHook(const CUnit *eggUnit) {
   if (eggUnit->id == UnitId::lurker_egg)
     return UnitId::hydralisk;
 
-  if (eggUnit->id == UnitId::UnusedMiningPlatform)
-	  return UnitId::Hero_KukulzaMutalisk;
+  if (eggUnit->id == UNIT_KUKULZA_COCOON)   //뮤탈 영웅 변태시 사용하는 코쿤 유닛
+	  return UnitId::kukulza_mutalisk;
 
   return UnitId::None;  //Default (no revert for larvae)
 }
@@ -89,14 +87,14 @@ u16 getCancelMorphRevertTypeHook(const CUnit *eggUnit) {
 //Determines the vertical (Y) offset by which the @p unit will be shifted to
 //when it finishes morphing.
 s16 getUnitVerticalOffsetOnBirth(const CUnit *unit) {
-  //Default StarCraft behavior
 
   //No offset, birth offset is handled elsewhere
   if (Unit::BaseProperty[unit->id] & UnitProperty::TwoUnitsIn1Egg)
     return 0;
 
   //No offset, since the morphed unit should stay where it is
-  if (unit->displayedUnitId == UnitId::cocoon||unit->displayedUnitId == UnitId::UnusedMiningPlatform)
+  if (unit->displayedUnitId == UnitId::cocoon
+      || unit->displayedUnitId == UNIT_KUKULZA_COCOON)  //뮤탈 영웅 변태시 사용하는 코쿤 유닛
     return 0;
 
   //Hovering units (?) float 7 pixels above ground

@@ -1,4 +1,4 @@
-#include "harvest.h"
+﻿#include "harvest.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
@@ -12,82 +12,58 @@ namespace hooks {
 
 //Harvests minerals/gas from the @p resource and returns the amount that a
 //worker should carry.
-u8 harvestResourceFrom(CUnit *resource, bool isMineral) {
-  //Default StarCraft behavior
+u8 harvestResourceFrom(CUnit *resource, CUnit *worker, bool isMineral) {
 
-	int returnamount=0;
-	if(isMineral)returnamount=4;
-	else returnamount=6;
+  //미네랄은 4, 가스는 6만큼 채취
+  u8 harvestAmount = isMineral ? 4 : 6;
+  u8 workerPlayerRace = playerTable[worker->playerId].race;
 
-  if (resource->building.resource.resourceAmount < returnamount) {
-    if (isMineral) {
-		 for(CUnit* harvestgay=*firstVisibleUnit;harvestgay;harvestgay=harvestgay->next)
-		{
-			if(harvestgay->worker.harvestTarget&&harvestgay->worker.harvestTarget==resource)
-			{
-				if(playerTable[harvestgay->playerId].race==PlayerRace::Zerg)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,59);
-				if(playerTable[harvestgay->playerId].race==PlayerRace::Terran)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,60);
-				if(playerTable[harvestgay->playerId].race==PlayerRace::Protoss)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,61);
-			}
-		}
+  //미네랄 채취
+  if (isMineral) {
+    if (resource->building.resource.resourceAmount <= harvestAmount) {
       resource->remove();
+      
+      //미네랄 고갈 메시지 재생
+      if (workerPlayerRace == PlayerRace::Zerg)
+        scbw::showErrorMessageWithSfx(worker->playerId, 1701, 59);
+      else if (workerPlayerRace == PlayerRace::Terran)
+        scbw::showErrorMessageWithSfx(worker->playerId, 1701, 60);
+      else if (workerPlayerRace == PlayerRace::Protoss)
+        scbw::showErrorMessageWithSfx(worker->playerId, 1701, 61);
 
       return (u8) resource->building.resource.resourceAmount;
     }
     else {
-		if(resource->building.resource.resourceAmount>0){
-		for(CUnit* harvestguy=*firstVisibleUnit;harvestguy;harvestguy=harvestguy->next)
-		{
-			if(harvestguy->worker.harvestTarget&&harvestguy->worker.harvestTarget==resource)
-			{
-				if(playerTable[harvestguy->playerId].race==PlayerRace::Zerg)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,20);
-				if(playerTable[harvestguy->playerId].race==PlayerRace::Terran)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,11);
-				if(playerTable[harvestguy->playerId].race==PlayerRace::Protoss)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,12);
-			}
-		}
-		}
-      resource->building.resource.resourceAmount = 0;
-      return 3;
+      resource->building.resource.resourceAmount -= harvestAmount;
+      updateMineralPatchImage(resource);
     }
   }
+  //가스 채취
   else {
-    resource->building.resource.resourceAmount -= returnamount;
-    
-    if (isMineral) {
-      if (resource->building.resource.resourceAmount > 0)
-        updateMineralPatchImage(resource);
-	  else {
-		  for(CUnit* harvestgay=*firstVisibleUnit;harvestgay;harvestgay=harvestgay->next)
-		{
-			if(harvestgay->worker.harvestTarget&&harvestgay->worker.harvestTarget==resource)
-			{
-				if(playerTable[harvestgay->playerId].race==PlayerRace::Zerg)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,59);
-				if(playerTable[harvestgay->playerId].race==PlayerRace::Terran)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,60);
-				if(playerTable[harvestgay->playerId].race==PlayerRace::Protoss)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,61);
-			}
-		}
-        resource->remove();
-	  }
+    if (resource->building.resource.resourceAmount < harvestAmount) {
+      resource->building.resource.resourceAmount = 0;
+      return 3; //고갈된 가스 채취량
     }
-	else if ((resource->building.resource.resourceAmount-returnamount)<=0){
-		for(CUnit* harvestguy=*firstVisibleUnit;harvestguy;harvestguy=harvestguy->next)
-		{
-			if(harvestguy->worker.harvestTarget&&harvestguy->worker.harvestTarget==resource)
-			{
-				if(playerTable[harvestguy->playerId].race==PlayerRace::Zerg)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,20);
-				if(playerTable[harvestguy->playerId].race==PlayerRace::Terran)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,11);
-				if(playerTable[harvestguy->playerId].race==PlayerRace::Protoss)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,12);
-			}
-		}
-      //scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
-	}
-    return (u8) returnamount;
+    else {
+      resource->building.resource.resourceAmount -= harvestAmount;
+      //다음 채취할 때 고갈될 예정
+      if (resource->building.resource.resourceAmount <= harvestAmount) {
+        //가스 고갈 메시지 재생
+        if (workerPlayerRace == PlayerRace::Zerg)
+          scbw::showErrorMessageWithSfx(worker->playerId, 875, 20);
+        else if (workerPlayerRace == PlayerRace::Terran)
+          scbw::showErrorMessageWithSfx(worker->playerId, 875, 11);
+        else if (workerPlayerRace == PlayerRace::Protoss)
+          scbw::showErrorMessageWithSfx(worker->playerId, 875, 12);
+      }
+    }
   }
+
+  return harvestAmount;
 }
 
 //Transfers a set amount of resources from a resource patch to a worker.
 void transferResourceToWorkerHook(CUnit *worker, CUnit *resource) {
-  //Default StarCraft behavior
 
   u32 chunkImageId;
   bool isMineral = false;
@@ -105,12 +81,9 @@ void transferResourceToWorkerHook(CUnit *worker, CUnit *resource) {
   else
     return;
 
-  int returnamount=0;
-	if(isMineral)returnamount=4;
-	else returnamount=6;
-
-  u8 resourceAmount = harvestResourceFrom(resource, isMineral);
-  if (resourceAmount < returnamount)
+  u8 defaultHarvestAmount = isMineral ? 4 : 6;
+  u8 resourceAmount = harvestResourceFrom(resource, worker, isMineral);
+  if (resourceAmount < defaultHarvestAmount)
     chunkImageId += 1;  //Use depleted (smaller) chunk image
 
   if (resourceAmount > 0) {
@@ -175,5 +148,4 @@ void setResourceAmountCarried(CUnit *worker, u8 amountCarried, u32 chunkImageId,
 
   worker->worker.resourceCarryAmount = amountCarried;
   scbw::refreshConsole();
-
 }

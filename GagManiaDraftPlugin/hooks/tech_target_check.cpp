@@ -1,8 +1,8 @@
-//Source file for the Tech Target Check hook module.
+﻿//Source file for the Tech Target Check hook module.
 #include "tech_target_check.h"
-#include "../SCBW/api.h"
 #include <SCBW/scbwdata.h>
 #include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 //-------- Helper function declarations. Do NOT modify! --------//
 namespace {
@@ -17,7 +17,6 @@ namespace hooks {
 /// If successful, returns zero. If unsuccessful, returns the index of the
 /// appropriate error message string in stat_txt.tbl.
 u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId) {
-  //Default StarCraft behavior
 
   if (target->stasisTimer)
     return 900;         //Units in stasis can't be targeted.<0>
@@ -36,9 +35,9 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
         return 1327;    //Must target enemy units<0>
       if (Unit::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
-	  if (Unit::BaseProperty[target->id] & UnitProperty::Worker)
-		return 876;     //Invalid target.<0>
-      if (target->id == UnitId::vulture
+      if (Unit::BaseProperty[target->id] & UnitProperty::Worker)  //일꾼은 마컨 못하게 막음
+        return 876;     //Invalid target.<0>
+      if (target->id == UnitId::spider_mine
           || target->id == UnitId::larva
           || target->id == UnitId::egg
           || target->id == UnitId::cocoon
@@ -70,15 +69,14 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
 
     case TechId::Consume:
       if (Unit::BaseProperty[target->id] & UnitProperty::Building
-          //|| target->playerId != castingPlayer
-		  || !(scbw::isAlliedTo(castingPlayer,target->playerId))
-		  || !(scbw::isAlliedTo(target->playerId,castingPlayer))
-          //|| !(Unit::GroupFlags[target->id].isZerg)
+          || !scbw::isAlliedTo(target->playerId, castingPlayer)   //서로 동맹이면 컨슘 가능
+          || !scbw::isAlliedTo(castingPlayer, target->playerId)
+          //|| !(Unit::GroupFlags[target->id].isZerg)             //종족에 관계없이 컨슘 가능
           || target->id == UnitId::larva
-		  || target->id == UnitId::egg
-		  || target->id == UnitId::lurker_egg
-		  || target->id == UnitId::cocoon
-		  || target->id == UnitId::UnusedMiningPlatform)
+          || target->id == UnitId::egg                            //알 계열 유닛은 컨슘 불가능
+          || target->id == UnitId::lurker_egg
+          || target->id == UnitId::cocoon
+          || target->id == UNIT_KUKULZA_COCOON)
         return 897;     //Invalid target.<0>
       break;
   }

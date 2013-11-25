@@ -1,4 +1,4 @@
-#include "energy_regeneration.h"
+﻿#include "energy_regeneration.h"
 #include "max_unit_energy.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/scbwdata.h"
@@ -7,7 +7,7 @@
 
 /// Determines cloaking energy consumption.
 u16 getCloakingEnergyConsumption(const CUnit *unit) {
-  //Default StarCraft behavior
+
   if (unit->id == UnitId::TerranGhost
       || unit->id == UnitId::Hero_SarahKerrigan
       || unit->id == UnitId::Hero_InfestedKerrigan
@@ -16,13 +16,10 @@ u16 getCloakingEnergyConsumption(const CUnit *unit) {
       || unit->id == UnitId::Hero_AlexeiStukov)
     return 10;
   else if (unit->id == UnitId::TerranWraith
-           || unit->id == UnitId::Hero_TomKazansky
-           )
+           || unit->id == UnitId::Hero_TomKazansky)
     return 13;
   else if (unit->id == UnitId::scout)
-	  return 18;
-
-
+    return 18;  //스카웃 클로킹 시 에너지 소모
   else
     return 0;
 }
@@ -31,7 +28,7 @@ namespace hooks {
 
 /// This hook handles energy regeneration, as well as energy drain for cloaking.
 void regenerateEnergyHook(CUnit *unit) {
-  //Default StarCraft behavior
+
   using scbw::isCheatEnabled;
   using CheatFlags::TheGathering;
 
@@ -52,7 +49,9 @@ void regenerateEnergyHook(CUnit *unit) {
         unit->setSecondaryOrder(OrderId::Nothing2); //Supposedly, immediately decloaks the unit.
       return;
     }
-	if(unit->secondaryOrderId==OrderId::Cloak)unit->energy -= cloakingEnergyCost;
+    //Secondary order가 클로킹일 경우에만 에너지 소모
+    if (unit->secondaryOrderId == OrderId::Cloak)
+      unit->energy -= cloakingEnergyCost;
   }
   else {
     u16 maxEnergy;

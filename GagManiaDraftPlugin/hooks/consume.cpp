@@ -1,4 +1,4 @@
-//The source file for the Consume hook module.
+﻿//The source file for the Consume hook module.
 //This controls the effect of Consume.
 //To change the target unit conditions for using Consume, see
 //hooks/tech_target_check.cpp
@@ -20,7 +20,6 @@ namespace hooks {
 
 /// This function is called when a @p target is consumed by the @p caster.
 void consumeHitHook(CUnit *target, CUnit* caster) {
-  //Default StarCraft behavior
 
   //Don't proceed if the target does not exist.
   if (!target)
@@ -40,8 +39,14 @@ void consumeHitHook(CUnit *target, CUnit* caster) {
 
   //Add energy to the caster if the target is not a hallucination.
   if (!(target->status & UnitStatus::IsHallucination)) {
-    u16 energy = caster->energy + 12800; //50 energy
-	if(Unit::BaseProperty[target->id] & UnitProperty::Mechanical)energy = caster->energy + 6400;
+    u16 energy = caster->energy;
+
+    //기계 유닛을 컨슘하면 에너지를 더 많이 제공
+    if (Unit::BaseProperty[target->id] & UnitProperty::Mechanical)
+      energy += 19200;  //75 energy
+    else
+      energy += 12800;  //50 energy
+
     caster->energy = std::min(energy, caster->getMaxEnergy());
   }
 }
@@ -64,4 +69,3 @@ void incrementDeathScores(const CUnit *unit, u8 player) {
 }
 
 } //Unnamed namespace
-
