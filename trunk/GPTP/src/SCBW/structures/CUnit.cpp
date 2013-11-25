@@ -278,6 +278,13 @@ bool CUnit::isFrozen() const {
     || this->lockdownTimer || this->stasisTimer || this->maelstromTimer;
 }
 
+//Identical to function @ 0x00401210
+bool CUnit::isValidCaster() const {
+  assert(this);
+  return Unit::BaseProperty[this->id] & UnitProperty::Spellcaster
+    && !(this->status & UnitStatus::IsHallucination);
+}
+
 u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   using Unit::BaseProperty;
   assert(this);

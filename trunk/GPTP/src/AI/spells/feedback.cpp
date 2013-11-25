@@ -17,10 +17,10 @@ class FeedbackTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (!isTargetWorthHitting(target, caster))
         return false;
 
-      if (!(Unit::BaseProperty[target->id] & UnitProperty::Spellcaster))
+      if (!target->isValidCaster())
         return false;
 
-      if (target->status & (UnitStatus::IsHallucination | UnitStatus::GroundedBuilding))
+      if (target->status & UnitStatus::GroundedBuilding)
         return false;
 
       if (Unit::BaseProperty[target->id] & UnitProperty::Hero)
