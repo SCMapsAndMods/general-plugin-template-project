@@ -1,4 +1,4 @@
-#include "weapon_damage.h"
+﻿#include "weapon_damage.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
@@ -33,7 +33,7 @@ void weaponDamageHook(s32     damage,
                       s8      attackingPlayer,
                       s8      direction,
                       u8      dmgDivisor) {
-  //Default StarCraft behavior
+
   using scbw::isCheatEnabled;
   using CheatFlags::PowerOverwhelming;
 
@@ -42,7 +42,7 @@ void weaponDamageHook(s32     damage,
     return;
 
   if (isCheatEnabled(PowerOverwhelming)                           //If Power Overwhelming is enabled
-      && playerTable[target->playerId].type == PlayerType::Human)  //and the attacker is not a human player
+      && playerTable[target->playerId].type == PlayerType::Human) //인간 플레이어의 유닛이 맞을 때만 무적 치트 적용 (인공지능끼리는 무시)
     damage = 0;
 
   if (target->status & UnitStatus::IsHallucination)
@@ -58,8 +58,13 @@ void weaponDamageHook(s32     damage,
     damage -= d_matrix_reduceAmount;
     target->reduceDefensiveMatrixHp(d_matrix_reduceAmount);
   }
-  if(attacker->id==UnitId::firebat&&target&&weaponId==WeaponId::FlameThrower&&Unit::BaseProperty[target->id] & UnitProperty::Organic&&scbw::getUpgradeLevel(attacker->playerId,UpgradeId::UnusedUpgrade59))
-	  damage+=512;
+
+  //파이어뱃 파란불 업글 적용
+  if (attacker && attacker->id == UnitId::firebat
+      && weaponId == WeaponId::FlameThrower
+      && Unit::BaseProperty[target->id] & UnitProperty::Organic
+      && scbw::getUpgradeLevel(attacker->playerId, UPGRADE_FIREBAT_BLUE_FLAME))
+    damage += 512;  //데미지 +2
 
   const u8 damageType = Weapon::DamageType[weaponId];
 
@@ -69,27 +74,27 @@ void weaponDamageHook(s32     damage,
   if (Unit::ShieldsEnabled[target->id] && target->shields >= 256) {
     if (damageType != DamageType::IgnoreArmor) {
       s32 plasmaShieldUpg = scbw::getUpgradeLevel(target->playerId, UpgradeId::ProtossPlasmaShields) << 8;
-	
-	  if(target->id==UnitId::dragoon&&target->stimTimer==0){
-		  if(damage>=2560){
-			  damage=2560;
-		  isHardenedShieldsActivated=true;
-		  }
-	  }
+
+      //강화 보호막 적용
+      if (target->id == UnitId::dragoon && target->stimTimer == 0) {
+        if (damage > 2560)
+          damage = 2560;
+        isHardenedShieldsActivated = true;
+      }
 
       if (damage > plasmaShieldUpg) //Weird logic, Blizzard dev must have been sleepy
         damage -= plasmaShieldUpg;
       else
         damage = 128;
     }
-    shieldReduceAmount = std::min<s32>(damage, target->shields);
+    shieldReduceAmount = std::min(damage, target->shields);
     damage -= shieldReduceAmount;
   }
 
   //Apply armor
   if (damageType != DamageType::IgnoreArmor) {
     const s32 armorTotal = target->getArmor() << 8;
-    damage -= std::min<s32>(damage, armorTotal);
+    damage -= std::min(damage, armorTotal);
   }
 
   //Apply damage type/unit size factor
@@ -103,10 +108,15 @@ void weaponDamageHook(s32     damage,
 
   //Reduce shields (finally)
   if (shieldReduceAmount != 0) {
+    if (damageType != DamageType::Independent && target->shields != 0) {
+      if (isHardenedShieldsActivated)
+        target->sprite->createTopOverlay(378);  //강화 보호막 그래픽 효과 적용
+      else
+        createShieldOverlay(target, direction);
+    }
+    
+    //순서 바꿈 (실드가 0이 되는 순간에도 그래픽은 보이게)
     target->shields -= shieldReduceAmount;
-    if (damageType != DamageType::Independent && target->shields != 0)
-      if(!(isHardenedShieldsActivated))createShieldOverlay(target, direction);
-		if(isHardenedShieldsActivated)target->sprite->createTopOverlay(378);
   }
 
   //Update unit strength data (?)
@@ -116,20 +126,17 @@ void weaponDamageHook(s32     damage,
 
 } //hooks
 
-namespace{
+namespace {
 
 /**** Definitions of helper functions. Do NOT modify anything below! ****/
 
 //Creates the Plasma Shield flickering effect.
-const u32 Helper_CreateShieldOverlay  = 0x004E6140;
+//Identical to function @ 0x004E6140
 void createShieldOverlay(CUnit *unit, u32 attackDirection) {
-  __asm {
-    PUSHAD
-    MOV EAX, attackDirection
-    MOV ECX, unit
-    CALL Helper_CreateShieldOverlay
-    POPAD
-  }
+  const LO_Header* shield_lo = shieldOverlays[unit->sprite->mainGraphic->id];
+  u32 frameAngle = (attackDirection - 124) / 8 % 32;
+  Point8 offset = shield_lo->getOffset(unit->sprite->mainGraphic->direction, frameAngle);
+  unit->sprite->createOverlay(ImageId::ShieldOverlay, offset.x, offset.y, frameAngle);
 }
 
 //Somehow related to AI stuff; details unknown.

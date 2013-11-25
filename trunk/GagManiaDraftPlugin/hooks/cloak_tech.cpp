@@ -1,6 +1,7 @@
 ﻿#include "cloak_tech.h"
 #include "../SCBW/enumerations/UnitId.h"
 #include "../SCBW/enumerations/TechId.h"
+#include <definitions.h>
 
 namespace hooks {
 

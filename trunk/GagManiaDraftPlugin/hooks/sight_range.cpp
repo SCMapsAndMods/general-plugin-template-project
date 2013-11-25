@@ -1,4 +1,4 @@
-#include "sight_range.h"
+﻿#include "sight_range.h"
 #include <SCBW/enumerations.h>
 #include <SCBW/scbwdata.h>
 #include <SCBW/api.h>
@@ -16,7 +16,7 @@ namespace hooks {
 /// and Hallucination (but not when launching Nukes).
 /// Note: sight ranges cannot exceed 11, unless extended.
 u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
-  //Default StarCraft logic
+
   using scbw::getUpgradeLevel;
 
   //Check if the unit is a constructing building (exclude remorphing buildings)
@@ -35,8 +35,8 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
       if (getUpgradeLevel(unit->playerId, UpgradeId::OcularImplants))
         return 11;
       break;
-	case UnitId::science_vessel:
-		if (getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade48))
+	case UnitId::science_vessel:  //사이언스 베슬 시야업 적용
+		if (getUpgradeLevel(unit->playerId, UPGRADE_SCIENCE_VESSEL_SIGHT))
 			return 11;
 		break;
     case UnitId::overlord:

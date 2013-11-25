@@ -48,7 +48,7 @@ namespace hooks {
 
 /// Decides whether the @p target can recharge shields from the @p battery.
 bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
-  //Default StarCraft behavior
+
   using Unit::ShieldsEnabled;
   using Unit::GroupFlags;
   using Unit::MaxShieldPoints;
@@ -88,7 +88,6 @@ bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
 
 //The order process run by a unit when recharging shields
 void orderRechargeShieldsHook(CUnit *unit) {
-  //Default StarCraft behavior
 
   CUnit *battery = unit->orderTarget.unit;
 

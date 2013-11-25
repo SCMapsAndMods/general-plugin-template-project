@@ -1,12 +1,12 @@
-#include "../SCBW/api.h"
+ï»¿#include "../SCBW/api.h"
 #include "../SCBW/enumerations/WeaponId.h"
-#include "weapon_range.h"
 #include <cstdio>
 
-//-------- Helper functions --------//
 
 char buffer[128];
 
+//Returns the special damage multiplier factor for units that don't use the
+//"Damage Factor" property in weapons.dat.
 u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
   //Default StarCraft behavior
   if (unit->id == UnitId::firebat || unit->id == UnitId::gui_montag
@@ -19,127 +19,103 @@ u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
   return Weapon::DamageFactor[weaponId];
 }
 
-u16 getBaseWeaponDamageDisplayed(u8 weaponId, const CUnit *unit) {
-  //Default StarCraft behavior
-  const u8 damageFactor = getDamageFactorForTooltip(weaponId, unit);
-  return Weapon::DamageAmount[weaponId] * damageFactor;
-}
-
-u16 getBonusWeaponDamageDisplayed(u8 weaponId, const CUnit *unit) {
-  //Default StarCraft behavior
-  const u8 damageFactor = getDamageFactorForTooltip(weaponId, unit);
-  const u8 upgradeLevel = scbw::getUpgradeLevel(unit->playerId, Weapon::DamageUpgrade[weaponId]);
-  return Weapon::DamageBonus[weaponId] * damageFactor * upgradeLevel;
-}
-
+//Returns the C-string for the tooltip text of the unit's weapon icon.
+//This function is used for weapon icons and special icons.
 //Precondition: @p entryStrIndex is a stat_txt.tbl string index.
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrIndex) {
-  //Default StarCraft behavior
 
   const char *entryName = scbw::getStatTxtTblString(entryStrIndex);
   const char *damageStr = scbw::getStatTxtTblString(777);         //"Damage:"
 
   const u8 damageFactor = getDamageFactorForTooltip(weaponId, unit);
+  const u8 upgradeLevel = scbw::getUpgradeLevel(unit->playerId, Weapon::DamageUpgrade[weaponId]);
+  const u16 baseDamage = Weapon::DamageAmount[weaponId] * damageFactor;
+  const u16 bonusDamage = Weapon::DamageBonus[weaponId] * damageFactor * upgradeLevel;
 
-  const u16 baseDamage = getBaseWeaponDamageDisplayed(weaponId, unit);
-  const u16 bonusDamage = getBonusWeaponDamageDisplayed(weaponId, unit);
+  //ê³µê²©ë ¥ ì—…ê·¸ë ˆì´ë“œ
+  char bonusDamageStr[10] = "";
+  if (bonusDamage > 0)
+    sprintf_s(bonusDamageStr, sizeof(bonusDamageStr), "+%d", bonusDamage);
 
-  const u32 WeaponRange = hooks::getMaxWeaponRangeHook(unit,weaponId);
-  const u32 PlusRange = Weapon::MaxRange[weaponId];
+  //ëì— ë¶™ëŠ” ë¬¸ìžì—´ (ë°œí‚¤ë¦¬ + íŒŒì´ì–´ë±ƒ)
+  char appendStr[20] = "";
+  if (weaponId == WeaponId::HaloRockets)
+    sprintf_s(appendStr, sizeof(appendStr), " %s", scbw::getStatTxtTblString(1301));  //"per rocket"
+  else if (weaponId == WeaponId::FlameThrower
+           && scbw::getUpgradeLevel(unit->playerId, UPGRADE_FIREBAT_BLUE_FLAME))
+    sprintf_s(appendStr, sizeof(appendStr), "\x11(+4)\x4");
 
-  const char *Typecheck[5];
-  Typecheck[0]="Independent";
-  Typecheck[1]="ÆøÆÈÇü";
-  Typecheck[2]="Áøµ¿Çü";
-  Typecheck[3]="ÀÏ¹Ý";
-  Typecheck[4]="¹æ¾î·Â¹«½ÃÇü";
-
-
-  if (weaponId == WeaponId::HaloRockets) {
-    if (bonusDamage > 0) {
-      const char *perRocketStr = scbw::getStatTxtTblString(1301); //"per rocket"
-	  sprintf_s(buffer, sizeof(buffer), "%s\n\nÀ¯Çü: %s\n\n»ç°Å¸®: %d\n\n%s %d+%d %s",
-		  entryName, Typecheck[Weapon::DamageType[weaponId]],WeaponRange/32, damageStr, baseDamage, bonusDamage, perRocketStr);
-    }
-
-	else {
-		const char *perRocketStr = scbw::getStatTxtTblString(1301); //"per rocket"
-      sprintf_s(buffer, sizeof(buffer), "%s\n\nÀ¯Çü: %s\n\n»ç°Å¸®: %d\n\n%s %d %s",
-                entryName, Typecheck[Weapon::DamageType[weaponId]],WeaponRange/32, damageStr, baseDamage, perRocketStr);
-	}
-	  
-  }
-  else if (unit->id==UnitId::firebat&&weaponId == WeaponId::FlameThrower&&scbw::getUpgradeLevel(unit->playerId,UpgradeId::UnusedUpgrade59)) {
-    if (bonusDamage > 0)
-		sprintf_s(buffer, sizeof(buffer), "%s\n\nÀ¯Çü: %s\n\n»ç°Å¸®: %d\n\n%s %d+%d\x11(+4)\x4",
-                entryName, Typecheck[Weapon::DamageType[weaponId]],WeaponRange/32, damageStr, baseDamage, bonusDamage);
-    else
-      sprintf_s(buffer, sizeof(buffer), "%s\n\nÀ¯Çü: %s\n\n»ç°Å¸®: %d\n\n%s %d\x11(+4)\x4",
-                entryName, Typecheck[Weapon::DamageType[weaponId]],WeaponRange/32, damageStr, baseDamage);
-	   
-    }
-  else {
-	  if(PlusRange!=WeaponRange){
-if (bonusDamage > 0)
-      sprintf_s(buffer, sizeof(buffer), "%s\n\nÀ¯Çü: %s\n\n»ç°Å¸®: %d+%d\n\n%s %d+%d",
-                entryName, Typecheck[Weapon::DamageType[weaponId]],WeaponRange/32,(WeaponRange-PlusRange)/32, damageStr, baseDamage, bonusDamage);
-    else
-      sprintf_s(buffer, sizeof(buffer), "%s\n\nÀ¯Çü: %s\n\n»ç°Å¸®: %d+%d\n\n%s %d",
-                entryName, Typecheck[Weapon::DamageType[weaponId]],WeaponRange/32,(WeaponRange-PlusRange)/32, damageStr, baseDamage);
-		   
-	  }
-	  
-	  else {
-		  
-    if (bonusDamage > 0)
-      sprintf_s(buffer, sizeof(buffer), "%s\n\nÀ¯Çü:%s\n\n»ç°Å¸®:%d\n\n%s %d+%d",
-                entryName, Typecheck[Weapon::DamageType[weaponId]],WeaponRange/32, damageStr, baseDamage, bonusDamage);
-    else
-      sprintf_s(buffer, sizeof(buffer), "%s\n\nÀ¯Çü:%s\n\n»ç°Å¸®:%d\n\n%s %d",
-                entryName, Typecheck[Weapon::DamageType[weaponId]],WeaponRange/32, damageStr, baseDamage);
-	  }
+  //ê³µê²©ë ¥ ìœ í˜•
+  const char *damageTypeStr = "";
+  switch (Weapon::DamageType[weaponId]) {
+    case 0: damageTypeStr = "Independent"; break;
+    case 1: damageTypeStr = "í­ë°œí˜•"; break;
+    case 2: damageTypeStr = "ì§„ë™í˜•"; break;
+    case 3: damageTypeStr = "ì¼ë°˜"; break;
+    case 4: damageTypeStr = "ë°©ì–´ë ¥ ë¬´ì‹œ"; break;
   }
 
+  //ì‚¬ê±°ë¦¬
+  const u32 currentWeaponRange = unit->getMaxWeaponRange(weaponId);
+  const u32 baseWeaponRange = Weapon::MaxRange[weaponId];
+  char weaponRangeStr[10];
+
+  if (currentWeaponRange != baseWeaponRange)
+    sprintf_s(weaponRangeStr, sizeof(weaponRangeStr), "%d+%d",
+              baseWeaponRange, currentWeaponRange - baseWeaponRange);
+  else
+    sprintf_s(weaponRangeStr, sizeof(weaponRangeStr), "%d", baseWeaponRange);
+
+  sprintf_s(buffer, sizeof(buffer), "%s\n\nìœ í˜•: %s\n\nì‚¬ê±°ë¦¬: %d\n\n%s %d%s%s",
+            entryName, damageTypeStr, weaponRangeStr, damageStr, baseDamage, bonusDamageStr, appendStr);
 
   return buffer;
 }
 
-//-------- Actual hook functions --------//
-
 namespace hooks {
 
+//Returns the C-string for the tooltip text of the unit's weapon icon.
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
   return getWeaponTooltipString(weaponId, unit, Weapon::Label[weaponId]);
 }
 
+//Returns the C-string for the tooltip text of the unit's armor icon.
 const char* getArmorTooltipString(const CUnit *unit) {
-  //Default StarCraft behavior
-
-  const char *armorUpgradeName = scbw::getStatTxtTblString(Upgrade::Label[Unit::ArmorUpgrade[unit->id]]);
+  
+  const u16 labelId = Upgrade::Label[Unit::ArmorUpgrade[unit->id]];
+  const char *armorUpgradeName = scbw::getStatTxtTblString(labelId);
   const char *armorStr = scbw::getStatTxtTblString(778);          //"Armor:"
-  const char *sizecheck[4];
-  sizecheck[0]="Independent";
-  sizecheck[1]="¼ÒÇü";
-  sizecheck[2]="ÁßÇü";
-  sizecheck[3]="´ëÇü";
 
   const u8 baseArmor = Unit::ArmorAmount[unit->id];
   const u8 bonusArmor = unit->getArmorBonus();
 
+  //ë°©ì–´ë ¥ ì—…ê·¸ë ˆì´ë“œ
+  char bonusArmorStr[10] = "";
   if (bonusArmor > 0)
-	  sprintf_s(buffer, sizeof(buffer), "%s\n\nÅ©±â: %s\n\n%s %d+%d",
-	  armorUpgradeName, sizecheck[Unit::SizeType[unit->id]], armorStr, baseArmor, bonusArmor);
-  else
-    sprintf_s(buffer, sizeof(buffer), "%s\n\nÅ©±â: %s\n\n%s %d",
-              armorUpgradeName, sizecheck[Unit::SizeType[unit->id]], armorStr, baseArmor);
+    sprintf_s(bonusArmorStr, sizeof(bonusArmorStr), "+%d", bonusArmor);
+
+  //ìœ ë‹› í¬ê¸°
+  const char *unitSizeStr = "";
+  switch (Unit::SizeType[unit->id]) {
+    case 0: unitSizeStr = "Independent"; break;
+    case 1: unitSizeStr = "ì†Œí˜•"; break;
+    case 2: unitSizeStr = "ì¤‘í˜•"; break;
+    case 3: unitSizeStr = "ëŒ€í˜•"; break;
+  }
+
+  sprintf_s(buffer, sizeof(buffer), "%s\n\ní¬ê¸°: %s\n\n%s %d%s",
+            armorUpgradeName, unitSizeStr, armorStr, baseArmor, bonusArmorStr);
 
   return buffer;
 }
 
+
+//Returns the C-string for the tooltip text of the plasma shield icon.
 const char* getShieldTooltipString(const CUnit *unit) {
   //Default StarCraft behavior
 
-  const char *shieldUpgradeName = scbw::getStatTxtTblString(Upgrade::Label[UpgradeId::ProtossPlasmaShields]);
+  const u16 labelId = Upgrade::Label[UpgradeId::ProtossPlasmaShields];
+  const char *shieldUpgradeName = scbw::getStatTxtTblString(labelId);
   const char *shieldStr = scbw::getStatTxtTblString(779);         //"Shields:"
 
   const u8 shieldUpgradeLevel = scbw::getUpgradeLevel(unit->playerId, UpgradeId::ProtossPlasmaShields);
@@ -154,22 +130,25 @@ const char* getShieldTooltipString(const CUnit *unit) {
   return buffer;
 }
 
-const char* getSpecialTooltipString(u16 sourceUnitId, const CUnit *unit) {
+//Returns the C-string for the tooltip text of the Interceptor icon (Carriers),
+//Scarab icon (Reavers), Nuclear Missile icon (Nuclear Silos), and Spider Mine
+//icon (Vultures).
+const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
   //Default StarCraft behavior
 
-  if (sourceUnitId == UnitId::interceptor) {
+  if (iconUnitId == UnitId::interceptor) {
     return getWeaponTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
   }
 
-  if (sourceUnitId == UnitId::ProtossScarab) {
+  if (iconUnitId == UnitId::scarab) {
     return getWeaponTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
   }
 
-  if (sourceUnitId == UnitId::nuclear_missile) {
+  if (iconUnitId == UnitId::nuclear_missile) {
     return scbw::getStatTxtTblString(793);  //"Nukes"
   }
 
-  if (sourceUnitId == UnitId::spider_mine) {
+  if (iconUnitId == UnitId::spider_mine) {
     return getWeaponTooltipString(WeaponId::SpiderMines, unit, 794);  //"Spider Mines"
   }
 

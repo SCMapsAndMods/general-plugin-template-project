@@ -1,4 +1,4 @@
-//Source file for the Transfer Tech & Upgrades hook module.
+﻿//Source file for the Transfer Tech & Upgrades hook module.
 //This controls how technologies and upgrades are transferred when units are
 //passed from one player to another, either by triggers or casting Mind Control.
 #include "transfer_tech_upgrades.h"
@@ -40,7 +40,7 @@ const TechTransferData techTransferData[] = {
   //Protoss
   {UnitId::dragoon, TechId::UnusedTech36, TechId::None},
   {UnitId::high_templar, TechId::ArchonWarp, TechId::PsionicStorm, TechId::Hallucination, TechId::None},
-  {UnitId::scout,TechId::UnusedTech35, TechId::None},
+  {UnitId::scout, TECH_SCOUT_CLOAKING, TechId::None}, //스카웃 클로킹 추가
   {UnitId::arbiter, TechId::Recall, TechId::StasisField, TechId::None},
   {UnitId::corsair, TechId::DisruptionWeb, TechId::None},
   {UnitId::dark_templar, TechId::DarkArchonMeld, TechId::None},
@@ -56,13 +56,13 @@ const UpgradeTransferData upgradeTransferData[] = {
   //Terran
   {UnitId::marine, UpgradeId::U_238Shells, UpgradeId::None},
   {UnitId::ghost, UpgradeId::OcularImplants, UpgradeId::MoebiusReactor, UpgradeId::None},
-  {UnitId::firebat, UpgradeId::UnusedUpgrade59, UpgradeId::None},
+  {UnitId::firebat, UPGRADE_FIREBAT_BLUE_FLAME, UpgradeId::None}, //파이어뱃 파란불 업글 추가
   {UnitId::medic, UpgradeId::CaduceusReactor, UpgradeId::None},
   {UnitId::vulture, UpgradeId::IonThrusters, UpgradeId::None},
   {UnitId::goliath, UpgradeId::CharonBooster, UpgradeId::None},
-  {UnitId::science_vessel, UpgradeId::TitanReactor, UpgradeId::UnusedUpgrade48, UpgradeId::None},
+  {UnitId::science_vessel, UpgradeId::TitanReactor, UPGRADE_SCIENCE_VESSEL_SIGHT, UpgradeId::None}, //사이언스 베슬 시야업 추가
   {UnitId::wraith, UpgradeId::ApolloReactor, UpgradeId::None},
-  {UnitId::battlecruiser, UpgradeId::ColossusReactor, UpgradeId::None},
+  {UnitId::battlecruiser, UpgradeId::ColossusReactor, UPGRADE_BATTLECRUISER_SPEED, UpgradeId::None},  //배틀크루저 속업 추가
 
   //Zerg
   {UnitId::overlord, UpgradeId::VentralSacs, UpgradeId::Antennae, UpgradeId::None},
@@ -71,6 +71,7 @@ const UpgradeTransferData upgradeTransferData[] = {
   {UnitId::queen, UpgradeId::GameteMeiosis, UpgradeId::None},
   {UnitId::defiler, UpgradeId::MetasynapticNode, UpgradeId::None},
   {UnitId::ultralisk, UpgradeId::AnabolicSynthesis, UpgradeId::ChitinousPlating, UpgradeId::None},
+  {UnitId::lurker, UPGRADE_LURKER_RANGE, UpgradeId::None},  //러커 사거리업 추가
 
   //Protoss
   {UnitId::zealot, UpgradeId::LegEnhancements, UpgradeId::None},
@@ -80,9 +81,9 @@ const UpgradeTransferData upgradeTransferData[] = {
   {UnitId::reaver, UpgradeId::ScarabDamage, UpgradeId::ReaverCapacity, UpgradeId::None},
   {UnitId::shuttle, UpgradeId::GraviticDrive, UpgradeId::None},
   {UnitId::observer, UpgradeId::SensorArray, UpgradeId::GraviticBoosters, UpgradeId::None},
-  {UnitId::scout, UpgradeId::ApialSensors, UpgradeId::GraviticThrusters, UpgradeId::None},
+  {UnitId::scout, UpgradeId::ApialSensors, UpgradeId::GraviticThrusters, UPGRADE_SCOUT_ENERGY, UpgradeId::None},  //스카웃 에너지업 추가
   {UnitId::carrier, UpgradeId::CarrierCapacity, UpgradeId::None},
-  {UnitId::arbiter, UpgradeId::KhaydarinCore, UpgradeId::UnusedUpgrade46, UpgradeId::UnusedUpgrade50, UpgradeId::None},
+  {UnitId::arbiter, UpgradeId::KhaydarinCore, UPGRADE_ARBITER_ATTK_SPEED, UPGRADE_ARBITER_WPN_RANGE, UpgradeId::None}, //아비터 공속업, 사업 추가
   {UnitId::corsair, UpgradeId::ArgusJewel, UpgradeId::None},
 };
 
