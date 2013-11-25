@@ -43,10 +43,7 @@ class EmpShockwaveTargetFinderEnergyProc: public scbw::UnitFinderCallbackMatchIn
       if (!isTargetWorthHitting(target, caster))
         return false;
 
-      if (!(Unit::BaseProperty[target->id] & UnitProperty::Spellcaster))
-        return false;
-
-      if (target->status & UnitStatus::IsHallucination)
+      if (!target->isValidCaster())
         return false;
 
       if (!scbw::canWeaponTargetUnit(WeaponId::EMP_Shockwave, target, caster))

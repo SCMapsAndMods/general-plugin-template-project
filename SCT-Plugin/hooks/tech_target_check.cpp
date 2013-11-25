@@ -24,8 +24,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::Feedback:
       if (Unit::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
-      if (Unit::BaseProperty[target->id] & UnitProperty::Spellcaster
-          && !(target->status & UnitStatus::IsHallucination))
+      if (!target->isValidCaster())
         return 1330;    //Must target units with energy.<0>
       break;
 
