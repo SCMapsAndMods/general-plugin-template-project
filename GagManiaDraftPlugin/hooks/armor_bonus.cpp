@@ -1,4 +1,4 @@
-#include "armor_bonus.h"
+﻿#include "armor_bonus.h"
 #include "../SCBW/scbwdata.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
@@ -19,10 +19,15 @@ u8 getArmorBonusHook(const CUnit *unit) {
       }
     }
   }
-  if (Unit::BaseProperty[unit->id] & UnitProperty::Building && Unit::GroupFlags[unit->id].isTerran&&getUpgradeLevel(unit->playerId,UpgradeId::UnusedUpgrade58))
+
+  //테란 건물 방어력 업그레이드
+  if (Unit::BaseProperty[unit->id] & UnitProperty::Building
+      && Unit::GroupFlags[unit->id].isTerran
+      && getUpgradeLevel(unit->playerId, UPGRADE_TERRAN_BLDG_ARMOR))
   {
-	  armorUpg = 5;
+    armorUpg = 5;
   }
+
   return armorUpg + getUpgradeLevel(unit->playerId, Unit::ArmorUpgrade[unit->id]);
 }
 
