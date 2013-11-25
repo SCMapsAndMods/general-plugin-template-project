@@ -1,4 +1,4 @@
-#include "cloak_tech.h"
+﻿#include "cloak_tech.h"
 #include "../SCBW/enumerations/UnitId.h"
 #include "../SCBW/enumerations/TechId.h"
 
@@ -7,7 +7,6 @@ namespace hooks {
 //Returns the tech ID used by this unit for the cloaking spell.
 //For the cloaking energy consumption, see energy_regeneration.cpp
 u8 getCloakingTech(const CUnit *unit) {
-  //Default StarCraft behavior
 
   if (unit->id == UnitId::ghost
     || unit->id == UnitId::sarah_kerrigan
@@ -20,9 +19,9 @@ u8 getCloakingTech(const CUnit *unit) {
   if (unit->id == UnitId::wraith || unit->id == UnitId::tom_kazansky)
     return TechId::CloakingField;
 
-  if (unit->id == UnitId::scout) 
-	  return TechId::UnusedTech35;
-
+  //스카웃 클로킹 설정
+  if (unit->id == UnitId::scout)
+    return TECH_SCOUT_CLOAKING;
 
   return TechId::None;
 }
