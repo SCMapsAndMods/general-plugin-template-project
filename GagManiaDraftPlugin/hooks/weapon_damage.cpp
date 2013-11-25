@@ -42,7 +42,7 @@ void weaponDamageHook(s32     damage,
     return;
 
   if (isCheatEnabled(PowerOverwhelming)                           //If Power Overwhelming is enabled
-      && playerTable[attackingPlayer].type != PlayerType::Human)  //and the attacker is not a human player
+      && playerTable[target->playerId].type == PlayerType::Human)  //and the attacker is not a human player
     damage = 0;
 
   if (target->status & UnitStatus::IsHallucination)
@@ -58,27 +58,38 @@ void weaponDamageHook(s32     damage,
     damage -= d_matrix_reduceAmount;
     target->reduceDefensiveMatrixHp(d_matrix_reduceAmount);
   }
+  if(attacker->id==UnitId::firebat&&target&&weaponId==WeaponId::FlameThrower&&Unit::BaseProperty[target->id] & UnitProperty::Organic&&scbw::getUpgradeLevel(attacker->playerId,UpgradeId::UnusedUpgrade59))
+	  damage+=512;
 
   const u8 damageType = Weapon::DamageType[weaponId];
 
   //Reduce Plasma Shields...but not just yet
+  bool isHardenedShieldsActivated = false;
   s32 shieldReduceAmount = 0;
   if (Unit::ShieldsEnabled[target->id] && target->shields >= 256) {
     if (damageType != DamageType::IgnoreArmor) {
       s32 plasmaShieldUpg = scbw::getUpgradeLevel(target->playerId, UpgradeId::ProtossPlasmaShields) << 8;
+	
+	  if(target->id==UnitId::dragoon&&target->stimTimer==0){
+		  if(damage>=2560){
+			  damage=2560;
+		  isHardenedShieldsActivated=true;
+		  }
+	  }
+
       if (damage > plasmaShieldUpg) //Weird logic, Blizzard dev must have been sleepy
         damage -= plasmaShieldUpg;
       else
         damage = 128;
     }
-    shieldReduceAmount = std::min(damage, target->shields);
+    shieldReduceAmount = std::min<s32>(damage, target->shields);
     damage -= shieldReduceAmount;
   }
 
   //Apply armor
   if (damageType != DamageType::IgnoreArmor) {
     const s32 armorTotal = target->getArmor() << 8;
-    damage -= std::min(damage, armorTotal);
+    damage -= std::min<s32>(damage, armorTotal);
   }
 
   //Apply damage type/unit size factor
@@ -94,7 +105,8 @@ void weaponDamageHook(s32     damage,
   if (shieldReduceAmount != 0) {
     target->shields -= shieldReduceAmount;
     if (damageType != DamageType::Independent && target->shields != 0)
-      createShieldOverlay(target, direction);
+      if(!(isHardenedShieldsActivated))createShieldOverlay(target, direction);
+		if(isHardenedShieldsActivated)target->sprite->createTopOverlay(378);
   }
 
   //Update unit strength data (?)
@@ -104,17 +116,20 @@ void weaponDamageHook(s32     damage,
 
 } //hooks
 
-namespace {
+namespace{
 
 /**** Definitions of helper functions. Do NOT modify anything below! ****/
 
 //Creates the Plasma Shield flickering effect.
-//Identical to function @ 0x004E6140
+const u32 Helper_CreateShieldOverlay  = 0x004E6140;
 void createShieldOverlay(CUnit *unit, u32 attackDirection) {
-  const LO_Header* shield_lo = shieldOverlays[unit->sprite->mainGraphic->id];
-  u32 frameAngle = (attackDirection - 124) / 8 % 32;
-  Point8 offset = shield_lo->getOffset(unit->sprite->mainGraphic->direction, frameAngle);
-  unit->sprite->createOverlay(ImageId::ShieldOverlay, offset.x, offset.y, frameAngle);
+  __asm {
+    PUSHAD
+    MOV EAX, attackDirection
+    MOV ECX, unit
+    CALL Helper_CreateShieldOverlay
+    POPAD
+  }
 }
 
 //Somehow related to AI stuff; details unknown.

@@ -56,14 +56,15 @@ bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
   //Check target conditions
   if (target->playerId != battery->playerId   //Is not owned by the player
       || !(ShieldsEnabled[target->id])  //Does not have shields
-      || !(target->status & (UnitStatus::Completed | UnitStatus::IsBuilding)) //Is incomplete?
-      || target->status & UnitStatus::GroundedBuilding)                       //Is a building
+	  || !(target->status & UnitStatus::Completed)) 
+      //|| !(target->status & (UnitStatus::Completed | UnitStatus::IsBuilding)) //Is incomplete?
+      //|| target->status & UnitStatus::GroundedBuilding)                       //Is a building
     return false;
 
   //Check target race
   const GroupFlag &ugf = GroupFlags[target->id];
-  if (!ugf.isProtoss || (ugf.isTerran || ugf.isZerg)) //Is not a protoss unit
-    return false;
+  //if (!ugf.isProtoss || (ugf.isTerran || ugf.isZerg)) //Is not a protoss unit
+    //return false;
 
   //Check target shield amount
   if (target->shields >= (MaxShieldPoints[target->id] << 8)) //Already has max shields
@@ -96,19 +97,23 @@ void orderRechargeShieldsHook(CUnit *unit) {
     unit->orderToIdle();
     return;
   }
+  if (unit->status & UnitStatus::GroundedBuilding && orderToMoveToTarget(unit,battery)){
+	  unit->orderToIdle();
+	  return;
+  }
 
   switch (unit->mainOrderState) {
     //State 0: Order the unit to move towards the Shield Battery
     case 0:
-      if (orderToMoveToTarget(unit, battery))
-        unit->mainOrderState = 1;
+		if (orderToMoveToTarget(unit, battery))
+			unit->mainOrderState = 1;
       break;
 
     //State 1: Make the unit move until it is close enough and then stop.
     case 1:
       switch (getUnitMovementState(unit)) {
         case 0: //Unit has not reached target yet
-          if (unit->getDistanceToTarget(battery) > 128)
+          if (unit->getDistanceToTarget(battery) > 256)
             return;
         case 1: //Unit cannot move
           orderToHoldPosition(unit);

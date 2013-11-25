@@ -35,6 +35,10 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
       if (getUpgradeLevel(unit->playerId, UpgradeId::OcularImplants))
         return 11;
       break;
+	case UnitId::science_vessel:
+		if (getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade48))
+			return 11;
+		break;
     case UnitId::overlord:
       if (getUpgradeLevel(unit->playerId, UpgradeId::Antennae))
         return 11;
@@ -70,3 +74,4 @@ bool isRemorphingBuilding(const CUnit *unit) {
 }
 
 } //unnamed namespace
+

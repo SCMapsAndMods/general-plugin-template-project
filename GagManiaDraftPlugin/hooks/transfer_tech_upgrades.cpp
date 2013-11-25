@@ -38,7 +38,9 @@ const TechTransferData techTransferData[] = {
   {UnitId::lurker, TechId::LurkerAspect, TechId::None},
 
   //Protoss
+  {UnitId::dragoon, TechId::UnusedTech36, TechId::None},
   {UnitId::high_templar, TechId::ArchonWarp, TechId::PsionicStorm, TechId::Hallucination, TechId::None},
+  {UnitId::scout,TechId::UnusedTech35, TechId::None},
   {UnitId::arbiter, TechId::Recall, TechId::StasisField, TechId::None},
   {UnitId::corsair, TechId::DisruptionWeb, TechId::None},
   {UnitId::dark_templar, TechId::DarkArchonMeld, TechId::None},
@@ -54,10 +56,11 @@ const UpgradeTransferData upgradeTransferData[] = {
   //Terran
   {UnitId::marine, UpgradeId::U_238Shells, UpgradeId::None},
   {UnitId::ghost, UpgradeId::OcularImplants, UpgradeId::MoebiusReactor, UpgradeId::None},
+  {UnitId::firebat, UpgradeId::UnusedUpgrade59, UpgradeId::None},
   {UnitId::medic, UpgradeId::CaduceusReactor, UpgradeId::None},
   {UnitId::vulture, UpgradeId::IonThrusters, UpgradeId::None},
   {UnitId::goliath, UpgradeId::CharonBooster, UpgradeId::None},
-  {UnitId::science_vessel, UpgradeId::TitanReactor, UpgradeId::None},
+  {UnitId::science_vessel, UpgradeId::TitanReactor, UpgradeId::UnusedUpgrade48, UpgradeId::None},
   {UnitId::wraith, UpgradeId::ApolloReactor, UpgradeId::None},
   {UnitId::battlecruiser, UpgradeId::ColossusReactor, UpgradeId::None},
 
@@ -79,7 +82,7 @@ const UpgradeTransferData upgradeTransferData[] = {
   {UnitId::observer, UpgradeId::SensorArray, UpgradeId::GraviticBoosters, UpgradeId::None},
   {UnitId::scout, UpgradeId::ApialSensors, UpgradeId::GraviticThrusters, UpgradeId::None},
   {UnitId::carrier, UpgradeId::CarrierCapacity, UpgradeId::None},
-  {UnitId::arbiter, UpgradeId::KhaydarinCore, UpgradeId::None},
+  {UnitId::arbiter, UpgradeId::KhaydarinCore, UpgradeId::UnusedUpgrade46, UpgradeId::UnusedUpgrade50, UpgradeId::None},
   {UnitId::corsair, UpgradeId::ArgusJewel, UpgradeId::None},
 };
 
