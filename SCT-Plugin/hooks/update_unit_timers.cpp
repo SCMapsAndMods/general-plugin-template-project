@@ -73,6 +73,19 @@ void updateUnitTimersHook(CUnit* unit) {
         unit->setHp(unit->hitPoints + 4);
     }
 
+    //Interceptor repair
+    if ((unit->id == UnitId::carrier || unit->id == UnitId::gantrithor)
+        && !unit->isFrozen())
+    {
+      for (CUnit *interceptor = unit->carrier.inHangarChild;
+           interceptor; interceptor = interceptor->interceptor.prev)
+      {
+        if (interceptor->status & UnitStatus::Completed
+            && interceptor->hitPoints < Unit::MaxHitPoints[interceptor->id])
+          interceptor->setHp(interceptor->hitPoints + 256); //Repair 1 HP per frame
+      }
+    }
+
     //Energy regeneration
     //Call the function in StarCraft.exe; do NOT directly call the hook function.
     regenerateEnergy(unit);
