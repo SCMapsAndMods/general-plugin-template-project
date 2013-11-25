@@ -31,11 +31,13 @@ void regenerateEnergyHook(CUnit *unit) {
   using scbw::isCheatEnabled;
   using CheatFlags::TheGathering;
 
-  if (!(Unit::BaseProperty[unit->id] & UnitProperty::Spellcaster) //If the unit is not a spellcaster
-      || unit->status & UnitStatus::IsHallucination               //...or is a hallucination
-      || !(unit->status & UnitStatus::Completed)                  //...or is not fully constructed
-      )
-    return; //No need to regenerate energy
+  //If the unit is not a spellcaster, don't regenerate energy
+  if (!unit->isValidCaster())
+    return;
+  
+  //If the unit is not fully constructed, don't regenerate energy
+  if (!(unit->status & UnitStatus::Completed))
+    return;
 
   //Spend energy for cloaked units
   if (unit->status & (UnitStatus::Cloaked | UnitStatus::RequiresDetection)  //If the unit is cloaked
