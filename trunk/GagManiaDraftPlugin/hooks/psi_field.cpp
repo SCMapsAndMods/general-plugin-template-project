@@ -8,6 +8,9 @@ bool canMakePsiField(u16 unitId) {
   //Default StarCraft behavior
   if (unitId == UnitId::pylon)
     return true;
+  if (unitId == UnitId::shuttle)
+	  return true;
+
   return false;
 }
 
@@ -17,6 +20,13 @@ bool isReadyToMakePsiField(CUnit *unit) {
 
   if (unit->id == UnitId::pylon)
     return true;
+  if (unit->id == UnitId::shuttle) { 
+    for (int i = 0; i < Unit::SpaceProvided[unit->id]; ++i) { 
+      CUnit *loadedUnit = unit->getLoadedUnit(i);
+      if (loadedUnit && loadedUnit->id == UnitId::probe)
+        return true;
+    }
+  }
 
   return false;
 }

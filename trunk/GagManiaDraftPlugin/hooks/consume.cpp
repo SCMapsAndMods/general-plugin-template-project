@@ -41,6 +41,7 @@ void consumeHitHook(CUnit *target, CUnit* caster) {
   //Add energy to the caster if the target is not a hallucination.
   if (!(target->status & UnitStatus::IsHallucination)) {
     u16 energy = caster->energy + 12800; //50 energy
+	if(Unit::BaseProperty[target->id] & UnitProperty::Mechanical)energy = caster->energy + 6400;
     caster->energy = std::min(energy, caster->getMaxEnergy());
   }
 }
@@ -63,3 +64,4 @@ void incrementDeathScores(const CUnit *unit, u8 player) {
 }
 
 } //Unnamed namespace
+

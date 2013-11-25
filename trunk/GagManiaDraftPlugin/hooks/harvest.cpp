@@ -15,29 +15,73 @@ namespace hooks {
 u8 harvestResourceFrom(CUnit *resource, bool isMineral) {
   //Default StarCraft behavior
 
-  if (resource->building.resource.resourceAmount < 8) {
+	int returnamount=0;
+	if(isMineral)returnamount=4;
+	else returnamount=6;
+
+  if (resource->building.resource.resourceAmount < returnamount) {
     if (isMineral) {
+		 for(CUnit* harvestgay=*firstVisibleUnit;harvestgay;harvestgay=harvestgay->next)
+		{
+			if(harvestgay->worker.harvestTarget&&harvestgay->worker.harvestTarget==resource)
+			{
+				if(playerTable[harvestgay->playerId].race==PlayerRace::Zerg)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,59);
+				if(playerTable[harvestgay->playerId].race==PlayerRace::Terran)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,60);
+				if(playerTable[harvestgay->playerId].race==PlayerRace::Protoss)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,61);
+			}
+		}
       resource->remove();
+
       return (u8) resource->building.resource.resourceAmount;
     }
     else {
+		if(resource->building.resource.resourceAmount>0){
+		for(CUnit* harvestguy=*firstVisibleUnit;harvestguy;harvestguy=harvestguy->next)
+		{
+			if(harvestguy->worker.harvestTarget&&harvestguy->worker.harvestTarget==resource)
+			{
+				if(playerTable[harvestguy->playerId].race==PlayerRace::Zerg)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,20);
+				if(playerTable[harvestguy->playerId].race==PlayerRace::Terran)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,11);
+				if(playerTable[harvestguy->playerId].race==PlayerRace::Protoss)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,12);
+			}
+		}
+		}
       resource->building.resource.resourceAmount = 0;
-      return 2;
+      return 3;
     }
   }
   else {
-    resource->building.resource.resourceAmount -= 8;
+    resource->building.resource.resourceAmount -= returnamount;
     
     if (isMineral) {
       if (resource->building.resource.resourceAmount > 0)
         updateMineralPatchImage(resource);
-      else
+	  else {
+		  for(CUnit* harvestgay=*firstVisibleUnit;harvestgay;harvestgay=harvestgay->next)
+		{
+			if(harvestgay->worker.harvestTarget&&harvestgay->worker.harvestTarget==resource)
+			{
+				if(playerTable[harvestgay->playerId].race==PlayerRace::Zerg)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,59);
+				if(playerTable[harvestgay->playerId].race==PlayerRace::Terran)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,60);
+				if(playerTable[harvestgay->playerId].race==PlayerRace::Protoss)scbw::showErrorMessageWithSfx(harvestgay->playerId,1701,61);
+			}
+		}
         resource->remove();
+	  }
     }
-    else if (resource->building.resource.resourceAmount < 8)
-      scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
-    
-    return 8;
+	else if ((resource->building.resource.resourceAmount-returnamount)<=0){
+		for(CUnit* harvestguy=*firstVisibleUnit;harvestguy;harvestguy=harvestguy->next)
+		{
+			if(harvestguy->worker.harvestTarget&&harvestguy->worker.harvestTarget==resource)
+			{
+				if(playerTable[harvestguy->playerId].race==PlayerRace::Zerg)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,20);
+				if(playerTable[harvestguy->playerId].race==PlayerRace::Terran)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,11);
+				if(playerTable[harvestguy->playerId].race==PlayerRace::Protoss)scbw::showErrorMessageWithSfx(harvestguy->playerId,875,12);
+			}
+		}
+      //scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
+	}
+    return (u8) returnamount;
   }
 }
 
@@ -61,8 +105,12 @@ void transferResourceToWorkerHook(CUnit *worker, CUnit *resource) {
   else
     return;
 
+  int returnamount=0;
+	if(isMineral)returnamount=4;
+	else returnamount=6;
+
   u8 resourceAmount = harvestResourceFrom(resource, isMineral);
-  if (resourceAmount < 8)
+  if (resourceAmount < returnamount)
     chunkImageId += 1;  //Use depleted (smaller) chunk image
 
   if (resourceAmount > 0) {
@@ -127,4 +175,5 @@ void setResourceAmountCarried(CUnit *worker, u8 amountCarried, u32 chunkImageId,
 
   worker->worker.resourceCarryAmount = amountCarried;
   scbw::refreshConsole();
+
 }

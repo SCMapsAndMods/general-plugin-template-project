@@ -32,7 +32,8 @@ bool isEggUnitHook(u16 unitId) {
 
   if (unitId == UnitId::egg
       || unitId == UnitId::cocoon
-      || unitId == UnitId::lurker_egg)
+      || unitId == UnitId::lurker_egg
+	  || unitId == UnitId::UnusedMiningPlatform)
     return true;
 
   return false;
@@ -42,7 +43,7 @@ bool isEggUnitHook(u16 unitId) {
 bool isRallyableEggUnitHook(u16 unitId) {
   //Default StarCraft behavior
 
-  if (unitId == UnitId::cocoon || unitId == UnitId::lurker_egg)
+	if (unitId == UnitId::cocoon || unitId == UnitId::lurker_egg || unitId == UnitId::UnusedMiningPlatform)
     return false;
 
   return true;
@@ -62,6 +63,9 @@ u16 getUnitMorphEggTypeHook(u16 unitId) {
   if (unitId == UnitId::hydralisk)
     return UnitId::lurker_egg;
 
+  if (unitId == UnitId::Hero_KukulzaMutalisk)
+	  return UnitId::UnusedMiningPlatform;
+
   return UnitId::None;
 }
 
@@ -76,6 +80,9 @@ u16 getCancelMorphRevertTypeHook(const CUnit *eggUnit) {
   if (eggUnit->id == UnitId::lurker_egg)
     return UnitId::hydralisk;
 
+  if (eggUnit->id == UnitId::UnusedMiningPlatform)
+	  return UnitId::Hero_KukulzaMutalisk;
+
   return UnitId::None;  //Default (no revert for larvae)
 }
 
@@ -89,7 +96,7 @@ s16 getUnitVerticalOffsetOnBirth(const CUnit *unit) {
     return 0;
 
   //No offset, since the morphed unit should stay where it is
-  if (unit->displayedUnitId == UnitId::cocoon)
+  if (unit->displayedUnitId == UnitId::cocoon||unit->displayedUnitId == UnitId::UnusedMiningPlatform)
     return 0;
 
   //Hovering units (?) float 7 pixels above ground

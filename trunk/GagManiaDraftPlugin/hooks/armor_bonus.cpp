@@ -19,6 +19,10 @@ u8 getArmorBonusHook(const CUnit *unit) {
       }
     }
   }
+  if (Unit::BaseProperty[unit->id] & UnitProperty::Building && Unit::GroupFlags[unit->id].isTerran&&getUpgradeLevel(unit->playerId,UpgradeId::UnusedUpgrade58))
+  {
+	  armorUpg = 5;
+  }
   return armorUpg + getUpgradeLevel(unit->playerId, Unit::ArmorUpgrade[unit->id]);
 }
 

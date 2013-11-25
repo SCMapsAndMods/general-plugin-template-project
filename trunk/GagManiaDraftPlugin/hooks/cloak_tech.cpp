@@ -20,6 +20,10 @@ u8 getCloakingTech(const CUnit *unit) {
   if (unit->id == UnitId::wraith || unit->id == UnitId::tom_kazansky)
     return TechId::CloakingField;
 
+  if (unit->id == UnitId::scout) 
+	  return TechId::UnusedTech35;
+
+
   return TechId::None;
 }
 

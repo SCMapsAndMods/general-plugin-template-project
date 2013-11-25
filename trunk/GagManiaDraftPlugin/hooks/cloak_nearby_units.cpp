@@ -16,7 +16,7 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
   //Default StarCraft behavior
 
   //Use the unit's air weapon range
-  const unsigned int cloakRadius = cloaker->getMaxWeaponRange(Unit::AirWeapon[cloaker->id]);
+  const unsigned int cloakRadius = 160;//cloaker->getMaxWeaponRange(Unit::AirWeapon[cloaker->id]);
 
   //Run the unit finder
   int left    = cloaker->getX() - cloakRadius;
@@ -31,12 +31,20 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
   for (int i = 0; i < unitsToCloak.getUnitCount(); ++i) {
     CUnit *unit = unitsToCloak.getUnit(i);
     //Don't cloak fellow Arbiters and Nukes
-    if (unit->id == UnitId::arbiter
-        || unit->id == UnitId::Hero_Danimoth
-        || unit->id == UnitId::nuclear_missile)
+	if (unit->secondaryOrderId==OrderId::CloakNearbyUnits) 
+		continue;
+
+    if (unit->id == UnitId::nuclear_missile)
       continue;
+
+	if (unit->status & UnitStatus::DoodadStatesThing)
+		continue;
+
+	if (unit->building.pylonAura)
+		continue;
+	
     //Don't cloak buildings and neutral accessories (?)
-    if (Unit::BaseProperty[unit->id] & (UnitProperty::Building | UnitProperty::NeutralAccessories))
+    if (Unit::BaseProperty[unit->id] & (UnitProperty::NeutralAccessories))
       continue;
     //Hallucinations are not affected
     if (unit->status & UnitStatus::IsHallucination)
@@ -46,7 +54,7 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
       continue;
 
     //Only cloak units owned by the same player
-    if (cloaker->playerId != unit->playerId)
+	if (!(scbw::isAlliedTo(unit->playerId,cloaker->playerId)&&scbw::isAlliedTo(cloaker->playerId,unit->playerId)))
       continue;
     
     //Distance check
@@ -62,6 +70,7 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
 
   if (needsButtonRefresh)
     scbw::refreshConsole();
+
 }
 
 } //hooks
@@ -85,5 +94,6 @@ void secondaryOrder_Cloak(CUnit *unit) {
     *firstBurrowedUnit = unit;
 
     scbw::refreshConsole();
+
   }
 }

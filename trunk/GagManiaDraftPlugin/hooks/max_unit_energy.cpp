@@ -9,12 +9,12 @@ namespace hooks {
 /// Return the amount of maximum energy that a unit can have.
 /// Note: 1 energy displayed in-game equals 256 energy.
 u16 getUnitMaxEnergyHook(const CUnit* const unit) {
-  //Default StarCraft behavior
+ //Default StarCraft behavior
   using scbw::getUpgradeLevel;
   if (Unit::BaseProperty[unit->id] & UnitProperty::Hero)
     return 64000; //250
 
-  switch (unit->id) {
+ switch (unit->id) {
     case UnitId::science_vessel:
       if (getUpgradeLevel(unit->playerId, UpgradeId::TitanReactor))
         return 64000; //250
@@ -47,6 +47,10 @@ u16 getUnitMaxEnergyHook(const CUnit* const unit) {
       if (getUpgradeLevel(unit->playerId, UpgradeId::KhaydarinCore))
         return 64000; //250
       break;
+	case UnitId::scout:
+		if (getUpgradeLevel(unit->playerId, UpgradeId::UnusedUpgrade57))
+        return 64000; //250
+      break;
     case UnitId::corsair:
       if (getUpgradeLevel(unit->playerId, UpgradeId::ArgusJewel))
         return 64000; //250
@@ -59,9 +63,7 @@ u16 getUnitMaxEnergyHook(const CUnit* const unit) {
       if (getUpgradeLevel(unit->playerId, UpgradeId::ArgusTalisman))
         return 64000; //250
       break;
-  }
-
+ }
   return 51200; //200
 }
-
 } //hooks

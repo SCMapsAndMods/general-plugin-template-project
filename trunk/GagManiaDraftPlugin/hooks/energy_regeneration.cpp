@@ -19,6 +19,10 @@ u16 getCloakingEnergyConsumption(const CUnit *unit) {
            || unit->id == UnitId::Hero_TomKazansky
            )
     return 13;
+  else if (unit->id == UnitId::scout)
+	  return 18;
+
+
   else
     return 0;
 }
@@ -48,7 +52,7 @@ void regenerateEnergyHook(CUnit *unit) {
         unit->setSecondaryOrder(OrderId::Nothing2); //Supposedly, immediately decloaks the unit.
       return;
     }
-    unit->energy -= cloakingEnergyCost;
+	if(unit->secondaryOrderId==OrderId::Cloak)unit->energy -= cloakingEnergyCost;
   }
   else {
     u16 maxEnergy;
