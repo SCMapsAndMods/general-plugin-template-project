@@ -144,6 +144,13 @@ bool isFrozen() const;
 
 Checks if the unit is unpowered / lockdowned / stasised / maelstromed.
 
+== isValidCaster ==
+{{{
+bool isValidCaster() const;
+}}}
+
+Checks if the unit is a spellcaster (has energy) and not a hallucination.
+
 == getDistanceToTarget ==
 {{{
 u32 getDistanceToTarget(const CUnit *target) const;
