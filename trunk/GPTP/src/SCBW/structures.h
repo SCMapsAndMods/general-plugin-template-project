@@ -337,17 +337,18 @@ struct AI_Main {
   u8  AI_Attacks;
   u32 AI_LastNukeTime;
   struct {
-    u16 isSecureFinished  : 1;
-    u16 isTownStarted     : 1;
-    u16 isDefaultBuildOff : 1;
-    u16 isTransportsOff   : 1;
-    u16 isFarmsNotimingOn : 1;
-    u16 isUseMapSettings  : 1;
-    u16 flag_0x40         : 1;
-    u16 spreadCreep       : 1;
-    u16 flag_0x100        : 2;
-    u16 bUpgradesFinished : 1;
-    u16 bTargetExpansion  : 1;
+    u16 isSecureFinished    : 1;
+    u16 isTownStarted       : 1;
+    u16 isDefaultBuildOff   : 1;
+    u16 isTransportsOff     : 1;
+    u16 isFarmsNotimingOn   : 1;
+    u16 isUseMapSettings    : 1;
+    u16 flag_0x40           : 1;
+    u16 spreadCreep         : 1;
+    u16 flag_0x100          : 1;
+    u16 hasStrongestGndArmy : 1;  //Set if the AI's ground army is stronger than the total strength of the strongest enemy force
+    u16 bUpgradesFinished   : 1;
+    u16 bTargetExpansion    : 1;
   } AI_Flags;
   u16 AI_PanicBlock;
   u16 AI_MaxForce;
