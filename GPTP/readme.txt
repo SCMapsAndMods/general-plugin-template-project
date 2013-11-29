@@ -1,4 +1,4 @@
-General Plugin Template Project v2.38
+General Plugin Template Project v2.39
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -34,6 +34,10 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 == Changes ==
 
 For the full changelog, see http://code.google.com/p/gptp/wiki/Changelog
+
+v2.39
+ * Added CUnit::isValidCaster().
+ * Fixed a bug that prevented casting Feedback on spellcasting units.
 
 v2.38
  + New hook modules
