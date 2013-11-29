@@ -1,5 +1,9 @@
 #summary Changelog of GPTP
 
+= v2.39 =
+ * Added CUnit::isValidCaster().
+ * Fixed a bug that prevented casting Feedback on spellcasting units.
+
 = v2.38 =
 
  * New hook modules
