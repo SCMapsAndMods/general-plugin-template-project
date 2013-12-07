@@ -15,6 +15,7 @@ int getNumberOfUnitType(const CUnit *unit, u16 unitId, bool ignoreIncomplete);
 namespace hooks {
 
 //Checks if @p unitId is a building that can be morphed from another building.
+//Note: This hook affects the behavior of CUnit::isRemorphingBuilding().
 bool isMorphedBuildingHook(u16 unitId) {
   //Default StarCraft behavior
 

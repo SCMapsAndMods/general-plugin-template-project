@@ -7,7 +7,7 @@ namespace {
 
 //-------- isMorphingBuilding() --------//
 
-void __declspec(naked) isMorphingBuildingWrapper() {
+void __declspec(naked) isRemorphingBuildingWrapper() {
   static CUnit *unit;
   __asm {
     PUSHAD
@@ -15,7 +15,9 @@ void __declspec(naked) isMorphingBuildingWrapper() {
     MOV unit, EAX
   }
 
-  if (hooks::isMorphingBuildingHook(unit)) {
+  if (!(unit->status & UnitStatus::Completed)
+      && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot]))
+  {
     __asm {
       POPAD
       MOV EAX, 1
@@ -217,7 +219,9 @@ void __declspec(naked) isMorphedBuildingWrapper_CancelZergBuilding() {
     MOV unit, EBX
   }
 
-  if (hooks::isMorphingBuildingHook(unit)) {
+  if (!(unit->status & UnitStatus::Completed)
+      && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot]))
+  {
     __asm {
       POPAD
       MOV EAX, EBX
@@ -315,10 +319,12 @@ void __declspec(naked) getMorphBuildingTypeCountWrapper_AI_ManageBases() {
 
 } //unnamed namespace
 
+extern const u32 Func_IsRemorphingBuilding;
+
 namespace hooks {
 
 void injectBuildingMorphHooks() {
-  jmpPatch(isMorphingBuildingWrapper, 0x0045CD00);
+  jmpPatch(isRemorphingBuildingWrapper, Func_IsRemorphingBuilding);
   jmpPatch(isMorphedBuildingWrapper_ConsoleProgressBarText, 0x00426AA2);
   jmpPatch(isMorphedBuildingWrapper_AI_MorphBehavior,       0x0043505F);
   jmpPatch(isMorphedBuildingWrapper_ConsoleWireFrameUpdate, 0x00456911);
@@ -330,11 +336,6 @@ void injectBuildingMorphHooks() {
   jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetWaitBuildUnitCount, 0x00433286);
   jmpPatch(getMorphBuildingTypeCountWrapper_AI_GetUnitCount, 0x004334D9);
   jmpPatch(getMorphBuildingTypeCountWrapper_AI_ManageBases, 0x00436439);
-}
-
-bool isMorphingBuildingHook(const CUnit *unit) {
-  return !(unit->status & UnitStatus::Completed)
-    && hooks::isMorphedBuildingHook(unit->buildQueue[unit->buildQueueSlot]);
 }
 
 } //hooks
