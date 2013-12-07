@@ -1,5 +1,4 @@
 #include "unit_morph.h"
-#include "building_morph.h"
 #include <hook_tools.h>
 #include <SCBW/api.h>
 #include <cassert>
@@ -213,7 +212,7 @@ void __fastcall cancelUnitWrapper(CUnit *unit) {
 
 s32 getRemainingBuildTimePctHook(const CUnit *unit) {
   u16 unitId = unit->id;
-  if (hooks::isEggUnitHook(unitId) || hooks::isMorphingBuildingHook(unit))
+  if (hooks::isEggUnitHook(unitId) || unit->isRemorphingBuilding())
     unitId = unit->buildQueue[unit->buildQueueSlot];
 
   return 100 * (Unit::TimeCost[unitId] - unit->remainingBuildTime) / Unit::TimeCost[unitId];

@@ -285,6 +285,22 @@ bool CUnit::isValidCaster() const {
     && !(this->status & UnitStatus::IsHallucination);
 }
 
+extern const u32 Func_IsRemorphingBuilding = 0x0045CD00;
+bool CUnit::isRemorphingBuilding() const {
+  static Bool32 result;
+  assert(this);
+
+  __asm {
+    PUSHAD
+    MOV EAX, this
+    CALL Func_IsRemorphingBuilding
+    MOV result, EAX
+    POPAD
+  }
+
+  return result != 0;
+}
+
 u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   using Unit::BaseProperty;
   assert(this);
