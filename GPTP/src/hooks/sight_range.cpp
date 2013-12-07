@@ -3,12 +3,6 @@
 #include <SCBW/scbwdata.h>
 #include <SCBW/api.h>
 
-namespace {
-/// Helper function: checks if the unit is a building morphing into another building.
-/// Logically equivalent to the SCBW function @ 0x0045CD00
-bool isRemorphingBuilding(const CUnit *unit);
-} //unnamed namespace
-
 namespace hooks {
 
 /// Returns the modified sight range of the unit, measured in matrices.
@@ -22,7 +16,7 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
   //Check if the unit is a constructing building (exclude remorphing buildings)
   if (unit->status & UnitStatus::GroundedBuilding
       && !(unit->status & UnitStatus::Completed)
-      && !isRemorphingBuilding(unit))
+      && !unit->isRemorphingBuilding())
     return 4;
 
   //Check if the unit is blinded (don't bother if this is for spellcasting)
@@ -54,19 +48,3 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
 }
 
 } //hooks
-
-namespace {
-/**** Definitions of helper functions. Do not edit anything below this! ****/
-
-bool isRemorphingBuilding(const CUnit *unit) {
-  if (unit->status & UnitStatus::Completed)
-    return false;
-  u16 firstQueuedUnit = unit->buildQueue[unit->buildQueueSlot];
-  return firstQueuedUnit == UnitId::lair
-         || firstQueuedUnit == UnitId::hive
-         || firstQueuedUnit == UnitId::greater_spire
-         || firstQueuedUnit == UnitId::spore_colony
-         || firstQueuedUnit == UnitId::sunken_colony;
-}
-
-} //unnamed namespace
