@@ -17,7 +17,6 @@ namespace hooks {
 //Checks if @p unitId is a building that can be morphed from another building.
 //Note: This hook affects the behavior of CUnit::isRemorphingBuilding().
 bool isMorphedBuildingHook(u16 unitId) {
-  //Default StarCraft behavior
 
   if (unitId == UnitId::lair
       || unitId == UnitId::hive
@@ -35,7 +34,6 @@ bool isMorphedBuildingHook(u16 unitId) {
 //For example, Greater Spires are counted as Spires, so that the AI would not
 //try to rebuild another Spire after morphing one into a Greater Spire.
 int getMorphBuildingTypeCountHook(const CUnit *unit, u16 unitId, bool ignoreIncomplete) {
-  //Default StarCraft behavior
 
   int unitCount = getNumberOfUnitType(unit, unitId, ignoreIncomplete);
 

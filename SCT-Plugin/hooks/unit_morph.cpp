@@ -8,16 +8,10 @@ namespace hooks {
 
 //Check if @p unit can morph into @p morphUnitId.
 bool unitCanMorphHook(const CUnit *unit, u16 morphUnitId) {
-  //Default StarCraft behavior
 
-  if (unit->id == UnitId::hydralisk) {
-    if (morphUnitId == UnitId::lurker
-        && unit->canUseTech(TechId::LurkerAspect, *ACTIVE_NATION_ID) == 1) {
-      return true;
-    }
-  }
-
-  if (unit->id == UnitId::larva || unit->id == UnitId::mutalisk) {
+  if (unit->id == UnitId::larva || unit->id == UnitId::mutalisk
+      || unit->id == UnitId::hydralisk)
+  {
     if (unit->canBuild(morphUnitId, *ACTIVE_NATION_ID) == 1) {
       return true;
     }
