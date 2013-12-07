@@ -28,6 +28,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\n- Recharge Shields: overcharge, +distance, +efficiency"
     "\n- Improved weapon accuracy for Lurkers and Vultures"
     "\n- Improved Interceptor repair"
+    "\n- Hydralisk Den can morph into Deep Warren"
     "\n"
     "\n[Tech and Upgrades]"
     "\n- Stim Packs: 20HP cost for Fiends, add effect overlay"
