@@ -22,7 +22,8 @@ bool isMorphedBuildingHook(u16 unitId) {
       || unitId == UnitId::hive
       || unitId == UnitId::greater_spire
       || unitId == UnitId::sunken_colony
-      || unitId == UnitId::spore_colony)
+      || unitId == UnitId::spore_colony
+      || unitId == UNIT_DEEP_WARREN)
     return true;
 
   return false;
@@ -51,6 +52,10 @@ int getMorphBuildingTypeCountHook(const CUnit *unit, u16 unitId, bool ignoreInco
 
     case UnitId::spire:
       unitCount += getNumberOfUnitType(unit, UnitId::greater_spire, ignoreIncomplete);
+      break;
+
+    case UnitId::hydralisk_den:
+      unitCount += getNumberOfUnitType(unit, UNIT_DEEP_WARREN, ignoreIncomplete);
       break;
   }
 
