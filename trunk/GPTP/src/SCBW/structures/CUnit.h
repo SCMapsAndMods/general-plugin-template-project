@@ -95,6 +95,10 @@ struct CUnit {
   /// Checks if the unit is a spellcaster (has energy) and not a hallucination.
   bool isValidCaster() const;
 
+  /// Check if the unit is a remorphing building (i.e. is a Lair, Hive,
+  /// Greater Spire, Sunken or Spore Colony under construction).
+  bool isRemorphingBuilding() const;
+
   /// Returns the distance between this unit and the @p target, taking unit
   /// collision size in units.dat into account.
   /// Internally, this function uses scbw::getDistanceFast().

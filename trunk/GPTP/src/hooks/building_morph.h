@@ -7,7 +7,4 @@ int getMorphBuildingTypeCountHook(const CUnit *unit, u16 unitId, bool ignoreInco
 
 void injectBuildingMorphHooks();
 
-//Wrapper for the hook of isMorphingBuilding()
-bool isMorphingBuildingHook(const CUnit *unit);
-
 } //hooks
