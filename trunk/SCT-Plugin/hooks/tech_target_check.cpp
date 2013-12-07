@@ -52,14 +52,16 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
         return 877;     //Unable to target structure.<0>
       break;
 
+    case TECH_OCULAR_IMPLANTS:
+      if (target->isBlind)
+        return 1569;    //Target already has Ocular Implants.<0>
+      //Continue to building check
+
     case TechId::DefensiveMatrix:
     case TechId::Irradiate:
     case TechId::Restoration:
-    case TechId::OpticalFlare:
       if (Unit::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
-      if (target->isBlind)
-        return 1569;    //Target already has Ocular Implants.<0>
       break;
 
     case TechId::Infestation:
