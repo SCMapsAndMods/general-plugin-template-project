@@ -9,6 +9,7 @@
 
 //Custom plugin stuff
 #define UNIT_FIEND              32
+#define UNIT_DEEP_WARREN        145
 
 #define UPGRADE_THERMAL_SENSORS 20
 #define UPGRADE_PARTICLE_FILTER 35
