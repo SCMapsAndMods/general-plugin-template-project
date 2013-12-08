@@ -37,7 +37,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\n- Consume: Prevent using on Broodlings"
     "\n- First Aid Packs upgrade: Terran infantry HP regen"
     "\n- Energy upgrades provide +25% energy regeneration"
-    "\n- Ocular Implants spell: +2 sight range, +1 attack range"
+    "\n- Ocular Implants spell: +2 sight range, +1 weapon / spell range"
     "\n- Sight range upgrades: Thermal Sensors, Prescience, Antennae, Sensor Array"
     "\n- Particle Filter upgrade: Change Nexus Cannon attack graphic"
     "\n"
