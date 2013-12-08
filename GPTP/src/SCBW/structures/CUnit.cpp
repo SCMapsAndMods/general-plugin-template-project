@@ -362,11 +362,11 @@ u8 CUnit::getSeekRange() const {
 }
 
 extern const u32 Func_GetSightRange = 0x004E5B40;
-u32 CUnit::getSightRange(bool applyStatusEffects) const {
+u32 CUnit::getSightRange(bool isForSpellCasting) const {
   assert(this);
 
   static u32 sightRange;
-  Bool32 ignoreStatusEffects = (applyStatusEffects ? 0 : 1);
+  Bool32 ignoreStatusEffects = (isForSpellCasting ? 0 : 1);
   __asm {
     PUSHAD
     PUSH ignoreStatusEffects
