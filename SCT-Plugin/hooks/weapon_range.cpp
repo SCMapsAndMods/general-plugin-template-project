@@ -65,7 +65,7 @@ u8 getSeekRangeHook(const CUnit *unit) {
   }
 
   //Added: Ocular Implants adds a flat +1 seek range
-  if (unit->isBlind)
+  if (unit->isBlind || unit->subunit && unit->subunit->isBlind)
     bonusAmount += 1;
 
   return Unit::SeekRange[unitId] + bonusAmount;
@@ -120,7 +120,8 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
   }
 
   //Added: Ocular Implants adds a flat +32 weapon range (to ranged units only)
-  if (unit->isBlind && Weapon::MaxRange[weaponId] >= 64)
+  if ((unit->isBlind || unit->subunit && unit->subunit->isBlind)
+      && Weapon::MaxRange[weaponId] >= 64)
     bonusAmount += 32;
 
   return Weapon::MaxRange[weaponId] + bonusAmount;
