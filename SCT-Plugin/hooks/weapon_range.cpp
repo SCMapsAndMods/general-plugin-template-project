@@ -27,6 +27,10 @@ u8 getSeekRangeHook(const CUnit *unit) {
       && unit->mainOrderId != OrderId::HoldPosition2)
     return 0;
 
+  //Arbiter seek range is unaffected by upgrades / Ocular Implants
+  if (unitId == UnitId::arbiter || unitId == UnitId::danimoth)
+    return Unit::SeekRange[unitId];
+
   u8 bonusAmount = 0;
   switch (unitId) {
     case UnitId::marine:
