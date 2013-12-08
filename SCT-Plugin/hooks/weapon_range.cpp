@@ -81,6 +81,13 @@ u8 getSeekRangeHook(const CUnit *unit) {
 u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
   using scbw::getUpgradeLevel;
 
+  //Arbiter weapon range is unaffected (since it is splash, it's hard to hook
+  //into, and it will probably be OP anyways)
+  if (unit->id == UnitId::arbiter || unit->id == UnitId::danimoth)
+    if (weaponId == WEAPON_MEDIATION_FIELD
+        || weaponId == WEAPON_MEDIATION_FIELD_HERO)
+      return Weapon::MaxRange[weaponId];
+
   u32 bonusAmount = 0;
 
   //Give bonus range to units inside Bunkers
