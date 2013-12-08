@@ -19,9 +19,10 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
       && !unit->isRemorphingBuilding())
     return 4;
 
-  //Upgrades and Ocular Implants do not affect spellcasting range
+  //Upgrades do not affect spellcasting range
+  //Ocular Implants add +1 to spellcasting range
   if (isForSpellCasting)
-    return Unit::SightRange[unit->id];
+    return (unit->isBlind ? 1 : 0) + Unit::SightRange[unit->id];
 
   u32 sightRangeBonus = 0;
 
