@@ -114,8 +114,8 @@ struct CUnit {
   u8 getSeekRange() const;
 
   /// Returns the sight range of this unit (with upgrades).
-  /// If @p applyStatusEffects is true, also factors in status effects.
-  u32 getSightRange(bool applyStatusEffects = false) const;
+  /// If @p isForSpellCasting is true, also factors in status effects.
+  u32 getSightRange(bool isForSpellCasting = false) const;
 
   /// Returns the maximum energy amount of this unit (with upgrades).
   u16 getMaxEnergy() const;
