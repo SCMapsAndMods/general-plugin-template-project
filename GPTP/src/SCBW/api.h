@@ -72,6 +72,14 @@ u32 getDistanceFast(s32 x1, s32 y1, s32 x2, s32 y2);
 /// (xTail, yTail) and ends at (xHead, yHead).
 s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
 
+/// Calculates the X Cartesian coordinate from the given polar coordinates
+/// (distance, angle), using StarCraft's internal data.
+s32 getPolarX(s32 distance, u8 angle);
+
+/// Calculates the Y Cartesian coordinate from the given polar coordinates
+/// (distance, angle), using StarCraft's internal data.
+s32 getPolarY(s32 distance, u8 angle);
+
 /// Returns the player's upgrade level of @p upgradeId. Note that this uses
 /// UpgradeId::Enum, instead of ScUpgrades::Enum and BwUpgrades::Enum.
 u8 getUpgradeLevel(u8 playerId, u8 upgradeId);
