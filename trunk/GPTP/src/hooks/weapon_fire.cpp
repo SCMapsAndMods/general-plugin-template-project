@@ -3,6 +3,7 @@
 #include "weapon_fire.h"
 #include <SCBW/scbwdata.h>
 #include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 
 //-------- Helper function declarations. Do NOT modify! ---------//
@@ -42,10 +43,8 @@ void fireWeaponHook(const CUnit *unit, u8 weaponId) {
   else {
     s32 forwardOffset = Weapon::ForwardOffset[weaponId];
 
-    x = unit->getX()
-        + (forwardOffset * angleDistance[unit->currentDirection1].x / 256);
-    y = unit->getY()
-        + (forwardOffset * angleDistance[unit->currentDirection1].y / 256)
+    x = unit->getX() + scbw::getPolarX(forwardOffset, unit->currentDirection1);
+    y = unit->getY() + scbw::getPolarY(forwardOffset, unit->currentDirection1)
         - Weapon::VerticalOffset[weaponId];
   }
 
