@@ -116,6 +116,16 @@ s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
 
 Calculates the angle (in binary radians) of the arrow that starts at (`xTail`, `yTail`) and ends at (`xHead`, `yHead`).
 
+== <tt>getPolarX, getPolarY</tt> ==
+{{{
+s32 getPolarX(s32 distance, u8 angle);
+s32 getPolarY(s32 distance, u8 angle);
+}}}
+
+Calculates the X and Y Cartesian coordinates from the given polar coordinates (`distance`, `angle`), using !StarCraft's internal data.
+
+Note: `angle` is measured in binary radians, clockwise, starting at the top direction.
+
 == getUpgradeLevel ==
 {{{
 u8 getUpgradeLevel(8 playerId, u8 upgradeId);
