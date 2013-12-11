@@ -9,7 +9,7 @@
 #define PLUGIN_ID 0x1B4D69B6
 
 //What is the plugin's name (and version)?
-#define PLUGIN_NAME "Guts and Maggots plugin v0.1"
+#define PLUGIN_NAME "Guts and Maggots 플러그인 v0.1"
 
 //익스트랙터에서 매초마다 제공하는 자원의 양
 #define EXTRACTOR_MINERALS      6
