@@ -151,6 +151,13 @@ bool isValidCaster() const;
 
 Checks if the unit is a spellcaster (has energy) and not a hallucination.
 
+== <tt>isRemorphingBuilding</tt> ==
+{{{
+bool isRemorphingBuilding() const;
+}}}
+
+Checks if the unit is a remorphing building (i.e. is a Lair, Hive, Greater Spire, Sunken or Spore Colony under construction).
+
 == getDistanceToTarget ==
 {{{
 u32 getDistanceToTarget(const CUnit *target) const;
