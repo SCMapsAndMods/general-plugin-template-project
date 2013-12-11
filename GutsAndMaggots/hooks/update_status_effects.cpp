@@ -1,4 +1,4 @@
-#include "update_status_effects.h"
+﻿#include "update_status_effects.h"
 #include "../SCBW/api.h"
 #include "../SCBW/enumerations.h"
 #include "../SCBW/scbwdata.h"
@@ -23,10 +23,13 @@ void updateStatusEffectsHook(CUnit *unit) {
       unit->removeStasisField();
   }
 
-  if (unit->stimTimer) {
-    unit->stimTimer--;
-    if (unit->stimTimer == 0)
-      unit->updateSpeed();
+  //익스트랙터는 스팀팩 타이머를 따로 쓰니까 제외
+  if (unit->id != UnitId::extractor) {
+    if (unit->stimTimer) {
+      unit->stimTimer--;
+      if (unit->stimTimer == 0)
+        unit->updateSpeed();
+    }
   }
 
   if (unit->ensnareTimer) {
