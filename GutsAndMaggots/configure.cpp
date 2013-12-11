@@ -1,7 +1,5 @@
 ﻿#include "definitions.h"
 #include "Plugin.h"
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
 
 //Called when the user hits the configure button in MPQDraft or FireGraft
 BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
