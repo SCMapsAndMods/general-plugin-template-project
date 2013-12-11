@@ -118,10 +118,10 @@ template <typename T>
 struct PlayerFlags {
   T flags[PLAYER_COUNT];
 };
-SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);
+SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);  //See scbw::isAlliedTo()
 SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 
-SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);
+SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);  //See scbw::getStatTxtTblString()
 SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
 
 SCBW_DATA(AI_Main*,       AIScriptController,   0x0068FEE8);
@@ -137,18 +137,18 @@ SCBW_DATA(SupplyData*,    raceSupply,           0x00582144);  //Array; Use scbw:
 
 //-------- Internal constants --------//
 
-SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);
-SCBW_DATA(const Bool8*,   IS_BROOD_WAR,         0x0058F440);
-SCBW_DATA(const u32*,     CHEAT_STATE,          0x006D5A6C);
+SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);  //See scbw::isGamePaused()
+SCBW_DATA(const Bool8*,   IS_BROOD_WAR,         0x0058F440);  //See scbw::isBroodWarMode()
+SCBW_DATA(const u32*,     CHEAT_STATE,          0x006D5A6C);  //See scbw::isCheatEnabled()
 SCBW_DATA(const u8*,      GAME_TYPE,            0x00596820);  //Part of a larger structure; Compare with GameType::Enum.
 SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,       0x006BEE68);
 SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,      0x006BB930);
-SCBW_DATA(const Bool32*,  IS_IN_REPLAY,         0x006D0F14);
+SCBW_DATA(const Bool32*,  IS_IN_REPLAY,         0x006D0F14);  //See scbw::isInReplay()
 SCBW_DATA(const s32*,     ACTIVE_NATION_ID,     0x00512678);  //AKA g_ActiveNationID
 SCBW_DATA(const s32*,     LOCAL_NATION_ID,      0x00512684);  //AKA g_LocalNationID; Actually stores the player ID.
 SCBW_DATA(const s32*,     LOCAL_HUMAN_ID,       0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
 SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,      0x006D11C8);
-SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);
+SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);  //See scbw::random(), scbw::randBetween()
 SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
 SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING,  0x00640880);
 SCBW_DATA(const u32*,     elapsedTime,          0x0058D6F8);  //Elapsed game time in seconds
