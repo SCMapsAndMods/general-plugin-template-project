@@ -4,6 +4,8 @@ Class header file: [http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/S
 
 The `UnitFinder` class utilizies the internal data structures that !StarCraft uses to efficiently search for units within a portion of the map.
 
+Note: This class internally handles an array of 1700 [CUnit] pointers, so instantiating it every time may become expensive. Consider declaring the `UnitFinder` variable as <tt>static</tt>.
+
 <wiki:toc max_depth="2" />
 
 = Methods =
