@@ -13,8 +13,8 @@ Note that many data values not documented here are usually reserved for use in h
 == <tt>resources</tt> ==
 
 Points to a structure containing the following data:
-* Amount of minerals and gas owned by each player
-* Amount of total minerals and gas that each player has gained through the current game
+ * Amount of minerals and gas owned by each player
+ * Amount of total minerals and gas that each player has gained through the current game
 
 Example usage:
 {{{
