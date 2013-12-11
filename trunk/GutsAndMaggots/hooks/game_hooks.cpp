@@ -21,7 +21,6 @@ bool nextFrame() {
     hooks::updatePsiFieldProviders();
 
     if (firstRun) {
-      scbw::printText("Hello, world!");
       firstRun = false;
       extractorTimer = 0;
     }
