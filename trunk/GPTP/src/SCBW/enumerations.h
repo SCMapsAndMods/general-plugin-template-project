@@ -303,3 +303,16 @@ enum Enum {
   Green_Crash = 7,
 };
 }
+
+//Compare with (*GAME_TYPE)
+namespace GameType {
+enum Enum {
+  Melee           = 2,
+  FreeForAll      = 3,
+  OneOnOne        = 4,
+  UseMapSettings  = 10,
+  TeamMelee       = 11,
+  TeamFreeForAll  = 12,
+  TopVsBottom     = 15,
+};
+}

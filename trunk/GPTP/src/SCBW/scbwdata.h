@@ -140,6 +140,7 @@ SCBW_DATA(SupplyData*,    raceSupply,           0x00582144);  //Array; Use scbw:
 SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);
 SCBW_DATA(const Bool8*,   IS_BROOD_WAR,         0x0058F440);
 SCBW_DATA(const u32*,     CHEAT_STATE,          0x006D5A6C);
+SCBW_DATA(const u8*,      GAME_TYPE,            0x00596820);  //Part of a larger structure; Compare with GameType::Enum.
 SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,       0x006BEE68);
 SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,      0x006BB930);
 SCBW_DATA(const Bool32*,  IS_IN_REPLAY,         0x006D0F14);
