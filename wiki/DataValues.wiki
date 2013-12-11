@@ -1,0 +1,77 @@
+#summary Documentation of the StarCraft data variables exposed by GPTP.
+
+<wiki:toc />
+
+= Introduction =
+
+GPTP exposes many of StarCraft's internal data values, structures, and arrays in <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/scbwdata.h SCBW/scbwdata.h]</tt>. Some of these are constants and cannot be modified; others can be modified to achieve various effects.
+
+Note that many data values not documented here are usually reserved for use in hook modules, and should not be used unless you know what you are doing.
+
+= Data Variables =
+
+(To be expanded)
+
+= DAT File Data =
+
+== units.dat ==
+== weapons.dat ==
+== flingy.dat ==
+== sprites.dat ==
+== images.dat ==
+== upgrades.dat ==
+== techdata.dat ==
+== orders.dat ==
+
+= Constant Values =
+
+== <tt>clientSelectionCount</tt> ==
+
+Stores the number of units currently selected by the player running the current client.
+
+See <tt>[#clientSelectionGroup clientSelectionGroup]</tt> for example usage.
+
+== <tt>clientSelectionGroup</tt> ==
+
+Stores pointers to the units currently selected by the player running the current client.
+
+Example usage:
+{{{
+//Iterate through each selected unit
+for (int i = 0; i < *clientSelectionCount; ++i) {
+  CUnit *selectedUnit = clientSelectionGroup->units[i];
+  /* ... */
+}
+}}}
+
+== <tt>mouse</tt> ==
+
+Stores the position of the mouse relative to the top left corner of the screen.
+
+Example usage:
+{{{
+if (mouse->x <= 40 && mouse->y <= 30) {
+  /* ... */
+}
+}}}
+
+== <tt>elapsedTime</tt> ==
+
+Contains the elapsed time since starting the current game, measured in seconds (1 second == 15 frames).
+
+Example usage:
+{{{
+//Check if at least 5 minutes have passed
+if (*elapsedTime > 300) {
+  /* ... */
+}
+}}}
+
+== <tt>GAME_TYPE</tt> ==
+
+Contains the flag value for the type of the current game (melee, free for all, use map settings, etc.). Should be compared with `GameType::Enum`.
+
+Example usage:
+{{{
+if (*GAME_TYPE == GameType::UseMapSettings) { /* ... */ } 
+}}}
