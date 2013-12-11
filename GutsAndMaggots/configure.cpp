@@ -1,4 +1,4 @@
-#include "definitions.h"
+﻿#include "definitions.h"
 #include "Plugin.h"
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
@@ -16,10 +16,11 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     hParentWnd,
     PLUGIN_NAME " (ID: " STR(PLUGIN_ID) ")"
     "\nMade by pastelmind"
-    "\nBuilt on " __DATE__ " " __TIME__
+    "\n빌드 시점: " __DATE__ " " __TIME__
     "\n"
-    "\n[Features]"
-    "\n - Add your own text here"
+    "\n[기능]"
+    "\n - 익스트랙터에서 매초마다 " STR(EXTRACTOR_MINERALS) " 미네랄과 " STR(EXTRACTOR_GAS) " 가스 제공"
+    "\n   (+그래픽 효과)"
     ,
     PLUGIN_NAME,
     MB_TASKMODAL
