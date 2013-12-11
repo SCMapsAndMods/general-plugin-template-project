@@ -1,8 +1,8 @@
 #summary Changelog of GPTP
 
 = v2.4 =
- * Added <tt>CUnit::isRemorphingBuilding()</tt>.
- * Added <tt>scbw::getPolarX(), scbw::getPolarY()</tt>.
+ * Added <tt>[CUnit#isRemorphingBuilding CUnit::isRemorphingBuilding()]</tt>.
+ * Added <tt>[ApiFunctions#getPolarX,_getPolarY scbw::getPolarX(), scbw::getPolarY()]</tt>.
  * Added <tt>[DataValues#GAME_TYPE GAME_TYPE]</tt> data constant.
  * The `STR()` macro has been moved to <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/definitions.h definitions.h]</tt>
 
