@@ -1,18 +1,31 @@
 #summary Documentation of the StarCraft data variables exposed by GPTP.
 
-<wiki:toc />
-
-= Introduction =
-
-GPTP exposes many of StarCraft's internal data values, structures, and arrays in <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/scbwdata.h SCBW/scbwdata.h]</tt>. Some of these are constants and cannot be modified; others can be modified to achieve various effects.
+GPTP exposes many of !StarCraft's internal data values, structures, and arrays in <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/scbwdata.h SCBW/scbwdata.h]</tt>. Some of these are constants and cannot be modified; others can be modified to achieve various effects.
 
 Note that many data values not documented here are usually reserved for use in hook modules, and should not be used unless you know what you are doing.
+
+<wiki:toc />
 
 = Data Variables =
 
 (To be expanded)
 
+== <tt>resources</tt> ==
+
+Points to a structure containing the following data:
+* Amount of minerals and gas owned by each player
+* Amount of total minerals and gas that each player has gained through the current game
+
+Example usage:
+{{{
+//Give 50 bonus minerals to playerId (and increase resource gain score)
+resources->minerals[playerId] += 50;
+resources->cumulativeMinerals[playerId] += 50;
+}}}
+
 = DAT File Data =
+
+(To be expanded)
 
 == units.dat ==
 == weapons.dat ==
