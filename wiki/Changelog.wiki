@@ -1,7 +1,13 @@
 #summary Changelog of GPTP
 
+= v2.4 =
+ * Added <tt>CUnit::isRemorphingBuilding()</tt>.
+ * Added <tt>scbw::getPolarX(), scbw::getPolarY()</tt>.
+ * Added <tt>[DataValues#GAME_TYPE GAME_TYPE]</tt> data constant.
+ * The `STR()` macro has been moved to <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/definitions.h definitions.h]</tt>
+
 = v2.39 =
- * Added CUnit::isValidCaster().
+ * Added <tt>[CUnit#isValidCaster CUnit::isValidCaster()]</tt>.
  * Fixed a bug that prevented casting Feedback on spellcasting units.
 
 = v2.38 =
