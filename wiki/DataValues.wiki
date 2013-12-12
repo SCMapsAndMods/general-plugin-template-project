@@ -23,19 +23,6 @@ resources->minerals[playerId] += 50;
 resources->cumulativeMinerals[playerId] += 50;
 }}}
 
-= DAT File Data =
-
-(To be expanded)
-
-== units.dat ==
-== weapons.dat ==
-== flingy.dat ==
-== sprites.dat ==
-== images.dat ==
-== upgrades.dat ==
-== techdata.dat ==
-== orders.dat ==
-
 = Constant Values =
 
 == <tt>clientSelectionCount</tt> ==
@@ -88,3 +75,106 @@ Example usage:
 {{{
 if (*GAME_TYPE == GameType::UseMapSettings) { /* ... */ } 
 }}}
+
+
+= DAT File Data =
+
+In addition to data constants and variables, GPTP allows you to read various information from the DAT files used by StarCraft. This data is exposed as arrays indexed by the entry ID in each DAT file. For example, to find the attack range of the Scout's ground weapon:
+
+{{{
+//Find the Scout's ground weapon ID
+u8 scoutGndWeapon = Unit::GroundWeapon[UnitId::scout];
+//Get the weapon's range
+u32 scoutGndRange = Weapon::MaxRange[scoutGndWeapon];
+
+//The above can be combined into a single line of code.
+u32 scoutGndRange = Weapon::MaxRange[Unit::GroundWeapon[UnitId::scout]];
+}}}
+
+== `units.dat` ==
+
+The following arrays are available in the `Unit` namespace, and can be indexed with the `CUnit::id` member variable or the `UnitId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/UnitId.h SCBW/enumerations/UnitId.h]</tt>).
+
+|| *Array* || *Type* || *Name in DatEdit* || *Stored Value* ||
+|| `Graphic` || `u8` || Graphics || <tt>[#flingy.dat flingy.dat]</tt> entry ID ||
+|| `SubUnit` || `u16` || Subunit 1 || <tt>[#units.dat units.dat]</tt> entry ID ||
+|| `ConstructionGraphic` || `u32` || Construction || <tt>[#images.dat images.dat]</tt> entry ID ||
+|| `ShieldsEnabled` || `u8` || Shields Enable || Unchecked = 0, checked otherwise ||
+|| `MaxShieldPoints` || `u16` || Shields || Same as the amount of shields displayed in-game ||
+|| `MaxHitPoints` || `s32` || Hit Points || 256 times the amount of shields displayed in-game ||
+|| `Elevation` || `u8` || Elevation Level || Number between 0-19 ||
+|| `MovementFlags` || `u8` || (Flags in Other Properties section) || Hovering units = 0xC1 ||
+|| `Rank` || `u8` || Rank/Sublabel || Number between 0-22. For Terran units, the index of the sublabel string in `stat_txt.tbl` is set to `(this value) + 549`. If the value is 0, no sublabel is displayed ||
+|| `ComputerIdleOrder` || `u8` || Computer Idle || <tt>[#orders.dat orders.dat]</tt> entry ID ||
+|| `HumanIdleOrder` || `u8` || Human Idle || <tt>[#orders.dat orders.dat]</tt> entry ID ||
+|| `ReturnToIdleOrder` || `u8` || Return to Idle || <tt>[#orders.dat orders.dat]</tt> entry ID ||
+|| `AttackUnitOrder` || `u8` || Attack Unit || <tt>[#orders.dat orders.dat]</tt> entry ID ||
+|| `AttackMoveOrder` || `u8` || Attack Move || <tt>[#orders.dat orders.dat]</tt> entry ID ||
+|| `GroundWeapon` || `u8` || Ground Weapon || <tt>[#weapons.dat weapons.dat]</tt> entry ID ||
+|| `MaxGroundHits` || `u8` || Ground Max Hits || ||
+|| `AirWeapon` || `u8` || Air Weapon || <tt>[#weapons.dat weapons.dat]</tt> entry ID ||
+|| `MaxAirHits` || `u8` || Air Max Hits || ||
+|| `BaseProperty` || `u32` || (Flags in Advance Properties section) || Use the `UnitProperty::Enum` enumeration to check this flags ||
+|| `SeekRange` || `u8` || Target Acquisition Range || Measured in matrices ||
+|| `SightRange` || `u8` || Sight || Measured in matrices. Values larger than 11 may crash the game. ||
+|| `ArmorUpgrade` || `u8` || Armor Upgrade || <tt>[#upgrades.dat upgrades.dat]</tt> entry ID ||
+|| `SizeType` || `u8` || Unit Size || 0 = Independent, 1 = Small, 2 = Medium, 3 = Large ||
+|| `ArmorAmount` || `u8` || Vital Statistics > Armor || ||
+|| `UnitBounds` || `Box16` || Unit Dimensions ||  ||
+|| `MineralCost` || `u16` || Build Cost > Minerals ||
+|| `GasCost` || `u16` || Build Cost > Gas ||
+|| `TimeCost` || `u16` || Build Cost > Time || Measured in frames. ||
+|| `GroupFlags` || `GroupFlag` || StarEdit Availability Flags || Use the `GroupFlag` structure as a bitfield ||
+|| `SupplyProvided` || `u8` || Supply > Provided || 2 times the amount displayed in-game ||
+|| `SupplyRequired` || `u8` || Supply > Required || 2 times the amount displayed in-game ||
+|| `SpaceRequired` || `u8` || Space > Required || Number between 1-8, or 255 if untransportable ||
+|| `SpaceProvided` || `u8` || Space > Provided || Number between 0-8 ||
+|| `BuildScore` || `u16` || Score > Build || ||
+|| `DestroyScore` || `u16` || Score > Destroy || ||
+|| `MapStringId` || `u16` || Map String || `stat_txt.tbl` index of the unit's name ||
+|| `BroodwarOnly` || `u8` || Build Cost > Broodwar || Unchecked = 0, checked otherwise ||
+
+== `weapons.dat` ==
+
+The following arrays are available in the `Weapon` namespace, and can be indexed with the `WeaponId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/WeaponId.h SCBW/enumerations/WeaponId.h]</tt>).
+
+|| *Array* || *Type* || *Name in DatEdit* || *Stored Value* ||
+|| `Label` || `u16` || Label || `stat_txt.tbl` index of the weapon's name (0 for no label) ||
+|| `FlingyId` || `u32` || Graphics || <tt>[#flingy.dat flingy.dat]</tt> entry ID ||
+|| `TargetFlags` || `TargetFlag` || (Flags in Target Flags section) || Use the `TargetFlag` structure as a bitfield ||
+|| `MinRange` || `u32` || Weapon Range > Min || Measured in pixels ||
+|| `MaxRange` || `u32` || Weapon Range > Max || Measured in pixels ||
+|| `DamageUpgrade` || `u8` || Damage Properties > Upgrade || <tt>[#upgrades.dat upgrades.dat]</tt> entry ID ||
+|| `DamageType` || `u8` || Damage Properties > Type || 0 = Independent, 1 = Explosive, 2 = Concussive, 3 = Normal, 4 = Ignore Armor ||
+|| `Behavior` || `u8` || Graphical Properties > Behaviour || Compare with `WeaponBehavior::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations.h SCBW/enumerations.h]</tt>) ||
+|| `RemoveAfter` || `u8` || Remove After || Measured in frames ||
+|| `ExplosionType` || `u8` || Damage Properties > Effect || Compare with `WeaponEffect::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations.h SCBW/enumerations.h]</tt>) ||
+|| `InnerSplashRadius` || `u16` || Splash Radii > Inner || Measured in pixels ||
+|| `MediumSplashRadius` || `u16` || Splash Radii > Medium || Measured in pixels ||
+|| `OuterSplashRadius` || `u16` || Splash Radii > Outer || Measured in pixels ||
+|| `DamageAmount` || `16` || Damage Properties > Amount || ||
+|| `DamageBonus` || `16` || Damage Properties > Bonus || ||
+|| `Cooldown` || `u8` || Cooldown || Measured in frames ||
+|| `DamageFactor` || `u8` || Damage Properties > Factor || ||
+|| `AttackDirection` || `u8` || Attack Angle || Measured in brads ||
+|| `LaunchSpin` || `u8` || Launch Spin || Measured in brads ||
+|| `ForwardOffset` || `u8` || Graphical Properties > X Offset || Measured in pixels ||
+|| `VerticalOffset` || `u8` || Graphical Properties > Y Offset || Measured in pixels ||
+
+== `flingy.dat` ==
+
+The following arrays are available in the `Flingy` namespace.
+
+|| *Array* || *Type* || *Name in DatEdit* || *Stored Value* ||
+|| `SpriteID` || `u16` || Sprite File || <tt>[#sprites.dat sprites.dat]</tt> entry ID ||
+|| `TopSpeed` || `u32` || Top Speed || 256 times the actual speed (pixels per frame) ||
+|| `Acceleration` || `u16` || Acceleration || ||
+|| `HaltDistance` || `u32` || Halt Distance || ||
+|| `TurnSpeed` || `u8` || Turn Radius || Measured in brads per frame ||
+|| `MovementControl` || `u8` || Move Control || 0 = Flingy.dat control<br />1 = Partially mobile, weapon<br />2 = Iscript.bin control ||
+
+== sprites.dat ==
+== images.dat ==
+== upgrades.dat ==
+== techdata.dat ==
+== orders.dat ==
