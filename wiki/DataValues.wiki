@@ -95,13 +95,13 @@ u32 scoutGndRange = Weapon::MaxRange[Unit::GroundWeapon[UnitId::scout]];
 
 The following arrays are available in the `Unit` namespace, and can be indexed with the `CUnit::id` member variable or the `UnitId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/UnitId.h SCBW/enumerations/UnitId.h]</tt>).
 
-|| *Array* || *Type* || *Name in DatEdit* || *Stored Value* ||
+|| *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
 || `Graphic` || `u8` || Graphics || <tt>[#flingy.dat flingy.dat]</tt> entry ID ||
 || `SubUnit` || `u16` || Subunit 1 || <tt>[#units.dat units.dat]</tt> entry ID ||
 || `ConstructionGraphic` || `u32` || Construction || <tt>[#images.dat images.dat]</tt> entry ID ||
 || `ShieldsEnabled` || `u8` || Shields Enable || Unchecked = 0, checked otherwise ||
-|| `MaxShieldPoints` || `u16` || Shields || Same as the amount of shields displayed in-game ||
-|| `MaxHitPoints` || `s32` || Hit Points || 256 times the amount of shields displayed in-game ||
+|| `MaxShieldPoints` || `u16` || Shields || Same as the shield amount displayed in-game ||
+|| `MaxHitPoints` || `s32` || Hit Points || 256 times the HP amount displayed in-game ||
 || `Elevation` || `u8` || Elevation Level || Number between 0-19 ||
 || `MovementFlags` || `u8` || (Flags in Other Properties section) || Hovering units = 0xC1 ||
 || `Rank` || `u8` || Rank/Sublabel || Number between 0-22. For Terran units, the index of the sublabel string in `stat_txt.tbl` is set to `(this value) + 549`. If the value is 0, no sublabel is displayed ||
@@ -125,8 +125,8 @@ The following arrays are available in the `Unit` namespace, and can be indexed w
 || `GasCost` || `u16` || Build Cost > Gas ||
 || `TimeCost` || `u16` || Build Cost > Time || Measured in frames. ||
 || `GroupFlags` || `GroupFlag` || StarEdit Availability Flags || Use the `GroupFlag` structure as a bitfield ||
-|| `SupplyProvided` || `u8` || Supply > Provided || 2 times the amount displayed in-game ||
-|| `SupplyRequired` || `u8` || Supply > Required || 2 times the amount displayed in-game ||
+|| `SupplyProvided` || `u8` || Supply > Provided || 2 times the supply amount displayed in-game ||
+|| `SupplyRequired` || `u8` || Supply > Required || 2 times the supply amount displayed in-game ||
 || `SpaceRequired` || `u8` || Space > Required || Number between 1-8, or 255 if untransportable ||
 || `SpaceProvided` || `u8` || Space > Provided || Number between 0-8 ||
 || `BuildScore` || `u16` || Score > Build || ||
@@ -138,7 +138,7 @@ The following arrays are available in the `Unit` namespace, and can be indexed w
 
 The following arrays are available in the `Weapon` namespace, and can be indexed with the `WeaponId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/WeaponId.h SCBW/enumerations/WeaponId.h]</tt>).
 
-|| *Array* || *Type* || *Name in DatEdit* || *Stored Value* ||
+|| *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
 || `Label` || `u16` || Label || `stat_txt.tbl` index of the weapon's name (0 for no label) ||
 || `FlingyId` || `u32` || Graphics || <tt>[#flingy.dat flingy.dat]</tt> entry ID ||
 || `TargetFlags` || `TargetFlag` || (Flags in Target Flags section) || Use the `TargetFlag` structure as a bitfield ||
@@ -165,7 +165,7 @@ The following arrays are available in the `Weapon` namespace, and can be indexed
 
 The following arrays are available in the `Flingy` namespace.
 
-|| *Array* || *Type* || *Name in DatEdit* || *Stored Value* ||
+|| *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
 || `SpriteID` || `u16` || Sprite File || <tt>[#sprites.dat sprites.dat]</tt> entry ID ||
 || `TopSpeed` || `u32` || Top Speed || 256 times the actual speed (pixels per frame) ||
 || `Acceleration` || `u16` || Acceleration || ||
@@ -173,8 +173,56 @@ The following arrays are available in the `Flingy` namespace.
 || `TurnSpeed` || `u8` || Turn Radius || Measured in brads per frame ||
 || `MovementControl` || `u8` || Move Control || 0 = Flingy.dat control<br />1 = Partially mobile, weapon<br />2 = Iscript.bin control ||
 
-== sprites.dat ==
-== images.dat ==
-== upgrades.dat ==
-== techdata.dat ==
-== orders.dat ==
+== `sprites.dat` ==
+
+The following arrays are available in the `Sprite` namespace.
+
+|| *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
+|| `ImageId` || `u16` || Image File || <tt>[#images.dat images.dat]</tt> entry ID ||
+|| `HpBarSize` || `s8` || Health Bar || Measured in pixels ||
+|| `IsVisible` || `u8` || Is Visible || Unchecked = 0, checked otherwise ||
+
+== `images.dat` ==
+
+The following arrays are available in the `Image` namespace, and can be indexed with the `ImageId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/ImageId.h SCBW/enumerations/ImageId.h]</tt>).
+
+|| *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
+|| `IsTurnable` || `u8` || Graphics Turns || Unchecked = 0, checked otherwise ||
+|| `IsClickable` || `u8` || Clickable || Unchecked = 0, checked otherwise ||
+|| `RLE_Function` || `u8` || Drawing Properties > Function || ||
+|| `Remapping` || `u8` || Drawing Properties > Remapping || ||
+
+== `upgrades.dat` ==
+
+The following arrays are available in the `Upgrade` namespace, and can be indexed with the 'UpgradeId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/UpgradeId.h SCBW/enumerations/UpgradeId.h]</tt>).
+
+|| *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
+|| `MineralCostBase` || `u16` || Base Cost > Minerals || ||
+|| `MineralCostFactor` || `u16` || Factor Cost > Minerals || ||
+|| `GasCostBase` || `u16` || Base Cost > Gas || ||
+|| `GasCostFactor` || `u16` || Factor Cost > Gas || ||
+|| `TimeCostBase` || `u16` || Base Cost > Time || Measured in frames ||
+|| `TimeCostFactor` || `u16` || Factor Cost > Time || Measured in frames ||
+|| `Label` || `u16` || Label || `stat_txt.tbl` index of the upgrade's name (0 for no label) ||
+|| `Race` || `u8` || Race || 0 = Zerg, 1 = Terran, 2 = Protoss, 3 = All ||
+|| `MaxRepeats` || `u8` || Max Repeats || ||
+
+== `techdata.dat` ==
+
+The following arrays are available in the `Tech` namespace, and can be indexed with the 'TechId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/TechId.h SCBW/enumerations/TechId.h]</tt>).
+
+|| *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
+|| `MineralCost` || `u16` || Technology Cost > Minerals || ||
+|| `GasCost` || `u16` || Technology Cost > Vespene || ||
+|| `TimeCost` || `u16` || Technology Cost > Time || Measured in frames ||
+|| `EnergyCost` || `u16` || Technology Cost > Energy || Same as energy amount displayed in-game ||
+|| `Label` || `u16` || Label || `stat_txt.tbl` index of the technology's name (0 for no label) ||
+
+== `orders.dat` ==
+
+The following arrays are available in the 'Order' namespace, and can be indexed with the `CUnit::mainOrderId`, `CUnit::secondaryOrderId` member variables or the 'OrderId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/OrderId.h SCBW/enumerations/OrderId.h]</tt>).
+
+|| *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
+|| `Label` || `u16` || Order Properties > Label || `stat_txt.tbl` index of the order's name (0 for no label) ||
+|| `UseWeaponTargeting` || `u8` || Use Weapon Targeting || Unchecked = 0, checked otherwise ||
+|| `TechUsed` || `u8` || Order Properties > Energy || <tt>[#techdata.dat techdata.dat]</tt> entry ID ||
