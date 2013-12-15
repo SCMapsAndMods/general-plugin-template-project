@@ -89,6 +89,9 @@ struct CUnit {
   /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
   bool canDetect() const;
 
+  /// Returns true if the unit has no sprite or is running OrderId::Die.
+  bool isDead() const;
+
   /// Checks if the unit is unpowered / lockdowned / stasised / maelstromed.
   bool isFrozen() const;
 
