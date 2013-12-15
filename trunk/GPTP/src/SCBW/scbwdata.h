@@ -151,7 +151,8 @@ SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,      0x006D11C8);
 SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);  //See scbw::random(), scbw::randBetween()
 SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
 SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING,  0x00640880);
-SCBW_DATA(const u32*,     elapsedTime,          0x0058D6F8);  //Elapsed game time in seconds
+SCBW_DATA(const u32*,     elapsedTimeFrames,    0x0057F23C);  //Elapsed game time in frames
+SCBW_DATA(const u32*,     elapsedTimeSeconds,   0x0058D6F8);  //Elapsed game time in seconds
 
 //-------- DAT Files --------//
 
