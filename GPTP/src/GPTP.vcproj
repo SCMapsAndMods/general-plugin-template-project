@@ -365,6 +365,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -387,10 +391,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
 				>
 			</File>
@@ -401,6 +401,28 @@
 			<File
 				RelativePath=".\AI\spells\lockdown.cpp"
 				>
+			</File>
+			<File
+				RelativePath=".\weapon_hooks\lockdown.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)2.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)2.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)2.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)2.xdc"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\AI\spells\maelstrom.cpp"
@@ -629,8 +651,26 @@
 				>
 			</File>
 			<File
-				RelativePath=".\weapons\weapon_hit.cpp"
+				RelativePath=".\weapon_hooks\weapon_hit.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)\$(InputName)1.obj"
+						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\hooks\weapon_range.cpp"
@@ -803,11 +843,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.h"
+				RelativePath=".\AI\spells\irradiate.h"
 				>
 			</File>
 			<File
-				RelativePath=".\AI\spells\irradiate.h"
+				RelativePath=".\hooks\irradiate.h"
 				>
 			</File>
 			<File
@@ -820,6 +860,10 @@
 			</File>
 			<File
 				RelativePath=".\AI\spells\lockdown.h"
+				>
+			</File>
+			<File
+				RelativePath=".\weapon_hooks\lockdown.h"
 				>
 			</File>
 			<File
