@@ -437,6 +437,7 @@ UpgradeDat=0x1145c0
 69Type=Const
 69VarType=1
 70Entry=Abilities,Self,Larva Spawn,Spawn Timer
+70Hint=Actual spawn interval is (this value) x 9 logical frames.
 70Offset=0xea81a
 70Size=1
 70Type=Const
