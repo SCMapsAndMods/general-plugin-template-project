@@ -365,10 +365,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\hooks\irradiate.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AI\spells\irradiate.cpp"
 				>
 				<FileConfiguration
@@ -389,6 +385,10 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\hooks\irradiate.cpp"
+				>
 			</File>
 			<File
 				RelativePath=".\hooks\irradiate_inject.cpp"
@@ -626,6 +626,10 @@
 			</File>
 			<File
 				RelativePath=".\hooks\weapon_fire_inject.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\weapons\weapon_hit.cpp"
 				>
 			</File>
 			<File
