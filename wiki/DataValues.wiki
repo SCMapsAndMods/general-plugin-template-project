@@ -55,14 +55,26 @@ if (mouse->x <= 40 && mouse->y <= 30) {
 }
 }}}
 
-== <tt>elapsedTime</tt> ==
+== <tt>elapsedTimeSeconds</tt> ==
 
 Contains the elapsed time since starting the current game, measured in seconds (1 second == 15 frames).
 
 Example usage:
 {{{
 //Check if at least 5 minutes have passed
-if (*elapsedTime > 300) {
+if (*elapsedTimeSeconds > 300) {
+  /* ... */
+}
+}}}
+
+== <tt>elapsedTimeFrames</tt> ==
+
+Contains the elapsed time since starting the current game, measured in frames.
+
+Example usage:
+{{{
+//Check if the game has just been started
+if (*elapsedTimeFrames == 0) {
   /* ... */
 }
 }}}
@@ -121,8 +133,8 @@ The following arrays are available in the `Unit` namespace, and can be indexed w
 || `SizeType` || `u8` || Unit Size || 0 = Independent, 1 = Small, 2 = Medium, 3 = Large ||
 || `ArmorAmount` || `u8` || Vital Statistics > Armor || ||
 || `UnitBounds` || `Box16` || Unit Dimensions ||  ||
-|| `MineralCost` || `u16` || Build Cost > Minerals ||
-|| `GasCost` || `u16` || Build Cost > Gas ||
+|| `MineralCost` || `u16` || Build Cost > Minerals || ||
+|| `GasCost` || `u16` || Build Cost > Gas || ||
 || `TimeCost` || `u16` || Build Cost > Time || Measured in frames. ||
 || `GroupFlags` || `GroupFlag` || StarEdit Availability Flags || Use the `GroupFlag` structure as a bitfield ||
 || `SupplyProvided` || `u8` || Supply > Provided || 2 times the supply amount displayed in-game ||
