@@ -85,7 +85,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
 
         if (aiCastSpellOrder(unit, target, OrderId::NukePaint)) {
           silo->building.silo.nuke->connectedUnit = unit;
-          AIScriptController[unit->playerId].AI_LastNukeTime = *elapsedTime;
+          AIScriptController[unit->playerId].AI_LastNukeTime = *elapsedTimeSeconds;
           return true;
         }
       }
@@ -403,8 +403,7 @@ u16 getOrderEnergyCost(u8 orderId) {
 
 //Logically equivalent to function @ 0x00446E50
 bool isNukeTimerReady(s8 playerId) {
-  return *elapsedTime >= AIScriptController[playerId].AI_LastNukeTime
-                         + 60 * AIScriptController[playerId].AI_NukeRate;
+  return *elapsedTimeSeconds >= AIScriptController[playerId].AI_LastNukeTime + 60 * AIScriptController[playerId].AI_NukeRate;
 }
 
 //Based on function @ 0x00463360
