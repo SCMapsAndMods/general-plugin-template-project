@@ -1,10 +1,14 @@
 #summary Changelog of GPTP
 
 = v2.4 =
- * Added <tt>[CUnit#isRemorphingBuilding CUnit::isRemorphingBuilding()]</tt>.
- * Added <tt>[ApiFunctions#getPolarX,_getPolarY scbw::getPolarX(), scbw::getPolarY()]</tt>.
- * Added <tt>[DataValues#GAME_TYPE GAME_TYPE]</tt> data constant.
+ * API Functions
+  * Added <tt>[CUnit#isRemorphingBuilding CUnit::isRemorphingBuilding()], [CUnit#isDead CUnit::isDead()]</tt>.
+  * Added <tt>[ApiFunctions#getPolarX,_getPolarY scbw::getPolarX(), scbw::getPolarY()]</tt>.
+ * Data Variables
+  * New data variables: <tt>[DataValues#GAME_TYPE GAME_TYPE]</tt>, <tt>[DataValues#elapsedTimeFrames elapsedTimeFrames]</tt>.
+  * The `elapsedTime` data constant has been renamed to <tt>[DataValues#elapsedTimeSeconds elapsedTimeSeconds]</tt>.
  * The `STR()` macro has been moved to <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/definitions.h definitions.h]</tt>
+ * The default form of the `nextFrame()` function has been cleaned up a little bit.
 
 = v2.39 =
  * Added <tt>[CUnit#isValidCaster CUnit::isValidCaster()]</tt>.
