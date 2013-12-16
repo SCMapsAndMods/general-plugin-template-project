@@ -24,7 +24,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\n- Bunker shows no attack graphic for Fiends"
     "\n- Changed cooldown modifiers for Acid Spore / Ensnare / Stim Packs"
     "\n- Changed unit speed modifiers for Ensnare and Stim Packs"
-    "\n- Damage types: Venomous - 100%/125%/150%, Concussive - 100%/75%/50%"
+    "\n- Damage types: Venomous - 100%/125%/150%, Concussive - 100%/50%/50%"
     "\n- Recharge Shields: overcharge, +distance, +efficiency"
     "\n- Improved weapon accuracy for Lurkers and Vultures"
     "\n- Improved Interceptor repair"

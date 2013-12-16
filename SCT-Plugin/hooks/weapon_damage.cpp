@@ -16,7 +16,7 @@ struct {
 } const damageFactor[5] = {
   {0, 0, 256, 320, 384},  //Independent (Venomous)
   {1, 0, 128, 192, 256},  //Explosive
-  {2, 0, 256, 192, 128},  //Concussive
+  {2, 0, 256, 128, 128},  //Concussive
   {3, 0, 256, 256, 256},  //Normal
   {4, 0, 256, 256, 256}   //IgnoreArmor
 };

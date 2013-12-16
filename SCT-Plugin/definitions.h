@@ -5,7 +5,7 @@
 #define PLUGIN_ID 0x13CE1707
 
 //What is the plugin's name (and version)?
-#define PLUGIN_NAME "SCT Plugin v1.21"
+#define PLUGIN_NAME "SCT Plugin v1.22"
 
 //Custom plugin stuff
 #define UNIT_FIEND              32
