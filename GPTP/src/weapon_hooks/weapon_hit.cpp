@@ -1,12 +1,12 @@
-//#include <SCBW/structures/CUnit.h>
-//#include <SCBW/structures/CBullet.h>
-#include <SCBW/scbwdata.h>
-#include <SCBW/enumerations.h>
+#include "lockdown.h"
+#include <SCBW/api.h>
 
-namespace hooks {
+namespace weapon_hooks {
 
 //Controls how each weapon type works.
 void __stdcall CBullet_Damage(const CBullet *bullet) {
+  CUnit *target = bullet->attackTarget.unit;
+
   switch (Weapon::ExplosionType[bullet->weaponType]) {
     //No effect
     case WeaponEffect::None:
@@ -25,15 +25,24 @@ void __stdcall CBullet_Damage(const CBullet *bullet) {
       break;
 
     case WeaponEffect::Lockdown:
-      //TODO: Add this
+      if (target && !target->isDead())
+        lockdownHook(target, 131);
       break;
       
     case WeaponEffect::Parasite:
-      //TODO: Add this
+      if (target && !target->isDead()) {
+        scbw::playSound(921, target);
+        target->parasiteFlags |= 1 << bullet->sourcePlayer;
+        scbw::refreshConsole();
+        if (bullet->sourceUnit)
+          AI_WeaponHit(target, bullet->sourceUnit, false);
+      }
       break;
 
     case WeaponEffect::Broodlings:
-      //TODO: Add this
+      if (bullet->sourceUnit && target && !target->isDead()) {
+        AI_WeaponHit(target, bullet->sourceUnit, true);
+      }
       break;
 
     case WeaponEffect::EmpShockwave:
