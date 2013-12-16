@@ -21,15 +21,15 @@ void IrradiateProc::proc(CUnit *unit) {
   const u32 unitProps = Unit::BaseProperty[unit->id];
   
   //Damage organic units only
-  if (!(unitProps & UnitProperty::Organic))
+  if (!(Unit::BaseProperty[unit->id] & UnitProperty::Organic))
     return;
 
   //Don't damage buildings
-  if (unitProps & UnitProperty::Building)
+  if (Unit::BaseProperty[unit->id] & UnitProperty::Building)
     return;
 
   //Don't damage larvae, eggs, and lurker eggs
-  if (unit->id == UnitId::larva || unit->id == UnitId::egg || unit->id == UnitId::lurker_egg)
+  if (unit->id == UnitId::larva || unit->id == UnitId::egg || unit->id == UnitId::lurker_egg || unit->id == UnitId::cocoon || unit->id == UnitId::UnusedMiningPlatform)
     return;
 
   //Irradiate splash damage does not affect burrowed units

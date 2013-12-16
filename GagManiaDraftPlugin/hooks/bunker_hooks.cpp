@@ -17,6 +17,7 @@ namespace hooks {
 /// Checks whether the unit can attack from inside a bunker.
 bool unitCanAttackInsideBunkerHook(const CUnit *unit) {
   //인페스티드 테란과 러커는 제외
+	//버그 방지를 위함
   if (unit->id == UnitId::infested_terran || unit->id == UnitId::lurker)
     return false;
 
@@ -54,7 +55,7 @@ void createBunkerAttackThingyHook(const CUnit *unit) {
     spriteId = 378; //Firebat flamethrower graphics
 
     //파이어뱃 불꽃 업그레이드 체크
-    if (scbw::getUpgradeLevel(unit->playerId, UPGRADE_FIREBAT_BLUE_FLAME))
+	if (scbw::getUpgradeLevel(unit->playerId, UPGRADE_FIREBAT_BLUE_FLAME)&&unit->id!=UnitId::gui_montag)//파이어뱃일때만 파란불꽃
       isBlueFlame = true;
   }
   //침 뱉는 유닛들

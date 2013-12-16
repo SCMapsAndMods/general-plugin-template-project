@@ -71,7 +71,7 @@ const UpgradeTransferData upgradeTransferData[] = {
   {UnitId::queen, UpgradeId::GameteMeiosis, UpgradeId::None},
   {UnitId::defiler, UpgradeId::MetasynapticNode, UpgradeId::None},
   {UnitId::ultralisk, UpgradeId::AnabolicSynthesis, UpgradeId::ChitinousPlating, UpgradeId::None},
-  {UnitId::lurker, UPGRADE_LURKER_RANGE, UpgradeId::None},  //러커 사거리업 추가
+  {UnitId::lurker, UPGRADE_LURKER_RANGE,UpgradeId::UnusedUpgrade56, UpgradeId::None},  //러커 사거리업,시야업 추가
 
   //Protoss
   {UnitId::zealot, UpgradeId::LegEnhancements, UpgradeId::None},

@@ -5,13 +5,8 @@
 #include "../SCBW/enumerations.h"
 #include "../SCBW/api.h"
 
-namespace hooks {
-
-/// Orders newly-produced units to rally, based upon the properties of the
-/// building that produced it.
-///
-/// @param  unit      The unit that needs to receive rally orders.
-/// @param  factory   The unit (building) that created the given unit.
+/// Custom function:
+///   Checks whether the @p resource unit can be harvested by \p playerId.
 bool canBeHarvestedBy(const CUnit* resource, u8 playerId) {
   using Unit::BaseProperty;
 
@@ -32,6 +27,8 @@ bool canBeHarvestedBy(const CUnit* resource, u8 playerId) {
   return false;
 }
 
+namespace hooks {
+
 /// Orders newly-produced units to rally, based upon the properties of the
 /// building that produced it.
 ///
@@ -46,8 +43,9 @@ void orderNewUnitToRally(CUnit* unit, CUnit* factory) {
   if (rallyTarget == factory || !(factory->rally.pt.x)) return;
 
   //Added: If unit is a worker and the factory has a worker rally set, use it.
-  if ((BaseProperty[unit->id] & UnitProperty::Worker)
-    && canBeHarvestedBy(factory->moveTarget.unit, unit->playerId)) {
+  if (BaseProperty[unit->id] & UnitProperty::Worker
+      && canBeHarvestedBy(factory->moveTarget.unit, unit->playerId))
+  {
     unit->orderTo(OrderId::Harvest1, factory->moveTarget.unit);
     return;
   }
@@ -92,5 +90,6 @@ void setRallyUnit(CUnit *unit, CUnit *target) {
     unit->moveTarget.unit = target; //Scavenge moveTarget.unit for worker rally
   else if (target == unit)
     unit->moveTarget.unit = NULL;   //If rallied to self, clear worker rally
-} 
 }
+
+} //hooks

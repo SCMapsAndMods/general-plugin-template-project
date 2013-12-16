@@ -96,7 +96,7 @@ void orderRechargeShieldsHook(CUnit *unit) {
     unit->orderToIdle();
     return;
   }
-  if (unit->status & UnitStatus::GroundedBuilding && orderToMoveToTarget(unit,battery)){
+  if (unit->status & UnitStatus::DoodadStatesThing && orderToMoveToTarget(unit,battery)){
 	  unit->orderToIdle();
 	  return;
   }

@@ -57,6 +57,7 @@ void updateStatusEffectsHook(CUnit *unit) {
     if (unit->id == UnitId::dragoon) {
       //플레이어 컬러에서 검정색으로 빠르게 깜박이는 효과
       if (unit->stimTimer) {
+		  if(unit->sprite->mainGraphic->animation==IscriptAnimation::WalkingToIdle)unit->playIscriptAnim(IscriptAnimation::Unused1);
         if (unit->stimTimer % 2)
           unit->sprite->playerId = unit->playerId;
         else

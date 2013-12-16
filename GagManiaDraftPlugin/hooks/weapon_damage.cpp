@@ -43,7 +43,7 @@ void weaponDamageHook(s32     damage,
 
   if (isCheatEnabled(PowerOverwhelming)                           //If Power Overwhelming is enabled
       && playerTable[target->playerId].type == PlayerType::Human) //인간 플레이어의 유닛이 맞을 때만 무적 치트 적용 (인공지능끼리는 무시)
-    damage = 0;
+    return;
 
   if (target->status & UnitStatus::IsHallucination)
     damage *= 2;
@@ -76,10 +76,11 @@ void weaponDamageHook(s32     damage,
       s32 plasmaShieldUpg = scbw::getUpgradeLevel(target->playerId, UpgradeId::ProtossPlasmaShields) << 8;
 
       //강화 보호막 적용
-      if (target->id == UnitId::dragoon && target->stimTimer == 0) {
-        if (damage > 2560)
+      if (target->id == UnitId::dragoon && target->stimTimer == 0&&target->shields >= 2560) {
+		  if (damage >= 2560){
           damage = 2560;
         isHardenedShieldsActivated = true;
+		  }
       }
 
       if (damage > plasmaShieldUpg) //Weird logic, Blizzard dev must have been sleepy
