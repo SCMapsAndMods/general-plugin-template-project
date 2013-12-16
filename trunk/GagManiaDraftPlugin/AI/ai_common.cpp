@@ -206,10 +206,7 @@ class EnemyEnergySumProc: public UnitStatSumProc {
       if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
         return;
 
-      if (!(Unit::BaseProperty[target->id] & UnitProperty::Spellcaster))
-        return;
-
-      if (target->status & UnitStatus::IsHallucination)
+      if (!target->isValidCaster())
         return;
 
       sum += target->energy / 256;

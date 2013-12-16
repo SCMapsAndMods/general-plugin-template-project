@@ -34,8 +34,7 @@ class ParasiteTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
           && Unit::SpaceProvided[target->id] > 0)
         return true;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Spellcaster
-          && !(target->status & UnitStatus::IsHallucination))
+      if (target->isValidCaster())
         return true;
 
       if (Unit::BaseProperty[target->id] & UnitProperty::Worker)
