@@ -31,51 +31,51 @@ struct UNITDEATHS {
 //Based on http://code.google.com/p/bwapi/source/browse/branches/bwapi4/bwapi/BWAPI/Source/BW/CImage.h
 
 struct TEXT {
-  char       textdisplay[218][13];  //[last is text at bottom; ex: "Cheat enabled."]
-  UNK        unknown1;
-  UNK        unknown2;
-  u8         color[13];
-  UNK        unknown3[3];  //[last is text at bottom; ex: "Cheat enabled."]
-  u8         timer[13];
+  char  textdisplay[218][13];  //[last is text at bottom; ex: "Cheat enabled."]
+  UNK   unknown1;
+  UNK   unknown2;
+  u8    color[13];
+  UNK   unknown3[3];  //[last is text at bottom; ex: "Cheat enabled."]
+  u8    timer[13];
 };
 
 struct TILE {
-      u16 index;
-      u8 buildability; /**< 8th bit should sign not buildable. */
-      u8 groundHeight; /**< Ground Height(4 lower bits) - Deprecated? Some values are incorrect. */
-      u16 leftEdge;
-      u16 topEdge;
-      u16 rightEdge;
-      u16 buttomEdge;
-      u16 _1;
-      u16 _2; /**<  Unknown - Edge piece has rows above it. (Recently noticed; not fully understood.)
-                    o 1 = Basic edge piece.
-                    o 2 = Right edge piece.
-                    o 3 = Left edge piece.*/
-      u16 _3;
-      u16 _4;
-      u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
+  u16 index;
+  u8 buildability; /**< 8th bit should sign not buildable. */
+  u8 groundHeight; /**< Ground Height(4 lower bits) - Deprecated? Some values are incorrect. */
+  u16 leftEdge;
+  u16 topEdge;
+  u16 rightEdge;
+  u16 buttomEdge;
+  u16 _1;
+  u16 _2; /**<  Unknown - Edge piece has rows above it. (Recently noticed; not fully understood.)
+                o 1 = Basic edge piece.
+                o 2 = Right edge piece.
+                o 3 = Left edge piece.*/
+  u16 _3;
+  u16 _4;
+  u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
 };
 
 struct DOODAD {
-      u16 index;
-      u8 buildability; /**< 8th bit should sign not buildable. */
-      u8 groundHeightAndOverlayFlags; /**< Ground Height(4 lower bits) - Deprecated? Some values are incorrect.
-                       * Overlay Flags:
-                       * o 0x0 - None
-                       * o 0x1 - Sprites.dat Reference
-                       * o 0x2 - Units.dat Reference (unit sprite)
-                       * o 0x4 - Overlay is Flipped
-                       */
-      u16 overlayID;
-      u16 _1;
-      u16 doodatGrupString;
-      u16 _2;
-      u16 dddataBinIndex;
-      u16 doodatHeight;
-      u16 doodatWidth;
-      u16 _3;
-      u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
+  u16 index;
+  u8 buildability; /**< 8th bit should sign not buildable. */
+  u8 groundHeightAndOverlayFlags; /**< Ground Height(4 lower bits) - Deprecated? Some values are incorrect.
+                   * Overlay Flags:
+                   * o 0x0 - None
+                   * o 0x1 - Sprites.dat Reference
+                   * o 0x2 - Units.dat Reference (unit sprite)
+                   * o 0x4 - Overlay is Flipped
+                   */
+  u16 overlayID;
+  u16 _1;
+  u16 doodatGrupString;
+  u16 _2;
+  u16 dddataBinIndex;
+  u16 doodatHeight;
+  u16 doodatWidth;
+  u16 _3;
+  u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
 };
 
 struct CThingy {
@@ -93,23 +93,20 @@ struct MapSize {
 };
 
 struct LOCATION {
-  u32       topLeftX;
-  u32       topLeftY;
-  u32       bottomRightX;
-  u32       bottomRightY;
-  u16       stringId;
-  u16       flags;
+  Box32 dimensions;
+  u16   stringId;
+  u16   flags;
 };
 
 //---- Taken from player.cpp ----//
 
 struct PLAYER {
-  u32           id;
-  u32           actions; // unused; FF FF FF FF if not a human player
-  u8            type;
-  u8            race; //Use with PlayerRace::Enum
-  u8            force;
-  char          name[25];
+  u32   id;
+  u32   actions;    //Unused; FF FF FF FF if not a human player
+  u8    type;
+  u8    race;       //Use with PlayerRace::Enum
+  u8    force;
+  char  name[25];
 };
 
 //---- Taken from buttons.cpp ----//
@@ -121,20 +118,20 @@ typedef void (__fastcall *ACT_FUNC)(u32,u32);
 //(u32 actVar, u32 shiftClick);
 
 struct BUTTON {
-  u16        position;
-  u16        iconID;
-  REQ_FUNC*    reqFunc;
-  ACT_FUNC*    actFunc;
-  u16        reqVar;
-  u16        actVar;
-  u16        reqStringID;
-  u16        actStringID;
+  u16       position;
+  u16       iconID;
+  REQ_FUNC  *reqFunc;
+  ACT_FUNC  *actFunc;
+  u16       reqVar;
+  u16       actVar;
+  u16       reqStringID;
+  u16       actStringID;
 };
 
 struct BUTTON_SET {
-  u32        buttonsInSet;
-  BUTTON*      firstButton;
-  u32        connectedUnit;
+  u32     buttonsInSet;
+  BUTTON  *firstButton;
+  u32     connectedUnit;
 };
 
 //---- Taken from triggers.h ----//

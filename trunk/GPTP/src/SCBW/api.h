@@ -164,19 +164,19 @@ u32 randBetween(u32 min, u32 max);
 //Sets the Anywhere location.
 inline void setAnywhereLocation() {
   LOCATION* location = &locationTable[63];
-  location->topLeftX = 0;
-  location->topLeftY = 0;
-  location->bottomRightX = mapTileSize->width * 32;
-  location->bottomRightY = mapTileSize->height * 32;
+  location->dimensions.left   = 0;
+  location->dimensions.top    = 0;
+  location->dimensions.right  = 32 * mapTileSize->width;
+  location->dimensions.bottom = 32 * mapTileSize->height;
   location->flags = 63;
 }
 
-inline void setLocation(int locNumber, int topLeftX, int topLeftY, int bottomRightX, int bottomRightY, int flags) {
+inline void setLocation(int locNumber, int left, int top, int right, int bottom, int flags) {
   LOCATION* location = &locationTable[locNumber];
-  location->topLeftX = topLeftX;
-  location->topLeftY = topLeftY;
-  location->bottomRightX = bottomRightX;
-  location->bottomRightY = bottomRightY;
+  location->dimensions.left   = left;
+  location->dimensions.top    = top;
+  location->dimensions.right  = right;
+  location->dimensions.bottom = bottom;
   location->flags = flags;
 }
 
