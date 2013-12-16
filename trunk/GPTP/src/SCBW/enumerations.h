@@ -310,9 +310,15 @@ enum Enum {
   Melee           = 2,
   FreeForAll      = 3,
   OneOnOne        = 4,
+  CaptureTheFlag  = 5,
+  Greed           = 6,
+  Slaughter       = 7,
+  SuddenDeath     = 8,
+  Ladder          = 9,
   UseMapSettings  = 10,
   TeamMelee       = 11,
   TeamFreeForAll  = 12,
+  TeamCTF         = 13,
   TopVsBottom     = 15,
 };
 }

@@ -107,7 +107,7 @@ struct PLAYER {
   u32           id;
   u32           actions; // unused; FF FF FF FF if not a human player
   u8            type;
-  u8            race; //Use with Player::Race
+  u8            race; //Use with PlayerRace::Enum
   u8            force;
   char          name[25];
 };
