@@ -86,10 +86,8 @@ SCBW_DATA(Layers*,      screenLayers,           0x006CEF50);
 typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
 static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
 
-SCBW_DATA(CImage**,     firstUnusedImage,       0x0057EB68);
-SCBW_DATA(CImage**,     lastUnusedImage,        0x0057EB70);
 const CListExtern<CImage, &CImage::link> unusedImages(0x0057EB68, 0x0057EB70);
-const CListExtern<CSprite, &CSprite::link> unusedSprites(0x0063FE30, 0x0063FE34);
+SCBW_DATA(CList<CSprite>*, unusedSprites,       0x0063FE30);
 
 struct SpriteTileData {
   CSprite* tails[256];

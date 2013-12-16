@@ -27,11 +27,7 @@ void CImage::free() {
                         this->screenPosition.y + this->grpSize.bottom
                         );
 
-  CSprite* const parent = this->parentSprite;
-  const CListExtern<CImage, &CImage::link>
-    imageList(parent->imageHead, parent->imageTail);
-
-  imageList.unlink(this);
+  this->parentSprite->images.unlink<&CImage::link>(this);
   this->grpOffset = NULL;
 
   unusedImages.insertAfterHead(this);

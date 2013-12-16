@@ -72,7 +72,7 @@ void regenerateEnergyHook(CUnit *unit) {
 
   //If the unit is currently selected, redraw its graphics
   if (unit->sprite->flags & 8) {
-    for (CImage *i = unit->sprite->imageHead; i; i = i->link.next)
+    for (CImage *i = unit->sprite->images.head; i; i = i->link.next)
       if (i->paletteType == 11)
         i->flags |= 1;
   }

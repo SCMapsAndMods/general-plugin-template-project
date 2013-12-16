@@ -11,7 +11,6 @@ struct CImage;
 struct CSprite {
 //Utility method definitions added by pastelmind
 
-
   /// Makes the sprite play the specified Iscript animation entry.
   void playIscriptAnim(IscriptAnimation::Enum animation);
 
@@ -69,8 +68,7 @@ struct CSprite {
   /*0x10*/ u32       index;
   /*0x14*/ Point16   position;
   /*0x18*/ CImage    *mainGraphic;    // officially "pImagePrimary"
-  /*0x1C*/ CImage    *imageHead;      // officially "pImageHead"
-  /*0x20*/ CImage    *imageTail;      // officially "pImageTail"
+  /*0x1C*/ CList<CImage> images;      // officially "pImageHead" and "pImageTail"
 
   ////////////////////////////////////////////////////////////////////
   // Official Broodwar methods (from beta), ignore these

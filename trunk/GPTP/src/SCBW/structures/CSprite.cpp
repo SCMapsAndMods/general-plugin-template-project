@@ -7,13 +7,13 @@
 //Functionally identical to playSpriteIscript() (offset 0x00499D00)
 void CSprite::playIscriptAnim(IscriptAnimation::Enum animation) {
   assert(this);
-  for (CImage *img = this->imageHead; img; img = img->link.next)
+  for (CImage *img = this->images.head; img; img = img->link.next)
     img->playIscriptAnim(animation);
 }
 
 void CSprite::free() {
   assert(this);
-  CImage *image = this->imageHead;
+  CImage *image = this->images.head;
   while (image) {
     CImage *nextImage = image->link.next;
     image->free();
@@ -26,7 +26,7 @@ void CSprite::free() {
                      spritesOnTileRow->tails[y]);
 
   spritesOnTileRow.unlink(this);
-  unusedSprites.insertAfterHead(this);
+  unusedSprites->insertAfterHead<&CSprite::link>(this);
 }
 
 void CSprite::setPosition(u16 x, u16 y) {
@@ -50,7 +50,7 @@ void CSprite::setPosition(u16 x, u16 y) {
     spritesOnNewTileRow.insertAfterHead(this);
   }
 
-  for (CImage *i = this->imageHead; i; i = i->link.next)
+  for (CImage *i = this->images.head; i; i = i->link.next)
     i->flags |= 1;
 }
 
@@ -88,13 +88,11 @@ CImage* CSprite::createOverlay(u32 imageId, s8 x, s8 y, u32 direction) {
   CImage *overlay = unusedImages.popHead();
   
   if (overlay) {
-    const CListExtern<CImage, &CImage::link> images(this->imageHead, this->imageTail);
-    if (this->imageHead) {
-      images.insertBefore(overlay, this->mainGraphic);
-    }
+    if (this->images.head)
+      this->images.insertBefore<&CImage::link>(overlay, this->mainGraphic);
     else {
       this->mainGraphic = overlay;
-      images.insertAfterHead(overlay);
+      this->images.insertAfterHead<&CImage::link>(overlay);
     }
 
     overlay->initializeData(this, imageId, x, y);
@@ -110,13 +108,11 @@ CImage* CSprite::createTopOverlay(u32 imageId, s8 x, s8 y, u32 direction) {
   CImage *overlay = unusedImages.popHead();
   
   if (overlay) {
-    const CListExtern<CImage, &CImage::link> images(this->imageHead, this->imageTail);
-    if (this->imageHead) {
-      images.insertBeforeHead(overlay);
-    }
+    if (this->images.head)
+      this->images.insertBeforeHead<&CImage::link>(overlay);
     else {
       this->mainGraphic = overlay;
-      images.insertAfterHead(overlay);
+      this->images.insertAfterHead<&CImage::link>(overlay);
     }
 
     overlay->initializeData(this, imageId, x, y);
@@ -134,7 +130,7 @@ void CSprite::removeOverlay(u32 imageIdStart, u32 imageIdEnd) {
   assert(this);
   assert(imageIdStart <= imageIdEnd);
 
-  for (CImage *image = this->imageHead; image; image = image->link.next) {
+  for (CImage *image = this->images.head; image; image = image->link.next) {
     if (imageIdStart <= image->id && image->id <= imageIdEnd) {
       image->free();
       return;
@@ -145,7 +141,7 @@ void CSprite::removeOverlay(u32 imageIdStart, u32 imageIdEnd) {
 void CSprite::removeOverlay(u32 imageId) {
   assert(this);
 
-  for (CImage *image = this->imageHead; image; image = image->link.next) {
+  for (CImage *image = this->images.head; image; image = image->link.next) {
     if (image->id == imageId) {
       image->free();
       return;
@@ -159,7 +155,7 @@ void CSprite::removeOverlay(u32 imageId) {
 CImage* CSprite::getOverlay(u16 imageId) const {
   assert(this);
 
-  for (CImage *image = this->imageHead; image; image = image->link.next)
+  for (CImage *image = this->images.head; image; image = image->link.next)
     if (image->id == imageId)
       return image;
 
