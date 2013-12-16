@@ -271,12 +271,6 @@ bool CUnit::canDetect() const {
   return result != 0;
 }
 
-//Identical to function @ 0x00475A50
-bool CUnit::isDead() const {
-  assert(this);
-  return !this->sprite || this->mainOrderId == OrderId::Die;
-}
-
 //Identical to function @ 0x004020B0
 bool CUnit::isFrozen() const {
   assert(this);
