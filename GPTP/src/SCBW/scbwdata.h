@@ -23,21 +23,18 @@ struct Resources {
   int cumulativeGas[12];
   int cumulativeMinerals[12];
 };
-SCBW_DATA(Resources*,   resources,    0x0057F0F0);
-
-//From player.cpp
-PLAYER*     const playerTable     = (PLAYER*)(0x0057EEE0);
+SCBW_DATA(Resources*,     resources,      0x0057F0F0);
+SCBW_DATA(const PLAYER*,  playerTable,    0x0057EEE0);  //From player.cpp
 
 //From locations.cpp
-MapSize*    const mapTileSize     = (MapSize*) 0x0057F1D4;
-LOCATION*   const locationTable   = (LOCATION*)(0x0058DC60);
+SCBW_DATA(const MapSize*, mapTileSize,    0x0057F1D4);
+SCBW_DATA(LOCATION*,      locationTable,  0x0058DC60);
 
 //From buttons.cpp
 BUTTON*     const button          = 0;  //???
 BUTTON_SET* const buttonSet       = 0;  //???
 
-//From triggers.cpp
-ActionPointer*  const actionTable = (ActionPointer*)(0x00512800);
+SCBW_DATA(ActionPointer*, actionTable,    0x00512800);  //From triggers.cpp
 
 //This was in the InitializePlugin() code in qdp.cpp.
 //Not sure what this does, so I'm leaving it as a comment.
