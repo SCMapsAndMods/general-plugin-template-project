@@ -36,6 +36,13 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
         return 877;     //Unable to target structure.<0>
       if (Unit::BaseProperty[target->id] & UnitProperty::Worker)  //일꾼은 마컨 못하게 막음
         return 876;     //Invalid target.<0>
+	  if (Unit::SpaceProvided[target->id]>0){
+		  for (int i = 0; i < Unit::SpaceProvided[target->id]; ++i) { 
+			CUnit *loadedUnit = target->getLoadedUnit(i);
+			if (loadedUnit && (loadedUnit->id == UnitId::probe||loadedUnit->id == UnitId::scv||loadedUnit->id == UnitId::drone))
+				return 876;
+			}
+	  }
       if (target->id == UnitId::spider_mine
           || target->id == UnitId::larva
           || target->id == UnitId::egg

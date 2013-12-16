@@ -28,7 +28,7 @@ void updateUnitTimersHook(CUnit* unit) {
     unit->spellCooldown--;
 
     //드라군의 과부하 쿨다운이 돌아왔으니 버튼셋을 원래대로
-    if (unit->id == UnitId::dragoon)
+    if (unit->id == UnitId::dragoon&&unit->spellCooldown==0)
       unit->currentButtonSet = unit->id;
   }
 
@@ -53,7 +53,11 @@ void updateUnitTimersHook(CUnit* unit) {
       unit->orderQueueTimer = 0;
 
   //Clear the healing flag every frame
-  unit->isBeingHealed = 0;
+  //유닛이 치료받고 있는 상태라면 오버레이 생성
+  if(unit->isBeingHealed){
+	  if(!unit->getOverlay(scbw::getUnitOverlayAdjustment(unit)+ImageId::UnusedHeal_Small))unit->sprite->createTopOverlay(scbw::getUnitOverlayAdjustment(unit)+ImageId::UnusedHeal_Small);
+	  unit->isBeingHealed--;
+  }
 
   //Update unit status effects (stim, maelstrom, plague, etc.)
   if (unit->status & UnitStatus::Completed || !(unit->sprite->flags & 0x20)) {

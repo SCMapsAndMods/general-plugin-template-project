@@ -51,6 +51,10 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
       if (getUpgradeLevel(unit->playerId, UpgradeId::ApialSensors))
         return 11;
       break;
+	case UnitId::lurker: //러커 시야업 적용(버러우시에만 효과 있게)
+		if(getUpgradeLevel(unit->playerId,UpgradeId::UnusedUpgrade56)&&unit->status & UnitStatus::Burrowed)
+			return 11;
+		break;
   }
 
   //Default

@@ -1,4 +1,5 @@
 ﻿#include "../SCBW/api.h"
+#include "hooks/weapon_range.h"
 #include "../SCBW/enumerations/WeaponId.h"
 #include <cstdio>
 
@@ -55,18 +56,19 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrI
     case 4: damageTypeStr = "방어력 무시"; break;
   }
 
+
   //사거리
-  const u32 currentWeaponRange = unit->getMaxWeaponRange(weaponId);
+  const u32 currentWeaponRange = hooks::getMaxWeaponRangeHook(unit,weaponId);
   const u32 baseWeaponRange = Weapon::MaxRange[weaponId];
   char weaponRangeStr[10];
 
   if (currentWeaponRange != baseWeaponRange)
     sprintf_s(weaponRangeStr, sizeof(weaponRangeStr), "%d+%d",
-              baseWeaponRange, currentWeaponRange - baseWeaponRange);
+              baseWeaponRange/32, (currentWeaponRange - baseWeaponRange)/32);
   else
-    sprintf_s(weaponRangeStr, sizeof(weaponRangeStr), "%d", baseWeaponRange);
+    sprintf_s(weaponRangeStr, sizeof(weaponRangeStr), "%d", baseWeaponRange/32);
 
-  sprintf_s(buffer, sizeof(buffer), "%s\n\n유형: %s\n\n사거리: %d\n\n%s %d%s%s",
+  sprintf_s(buffer, sizeof(buffer), "%s\n\n유형: %s\n\n사거리: %s\n\n%s %d%s%s",
             entryName, damageTypeStr, weaponRangeStr, damageStr, baseDamage, bonusDamageStr, appendStr);
 
   return buffer;

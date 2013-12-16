@@ -200,7 +200,7 @@ void __fastcall cancelUnitWrapper(CUnit *unit) {
     changeUnitType(unit, cancelChangeUnitId);
     unit->remainingBuildTime = 0;
     unit->buildQueue[unit->buildQueueSlot] = UnitId::None;
-    replaceSpriteImages(unit->sprite,
+	replaceSpriteImages(unit->sprite,
       Sprite::ImageId[Flingy::SpriteID[Unit::Graphic[unit->displayedUnitId]]], 0);
 
     unit->orderSignal &= ~0x4;

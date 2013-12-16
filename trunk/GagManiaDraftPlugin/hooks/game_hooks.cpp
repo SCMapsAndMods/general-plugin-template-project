@@ -17,6 +17,8 @@ bool nextFrame() {
   static u8* unitsdatHumanAI = (u8*)0x00662268;
   static u8* unitsdatComputerAI = (u8*)0x00662EA0;
   static u8* unitsdatReturnToAI = (u8*)0x00664898;
+  static char* playername = (char*)0x0057EE9C;
+  //여기는 제가 핵심적으로 많이 손을 댄곳이며 사용하는 부분은 주석이 달려있지만(일부 pastelmind님의 도움) 주석처리 되어있는 코드는 사용안하는 코드로 흥미가 있으시다면 해석하시고 적용하시기 바랍니다.
 
   if (!scbw::isGamePaused()) { //If the game is not paused
     graphics::resetAllGraphics();
@@ -44,9 +46,14 @@ bool nextFrame() {
           scbw::createUnitAtPos(workerUnitId, townHall->playerId,
                                 townHall->getX(), townHall->getY());
         }
-      }
+	  }
+	  //이스터에그
+	  if(playername[0]=='G'&&playername[1]=='A'&&playername[2]=='G'&&playername[3]=='M'&&playername[4]=='a'&&playername[5]=='n'&&playername[6]=='i'&&playername[7]=='a'){
+		  scbw::printText("\x11GAGMania:\x4야! 쓰레기! 작은고추의 매운맛을 보여주마, 코풍저그 콩진호가 간닷!");
+		  scbw::playSound(14);
+	  }
     }
-
+		
     for (int i = 0; i < *clientSelectionCount; ++i) {
       CUnit *selUnit = clientSelectionGroup->unit[i];
       if (selUnit == NULL) continue;
@@ -57,7 +64,9 @@ bool nextFrame() {
         s16 targX = selUnit->orderTarget.pt.x;
         s16 targY = selUnit->orderTarget.pt.y;
 
-        if (selUnit->mainOrderId == OrderId::DroneStartBuild
+        if (selUnit->mainOrderId == OrderId::DroneLand
+            || selUnit->mainOrderId == OrderId::DroneBuild
+            || selUnit->mainOrderId == OrderId::DroneStartBuild
             || selUnit->mainOrderId == OrderId::BuildTerran
             || selUnit->mainOrderId == OrderId::BuildProtoss1)
         {
@@ -84,8 +93,8 @@ bool nextFrame() {
                  && selUnit->orderTarget.unit)
         {
           //orderTarget.unit이 있는데 왜 orderTarget.pt를 쓰는 거죠...?
-          graphics::drawFilledCircle(targX, targY, 6, graphics::RED, graphics::ON_MAP);
-          graphics::drawLine(x, y, targX, targY, graphics::RED, graphics::ON_MAP);
+          graphics::drawFilledCircle(selUnit->orderTarget.unit->position.x, selUnit->orderTarget.unit->position.y, 6, graphics::RED, graphics::ON_MAP);
+          graphics::drawLine(x, y, selUnit->orderTarget.unit->position.x, selUnit->orderTarget.unit->position.y, graphics::RED, graphics::ON_MAP);
         }
 
         const CUnit *orderTargetUnit = selUnit->orderTarget.unit;
@@ -198,16 +207,23 @@ bool nextFrame() {
           unit->status |= UnitStatus::CanNotReceiveOrders;  //명령을 받을 수 없음
         }
       }
+	  {
+		  if(unit->id==UnitId::UnusedProtoss2&&unit->mainOrderId!=OrderId::Die&&unit->status & UnitStatus::Completed&&unit->mainOrderId!=OrderId::Warpin){
+			  if(unit->secondaryOrderId!=OrderId::CloakNearbyUnits)unit->setSecondaryOrder(OrderId::CloakNearbyUnits);
+		  }
+	  }
 
       //넥서스 시간 증폭
       if (unit->id == UnitId::nexus && unit->mainOrderId == OrderId::PlaceScanner) {
         CUnit *target = unit->orderTarget.unit;
         if (target && target->playerId == unit->playerId  //아군 유닛인지 확인
-            && target->status & (UnitStatus::GroundedBuilding | UnitStatus::Completed)  //완성된 건물인지 확인
-            && Unit::GroupFlags[target->id].isFactory     //유닛을 생산하는 건물인지 확인 (DatEdit에서 수정 가능)
-            && unit->sprite->mainGraphic->animation != IscriptAnimation::WarpIn)  //워프 중인 건물은 제외
+			&& target->status & UnitStatus::Completed
+            && target->status & (UnitStatus::GroundedBuilding)  //완성된 건물인지 확인
+			&& (Unit::GroupFlags[target->id].isProtoss)    //유닛을 생산하는 건물인지 확인 (DatEdit에서 수정 가능)
+			&& (target->id!=UnitId::pylon&&target->id!=UnitId::photon_cannon&&target->id!=UnitId::assimilator&&target->id!=UnitId::shield_battery&&target->id!=UnitId::UnusedProtoss2)
+			&& target->mainOrderId!=OrderId::Warpin)  //워프 중인 건물은 제외
         {
-          unit->unusedTimer = 100;  //시간 증폭 지속 시간
+          target->unusedTimer = 100;  //시간 증폭 지속 시간
 
           //에너지 소모
           if (!scbw::isCheatEnabled(CheatFlags::TheGathering))
@@ -223,13 +239,13 @@ bool nextFrame() {
       }
 
       //시간 증폭 적용
-      if (Unit::GroupFlags[unit->id].isFactory && unit->unusedTimer) {
+	  if (Unit::GroupFlags[unit->id].isProtoss&&unit->status & UnitStatus::GroundedBuilding&&unit->unusedTimer) {
         //그래픽 효과 적용
         if(!unit->getOverlay(IMAGE_CHRONO_BOOST_EFFECT))
           unit->sprite->createOverlay(IMAGE_CHRONO_BOOST_EFFECT);
 
         if (!(unit->status & UnitStatus::DoodadStatesThing) //파일런 동력이 끊기지 않은 상태
-            && unit->cycleCounter % 2)  //2프레임마다 한번씩 시간 증폭 적용
+            && !(unit->cycleCounter % 2))  //2프레임마다 한번씩 시간 증폭 적용
         {
           //유닛 생산 가속
           if (unit->currentBuildUnit && unit->currentBuildUnit->remainingBuildTime) {
@@ -837,7 +853,7 @@ bool nextFrame() {
         {
           if(unit->mainOrderId==OrderId::Follow&&unit->orderTarget.unit!=NULL&&unit->sprite->mainGraphic->animation==0x0B)
           {
-            if(unit->orderTarget.unit->playerId==unit->playerId&&!(unit->orderTarget.unit->status & 0x4)&&!(unit->orderTarget.unit->status & 0x2))
+			  if(unit->orderTarget.unit->playerId==unit->playerId&&scbw::canBeEnteredBy(unit,unit->orderTarget.unit))
             {
               unit->mainOrderId=OrderId::Pickup2;
               unit->rankIncrease=1;
@@ -852,6 +868,7 @@ bool nextFrame() {
           }
         }
       }
+	  //하이드 센터 범위 클로킹 설정
       {
         if(unit->id==153&&unit->mainOrderId!=OrderId::Die)
         {
@@ -1132,7 +1149,6 @@ bool nextFrame() {
         }
       }
 
-
       {//자가 시전 제한
         if(unit->mainOrderId!=OrderId::Die&&unit->orderTarget.unit&&unit->orderTarget.unit==unit)
         {
@@ -1321,9 +1337,24 @@ bool nextFrame() {
             unit->currentButtonSet=UnitId::Special_RightPitDoor;
           }
         }
+		//해처리,레어,하이브가 컴퓨터 소유일때 라바 생성타이머 수정
+		if((unit->id==UnitId::hatchery||unit->id==UnitId::lair||unit->id==UnitId::hive)&&unit->building.larvaTimer>5&&playerTable[unit->playerId].type==PlayerType::Computer){
+			unit->building.larvaTimer=5;
+		}
+		//자원추출장 자원 추출 시스템
+		if(unit->id==145&&unit->mainOrderId!=OrderId::Die){
+			if(!(unit->status & 0x1))unit->unusedTimer=45;
+			if(unit->unusedTimer==0){
+				for(CUnit* res=*firstVisibleUnit;res;res=res->next){
+					if (176 <= res->id && res->id <= 178)resources->minerals[unit->playerId]+=6;
+					resources->gas[unit->playerId]+=4;
+					unit->unusedTimer=45;
+				}
+			}
+		}
       }
       {
-        //파벳 파란 불꽃지정
+        //파이어벳 지옥불 업그레이드 완료시 파란 불꽃으로 변환
         if(unit->id==UnitId::firebat&&unit->mainOrderId!=OrderId::Die&&scbw::getUpgradeLevel(unit->playerId,UpgradeId::UnusedUpgrade59))
         {
 
@@ -1413,6 +1444,7 @@ bool nextFrame() {
 }
 
 bool gameOn() {
+	//최대시야 11에서 255로 늘려주기
   setMaxSightRange<255>();
   firstRun = true;
   return true;

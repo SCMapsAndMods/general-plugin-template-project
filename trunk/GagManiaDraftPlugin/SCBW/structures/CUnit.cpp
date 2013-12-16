@@ -21,7 +21,7 @@ extern const u32 Func_DoWeaponDamage = 0x00479930; //Note: Also used by weaponDa
 void CUnit::damageWith(s32 damage, u8 weaponId, CUnit *attacker,
                        s8 attackingPlayer, s8 direction, u8 damageDivisor) {
   assert(this);
-  assert(weaponId < WEAPON_TYPE_COUNT);
+  //assert(weaponId < WEAPON_TYPE_COUNT);
   assert(damageDivisor != 0);
 
   u32 weaponId_         = weaponId;
@@ -314,7 +314,7 @@ u32 CUnit::getDistanceToTarget(const CUnit *target) const {
 extern const u32 Func_GetMaxWeaponRange = 0x00475870;
 u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
   assert(this);
-  assert(weaponId < WEAPON_TYPE_COUNT);
+  //assert(weaponId < WEAPON_TYPE_COUNT);
 
   static u32 maxWeaponRange;
   __asm {
