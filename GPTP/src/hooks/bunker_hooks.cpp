@@ -60,7 +60,7 @@ void createBunkerAttackThingyHook(const CUnit *unit) {
   if (!bunkerAttackEffect) return;
 
   bunkerAttackEffect->sprite->elevationLevel = unit->sprite->elevationLevel + 1;
-  for (CImage *image = bunkerAttackEffect->sprite->imageHead;
+  for (CImage *image = bunkerAttackEffect->sprite->images.head;
        image; image = image->link.next) {
     setImageDirection(image, frameAngle);
   }
