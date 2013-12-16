@@ -97,7 +97,7 @@ u8 getActiveGroundWeapon() const;
 
 Returns the unit's ground weapon ID. If the unit is an unburrowed Lurker, returns `WeaponId::None` instead.
 
-=== `getX`, `getY` ===
+=== `getX, getY` ===
 {{{
 u16 getX() const;
 u16 getY() const;
@@ -105,7 +105,7 @@ u16 getY() const;
 
 Returns the unit's position on the map. Internally, this uses the unit's sprite position, which is apparently preferred by Blizzard.
 
-=== `getTileX`, `getTileY` ===
+=== `getTileX, getTileY` ===
 {{{
 u16 getTileX() const;
 u16 getTileY() const;
@@ -113,7 +113,7 @@ u16 getTileY() const;
 
 Returns the position of the map tile that the unit is on.
 
-=== `getLeft`, `getRight`, `getTop`, `getBottom` ===
+=== `getLeft, getRight, getTop, getBottom` ===
 {{{
 s16 getLeft() const;
 s16 getRight() const;
@@ -182,7 +182,7 @@ void orderTo(u32 orderId, const CUnit *target = NULL);
 void orderTo(u32 orderId, u16 x, u16 y);
 }}}
 
-Issue a new order to the unit, using either a target unit (`target`) or position (`x`, `y`). Units ordered with this function are considered to be controlled by the user.
+Issue a new order to the unit, using either a target unit (`target`) or position (`x, y`). Units ordered with this function are considered to be controlled by the user.
 
 === `order` ===
 {{{
@@ -243,7 +243,7 @@ void reduceDefensiveMatrixHp(s32 amount);
 
 Reduces Defensive Matrix by `amount`, removing it if possible.
 
-=== `removeLockdown`, `removeMaelstrom`, `removeStasisField` ===
+=== `removeLockdown, removeMaelstrom, removeStasisField` ===
 {{{
 void removeLockdown();
 void removeMaelstrom();
