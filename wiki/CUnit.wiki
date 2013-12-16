@@ -4,7 +4,7 @@ Structure header file: <tt>[http://code.google.com/p/gptp/source/browse/trunk/GP
 
 The `CUnit` structure is used by !StarCraft to store all information regarding a unit's state, such as its HP amount, controlling player, Stim Packs timer, and units loaded inside a transport.
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
 = Methods =
 
