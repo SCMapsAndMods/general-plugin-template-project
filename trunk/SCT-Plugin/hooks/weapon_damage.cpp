@@ -6,7 +6,7 @@
 
 namespace {
 //Helper functions
-void createShieldOverlay(CUnit *unit, u32 attackDirection);
+void createShieldOverlay(CUnit *unit, u32 attackDirection, bool isOvercharged);
 u16 getUnitStrength(const CUnit *unit, bool useGroundStrength);
 
 /// Definition of damage factors (explosive, concussive, etc.)
@@ -140,9 +140,10 @@ void weaponDamageHook(s32     damage,
 
   //Reduce shields (finally)
   if (shieldReduceAmount != 0) {
+    const bool shieldWasOvercharged = (target->shields > (Unit::MaxShieldPoints[target->id] * 256));
     target->shields -= shieldReduceAmount;
     if (weaponId != WeaponId::Plague && target->shields != 0)
-      createShieldOverlay(target, direction);
+      createShieldOverlay(target, direction, shieldWasOvercharged);
   }
 
   //Update unit strength data (?)
@@ -158,11 +159,13 @@ namespace {
 
 //Creates the Plasma Shield flickering effect.
 //Identical to function @ 0x004E6140
-void createShieldOverlay(CUnit *unit, u32 attackDirection) {
+void createShieldOverlay(CUnit *unit, u32 attackDirection, bool isOvercharged) {
   const LO_Header* shield_lo = shieldOverlays[unit->sprite->mainGraphic->id];
   u32 frameAngle = (attackDirection - 124) / 8 % 32;
   Point8 offset = shield_lo->getOffset(unit->sprite->mainGraphic->direction, frameAngle);
-  unit->sprite->createOverlay(ImageId::ShieldOverlay, offset.x, offset.y, frameAngle);
+  CImage *shieldOverlay = unit->sprite->createOverlay(ImageId::ShieldOverlay, offset.x, offset.y, frameAngle);
+  if (isOvercharged)
+    shieldOverlay->setRemapping(ColorRemapping::BExpl);
 }
 
 //Somehow related to AI stuff; details unknown.
