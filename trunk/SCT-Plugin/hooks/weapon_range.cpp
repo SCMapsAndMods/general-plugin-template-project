@@ -85,8 +85,10 @@ u8 getSeekRangeHook(const CUnit *unit) {
 u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
   using scbw::getUpgradeLevel;
 
-  //Arbiter weapon range is unaffected (since it is splash, it's hard to hook
-  //into, and it will probably be OP anyways)
+  //Arbiter weapon range is unaffected, because:
+  // 1. Hooks for splash radius modifiers have not been implemented
+  // 2. Increased splash radius would be OP
+  // 3. It would also increase cloaking radius (also OP)
   if (unit->id == UnitId::arbiter || unit->id == UnitId::danimoth)
     if (weaponId == WEAPON_MEDIATION_FIELD
         || weaponId == WEAPON_MEDIATION_FIELD_HERO)
@@ -131,9 +133,30 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
   }
 
   //Added: Ocular Implants adds a flat +32 weapon range (to ranged units only)
-  if ((unit->isBlind || unit->subunit && unit->subunit->isBlind)
-      && Weapon::MaxRange[weaponId] >= 64)
-    bonusAmount += 32;
+  // Spellcasting range is not affected at all
+  if (unit->isBlind || unit->subunit && unit->subunit->isBlind) {
+    // Check weapon ID to see if it's a spell
+    if (weaponId != WeaponId::Lockdown
+      && weaponId != WeaponId::Irradiate
+      && weaponId != WeaponId::EMP_Shockwave
+      && weaponId != WeaponId::YamatoGun
+      && weaponId != WEAPON_OCULAR_IMPLANTS
+      && weaponId != WeaponId::Restoration
+      && weaponId != WeaponId::Ensnare
+      && weaponId != WEAPON_CARNIVOROUS_MITES
+      && weaponId != WeaponId::DarkSwarm
+      && weaponId != WeaponId::Consume
+      && weaponId != WeaponId::Plague
+      && weaponId != WeaponId::PsiStorm
+      && weaponId != WeaponId::Maelstrom
+      && weaponId != WEAPON_TELEPATHIC_TRACE
+      && weaponId != WeaponId::DisruptionWeb
+      && weaponId != WeaponId::StasisField)
+    {
+      if (Weapon::MaxRange[weaponId] >= 64)
+        bonusAmount += 32;
+    }
+  }
 
   return Weapon::MaxRange[weaponId] + bonusAmount;
 }
