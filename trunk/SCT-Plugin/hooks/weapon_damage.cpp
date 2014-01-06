@@ -26,7 +26,9 @@ struct {
 //Custom helper functions
 bool weaponTypeCanMiss(u8 weaponId) {
   //Exception weapons (spells)
-  if (weaponId == WeaponId::YamatoGun || weaponId == WeaponId::SpawnBroodlings)
+  if (weaponId == WeaponId::Irradiate
+      || weaponId == WeaponId::YamatoGun
+      || weaponId == WEAPON_CARNIVOROUS_MITES)
     return false;
 
   if (Weapon::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit
