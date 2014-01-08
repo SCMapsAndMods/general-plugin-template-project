@@ -49,6 +49,48 @@ class RepairTargetFinder: public scbw::UnitFinderCallbackMatchInterface {
 
 RepairTargetFinder repairTargetFinder;
 
+class DepotRaiseObstacleFinder: public scbw::UnitFinderCallbackMatchInterface {
+  const CUnit *depot;
+  public:
+    void setDepot(const CUnit *depot) { this->depot = depot; }
+    bool match(const CUnit *unit) {
+      //Check if the unit is a ground unit
+      if (!unit)
+        return false;
+      if (unit == depot)
+        return false;
+      if (unit->status & UnitStatus::InAir)
+        return false;
+      return true;
+    }
+};
+
+DepotRaiseObstacleFinder depotRaiseObstacleFinder;
+scbw::UnitFinder finder;
+
+class AiDepotRaiseConditionChecker: public scbw::UnitFinderCallbackMatchInterface {
+  const CUnit *depot;
+  public:
+    void setDepot(const CUnit *depot) { this->depot = depot; }
+    bool match(const CUnit *unit) {
+      //Check if there is an enemy ground unit nearby
+      if (!unit)
+        return false;
+      if (unit == depot)
+        return false;
+      if (unit->status & UnitStatus::InAir)
+        return false;
+      if (scbw::isAlliedTo(depot->playerId, unit->getLastOwnerId()))
+        return false;
+      
+      return depot->getDistanceToTarget(unit) <= 96;
+    }
+} aiDepotRaiseConditionChecker;
+
+//TODO: Add this to GPTP
+CUnit** const currentIscriptFlingy = (CUnit**) 0x6D11F4;
+CUnit** const currentIscriptUnit = (CUnit**) 0x6D11FC;
+
 namespace hooks {
 
 /// This hook is called every frame; most of your plugin's logic goes here.
@@ -94,6 +136,79 @@ bool nextFrame() {
         CImage *nexusAttackOverlay = unit->getOverlay(IMAGE_NEXUS_ATTACK_OVERLAY);
         if (nexusAttackOverlay)
           nexusAttackOverlay->setRemapping(ColorRemapping::BFire);
+      }
+
+      //Lower & raise Supply Depots
+      if (unit->id == UnitId::supply_depot
+          && unit->status & UnitStatus::Completed)
+      {
+        //AI raise/lower behavior
+        if (playerTable[unit->playerId].type == PlayerType::Computer) {
+          aiDepotRaiseConditionChecker.setDepot(unit);
+          finder.search(unit->getLeft() - 120,  unit->getTop() - 120,
+                        unit->getRight() + 120, unit->getBottom() + 120);
+          
+          //Is lowered -> raise
+          if (unit->status & UnitStatus::NoCollide) {
+            if (finder.getFirst(aiDepotRaiseConditionChecker))
+              unit->orderTo(OrderId::Stop);
+          }
+          //Is raised -> lower
+          else {
+            if (!finder.getFirst(aiDepotRaiseConditionChecker))
+              unit->orderTo(OrderId::Stop);
+          }
+        }
+
+        //Lower/raise trigger
+        if (unit->mainOrderId == OrderId::Stop
+            && !(unit->status & UnitStatus::NoBrkCodeStart))
+        {
+          unit->orderToIdle();
+
+          //Is lowered -> raise
+          if (unit->status & UnitStatus::NoCollide) {
+            //Check if there is a ground unit on top of the Supply Depot
+            depotRaiseObstacleFinder.setDepot(unit);
+            finder.search(unit->getLeft(), unit->getTop(), unit->getRight(), unit->getBottom());
+
+            if (finder.getFirst(depotRaiseObstacleFinder)) {
+              //Display error message and stop
+              scbw::showErrorMessageWithSfx(unit->playerId, 1572, 2);
+            }
+            else {
+              CUnit* const tempUnit = *currentIscriptUnit;
+              CUnit* const tempFlingy = *currentIscriptFlingy;
+              *currentIscriptUnit = unit;
+              *currentIscriptFlingy = unit;
+              unit->playIscriptAnim(IscriptAnimation::Landing);
+              *currentIscriptUnit = tempUnit;
+              *currentIscriptFlingy = tempFlingy;
+              unit->status &= ~(UnitStatus::NoCollide);
+              unit->orderSignal &= ~0x10;
+              unit->sprite->elevationLevel = 4;
+              unit->currentButtonSet = unit->id;
+            }
+          }
+          //Is raised -> lower
+          else {
+            CUnit* const tempUnit = *currentIscriptUnit;
+            CUnit* const tempFlingy = *currentIscriptFlingy;
+            *currentIscriptUnit = unit;
+            *currentIscriptFlingy = unit;
+            unit->playIscriptAnim(IscriptAnimation::LiftOff);
+            *currentIscriptUnit = tempUnit;
+            *currentIscriptFlingy = tempFlingy;
+            unit->currentButtonSet = UnitId::UnusedTerran1;
+          }
+        }
+
+        //Finished lowering, allow ground units to pass
+        if (unit->orderSignal & 0x10 && !(unit->status & UnitStatus::NoCollide)) {
+          unit->status |= UnitStatus::NoCollide;
+          unit->sprite->elevationLevel = 3;
+          unit->currentButtonSet = UnitId::UnusedTerran1;
+        }
       }
     }
 
