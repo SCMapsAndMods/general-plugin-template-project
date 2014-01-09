@@ -21,6 +21,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
     "\n[System Changes]"
     "\n- Dark Swarm reduces range attack damage by 50%"
     "\n- SCVs auto-repair nearby units"
+    "\n- Supply Depots can be lowered/raised"
     "\n- Bunker shows no attack graphic for Fiends"
     "\n- Changed cooldown modifiers for Acid Spore / Ensnare / Stim Packs"
     "\n- Changed unit speed modifiers for Ensnare and Stim Packs"
