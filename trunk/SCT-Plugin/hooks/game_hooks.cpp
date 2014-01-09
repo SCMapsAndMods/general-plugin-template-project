@@ -139,11 +139,21 @@ bool nextFrame() {
       }
 
       //Lower & raise Supply Depots
+      //Order signal: 0x10 denotes "completely lowered" state
       if (unit->id == UnitId::supply_depot
           && unit->status & UnitStatus::Completed)
       {
+        //Finished lowering, allow ground units to pass
+        //Placed here so the AI does not go crazy with lower/raise
+        if (unit->orderSignal & 0x10 && !(unit->status & UnitStatus::NoCollide)) {
+          unit->status |= UnitStatus::NoCollide;
+          unit->sprite->elevationLevel = 3;
+        }
+
         //AI raise/lower behavior
-        if (playerTable[unit->playerId].type == PlayerType::Computer) {
+        if (unit->mainOrderId == Unit::ComputerIdleOrder[unit->id]
+            && !(unit->status & UnitStatus::NoBrkCodeStart))
+        {
           aiDepotRaiseConditionChecker.setDepot(unit);
           finder.search(unit->getLeft() - 120,  unit->getTop() - 120,
                         unit->getRight() + 120, unit->getBottom() + 120);
@@ -164,6 +174,7 @@ bool nextFrame() {
         if (unit->mainOrderId == OrderId::Stop
             && !(unit->status & UnitStatus::NoBrkCodeStart))
         {
+          //Erase Stop order (?)
           unit->orderToIdle();
 
           //Is lowered -> raise
@@ -184,6 +195,7 @@ bool nextFrame() {
               unit->playIscriptAnim(IscriptAnimation::Landing);
               *currentIscriptUnit = tempUnit;
               *currentIscriptFlingy = tempFlingy;
+
               unit->status &= ~(UnitStatus::NoCollide);
               unit->orderSignal &= ~0x10;
               unit->sprite->elevationLevel = 4;
@@ -199,15 +211,9 @@ bool nextFrame() {
             unit->playIscriptAnim(IscriptAnimation::LiftOff);
             *currentIscriptUnit = tempUnit;
             *currentIscriptFlingy = tempFlingy;
-            unit->currentButtonSet = UnitId::UnusedTerran1;
-          }
-        }
 
-        //Finished lowering, allow ground units to pass
-        if (unit->orderSignal & 0x10 && !(unit->status & UnitStatus::NoCollide)) {
-          unit->status |= UnitStatus::NoCollide;
-          unit->sprite->elevationLevel = 3;
-          unit->currentButtonSet = UnitId::UnusedTerran1;
+            unit->currentButtonSet = UnitId::UnusedTerran1; //Buttonset with Raise button
+          }
         }
       }
     }
