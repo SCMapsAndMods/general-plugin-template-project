@@ -18,9 +18,17 @@ int getUnitMovementState(const CUnit *unit);
 
 //-------- Actual hook functions --------//
 
+//Custom function
 s32 getRechargeShieldsMax(const CUnit *unit) {
   using Unit::MaxShieldPoints;
   return (MaxShieldPoints[unit->id] + std::min<s32>(100, MaxShieldPoints[unit->id])) * 256;
+}
+
+s32 getRechargeShieldsDistance(const CUnit *battery) {
+  if (scbw::getUpgradeLevel(battery->playerId, UPGRADE_PARTICLE_FILTER) > 0)
+    return 640; //Increase Recharge Shields distance to 20
+  else
+    return 320;
 }
 
 //This function is called every frame when a unit recharges shields.
@@ -109,7 +117,7 @@ void orderRechargeShieldsHook(CUnit *unit) {
     case 1:
       switch (getUnitMovementState(unit)) {
         case 0: //Unit has not reached target yet
-          if (unit->getDistanceToTarget(battery) > 320)
+          if (unit->getDistanceToTarget(battery) > getRechargeShieldsDistance(battery))
             return;
         case 1: //Unit cannot move
           orderToHoldPosition(unit);
