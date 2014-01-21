@@ -16,11 +16,11 @@ bool isValidPsiProviderType(u16 unitId) {
   if (unitId >= UNIT_TYPE_COUNT) return false;
 
   //Uses memory space of CUnit::building for other purposes
-  if (Unit::BaseProperty[unitId] & (UnitProperty::Worker | UnitProperty::ResourceContainer | UnitProperty::NPCOrAccessories))
+  if (units_dat::BaseProperty[unitId] & (UnitProperty::Worker | UnitProperty::ResourceContainer | UnitProperty::NPCOrAccessories))
     return false;
 
   //CUnit::rally shares memory space with CUnit::psi_link
-  if (Unit::GroupFlags[unitId].isFactory) return false;
+  if (units_dat::GroupFlags[unitId].isFactory) return false;
 
   //Uses memory space of CUnit::building for other purposes
   if (unitId == UnitId::ghost

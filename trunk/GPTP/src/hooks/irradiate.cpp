@@ -18,7 +18,7 @@ class IrradiateProc: public scbw::UnitFinderCallbackProcInterface {
 void IrradiateProc::proc(CUnit *unit) {
   //Default StarCraft behavior
 
-  const u32 unitProps = Unit::BaseProperty[unit->id];
+  const u32 unitProps = units_dat::BaseProperty[unit->id];
   
   //Damage organic units only
   if (!(unitProps & UnitProperty::Organic))
@@ -39,7 +39,7 @@ void IrradiateProc::proc(CUnit *unit) {
   //Distance check (if not inside a transport)
   if (irradiatedUnit->status & UnitStatus::InTransport
       || irradiatedUnit->getDistanceToTarget(unit) <= 32) {
-    const s32 damage = Weapon::DamageAmount[WeaponId::Irradiate] * 256 / Weapon::Cooldown[WeaponId::Irradiate];
+    const s32 damage = weapons_dat::DamageAmount[WeaponId::Irradiate] * 256 / weapons_dat::Cooldown[WeaponId::Irradiate];
     unit->damageWith(damage,
                      WeaponId::Irradiate,
                      irradiatedUnit->irradiatedBy,
@@ -63,7 +63,7 @@ void doIrradiateDamageHook(CUnit *unit) {
   else if (unit->status & UnitStatus::InTransport) {
     const CUnit *transport = unit->connectedUnit;
     if (transport != NULL) {
-      for (int i = 0; i < Unit::SpaceProvided[transport->id]; ++i) {
+      for (int i = 0; i < units_dat::SpaceProvided[transport->id]; ++i) {
         CUnit *loadedUnit = transport->getLoadedUnit(i);
         if (loadedUnit)
           irradiateProc.proc(loadedUnit);

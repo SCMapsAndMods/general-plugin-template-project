@@ -162,7 +162,7 @@ struct DatLoad {
   u32 entries;
 };
 
-namespace Unit {
+namespace units_dat {
 SCBW_DATA(const DatLoad*, unitsDat, 0x00513C30);
 
 SCBW_DATA(u8*,  Graphic,            unitsDat[0].address);
@@ -202,9 +202,9 @@ SCBW_DATA(u16*, BuildScore,         unitsDat[49].address);
 SCBW_DATA(u16*, DestroyScore,       unitsDat[50].address);
 SCBW_DATA(u16*, MapStringId,        unitsDat[51].address);
 SCBW_DATA(u8*,  BroodwarOnly,       unitsDat[52].address);
-}
+} //units_dat
 
-namespace Flingy {
+namespace flingy_dat {
 SCBW_DATA(const DatLoad*, flingyDat, 0x00515A38);
 
 SCBW_DATA(u16*, SpriteID,           flingyDat[0].address);
@@ -213,9 +213,9 @@ SCBW_DATA(u16*, Acceleration,       flingyDat[2].address);
 SCBW_DATA(u32*, HaltDistance,       flingyDat[3].address);
 SCBW_DATA(u8*,  TurnSpeed,          flingyDat[4].address);  //Incorrectly known as "Turn Radius"
 SCBW_DATA(u8*,  MovementControl,    flingyDat[6].address);
-}
+} //flingy_dat
 
-namespace Weapon {
+namespace weapons_dat {
 SCBW_DATA(const DatLoad*, weaponsDat, 0x00513868);
 
 SCBW_DATA(u16*, Label,              weaponsDat[0].address);
@@ -239,9 +239,9 @@ SCBW_DATA(u8*,  AttackDirection,    weaponsDat[18].address);
 SCBW_DATA(u8*,  LaunchSpin,         weaponsDat[19].address);
 SCBW_DATA(u8*,  ForwardOffset,      weaponsDat[20].address);
 SCBW_DATA(u8*,  VerticalOffset,     weaponsDat[21].address);
-}
+} //weapons_dat
 
-namespace Upgrade {
+namespace upgrades_dat {
 SCBW_DATA(const DatLoad*, upgradesDat, 0x005136E0);
 
 SCBW_DATA(u16*, MineralCostBase,    upgradesDat[0].address);
@@ -253,9 +253,9 @@ SCBW_DATA(u16*, TimeCostFactor,     upgradesDat[5].address);
 SCBW_DATA(u16*, Label,              upgradesDat[8].address);
 SCBW_DATA(u8*,  Race,               upgradesDat[9].address);
 SCBW_DATA(u8*,  MaxRepeats,         upgradesDat[10].address);
-}
+} //upgrades_dat
 
-namespace Tech {
+namespace techdata_dat {
 SCBW_DATA(const DatLoad*, techdataDat, 0x005137D8);
 
 SCBW_DATA(u16*, MineralCost,        techdataDat[0].address);
@@ -263,37 +263,36 @@ SCBW_DATA(u16*, GasCost,            techdataDat[1].address);
 SCBW_DATA(u16*, TimeCost,           techdataDat[2].address);
 SCBW_DATA(u16*, EnergyCost,         techdataDat[3].address);
 SCBW_DATA(u16*, Label,              techdataDat[7].address);
-}
+} //techdata_dat
 
-namespace Order {
+namespace orders_dat {
 SCBW_DATA(const DatLoad*, ordersDat, 0x00513EC8);
 
 SCBW_DATA(u16*, Label,              ordersDat[0].address);
 SCBW_DATA(u8*,  UseWeaponTargeting, ordersDat[1].address);
 SCBW_DATA(u8*,  TechUsed,           ordersDat[14].address);
-}
+} //orders_dat
 
-namespace Sprite {
+namespace sprites_dat {
 SCBW_DATA(const DatLoad*, spritesDat, 0x00513FB8);
 
 SCBW_DATA(u16*, ImageId,            spritesDat[0].address);
 SCBW_DATA(s8*,  HpBarSize,          spritesDat[1].address);
 SCBW_DATA(u8*,  IsVisible,          spritesDat[3].address);
-}
+} //sprites_dat
 
-namespace Image {
+namespace images_dat {
 SCBW_DATA(const DatLoad*, imagesDat, 0x00514010);
 
 SCBW_DATA(const u8*,  IsTurnable,   imagesDat[1].address);
 SCBW_DATA(const u8*,  IsClickable,  imagesDat[2].address);
 SCBW_DATA(const u8*,  RLE_Function, imagesDat[5].address);
 SCBW_DATA(const u8*,  Remapping,    imagesDat[6].address);
-}
+} //images_dat
 
 
 //-------- Tech levels --------//
 
-namespace Tech {
 struct _scTechs {
   u8 isEnabled[PLAYER_COUNT][24];
   u8 isResearched[PLAYER_COUNT][24];
@@ -304,11 +303,9 @@ struct _bwTechs {
 };
 SCBW_DATA(_scTechs*, TechSc,   0x0058CE24); //Use with ScTech::Enum
 SCBW_DATA(_bwTechs*, TechBw,   0x0058F050); //Use with BwTech::Enum
-}
 
 //-------- Upgrade levels --------//
 
-namespace Upgrade {
 struct _scUpgrs {
   u8 maxLevel[PLAYER_COUNT][46];
   u8 currentLevel[PLAYER_COUNT][46];
@@ -317,9 +314,9 @@ struct _bwUpgrs {
   u8 maxLevel[PLAYER_COUNT][15];
   u8 currentLevel[PLAYER_COUNT][15];
 };
-SCBW_DATA(_scUpgrs*, UpgSc,  0x0058D088); //Use with ScUpgrade::Enum
-SCBW_DATA(_bwUpgrs*, UpgBw,  0x0058F278); //Use with BwUpgrade::Enum
-}
+SCBW_DATA(_scUpgrs*, UpgradesSc,  0x0058D088); //Use with ScUpgrade::Enum
+SCBW_DATA(_bwUpgrs*, UpgradesBw,  0x0058F278); //Use with BwUpgrade::Enum
+
 
 #undef SCBW_DATA
 #pragma pack()

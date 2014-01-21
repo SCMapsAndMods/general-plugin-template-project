@@ -58,7 +58,7 @@ u8 getSeekRangeHook(const CUnit *unit) {
       break;
   }
 
-  return Unit::SeekRange[unitId] + bonusAmount;
+  return units_dat::SeekRange[unitId] + bonusAmount;
 }
 
 /// Returns the modified max range for the weapon, which is assumed to be
@@ -109,7 +109,7 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
       break;
   }
 
-  return Weapon::MaxRange[weaponId] + bonusAmount;
+  return weapons_dat::MaxRange[weaponId] + bonusAmount;
 }
 
 } //hooks

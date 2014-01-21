@@ -31,13 +31,13 @@ class ParasiteTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
 
       if (!(target->status & UnitStatus::IsHallucination)
           && (target->id != UnitId::overlord || scbw::getUpgradeLevel(target->playerId, UpgradeId::VentralSacs))
-          && Unit::SpaceProvided[target->id] > 0)
+          && units_dat::SpaceProvided[target->id] > 0)
         return true;
 
       if (target->isValidCaster())
         return true;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Worker)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Worker)
         return true;
 
       if (getCurrentLifeInGame(target) >= 300)

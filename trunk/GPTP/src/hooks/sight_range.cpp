@@ -44,7 +44,7 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
   }
 
   //Default
-  return Unit::SightRange[unit->id];
+  return units_dat::SightRange[unit->id];
 }
 
 } //hooks

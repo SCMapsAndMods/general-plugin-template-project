@@ -28,8 +28,8 @@ void updateUnitTimersHook(CUnit* unit) {
     unit->spellCooldown--;
 
   //Shield regeneration
-  if (Unit::ShieldsEnabled[unit->id]) {
-    s32 maxShields = (s32)(Unit::MaxShieldPoints[unit->id]) << 8;
+  if (units_dat::ShieldsEnabled[unit->id]) {
+    s32 maxShields = (s32)(units_dat::MaxShieldPoints[unit->id]) << 8;
     if (unit->shields != maxShields) {
       unit->shields += 7;
       if (unit->shields > maxShields)
@@ -63,9 +63,9 @@ void updateUnitTimersHook(CUnit* unit) {
   //Only for fully-constructed units and buildings
   if (unit->status & UnitStatus::Completed) {
     //HP regeneration
-    if (Unit::BaseProperty[unit->id] & UnitProperty::RegeneratesHP
+    if (units_dat::BaseProperty[unit->id] & UnitProperty::RegeneratesHP
         && unit->hitPoints > 0
-        && unit->hitPoints != Unit::MaxHitPoints[unit->id]
+        && unit->hitPoints != units_dat::MaxHitPoints[unit->id]
         )
         unit->setHp(unit->hitPoints + 4);
 
@@ -87,10 +87,10 @@ void updateUnitTimersHook(CUnit* unit) {
     }
 
     //Terran building burn-down
-    const GroupFlag &ugf = Unit::GroupFlags[unit->id];
+    const GroupFlag &ugf = units_dat::GroupFlags[unit->id];
     if (ugf.isTerran && !(ugf.isZerg || ugf.isProtoss)  //Is a Terran unit
         && (unit->status & UnitStatus::GroundedBuilding                       //...that is a building on the ground
-            || Unit::BaseProperty[unit->id] & UnitProperty::FlyingBuilding)   //...or a floating building
+            || units_dat::BaseProperty[unit->id] & UnitProperty::FlyingBuilding)   //...or a floating building
         && unitHpIsInRedZone(unit)                                   //...whose current HP is less or equal to 33% of max HP
         ) {
       unit->damageHp(20, NULL, unit->lastAttackingPlayer);

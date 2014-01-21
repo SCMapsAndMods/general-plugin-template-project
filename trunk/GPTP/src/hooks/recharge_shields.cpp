@@ -24,7 +24,7 @@ void rechargeShieldsProc(CUnit *target, CUnit *battery) {
   using CheatFlags::TheGathering;
 
   s32 shieldGain = 1280, energySpent = 640;
-  const s32 maxShields = Unit::MaxShieldPoints[target->id] << 8;
+  const s32 maxShields = units_dat::MaxShieldPoints[target->id] << 8;
 
    if (maxShields - target->shields < shieldGain) {
     shieldGain = maxShields - target->shields;
@@ -49,9 +49,9 @@ namespace hooks {
 /// Decides whether the @p target can recharge shields from the @p battery.
 bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
   //Default StarCraft behavior
-  using Unit::ShieldsEnabled;
-  using Unit::GroupFlags;
-  using Unit::MaxShieldPoints;
+  using units_dat::ShieldsEnabled;
+  using units_dat::GroupFlags;
+  using units_dat::MaxShieldPoints;
 
   //Check target conditions
   if (target->playerId != battery->playerId   //Is not owned by the player
@@ -135,7 +135,7 @@ void orderRechargeShieldsHook(CUnit *unit) {
       rechargeShieldsProc(unit, battery);
 
       //Stop recharge condition: Unit is at full shields or Shield Battery has no energy
-      if (unit->shields >= Unit::MaxShieldPoints[unit->id] * 256
+      if (unit->shields >= units_dat::MaxShieldPoints[unit->id] * 256
           || battery->energy == 0)
       {
         if (battery->orderTarget.unit == unit)

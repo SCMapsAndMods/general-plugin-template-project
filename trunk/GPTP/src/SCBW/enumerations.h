@@ -38,7 +38,7 @@ enum Enum {
 };
 }
 
-//Based on BWAPI; for use with Unit::BaseProperty[]
+//Based on BWAPI; for use with units_dat::BaseProperty[]
 namespace UnitProperty {
 enum Enum {
   Building            = 0x00000001,
@@ -243,7 +243,7 @@ enum Enum {
 };
 }
 
-//Use with Weapon::ExplosionType[]
+//Use with weapons_dat::ExplosionType[]
 namespace WeaponEffect {
 enum Enum {
   None            = 0,
@@ -274,7 +274,7 @@ enum Enum {
 };
 }
 
-//Use with Weapon::Behavior[]
+//Use with weapons_dat::Behavior[]
 namespace WeaponBehavior {
 enum Enum {
   Fly_DoNotFollowTarget = 0,

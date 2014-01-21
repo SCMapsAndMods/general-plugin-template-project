@@ -372,8 +372,8 @@ namespace {
 //Logically equivalent to function @ 0x004A11E0
 bool canCastSpellOrder(const CUnit *unit, u8 techId, u8 orderId) {
   u16 energyCost = 0;
-  if (Order::TechUsed[orderId] < TechId::None)
-    energyCost = Tech::EnergyCost[Order::TechUsed[orderId]] * 256;
+  if (orders_dat::TechUsed[orderId] < TechId::None)
+    energyCost = techdata_dat::EnergyCost[orders_dat::TechUsed[orderId]] * 256;
 
   if (unit->energy >= energyCost || scbw::isCheatEnabled(CheatFlags::TheGathering))
     return unit->canUseTech(techId, unit->playerId) == 1;
@@ -395,8 +395,8 @@ bool aiCastSpellOrder(CUnit *unit, CUnit *target, u8 orderId, u8 aiActionFlag) {
 
 //Logically equivalent to function @ 0x0049E1C0
 u16 getOrderEnergyCost(u8 orderId) {
-  if (Order::TechUsed[orderId] < TechId::None)
-    return Tech::EnergyCost[Order::TechUsed[orderId]] * 256;
+  if (orders_dat::TechUsed[orderId] < TechId::None)
+    return techdata_dat::EnergyCost[orders_dat::TechUsed[orderId]] * 256;
   else
     return 0;
 }

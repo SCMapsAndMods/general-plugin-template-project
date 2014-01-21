@@ -1,4 +1,8 @@
 //Based on BWAPI's BW/Bitmap.cpp
+
+//For strcpy()
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Bitmap.h"
 #include "Font.h"
 #include "../SCBW/scbwdata.h"

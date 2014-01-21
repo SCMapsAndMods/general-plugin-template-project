@@ -34,10 +34,10 @@ class DarkSwarmTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (totGroundWeapon == WeaponId::None)
         return false;
 
-      if (Weapon::Behavior[totGroundWeapon] != WeaponBehavior::AppearOnAttacker)
+      if (weapons_dat::Behavior[totGroundWeapon] != WeaponBehavior::AppearOnAttacker)
         return false;
 
-      if (target->subunit && (Unit::BaseProperty[target->subunit->id] & UnitProperty::Subunit))
+      if (target->subunit && (units_dat::BaseProperty[target->subunit->id] & UnitProperty::Subunit))
         target = target->subunit;
 
       u8 targetGroundWeapon = target->getActiveGroundWeapon();
@@ -45,14 +45,14 @@ class DarkSwarmTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (targetGroundWeapon == WeaponId::None)
         return false;
 
-      switch (Weapon::Behavior[targetGroundWeapon]) {
+      switch (weapons_dat::Behavior[targetGroundWeapon]) {
         case WeaponBehavior::Fly_DoNotFollowTarget:
         case WeaponBehavior::Fly_FollowTarget:
         case WeaponBehavior::AppearOnTargetUnit:
         case WeaponBehavior::AppearOnTargetSite:
         case WeaponBehavior::Bounce:
           if (!(targetOfTarget->status & UnitStatus::InAir)
-              && !(Unit::BaseProperty[targetOfTarget->id] & UnitProperty::Building)
+              && !(units_dat::BaseProperty[targetOfTarget->id] & UnitProperty::Building)
               && scbw::isUnderDarkSwarm(targetOfTarget))
             return true;
 

@@ -17,7 +17,7 @@ class OpticalFlareTargetFinderProc: public scbw::UnitFinderCallbackMatchInterfac
       if (!isTargetWorthHitting(target, caster))
         return false;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return false;
 
       if (target->isBlind)

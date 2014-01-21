@@ -23,7 +23,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
 
   switch (techId) {
     case TechId::Feedback:
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
       if (!target->isValidCaster())
         return 1330;    //Must target units with energy.<0>
@@ -32,7 +32,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::MindControl:
       if (target->playerId == castingPlayer)
         return 1327;    //Must target enemy units<0>
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
       if (target->id == UnitId::spider_mine
           || target->id == UnitId::larva
@@ -47,7 +47,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::Hallucination:
       if (target->id == UnitId::interceptor)
         return 876;     //Invalid target.<0>
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
       break;
 
@@ -55,7 +55,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::Irradiate:
     case TechId::Restoration:
     case TechId::OpticalFlare:
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
       break;
 
@@ -65,9 +65,9 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
       break;
 
     case TechId::Consume:
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building
           || target->playerId != castingPlayer
-          || !(Unit::GroupFlags[target->id].isZerg)
+          || !(units_dat::GroupFlags[target->id].isZerg)
           || target->id == UnitId::larva)
         return 897;     //Invalid target.<0>
       break;
