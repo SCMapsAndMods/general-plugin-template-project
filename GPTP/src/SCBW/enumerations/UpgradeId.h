@@ -68,7 +68,7 @@ enum Enum {
 };
 }
 
-//For use with Upgrade::MaximumUpgSc[] and Upgrade::CurrentUpgSc[]
+//For use with upgrades_dat::MaximumUpgSc[] and upgrades_dat::CurrentUpgSc[]
 namespace ScUpgrade {
 enum Enum {
   TerranInfantryArmor   = 0,
@@ -120,7 +120,7 @@ enum Enum {
 };
 }
 
-//For use with Upgrade::MaximumUpgBw[] and Upgrade::CurrentUpgBw[]
+//For use with upgrades_dat::MaximumUpgBw[] and upgrades_dat::CurrentUpgBw[]
 namespace BwUpgrade {
 enum Enum {
   UnusedUpgrade46       = 0,

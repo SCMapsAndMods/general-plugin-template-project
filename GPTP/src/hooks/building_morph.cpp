@@ -102,7 +102,7 @@ CUnit* getConstructRepairTarget(const CUnit *unit) {
 
 //Identical to function @ 0x00466B70
 int getNumberOfUnitTypeInBuildQueue(const CUnit *unit, u16 unitId) {
-  if (Unit::BaseProperty[unit->id] & UnitProperty::Worker) {
+  if (units_dat::BaseProperty[unit->id] & UnitProperty::Worker) {
     if (getConstructRepairTarget(unit) == NULL
         && unit->buildQueue[unit->buildQueueSlot % 5] == unitId
         && (unit->mainOrderId == OrderId::BuildTerran

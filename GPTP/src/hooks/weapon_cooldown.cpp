@@ -9,7 +9,7 @@ namespace hooks {
 /// @return		The modified cooldown value.
 u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId) {
 	//Default StarCraft behavior
-	u32 cooldown = Weapon::Cooldown[weaponId];
+	u32 cooldown = weapons_dat::Cooldown[weaponId];
 
 	if (unit->acidSporeCount) {
 		u32 increaseAmt = cooldown >> 3;

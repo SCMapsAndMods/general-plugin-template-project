@@ -20,7 +20,7 @@ class MaelstromTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (!scbw::canWeaponTargetUnit(WeaponId::Maelstrom, target, caster))
         return false;
 
-      if (!(Unit::BaseProperty[target->id] & UnitProperty::Organic))
+      if (!(units_dat::BaseProperty[target->id] & UnitProperty::Organic))
         return false;
 
       if (target->maelstromTimer)
@@ -31,7 +31,7 @@ class MaelstromTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
           && target->hasLoadedUnit())
         return true;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return false;
 
       if (isTargetAttackingAlly(target, caster)

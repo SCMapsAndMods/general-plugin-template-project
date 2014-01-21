@@ -73,7 +73,7 @@ void applyCloakingOrderHook(CUnit *unit) {
   if (unit->status & UnitStatus::RequiresDetection)
     return;
 
-  const u16 energyCost = Tech::EnergyCost[hooks::getCloakingTech(unit)] * 256;
+  const u16 energyCost = techdata_dat::EnergyCost[hooks::getCloakingTech(unit)] * 256;
   if (scbw::isCheatEnabled(CheatFlags::TheGathering) || unit->energy >= energyCost) {
     if (!scbw::isCheatEnabled(CheatFlags::TheGathering))
       unit->energy -= energyCost;
@@ -142,7 +142,7 @@ Bool32 __cdecl currentUnitSelectionCanCloakWrapper() {
     CUnit *unit = clientSelectionGroup->unit[i];
     if (unit != NULL) {
       if (scbw::isCheatEnabled(CheatFlags::TheGathering)
-          || unit->energy >= Tech::EnergyCost[hooks::getCloakingTech(unit)] * 256)
+          || unit->energy >= techdata_dat::EnergyCost[hooks::getCloakingTech(unit)] * 256)
         return true;
     }
   }

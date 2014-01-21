@@ -16,7 +16,7 @@ u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
   if (unit->id == UnitId::valkyrie)
     return 1;
 
-  return Weapon::DamageFactor[weaponId];
+  return weapons_dat::DamageFactor[weaponId];
 }
 
 //Returns the C-string for the tooltip text of the unit's weapon icon.
@@ -29,9 +29,9 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrI
   const char *damageStr = scbw::getStatTxtTblString(777);         //"Damage:"
 
   const u8 damageFactor = getDamageFactorForTooltip(weaponId, unit);
-  const u8 upgradeLevel = scbw::getUpgradeLevel(unit->playerId, Weapon::DamageUpgrade[weaponId]);
-  const u16 baseDamage = Weapon::DamageAmount[weaponId] * damageFactor;
-  const u16 bonusDamage = Weapon::DamageBonus[weaponId] * damageFactor * upgradeLevel;
+  const u8 upgradeLevel = scbw::getUpgradeLevel(unit->playerId, weapons_dat::DamageUpgrade[weaponId]);
+  const u16 baseDamage = weapons_dat::DamageAmount[weaponId] * damageFactor;
+  const u16 bonusDamage = weapons_dat::DamageBonus[weaponId] * damageFactor * upgradeLevel;
 
   if (weaponId == WeaponId::HaloRockets) {
     if (bonusDamage > 0) {
@@ -59,18 +59,18 @@ namespace hooks {
 
 //Returns the C-string for the tooltip text of the unit's weapon icon.
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
-  return getWeaponTooltipString(weaponId, unit, Weapon::Label[weaponId]);
+  return getWeaponTooltipString(weaponId, unit, weapons_dat::Label[weaponId]);
 }
 
 //Returns the C-string for the tooltip text of the unit's armor icon.
 const char* getArmorTooltipString(const CUnit *unit) {
   //Default StarCraft behavior
   
-  const u16 labelId = Upgrade::Label[Unit::ArmorUpgrade[unit->id]];
+  const u16 labelId = upgrades_dat::Label[units_dat::ArmorUpgrade[unit->id]];
   const char *armorUpgradeName = scbw::getStatTxtTblString(labelId);
   const char *armorStr = scbw::getStatTxtTblString(778);          //"Armor:"
 
-  const u8 baseArmor = Unit::ArmorAmount[unit->id];
+  const u8 baseArmor = units_dat::ArmorAmount[unit->id];
   const u8 bonusArmor = unit->getArmorBonus();
 
   if (bonusArmor > 0)
@@ -88,7 +88,7 @@ const char* getArmorTooltipString(const CUnit *unit) {
 const char* getShieldTooltipString(const CUnit *unit) {
   //Default StarCraft behavior
 
-  const u16 labelId = Upgrade::Label[UpgradeId::ProtossPlasmaShields];
+  const u16 labelId = upgrades_dat::Label[UpgradeId::ProtossPlasmaShields];
   const char *shieldUpgradeName = scbw::getStatTxtTblString(labelId);
   const char *shieldStr = scbw::getStatTxtTblString(779);         //"Shields:"
 

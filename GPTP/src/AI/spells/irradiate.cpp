@@ -23,10 +23,10 @@ class IrradiateTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (!scbw::canWeaponTargetUnit(WeaponId::Irradiate, target, caster))
         return false;
 
-      if (!(Unit::BaseProperty[target->id] & UnitProperty::Organic))
+      if (!(units_dat::BaseProperty[target->id] & UnitProperty::Organic))
         return false;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return false;
 
       if (target->id == UnitId::larva
@@ -37,7 +37,7 @@ class IrradiateTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (isUnderAttack || !isUmsMode(caster->playerId))
         return true;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Worker)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Worker)
         return true;
 
       if (target->id == UnitId::overlord || target->id == UnitId::medic)

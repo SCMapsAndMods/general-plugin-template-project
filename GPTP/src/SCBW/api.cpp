@@ -63,9 +63,9 @@ const char* getStatTxtTblString(u16 index) {
 }
 
 u32 getUnitOverlayAdjustment(const CUnit* const unit) {
-  if (Unit::BaseProperty[unit->id] & UnitProperty::MediumOverlay)
+  if (units_dat::BaseProperty[unit->id] & UnitProperty::MediumOverlay)
     return 1;
-  else if (Unit::BaseProperty[unit->id] & UnitProperty::LargeOverlay)
+  else if (units_dat::BaseProperty[unit->id] & UnitProperty::LargeOverlay)
     return 2;
   else
     return 0;
@@ -79,13 +79,13 @@ bool canWeaponTargetUnit(u8 weaponId, const CUnit *target, const CUnit *attacker
     return false;
 
   if (target == NULL)
-    return Weapon::TargetFlags[weaponId].terrain;
+    return weapons_dat::TargetFlags[weaponId].terrain;
 
   if (target->status & UnitStatus::Invincible)
     return false;
 
-  const TargetFlag tf = Weapon::TargetFlags[weaponId];
-  const u32 targetProps = Unit::BaseProperty[target->id];
+  const TargetFlag tf = weapons_dat::TargetFlags[weaponId];
+  const u32 targetProps = units_dat::BaseProperty[target->id];
 
   if ((target->status & UnitStatus::InAir) ? !tf.air : !tf.ground)
     return false;
@@ -232,35 +232,26 @@ s32 getPolarY(s32 distance, u8 angle) {
 }
 
 u8 getUpgradeLevel(u8 playerId, u8 upgradeId) {
-  using Upgrade::UpgSc;
-  using Upgrade::UpgBw;
-
   assert(playerId < PLAYER_COUNT);
   assert(upgradeId < UpgradeId::None);
 
   if (upgradeId < UpgradeId::UnusedUpgrade46)
-    return Upgrade::UpgSc->currentLevel[playerId][upgradeId];
+    return UpgradesSc->currentLevel[playerId][upgradeId];
   else
-    return Upgrade::UpgBw->currentLevel[playerId][upgradeId - UpgradeId::UnusedUpgrade46];
+    return UpgradesBw->currentLevel[playerId][upgradeId - UpgradeId::UnusedUpgrade46];
 }
 
 void setUpgradeLevel(u8 playerId, u8 upgradeId, u8 level) {
-  using Upgrade::UpgSc;
-  using Upgrade::UpgBw;
-
   assert(playerId < PLAYER_COUNT);
   assert(upgradeId < UpgradeId::None);
 
   if (upgradeId < UpgradeId::UnusedUpgrade46)
-    Upgrade::UpgSc->currentLevel[playerId][upgradeId] = level;
+    UpgradesSc->currentLevel[playerId][upgradeId] = level;
   else
-    Upgrade::UpgBw->currentLevel[playerId][upgradeId - UpgradeId::UnusedUpgrade46] = level;
+    UpgradesBw->currentLevel[playerId][upgradeId - UpgradeId::UnusedUpgrade46] = level;
 }
 
 bool hasTechResearched(u8 playerId, u16 techId) {
-  using Tech::TechSc;
-  using Tech::TechBw;
-
   assert(playerId < PLAYER_COUNT);
   assert(techId < TechId::None);
 
@@ -271,9 +262,6 @@ bool hasTechResearched(u8 playerId, u16 techId) {
 }
 
 void setTechResearchState(u8 playerId, u16 techId, bool isResearched) {
-  using Tech::TechSc;
-  using Tech::TechBw;
-
   assert(playerId < PLAYER_COUNT);
   assert(techId < TechId::None);
 
@@ -297,7 +285,7 @@ s32 getSupplyRemaining(u8 playerId, u8 raceId) {
 
 u8 getRaceId(u16 unitId) {
   assert(unitId < UNIT_TYPE_COUNT);
-  GroupFlag ugf = Unit::GroupFlags[unitId];
+  GroupFlag ugf = units_dat::GroupFlags[unitId];
   if (ugf.isZerg)
     return 0;
   else if (ugf.isTerran)

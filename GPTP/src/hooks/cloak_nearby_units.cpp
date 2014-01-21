@@ -16,7 +16,7 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
   //Default StarCraft behavior
 
   //Use the unit's air weapon range
-  const unsigned int cloakRadius = cloaker->getMaxWeaponRange(Unit::AirWeapon[cloaker->id]);
+  const unsigned int cloakRadius = cloaker->getMaxWeaponRange(units_dat::AirWeapon[cloaker->id]);
 
   //Run the unit finder
   int left    = cloaker->getX() - cloakRadius;
@@ -36,7 +36,7 @@ void cloakNearbyUnitsHook(CUnit *cloaker) {
         || unit->id == UnitId::nuclear_missile)
       continue;
     //Don't cloak buildings and neutral accessories (?)
-    if (Unit::BaseProperty[unit->id] & (UnitProperty::Building | UnitProperty::NeutralAccessories))
+    if (units_dat::BaseProperty[unit->id] & (UnitProperty::Building | UnitProperty::NeutralAccessories))
       continue;
     //Hallucinations are not affected
     if (unit->status & UnitStatus::IsHallucination)

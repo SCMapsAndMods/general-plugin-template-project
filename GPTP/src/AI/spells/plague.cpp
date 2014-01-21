@@ -24,7 +24,7 @@ class PlagueTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (target->plagueTimer)
         return false;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Hero)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
         return false;
 
       const int totalEnemyLife = getTotalEnemyLifeInArea(target->getX(), target->getY(), 96, caster, WeaponId::Plague);

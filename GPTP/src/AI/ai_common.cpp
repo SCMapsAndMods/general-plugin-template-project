@@ -37,7 +37,7 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
 bool unitCanAttack(const CUnit *unit) {
   if (unit->id == UnitId::lurker) {
     if (unit->status & UnitStatus::Burrowed
-        && Unit::GroundWeapon[unit->id] != WeaponId::None)
+        && units_dat::GroundWeapon[unit->id] != WeaponId::None)
       return true;
   }
   else if (unit->id == UnitId::carrier || unit->id == UnitId::gantrithor) {
@@ -49,8 +49,8 @@ bool unitCanAttack(const CUnit *unit) {
       return true;
   }
   else {
-    if (Unit::GroundWeapon[unit->id] != WeaponId::None
-        || Unit::AirWeapon[unit->id] != WeaponId::None)
+    if (units_dat::GroundWeapon[unit->id] != WeaponId::None
+        || units_dat::AirWeapon[unit->id] != WeaponId::None)
       return true;
   }
 
@@ -108,11 +108,11 @@ int getCurrentHpInGame(const CUnit *unit) {
 }
 
 int getMaxHpInGame(const CUnit *unit) {
-  return (Unit::MaxHitPoints[unit->id] + 255) / 256;
+  return (units_dat::MaxHitPoints[unit->id] + 255) / 256;
 }
 
 int getCurrentLifeInGame(const CUnit *unit) {
-  if (Unit::ShieldsEnabled[unit->id])
+  if (units_dat::ShieldsEnabled[unit->id])
     return getCurrentHpInGame(unit) + unit->shields / 256;
   else
     return getCurrentHpInGame(unit);
@@ -152,7 +152,7 @@ class EnemyLifeSumProc: public UnitStatSumProc {
       if (weaponId == WeaponId::Plague)
         sum += getCurrentHpInGame(target);
       else if (weaponId == WeaponId::Maelstrom) {
-        if (Unit::BaseProperty[target->id] & UnitProperty::Organic
+        if (units_dat::BaseProperty[target->id] & UnitProperty::Organic
             && target->maelstromTimer == 0) {
           sum += getCurrentLifeInGame(target);
         }
@@ -190,7 +190,7 @@ class EnemyShieldsSumProc: public UnitStatSumProc {
       if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
         return;
 
-      if (!Unit::ShieldsEnabled[target->id])
+      if (!units_dat::ShieldsEnabled[target->id])
         return;
 
       sum += target->shields / 256;
@@ -222,11 +222,11 @@ class EnemyNukeValueSumProc: public UnitStatSumProc {
       if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
         return;
 
-      if ((Unit::BaseProperty[target->id] & UnitProperty::Worker)
+      if ((units_dat::BaseProperty[target->id] & UnitProperty::Worker)
           || !(target->status & UnitStatus::IsBuilding))
         sum += getCurrentLifeInGame(target);
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building) {
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building) {
         if (target->canDetect()
             || target->id == UnitId::sunken_colony
             || target->id == UnitId::lurker)

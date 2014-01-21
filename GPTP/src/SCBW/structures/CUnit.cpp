@@ -128,7 +128,7 @@ void CUnit::orderToIdle() {
     if (this->pAI)
       this->orderTo(OrderId::ComputerAI);
     else
-      this->orderTo(Unit::ReturnToIdleOrder[this->id]);
+      this->orderTo(units_dat::ReturnToIdleOrder[this->id]);
   }
 }
 
@@ -281,7 +281,7 @@ bool CUnit::isFrozen() const {
 //Identical to function @ 0x00401210
 bool CUnit::isValidCaster() const {
   assert(this);
-  return Unit::BaseProperty[this->id] & UnitProperty::Spellcaster
+  return units_dat::BaseProperty[this->id] & UnitProperty::Spellcaster
     && !(this->status & UnitStatus::IsHallucination);
 }
 
@@ -302,7 +302,7 @@ bool CUnit::isRemorphingBuilding() const {
 }
 
 u32 CUnit::getDistanceToTarget(const CUnit *target) const {
-  using Unit::BaseProperty;
+  using units_dat::BaseProperty;
   assert(this);
   assert(target);
 
@@ -397,7 +397,7 @@ u16 CUnit::getMaxEnergy() const {
 
 u8 CUnit::getArmor() const {
   assert(this);
-  return Unit::ArmorAmount[this->id] + this->getArmorBonus();
+  return units_dat::ArmorAmount[this->id] + this->getArmorBonus();
 }
 
 extern const u32 Func_GetArmorBonus = 0x00453FC0;
@@ -421,7 +421,7 @@ u8 CUnit::getActiveGroundWeapon() const {
   if (this->id == UnitId::lurker && !(this->status & UnitStatus::Burrowed))
     return WeaponId::None;
   else
-    return Unit::GroundWeapon[this->id];
+    return units_dat::GroundWeapon[this->id];
 }
 
 const u32 Func_UpdateSpeed = 0x00454310;
@@ -526,22 +526,22 @@ u16 CUnit::getTileY() const {
 
 s16 CUnit::getLeft() const {
   assert(this);
-  return this->getX() - Unit::UnitBounds[this->id].left;
+  return this->getX() - units_dat::UnitBounds[this->id].left;
 }
 
 s16 CUnit::getRight() const {
   assert(this);
-  return this->getX() + Unit::UnitBounds[this->id].right;
+  return this->getX() + units_dat::UnitBounds[this->id].right;
 }
 
 s16 CUnit::getTop() const {
   assert(this);
-  return this->getY() - Unit::UnitBounds[this->id].top;
+  return this->getY() - units_dat::UnitBounds[this->id].top;
 }
 
 s16 CUnit::getBottom() const {
   assert(this);
-  return this->getY() + Unit::UnitBounds[this->id].bottom;
+  return this->getY() + units_dat::UnitBounds[this->id].bottom;
 }
 
 const char* CUnit::getName() const {

@@ -17,7 +17,7 @@ class EmpShockwaveTargetFinderShieldProc: public scbw::UnitFinderCallbackMatchIn
       if (!isTargetWorthHitting(target, caster))
         return false;
 
-      if (!Unit::ShieldsEnabled[target->id])
+      if (!units_dat::ShieldsEnabled[target->id])
         return false;
 
       if (!scbw::canWeaponTargetUnit(WeaponId::EMP_Shockwave, target, caster))

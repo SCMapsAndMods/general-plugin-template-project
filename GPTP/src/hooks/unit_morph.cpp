@@ -85,7 +85,7 @@ s16 getUnitVerticalOffsetOnBirth(const CUnit *unit) {
   //Default StarCraft behavior
 
   //No offset, birth offset is handled elsewhere
-  if (Unit::BaseProperty[unit->id] & UnitProperty::TwoUnitsIn1Egg)
+  if (units_dat::BaseProperty[unit->id] & UnitProperty::TwoUnitsIn1Egg)
     return 0;
 
   //No offset, since the morphed unit should stay where it is
@@ -94,7 +94,7 @@ s16 getUnitVerticalOffsetOnBirth(const CUnit *unit) {
 
   //Hovering units (?) float 7 pixels above ground
   //Note: This is not a mistake; SC actually uses a "==" comparison to check flags (I know it's a WTF).
-  if (Unit::MovementFlags[unit->id] == (0x01 | 0x40 | 0x80))
+  if (units_dat::MovementFlags[unit->id] == (0x01 | 0x40 | 0x80))
     return -7;
 
   //Air units float 42 pixels above ground
@@ -108,18 +108,18 @@ s16 getUnitVerticalOffsetOnBirth(const CUnit *unit) {
 //Check if @p playerId has enough supplies to build @p unitId.
 bool hasSuppliesForUnitHook(s8 playerId, u16 unitId, bool canShowErrorMessage) {
   //Default StarCraft behavior
-  s32 supplyCost = Unit::SupplyRequired[unitId];
+  s32 supplyCost = units_dat::SupplyRequired[unitId];
 
-  if (Unit::BaseProperty[unitId] & UnitProperty::TwoUnitsIn1Egg)
+  if (units_dat::BaseProperty[unitId] & UnitProperty::TwoUnitsIn1Egg)
     supplyCost *= 2;
 
   if (unitId == UnitId::lurker)
-    supplyCost -= Unit::SupplyRequired[UnitId::hydralisk];
+    supplyCost -= units_dat::SupplyRequired[UnitId::hydralisk];
 
   aiSupplyReserved[playerId] = supplyCost;
 
   //No supply cost check needed
-  if (supplyCost == 0 || Unit::BaseProperty[unitId] & UnitProperty::MorphFromOtherUnit)
+  if (supplyCost == 0 || units_dat::BaseProperty[unitId] & UnitProperty::MorphFromOtherUnit)
     return true;
 
   const u8 raceId = scbw::getRaceId(unitId);

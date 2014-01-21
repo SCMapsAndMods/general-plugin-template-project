@@ -28,27 +28,27 @@ void fireWeaponHook(const CUnit *unit, u8 weaponId) {
   //Retrieve the spawning position for the bullet.
   s32 x, y;
 
-  if (Weapon::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit) {
+  if (weapons_dat::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit) {
     if (unit->orderTarget.unit == NULL)
       return;
 
     getWeaponHitPos(unit, &x, &y);
   }
 
-  else if (Weapon::Behavior[weaponId] == WeaponBehavior::AppearOnTargetSite) {
+  else if (weapons_dat::Behavior[weaponId] == WeaponBehavior::AppearOnTargetSite) {
     x = unit->orderTarget.pt.x;
     y = unit->orderTarget.pt.y;
   }
 
   else {
-    s32 forwardOffset = Weapon::ForwardOffset[weaponId];
+    s32 forwardOffset = weapons_dat::ForwardOffset[weaponId];
 
     x = unit->getX() + scbw::getPolarX(forwardOffset, unit->currentDirection1);
     y = unit->getY() + scbw::getPolarY(forwardOffset, unit->currentDirection1)
-        - Weapon::VerticalOffset[weaponId];
+        - weapons_dat::VerticalOffset[weaponId];
   }
 
-  if (Weapon::FlingyId[weaponId])
+  if (weapons_dat::FlingyId[weaponId])
     createBullet(weaponId, unit, x, y, unit->playerId, unit->currentDirection1);
 }
 

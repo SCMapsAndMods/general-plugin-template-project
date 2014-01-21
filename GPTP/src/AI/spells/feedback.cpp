@@ -23,7 +23,7 @@ class FeedbackTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
       if (target->status & UnitStatus::GroundedBuilding)
         return false;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Hero)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
         return false;
 
       if (target->energy / 256 >= getCurrentLifeInGame(target))

@@ -20,13 +20,13 @@ class SpawnBroodlingsTargetFinderProc: public scbw::UnitFinderCallbackMatchInter
       if (!scbw::canWeaponTargetUnit(WeaponId::SpawnBroodlings, target, caster))
         return false;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Hero)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
         return false;
 
       if (!isUnderAttack && getCurrentLifeInGame(target) < 100)
         return false;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Worker
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Worker
           || target->id == UnitId::siege_tank
           || target->id == UnitId::siege_tank_s
           || target->id == UnitId::medic

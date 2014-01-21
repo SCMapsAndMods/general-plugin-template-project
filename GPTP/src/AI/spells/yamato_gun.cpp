@@ -29,7 +29,7 @@ class YamatoGunTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
 
       const int targetLife = getCurrentLifeInGame(target);
       if (200 <= targetLife && targetLife <= 450
-          && !(Unit::BaseProperty[target->id] & UnitProperty::Hero))
+          && !(units_dat::BaseProperty[target->id] & UnitProperty::Hero))
         return true;
 
       return false;

@@ -20,7 +20,7 @@ class StasisFieldTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface
       if (!scbw::canWeaponTargetUnit(WeaponId::StasisField, target, caster))
         return false;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return false;
 
       CUnit *targetOfTarget = target->orderTarget.unit;

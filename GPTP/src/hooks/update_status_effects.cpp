@@ -69,7 +69,7 @@ void updateStatusEffectsHook(CUnit *unit) {
   if (unit->plagueTimer) {
     unit->plagueTimer--;
     if (!(unit->status & UnitStatus::Invincible)) {
-      s32 damage = (Weapon::DamageAmount[WeaponId::Plague] << 8) / 76;
+      s32 damage = (weapons_dat::DamageAmount[WeaponId::Plague] << 8) / 76;
       if (unit->hitPoints > damage)
         unit->damageHp(damage);
     }

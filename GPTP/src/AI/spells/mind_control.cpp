@@ -17,7 +17,7 @@ class MindControlTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface
       if (!isTargetWorthHitting(target, caster))
         return false;
 
-      if (Unit::BaseProperty[target->id] & UnitProperty::Hero)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
         return false;
 
       if (target->id == UnitId::shuttle || target->id == UnitId::dropship)
@@ -50,8 +50,8 @@ class MindControlTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface
           return true;
 
         default:
-          if (Unit::MineralCost[target->id] >= Unit::MineralCost[UnitId::dark_templar]
-              && Unit::GasCost[target->id] >= Unit::GasCost[UnitId::dark_templar])
+          if (units_dat::MineralCost[target->id] >= units_dat::MineralCost[UnitId::dark_templar]
+              && units_dat::GasCost[target->id] >= units_dat::GasCost[UnitId::dark_templar])
             return true;
           break;
       }
