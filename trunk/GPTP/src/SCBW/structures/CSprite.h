@@ -78,6 +78,6 @@ struct CSprite {
   */
 };
 
-C_ASSERT(sizeof(CSprite) == 36);
+static_assert(sizeof(CSprite) == 36, "The size of the CSprite structure is invalid");
 
 #pragma pack()

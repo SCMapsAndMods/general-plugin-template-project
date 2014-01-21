@@ -4,7 +4,8 @@
 #include <cstring>
 
 //Checks that the plugin's name is within the max length set by MPQDraft
-C_ASSERT(sizeof(PLUGIN_NAME) <= MPQDRAFT_MAX_PLUGIN_NAME);
+static_assert(sizeof(PLUGIN_NAME) <= MPQDRAFT_MAX_PLUGIN_NAME,
+  "The plugin's name string is longer than the maximum limit set by MPQDraft");
 
 BOOL WINAPI Plugin::Identify(LPDWORD lpdwPluginID) {
   if (lpdwPluginID == NULL) {

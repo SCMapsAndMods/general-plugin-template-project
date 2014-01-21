@@ -1,12 +1,6 @@
 //Contains definitions of basic data types.
 
 #pragma once
-//#define WIN32_LEAN_AND_MEAN
-//#define NOMINMAX
-//#include <windows.h>
-
-//Based on http://msdn.microsoft.com/en-us/library/windows/desktop/ms679289.aspx
-#define C_ASSERT(e) typedef char __C_ASSERT__[(e)?1:-1]
 
 //Include <algorithm> to use this
 #define CLAMP(x, minVal, maxVal) (std::min(std::max((x), (minVal)), (maxVal)))
