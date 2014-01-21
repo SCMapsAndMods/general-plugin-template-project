@@ -413,8 +413,7 @@ struct CUnit {
   u8        driftPosY;          //0x14F
 };
 
-C_ASSERT(sizeof(CUnit) == 336);
-
+static_assert(sizeof(CUnit) == 336, "The size of the CUnit structure is invalid");
 
 /*
 struct WEAPON {

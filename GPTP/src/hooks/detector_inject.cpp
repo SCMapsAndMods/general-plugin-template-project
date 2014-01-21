@@ -30,7 +30,7 @@ struct DetectorCheckParam {
   CUnit *target;
 };
 
-C_ASSERT(sizeof(DetectorCheckParam) == 8);
+static_assert(sizeof(DetectorCheckParam) == 8, "The size of the DetectorCheckParam structure is invalid");
 
 u32 __fastcall getCloakedTargetVisibilityWrapper(CUnit *unit, DetectorCheckParam *p) {
   p->visionFlags |= hooks::getCloakedTargetVisibility(unit, p->target);

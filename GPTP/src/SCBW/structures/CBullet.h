@@ -58,6 +58,6 @@ struct CBullet {
   /*0x6C*/ u32          cyclicMissileIndex; // some sort of cyclic burst counter (used by valkyries, goliath air attack)
 };
 
-C_ASSERT(sizeof(CBullet) == 112);
+static_assert(sizeof(CBullet) == 112, "The size of the CBullet structure is invalid");
 
 #pragma pack()

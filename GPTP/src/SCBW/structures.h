@@ -172,7 +172,7 @@ struct GrpFrame {
   u32 dataOffset;
 };
 
-C_ASSERT(sizeof(GrpFrame) == 8);
+static_assert(sizeof(GrpFrame) == 8, "The size of the GrpFrame structure is invalid");
 
 //GRP file header
 struct GrpHead {
@@ -182,7 +182,7 @@ struct GrpHead {
   GrpFrame frames[1];
 };
 
-C_ASSERT(sizeof(GrpHead) == 14);
+static_assert(sizeof(GrpHead) == 14, "The size of the GrpHead structure is invalid");
 
 //LO* file header
 struct LO_Header {
@@ -195,7 +195,7 @@ struct LO_Header {
   }
 };
 
-C_ASSERT(sizeof(LO_Header) == 12);
+static_assert(sizeof(LO_Header) == 12, "The size of the LO_Header structure is invalid");
 
 //Image Remapping Data
 struct ColorShiftData {
@@ -204,7 +204,7 @@ struct ColorShiftData {
   char name[12];
 };
 
-C_ASSERT(sizeof(ColorShiftData) == 20);
+static_assert(sizeof(ColorShiftData) == 20, "The size of the ColorShiftData structure is invalid");
 
 //-------- Flag structures --------//
 
@@ -228,7 +228,7 @@ struct ActiveTile {
   u8 unknown4           : 1; // Unused?
 };
 
-C_ASSERT(sizeof(ActiveTile) == 4);
+static_assert(sizeof(ActiveTile) == 4, "The size of the ActiveTile structure is invalid");
 
 struct GroupFlag {
   u8 isZerg         : 1;
@@ -241,7 +241,7 @@ struct GroupFlag {
   u8 isNeutral      : 1;
 };
 
-C_ASSERT(sizeof(GroupFlag) == 1);
+static_assert(sizeof(GroupFlag) == 1, "The size of the GroupFlag structure is invalid");
 
 struct TargetFlag {
   u16 air         : 1;
@@ -255,7 +255,7 @@ struct TargetFlag {
   u16 playerOwned : 1;
 };
 
-C_ASSERT(sizeof(TargetFlag) == 2);
+static_assert(sizeof(TargetFlag) == 2, "The size of the TargetFlag structure is invalid");
 
 //-------- End of flag structures --------//
 
@@ -267,7 +267,7 @@ struct UnitFinderData {
   }
 };
 
-C_ASSERT(sizeof(UnitFinderData) == 8);
+static_assert(sizeof(UnitFinderData) == 8, "The size of the UnitFinderData structure is invalid");
 
 struct Bounds {
   u16 left;
@@ -278,7 +278,7 @@ struct Bounds {
   u16 height;
 };
 
-C_ASSERT(sizeof(Bounds) == 12);
+static_assert(sizeof(Bounds) == 12, "The size of the Bounds structure is invalid");
 
 struct BinDlg {
   BinDlg  *next;
@@ -303,7 +303,7 @@ struct BinDlg {
   UNK     unk_4e[8];
 };
 
-C_ASSERT(sizeof(BinDlg) == 86);
+static_assert(sizeof(BinDlg) == 86, "The size of the BinDlg structure is invalid");
 
 struct GuiOverlay {
   UNK     unk_0[6];
@@ -312,7 +312,7 @@ struct GuiOverlay {
   UNK     unk_a[34];
 };
 
-C_ASSERT(sizeof(GuiOverlay) == 44);
+static_assert(sizeof(GuiOverlay) == 44, "The size of the GuiOverlay structure is invalid");
 
 //-------- AI related stuff --------//
 
@@ -373,7 +373,7 @@ struct AI_Main {
   Box32 genCmdLoc;
 };
 
-C_ASSERT(sizeof(AI_Main) == 1256);
+static_assert(sizeof(AI_Main) == 1256, "The size of the AI_Main structure is invalid");
 
 struct AiCaptain {
   u16 region;
@@ -402,6 +402,6 @@ struct AiCaptain {
   void  *town;
 };
 
-C_ASSERT(sizeof(AiCaptain) == 52);
+static_assert(sizeof(AiCaptain) == 52, "The size of the AiCaptain structure is invalid");
 
 #pragma pack()
