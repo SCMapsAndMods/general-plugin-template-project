@@ -3,43 +3,6 @@
 
 namespace AI {
 
-class DefensiveMatrixTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
-  private:
-    const CUnit *caster;
-    bool isUnderAttack;
-  public:
-    DefensiveMatrixTargetFinderProc(const CUnit *caster, bool isUnderAttack)
-      : caster(caster), isUnderAttack(isUnderAttack) {}
-
-    bool match(const CUnit *target) {
-      if (target == caster)
-        return false;
-
-      if (target->defensiveMatrixHp)
-        return false;
-
-      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-        return false;
-
-      if (!target->orderTarget.unit)  //Ignore idle units?
-        return false;
-
-      if (target->status & UnitStatus::RequiresDetection)
-        return false;
-
-      if (getMaxHpInGame(target) < 100 || getCurrentHpInGame(target) > 75)
-        return false;
-
-      if (target->status & UnitStatus::Invincible)
-        return false;
-
-      if (hooks::getTechUseErrorMessage(target, caster->playerId, TechId::DefensiveMatrix) != 0)
-        return false;
-
-      return true;
-    }
-};
-
 CUnit* findBestDefensiveMatrixTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds;
   if (isUnderAttack)
@@ -47,10 +10,38 @@ CUnit* findBestDefensiveMatrixTarget(const CUnit *caster, bool isUnderAttack) {
   else
     bounds = 32 * 64;
 
+  auto defensiveMatrixTargetFinder = [&caster] (const CUnit *target) -> bool {
+    if (target == caster)
+      return false;
+
+    if (target->defensiveMatrixHp)
+      return false;
+
+    if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+      return false;
+
+    if (!target->orderTarget.unit)  //Ignore idle units?
+      return false;
+
+    if (target->status & UnitStatus::RequiresDetection)
+      return false;
+
+    if (getMaxHpInGame(target) < 100 || getCurrentHpInGame(target) > 75)
+      return false;
+
+    if (target->status & UnitStatus::Invincible)
+      return false;
+
+    if (hooks::getTechUseErrorMessage(target, caster->playerId, TechId::DefensiveMatrix) != 0)
+      return false;
+
+    return true;
+  };
+
   return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    DefensiveMatrixTargetFinderProc(caster, isUnderAttack));
+    defensiveMatrixTargetFinder);
 }
 
 } //AI
