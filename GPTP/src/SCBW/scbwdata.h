@@ -128,7 +128,7 @@ struct SupplyData {
   u32 used[PLAYER_COUNT];
   u32 max[PLAYER_COUNT];
 };
-SCBW_DATA(SupplyData*,    raceSupply,           0x00582144);  //Array; Use scbw::getRaceId() to get the index.
+SCBW_DATA(SupplyData*,    raceSupply,           0x00582144);  //Array; Use CUnit::getRace() to get the index.
 
 //-------- Internal constants --------//
 

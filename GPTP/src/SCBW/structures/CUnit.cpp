@@ -3,6 +3,24 @@
 #include "../api.h"
 #include "../enumerations.h"
 
+RaceId::Enum CUnit::getRace() const {
+  assert(this);
+  return getRace(this->id);
+}
+
+//Based on function at 0x0047B150
+RaceId::Enum CUnit::getRace(u16 unitId) {
+  assert(unitId < UNIT_TYPE_COUNT);
+
+  if (units_dat::GroupFlags[unitId].isZerg)
+    return RaceId::Zerg;
+  else if (units_dat::GroupFlags[unitId].isProtoss)
+    return RaceId::Protoss;
+  else if (units_dat::GroupFlags[unitId].isTerran)
+    return RaceId::Terran;
+  else
+    return RaceId::Neutral;
+}
 
 const u32 Func_SetUnitHp = 0x00467340;
 void CUnit::setHp(s32 hitPoints) {

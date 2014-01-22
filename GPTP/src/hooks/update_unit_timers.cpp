@@ -87,13 +87,16 @@ void updateUnitTimersHook(CUnit* unit) {
     }
 
     //Terran building burn-down
-    const GroupFlag &ugf = units_dat::GroupFlags[unit->id];
-    if (ugf.isTerran && !(ugf.isZerg || ugf.isProtoss)  //Is a Terran unit
-        && (unit->status & UnitStatus::GroundedBuilding                       //...that is a building on the ground
-            || units_dat::BaseProperty[unit->id] & UnitProperty::FlyingBuilding)   //...or a floating building
-        && unitHpIsInRedZone(unit)                                   //...whose current HP is less or equal to 33% of max HP
-        ) {
-      unit->damageHp(20, NULL, unit->lastAttackingPlayer);
+    if (unit->getRace() == RaceId::Terran) {
+      //Check if the unit is a grounded or lifted building
+      if (unit->status & UnitStatus::GroundedBuilding
+          || units_dat::BaseProperty[unit->id] & UnitProperty::FlyingBuilding)
+      {
+        //...whose current HP is less or equal to 33% of max HP
+        if (unitHpIsInRedZone(unit)) {
+          unit->damageHp(20, NULL, unit->lastAttackingPlayer);
+        }
+      }
     }
   }
 }

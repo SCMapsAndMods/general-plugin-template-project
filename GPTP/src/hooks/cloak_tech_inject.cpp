@@ -147,7 +147,7 @@ Bool32 __cdecl currentUnitSelectionCanCloakWrapper() {
     }
   }
 
-  u8 race = scbw::getRaceId((*activePortraitUnit)->id);
+  const RaceId::Enum race = (*activePortraitUnit)->getRace();
 
   scbw::showErrorMessageWithSfx((*activePortraitUnit)->playerId, 864 + race, 156 + race);
   return false;

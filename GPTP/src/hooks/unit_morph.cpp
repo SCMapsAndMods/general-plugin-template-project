@@ -122,7 +122,7 @@ bool hasSuppliesForUnitHook(s8 playerId, u16 unitId, bool canShowErrorMessage) {
   if (supplyCost == 0 || units_dat::BaseProperty[unitId] & UnitProperty::MorphFromOtherUnit)
     return true;
 
-  const u8 raceId = scbw::getRaceId(unitId);
+  const RaceId::Enum raceId = CUnit::getRace(unitId);
   assert(raceId <= 2);
   const u32 supplyUsed = raceSupply[raceId].used[playerId];
 

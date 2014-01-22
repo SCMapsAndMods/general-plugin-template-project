@@ -234,8 +234,17 @@ struct CUnitLayout {
   u8        driftPosY;          //0x14F
 };
 
+
 //Wrapper structure that provides methods for the CUnit structure.
 struct CUnit: public CUnitLayout {
+  //Returns the race of the current unit.
+  //@return   RaceId::Terran, RaceId::Zerg, RaceId::Protoss, or RaceId::Neutral.
+  RaceId::Enum getRace() const;
+
+  //Returns the race of the unit with @p unitId.
+  //@return   RaceId::Terran, RaceId::Zerg, RaceId::Protoss, or RaceId::Neutral.
+  static RaceId::Enum getRace(u16 unitId);
+
   /// Sets the unit's HP, and also updates burning / bleeding graphics and unit
   /// strength data (used by the AI). HP is guaranteed not to overflow.
   void setHp(s32 hitPoints);

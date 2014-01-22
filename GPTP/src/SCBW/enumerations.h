@@ -1,6 +1,7 @@
 //All-in-one header file for various enumerations used by GPTP.
 
 #pragma once
+#pragma warning( disable: 4482 )
 
 #include "enumerations/UnitId.h"
 #include "enumerations/WeaponId.h"
@@ -9,12 +10,13 @@
 #include "enumerations/OrderId.h"
 #include "enumerations/ImageId.h"
 
-namespace PlayerRace {
-enum Enum {
+namespace RaceId {
+enum Enum : u8 {
   Zerg    = 0,
   Terran  = 1,
   Protoss = 2,
   Other   = 3,
+  Neutral = 4,
   Select  = 5,
   Random  = 6,
   None    = 7,
