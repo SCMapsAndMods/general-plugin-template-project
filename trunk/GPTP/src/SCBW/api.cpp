@@ -148,18 +148,14 @@ bool canBeEnteredBy(const CUnit* transport, const CUnit* unit) {
 
 //-------- isUnderDarkSwarm() --------//
 
-class DarkSwarmFinderProc: public UnitFinderCallbackMatchInterface {
-  public:
-    bool match(const CUnit *unit) {
-      return unit->id == UnitId::Spell_DarkSwarm;
-    }
-};
-
 bool isUnderDarkSwarm(const CUnit *unit) {
   static UnitFinder darkSwarmFinder;
-  static DarkSwarmFinderProc dsFinder;
+
   darkSwarmFinder.search(unit->getLeft(), unit->getTop(), unit->getRight(), unit->getBottom());
-  return darkSwarmFinder.getFirst(dsFinder) != NULL;
+  const CUnit *darkSwarm = darkSwarmFinder.getFirst([] (const CUnit *unit) {
+    return unit->id == UnitId::Spell_DarkSwarm;
+  });
+  return darkSwarm != nullptr;
 }
 
 // Improved code from BWAPI's include/BWAPI/Position.h: getApproxDistance()
