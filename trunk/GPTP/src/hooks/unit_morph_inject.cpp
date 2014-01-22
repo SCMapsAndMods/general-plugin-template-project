@@ -165,7 +165,7 @@ void __fastcall cancelUnitWrapper(CUnit *unit) {
     return;
 
   if (unit->status & UnitStatus::GroundedBuilding) {
-    if (units_dat::GroupFlags[unit->id].isZerg) {
+    if (unit->getRace() == RaceId::Zerg) {
       cancelZergBuilding(unit);
       return;
     }

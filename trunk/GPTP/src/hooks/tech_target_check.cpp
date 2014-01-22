@@ -67,7 +67,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::Consume:
       if (units_dat::BaseProperty[target->id] & UnitProperty::Building
           || target->playerId != castingPlayer
-          || !(units_dat::GroupFlags[target->id].isZerg)
+          || target->getRace() != RaceId::Zerg
           || target->id == UnitId::larva)
         return 897;     //Invalid target.<0>
       break;

@@ -283,19 +283,6 @@ s32 getSupplyRemaining(u8 playerId, u8 raceId) {
   return supplyProvided - raceSupply[raceId].used[playerId];
 }
 
-u8 getRaceId(u16 unitId) {
-  assert(unitId < UNIT_TYPE_COUNT);
-  GroupFlag ugf = units_dat::GroupFlags[unitId];
-  if (ugf.isZerg)
-    return 0;
-  else if (ugf.isTerran)
-    return 1;
-  else if (ugf.isProtoss)
-    return 2;
-  else
-    return 4;
-}
-
 const u32 Func_GetGroundHeightAtPos = 0x004BD0F0;
 u32 getGroundHeightAtPos(s32 x, s32 y) {
   u32 height;

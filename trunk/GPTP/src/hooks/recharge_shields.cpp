@@ -50,7 +50,6 @@ namespace hooks {
 bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
   //Default StarCraft behavior
   using units_dat::ShieldsEnabled;
-  using units_dat::GroupFlags;
   using units_dat::MaxShieldPoints;
 
   //Check target conditions
@@ -61,8 +60,7 @@ bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
     return false;
 
   //Check target race
-  const GroupFlag &ugf = GroupFlags[target->id];
-  if (!ugf.isProtoss || (ugf.isTerran || ugf.isZerg)) //Is not a protoss unit
+  if (target->getRace() != RaceId::Protoss)
     return false;
 
   //Check target shield amount

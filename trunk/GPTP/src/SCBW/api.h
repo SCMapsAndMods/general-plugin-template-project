@@ -101,10 +101,6 @@ void setTechResearchState(u8 playerId, u16 techId, bool isResearched);
 /// This is affected by the "Food For Thought" cheat flag.
 s32 getSupplyRemaining(u8 playerId, u8 raceId);
 
-/// Returns the race of the @p unitId.
-/// @return   0 = Zerg, 1 = Terran, 2 = Protoss, 4 = None.
-u8 getRaceId(u16 unitId);
-
 /// Returns the elevation of the tile at (x, y). 0 for low terrain, 1 for
 /// medium, and 2 for high terrain.
 u32 getGroundHeightAtPos(s32 x, s32 y);
