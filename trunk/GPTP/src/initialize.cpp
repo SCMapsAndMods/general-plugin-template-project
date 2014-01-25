@@ -13,7 +13,6 @@
 #include "hooks/detector.h"
 #include "hooks/energy_regeneration.h"
 #include "hooks/harvest.h"
-#include "hooks/irradiate.h"
 #include "hooks/max_unit_energy.h"
 #include "hooks/rally_point.h"
 #include "hooks/recharge_shields.h"
@@ -71,8 +70,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectEnergyRegenerationHook();
 
   hooks::injectHarvestResource();
-
-  hooks::injectIrradiateHook();
 
   hooks::injectUnitMaxEnergyHook();
 
