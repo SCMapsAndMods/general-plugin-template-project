@@ -1,7 +1,7 @@
 #include "armor_bonus.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include <SCBW/scbwdata.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 namespace hooks {
 

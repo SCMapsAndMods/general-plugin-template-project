@@ -2,12 +2,13 @@
 #include <SCBW/api.h>
 #include <SCBW/enumerations.h>
 #include <SCBW/scbwdata.h>
+#include <SCBW/UnitFinder.h>
 #include <algorithm>
 
 namespace hooks {
 
 //Applies Irradiate effects for @p unit (which is Irradiated)
-void doIrradiateDamageHook(CUnit *irradiatedUnit) {
+void doIrradiateDamage(CUnit *irradiatedUnit) {
   //Default StarCraft behavior
 
   auto irradiateProc = [&irradiatedUnit] (CUnit *unit) {

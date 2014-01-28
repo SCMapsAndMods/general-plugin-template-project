@@ -1,5 +1,5 @@
-#include "max_unit_energy.h"
-#include "../hook_tools.h"
+#include "max_energy.h"
+#include <hook_tools.h>
 
 extern const u32 Func_GetMaxEnergy; //Defined in CUnit.cpp
 

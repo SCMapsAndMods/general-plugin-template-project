@@ -1,5 +1,5 @@
 #include "sight_range.h"
-#include "../hook_tools.h"
+#include <hook_tools.h>
 
 extern const u32 Func_GetSightRange;  //Defined in CUnit.cpp
 

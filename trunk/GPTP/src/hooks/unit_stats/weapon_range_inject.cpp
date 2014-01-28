@@ -1,5 +1,5 @@
 #include "weapon_range.h"
-#include "../hook_tools.h"
+#include <hook_tools.h>
 
 namespace {
 

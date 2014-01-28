@@ -1,7 +1,7 @@
-#include "max_unit_energy.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include "max_energy.h"
+#include <SCBW/scbwdata.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 namespace hooks {
 
