@@ -1,8 +1,7 @@
 #include "energy_regeneration.h"
-#include "max_unit_energy.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/api.h"
+#include <SCBW/enumerations.h>
+#include <SCBW/scbwdata.h>
+#include <SCBW/api.h>
 
 
 /// Determines cloaking energy consumption.

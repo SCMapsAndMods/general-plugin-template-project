@@ -1,5 +1,6 @@
-#include "../SCBW/api.h"
-#include "../SCBW/enumerations/WeaponId.h"
+#include "weapon_armor_tooltip.h"
+#include <SCBW/api.h>
+#include <SCBW/enumerations/WeaponId.h>
 #include <cstdio>
 
 

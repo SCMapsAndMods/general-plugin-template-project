@@ -1,9 +1,9 @@
 //Contains hooks that control attack range and seek range (AKA target acquisition range).
 
 #include "weapon_range.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include <SCBW/scbwdata.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 namespace hooks {
 

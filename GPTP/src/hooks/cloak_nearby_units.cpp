@@ -1,8 +1,7 @@
 #include "cloak_nearby_units.h"
-#include "weapon_range.h"
-#include "../SCBW/UnitFinder.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include <SCBW/UnitFinder.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 #include <algorithm>
 
 //Helper functions

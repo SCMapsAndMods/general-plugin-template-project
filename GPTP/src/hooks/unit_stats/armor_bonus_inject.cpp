@@ -1,5 +1,5 @@
 #include "armor_bonus.h"
-#include "../hook_tools.h"
+#include <hook_tools.h>
 
 extern const u32 Func_GetArmorBonus;  //Defined in CUnit.cpp
 
