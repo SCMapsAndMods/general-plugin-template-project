@@ -24,7 +24,7 @@
 #include "hooks/unit_speed.h"
 #include "hooks/interface/weapon_armor_tooltip.h"
 #include "hooks/update_status_effects.h"
-#include "hooks/update_unit_timers.h"
+#include "hooks/update_unit_state.h"
 #include "hooks/weapon_cooldown.h"
 #include "hooks/weapon_damage.h"
 #include "hooks/weapon_fire.h"

@@ -167,8 +167,8 @@
     <ClCompile Include="hooks\unit_stats\weapon_range_inject.cpp" />
     <ClCompile Include="hooks\update_status_effects.cpp" />
     <ClCompile Include="hooks\update_status_effects_inject.cpp" />
-    <ClCompile Include="hooks\update_unit_timers.cpp" />
-    <ClCompile Include="hooks\update_unit_timers_inject.cpp" />
+    <ClCompile Include="hooks\update_unit_state.cpp" />
+    <ClCompile Include="hooks\update_unit_state_inject.cpp" />
     <ClCompile Include="hooks\weapon_cooldown.cpp" />
     <ClCompile Include="hooks\weapon_cooldown_inject.cpp" />
     <ClCompile Include="hooks\weapon_damage.cpp" />
@@ -222,7 +222,7 @@
     <ClInclude Include="hooks\unit_stats\sight_range.h" />
     <ClInclude Include="hooks\unit_stats\weapon_range.h" />
     <ClInclude Include="hooks\update_status_effects.h" />
-    <ClInclude Include="hooks\update_unit_timers.h" />
+    <ClInclude Include="hooks\update_unit_state.h" />
     <ClInclude Include="hooks\weapon_cooldown.h" />
     <ClInclude Include="hooks\weapon_damage.h" />
     <ClInclude Include="hooks\weapon_fire.h" />
