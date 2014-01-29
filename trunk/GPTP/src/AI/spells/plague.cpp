@@ -1,5 +1,5 @@
-#include "plague.h"
-#include <SCBW/enumerations.h>
+#include "spells.h"
+#include <AI/ai_common.h>
 
 namespace AI {
 
