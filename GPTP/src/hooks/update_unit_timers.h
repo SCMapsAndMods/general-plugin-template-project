@@ -1,10 +1,10 @@
 #pragma once
-#include "../SCBW/structures/CUnit.h"
+#include <SCBW/structures/CUnit.h>
 
 namespace hooks {
 
-void updateUnitTimersHook(CUnit* unit);
+void updateUnitStateHook(CUnit* unit);
 
-void injectUpdateUnitTimers();
+void injectUpdateUnitState();
 
 } //hooks

@@ -4,8 +4,8 @@
 namespace {
 
 //Inject with jmpPatch()
-const u32 Hook_UpdateUnitTimers = 0x004EC290;
-void __declspec(naked) updateUnitTimersWrapper() {
+const u32 Hook_UpdateUnitState = 0x004EC290;
+void __declspec(naked) updateUnitStateWrapper() {
   CUnit *unit;
 
   __asm {
@@ -14,7 +14,7 @@ void __declspec(naked) updateUnitTimersWrapper() {
     MOV unit, EAX
   }
 
-  hooks::updateUnitTimersHook(unit);
+  hooks::updateUnitStateHook(unit);
 
   __asm {
     POPAD
@@ -26,8 +26,8 @@ void __declspec(naked) updateUnitTimersWrapper() {
 
 namespace hooks {
 
-void injectUpdateUnitTimers() {
-  jmpPatch(updateUnitTimersWrapper, Hook_UpdateUnitTimers);
+void injectUpdateUnitState() {
+  jmpPatch(updateUnitStateWrapper, Hook_UpdateUnitState);
 }
 
 } //hooks

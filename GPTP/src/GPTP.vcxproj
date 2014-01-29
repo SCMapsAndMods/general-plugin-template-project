@@ -131,8 +131,6 @@
     <ClCompile Include="hooks\consume_inject.cpp" />
     <ClCompile Include="hooks\detector.cpp" />
     <ClCompile Include="hooks\detector_inject.cpp" />
-    <ClCompile Include="hooks\energy_regeneration.cpp" />
-    <ClCompile Include="hooks\energy_regeneration_inject.cpp" />
     <ClCompile Include="hooks\game_hooks.cpp" />
     <ClCompile Include="hooks\game_hooks_inject.cpp" />
     <ClCompile Include="hooks\harvest.cpp" />
@@ -206,7 +204,6 @@
     <ClInclude Include="hooks\cloak_tech.h" />
     <ClInclude Include="hooks\consume.h" />
     <ClInclude Include="hooks\detector.h" />
-    <ClInclude Include="hooks\energy_regeneration.h" />
     <ClInclude Include="hooks\game_hooks.h" />
     <ClInclude Include="hooks\harvest.h" />
     <ClInclude Include="hooks\interface\weapon_armor_tooltip.h" />

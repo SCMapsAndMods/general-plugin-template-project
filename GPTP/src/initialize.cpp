@@ -14,7 +14,6 @@
 #include "hooks/cloak_tech.h"
 #include "hooks/consume.h"
 #include "hooks/detector.h"
-#include "hooks/energy_regeneration.h"
 #include "hooks/harvest.h"
 #include "hooks/rally_point.h"
 #include "hooks/recharge_shields.h"
@@ -67,8 +66,6 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
 
   hooks::injectDetectorHooks();
 
-  hooks::injectEnergyRegenerationHook();
-
   hooks::injectHarvestResource();
 
   hooks::injectUnitMaxEnergyHook();
@@ -86,7 +83,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectUnitSpeedHooks();
   hooks::injectUnitTooltipHook();
   hooks::injectUpdateStatusEffects();
-  hooks::injectUpdateUnitTimers();
+  hooks::injectUpdateUnitState();
 
   hooks::injectWeaponCooldownHook();
   hooks::injectWeaponDamageHook();

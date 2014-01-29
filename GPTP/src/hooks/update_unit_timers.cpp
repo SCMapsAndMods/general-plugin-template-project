@@ -1,9 +1,8 @@
 #include "update_unit_timers.h"
 #include "update_status_effects.h"
-#include "energy_regeneration.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include <SCBW/scbwdata.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 namespace {
 //Helper function: Returns true if the unit's HP <= 33%.
@@ -12,9 +11,72 @@ static bool unitHpIsInRedZone(const CUnit *unit);
 
 namespace hooks {
 
+/// This function regenerates energy for spellcasters and drains energy for
+/// cloaking units.
+void updateUnitEnergy(CUnit *unit) {
+  //Default StarCraft behavior
+  using scbw::isCheatEnabled;
+
+  //If the unit is not a spellcaster, don't regenerate energy
+  if (!unit->isValidCaster())
+    return;
+  
+  //If the unit is not fully constructed, don't regenerate energy
+  if (!(unit->status & UnitStatus::Completed))
+    return;
+
+  //Spend energy for cloaked units
+  if (unit->status & (UnitStatus::Cloaked | UnitStatus::RequiresDetection)  //If the unit is cloaked
+      && !(unit->status & UnitStatus::CloakingForFree)                      //...and must consume energy to stay cloaked (i.e. not under an Arbiter)
+      && !isCheatEnabled(CheatFlags::TheGathering))                         //...and the energy cheat is not available
+  {
+    u16 cloakingEnergyCost = 0;
+    if (unit->id == UnitId::TerranGhost
+        || unit->id == UnitId::Hero_SarahKerrigan
+        || unit->id == UnitId::Hero_InfestedKerrigan
+        || unit->id == UnitId::Hero_SamirDuran
+        || unit->id == UnitId::Hero_InfestedDuran
+        || unit->id == UnitId::Hero_AlexeiStukov)
+      cloakingEnergyCost = 10;
+    else if (unit->id == UnitId::TerranWraith
+           || unit->id == UnitId::Hero_TomKazansky)
+      cloakingEnergyCost = 13;
+
+    if (unit->energy < cloakingEnergyCost) {
+      if (unit->secondaryOrderId == OrderId::Cloak)
+        unit->setSecondaryOrder(OrderId::Nothing2); //Supposedly, immediately decloaks the unit.
+      return;
+    }
+    unit->energy -= cloakingEnergyCost;
+  }
+  else {
+    u16 maxEnergy;
+    if (unit->id == UnitId::dark_archon
+        && unit->mainOrderId == OrderId::CompletingArchonSummon
+        && !(unit->mainOrderState))
+      maxEnergy = 12800;  //50 * 256; Identical to energy amount on spawn
+    else
+      maxEnergy = unit->getMaxEnergy();
+
+    if (unit->energy != maxEnergy) {
+      u16 energy = unit->energy + 8;
+      if (energy > maxEnergy)
+        energy = maxEnergy;
+      unit->energy = energy;
+    }
+  }
+
+  //If the unit is currently selected, redraw its graphics
+  if (unit->sprite->flags & 8) {
+    for (CImage *i = unit->sprite->images.head; i; i = i->link.next)
+      if (i->paletteType == 11)
+        i->flags |= 1;
+  }
+}
+
 /// Updates unit timers, regenerates hp and shields, and burns down Terran buildings.
 /// Logically equivalent to function @ 0x004EC290
-void updateUnitTimersHook(CUnit* unit) {
+void updateUnitStateHook(CUnit* unit) {
   //Default StarCraft logic
 
   //Timers
@@ -69,9 +131,8 @@ void updateUnitTimersHook(CUnit* unit) {
         )
         unit->setHp(unit->hitPoints + 4);
 
-    //Energy regeneration
-    //Call the function in StarCraft.exe; do NOT directly call the hook function.
-    regenerateEnergy(unit);
+    //Update unit energy (energy regen/drain)
+    updateUnitEnergy(unit);
 
     //Recent order timer
     if (unit->recentOrderTimer)
