@@ -1,29 +1,5 @@
 #include "spellcasting.h"
-
-#include "spells/yamato_gun.h"
-#include "spells/lockdown.h"
-#include "spells/launch_nuke.h"
-#include "spells/emp_shockwave.h"
-#include "spells/defensive_matrix.h"
-#include "spells/irradiate.h"
-#include "spells/restoration.h"
-#include "spells/optical_flare.h"
-
-#include "spells/parasite.h"
-#include "spells/spawn_broodlings.h"
-#include "spells/ensnare.h"
-#include "spells/plague.h"
-#include "spells/dark_swarm.h"
-
-#include "spells/psi_storm.h"
-#include "spells/hallucination.h"
-#include "spells/stasis_field.h"
-#include "spells/recall.h"
-#include "spells/feedback.h"
-#include "spells/mind_control.h"
-#include "spells/maelstrom.h"
-#include "spells/disruption_web.h"
-
+#include "spells/spells.h"
 #include <algorithm>
 
 //-------- Helper function declarations. Do NOT modify! --------//

@@ -1,4 +1,5 @@
-#include "psi_storm.h"
+#include "spells.h"
+#include <AI/ai_common.h>
 #include <hooks/tech_target_check.h>
 
 namespace AI {

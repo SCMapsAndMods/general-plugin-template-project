@@ -1,4 +1,5 @@
-#include "spawn_broodlings.h"
+#include "spells.h"
+#include <AI/ai_common.h>
 
 namespace AI {
 

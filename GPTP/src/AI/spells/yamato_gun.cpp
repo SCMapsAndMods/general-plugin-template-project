@@ -1,4 +1,5 @@
-#include "yamato_gun.h"
+#include "spells.h"
+#include <AI/ai_common.h>
 
 namespace AI {
 
