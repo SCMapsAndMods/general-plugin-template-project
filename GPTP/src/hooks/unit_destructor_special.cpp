@@ -10,17 +10,17 @@
 void killAllHangarUnits(CUnit *unit) {
   while (unit->carrier.inHangarCount--) {
     CUnit *childInside = unit->carrier.inHangarChild;
-    unit->carrier.inHangarChild = childInside->interceptor.prev;
-    childInside->interceptor.parent = NULL;
+    unit->carrier.inHangarChild = childInside->interceptor.hangar_link.prev;
+    childInside->interceptor.parent = nullptr;
     childInside->remove();
   }
 
   while (unit->carrier.outHangarCount--) {
     CUnit *childOutside = unit->carrier.outHangarChild;
-    unit->carrier.outHangarChild = childOutside->interceptor.prev;
-    childOutside->interceptor.parent = NULL;
-    childOutside->interceptor.prev = NULL;
-    childOutside->interceptor.next = NULL;
+    unit->carrier.outHangarChild = childOutside->interceptor.hangar_link.prev;
+    childOutside->interceptor.parent = nullptr;
+    childOutside->interceptor.hangar_link.prev = nullptr;
+    childOutside->interceptor.hangar_link.next = nullptr;
 
     //Kill interceptors only (Scarabs will defuse anyway)
     if (childOutside->id != UnitId::scarab) {
@@ -31,7 +31,7 @@ void killAllHangarUnits(CUnit *unit) {
     }
   }
 
-  unit->carrier.outHangarChild = NULL;
+  unit->carrier.outHangarChild = nullptr;
 }
 
 void freeResourceContainer(CUnit *resource) {
@@ -48,9 +48,9 @@ void freeResourceContainer(CUnit *resource) {
       worker->worker.harvest_link.next->worker.harvest_link.prev = worker->worker.harvest_link.prev;
 
     CUnit *nextWorker = worker->worker.harvest_link.next;
-    worker->worker.harvestTarget = NULL;
-    worker->worker.harvest_link.prev = NULL;
-    worker->worker.harvest_link.next = NULL;
+    worker->worker.harvestTarget = nullptr;
+    worker->worker.harvest_link.prev = nullptr;
+    worker->worker.harvest_link.next = nullptr;
     worker = nextWorker;
   }
 }
@@ -74,9 +74,9 @@ void unitDestructorSpecialHook(CUnit *unit) {
       || unit->id == UnitId::Hero_SamirDuran
       || unit->id == UnitId::Hero_InfestedDuran
       ) {
-     if (unit->building.ghost.nukeMissile) {
-       unit->building.ghost.nukeMissile->playIscriptAnim(IscriptAnimation::Death);
-       unit->building.ghost.nukeMissile = NULL;
+     if (unit->building.ghostNukeMissile) {
+       unit->building.ghostNukeMissile->playIscriptAnim(IscriptAnimation::Death);
+       unit->building.ghostNukeMissile = nullptr;
      }
      return;
   }
@@ -94,13 +94,13 @@ void unitDestructorSpecialHook(CUnit *unit) {
   if (unit->id == UnitId::scarab || unit->id == UnitId::interceptor) {
     if (unit->status & UnitStatus::Completed) {
       if (unit->interceptor.parent) {
-        if (unit->interceptor.next)
-          unit->interceptor.next->interceptor.prev = unit->interceptor.prev;
+        if (unit->interceptor.hangar_link.next)
+          unit->interceptor.hangar_link.next->interceptor.hangar_link.prev = unit->interceptor.hangar_link.prev;
         else {
           if (unit->interceptor.isOutsideHangar)
-            unit->interceptor.parent->carrier.outHangarChild = unit->interceptor.prev;
+            unit->interceptor.parent->carrier.outHangarChild = unit->interceptor.hangar_link.prev;
           else
-            unit->interceptor.parent->carrier.inHangarChild = unit->interceptor.prev;
+            unit->interceptor.parent->carrier.inHangarChild = unit->interceptor.hangar_link.prev;
         }
         
         if (unit->interceptor.isOutsideHangar)
@@ -108,12 +108,12 @@ void unitDestructorSpecialHook(CUnit *unit) {
         else
           unit->interceptor.parent->carrier.inHangarCount--;
 
-        if (unit->interceptor.prev)
-          unit->interceptor.prev->interceptor.next = unit->interceptor.next;
+        if (unit->interceptor.hangar_link.prev)
+          unit->interceptor.hangar_link.prev->interceptor.hangar_link.next = unit->interceptor.hangar_link.next;
       }
       else {
-        unit->interceptor.prev = NULL;
-        unit->interceptor.next = NULL;
+        unit->interceptor.hangar_link.prev = nullptr;
+        unit->interceptor.hangar_link.next = nullptr;
       }
     }
     return;
@@ -123,7 +123,7 @@ void unitDestructorSpecialHook(CUnit *unit) {
   if (unit->id == UnitId::nuclear_silo) {
     if (unit->building.silo.nuke) {
       unit->building.silo.nuke->remove();
-      unit->building.silo.nuke = NULL;
+      unit->building.silo.nuke = nullptr;
     }
     return;
   }
@@ -131,8 +131,8 @@ void unitDestructorSpecialHook(CUnit *unit) {
   //Is a Nuclear Missile
   if (unit->id == UnitId::nuclear_missile) {
     if (unit->connectedUnit && unit->connectedUnit->id == UnitId::nuclear_silo) {
-      unit->connectedUnit->building.silo.nuke = NULL;
-      unit->connectedUnit->building.silo.hasNuke = 0;
+      unit->connectedUnit->building.silo.nuke = nullptr;
+      unit->connectedUnit->building.silo.isReady = false;
     }
     return;
   }
@@ -145,8 +145,8 @@ void unitDestructorSpecialHook(CUnit *unit) {
   if (unit->id == UnitId::nydus_canal) {
     CUnit *nydusExit = unit->building.nydusExit;
     if (nydusExit) {
-      unit->building.nydusExit = NULL;
-      nydusExit->building.nydusExit = NULL;
+      unit->building.nydusExit = nullptr;
+      nydusExit->building.nydusExit = nullptr;
       nydusExit->remove();
     }
     return;

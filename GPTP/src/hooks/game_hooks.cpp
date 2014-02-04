@@ -22,7 +22,7 @@ bool nextFrame() {
     }
 
     // Loop through all visible units in the game.
-    for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
+    for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->link.next) {
       //Write your code here
     }
 

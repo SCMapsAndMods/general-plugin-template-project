@@ -173,7 +173,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
           return false;
 
         if (aiCastSpellOrder(unit, target, OrderId::SummonBroodlings)) {
-          unit->order(OrderId::Move, unit->getX(), unit->getY(), NULL, UnitId::None, false);
+          unit->order(OrderId::Move, unit->getX(), unit->getY(), nullptr, UnitId::None, false);
           return true;
         }
       }
@@ -385,11 +385,9 @@ bool isNukeTimerReady(s8 playerId) {
 //Based on function @ 0x00463360
 CUnit* getLoadedSilo(CUnit *ghost) {
   for (CUnit *unit = firstPlayerUnit->unit[ghost->playerId];
-       unit; unit = unit->playerNext)
+       unit; unit = unit->player_link.next)
   {
-    if (unit->id == UnitId::nuclear_silo
-        && unit->building.silo.hasNuke)
-    {
+    if (unit->id == UnitId::nuclear_silo && unit->building.silo.isReady) {
       CUnit *nuke = unit->building.silo.nuke;
       if (!nuke->connectedUnit
           || nuke->connectedUnit == ghost
@@ -397,7 +395,7 @@ CUnit* getLoadedSilo(CUnit *ghost) {
         return unit;
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 } //unnamed namespace

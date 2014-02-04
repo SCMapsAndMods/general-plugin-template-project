@@ -67,7 +67,7 @@ void addPsiField(CUnit *unit) {
   if (*firstPsiFieldProvider == unit || unit->psi_link.next || unit->psi_link.prev)
     return;
 
-  unit->psi_link.prev = NULL;
+  unit->psi_link.prev = nullptr;
   unit->psi_link.next = *firstPsiFieldProvider;
   if (*firstPsiFieldProvider)
     (*firstPsiFieldProvider)->psi_link.prev = unit;
@@ -89,15 +89,15 @@ void removeFromPsiProviderList(CUnit *psiProvider) {
   if (psiProvider == *firstPsiFieldProvider)
     *firstPsiFieldProvider = psiProvider->psi_link.next;
 
-  psiProvider->psi_link.prev = NULL;
-  psiProvider->psi_link.next = NULL;
+  psiProvider->psi_link.prev = nullptr;
+  psiProvider->psi_link.next = nullptr;
 }
 
 //Removes @p unit from the psi provider list and destroys the psi field sprite.
 void removePsiField(CUnit *unit) {
   if (unit->building.pylonAura) {
     unit->building.pylonAura->free();
-    unit->building.pylonAura = NULL;
+    unit->building.pylonAura = nullptr;
     *canUpdatePoweredStatus = true;   //Might work?
   }
   removeFromPsiProviderList(unit);
@@ -138,7 +138,7 @@ void hideAllPsiFields();
 namespace hooks {
 
 void updatePsiFieldProviders() {
-  for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
+  for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->link.next) {
     if (hooks::canMakePsiField(unit->id)) {
       assert(isValidPsiProviderType(unit->id));
 
