@@ -75,12 +75,12 @@ void secondaryOrder_Cloak(CUnit *unit) {
 
   //If the unit has not been added to the cloaked/burrowed linked list yet
   if (!(unit->status & UnitStatus::RequiresDetection)
-      && unit->nextBurrowedUnit == NULL
-      ) {
-    unit->nextBurrowedUnit      = *firstBurrowedUnit;
-    unit->previousBurrowedUnit  = NULL;
-    if (*firstBurrowedUnit != NULL)
-      (*firstBurrowedUnit)->previousBurrowedUnit = unit;
+      && unit->burrow_link.next == nullptr)
+  {
+    unit->burrow_link.next = *firstBurrowedUnit;
+    unit->burrow_link.prev = nullptr;
+    if (*firstBurrowedUnit != nullptr)
+      (*firstBurrowedUnit)->burrow_link.prev = unit;
     *firstBurrowedUnit = unit;
 
     scbw::refreshConsole();

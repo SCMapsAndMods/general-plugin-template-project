@@ -247,6 +247,7 @@
     <ClInclude Include="scbw\structures\corder.h" />
     <ClInclude Include="scbw\structures\csprite.h" />
     <ClInclude Include="scbw\structures\cunit.h" />
+    <ClInclude Include="SCBW\structures\CUnitLayout.h" />
     <ClInclude Include="scbw\structures\layer.h" />
     <ClInclude Include="scbw\structures\target.h" />
     <ClInclude Include="SCBW\UnitFinder.h" />
