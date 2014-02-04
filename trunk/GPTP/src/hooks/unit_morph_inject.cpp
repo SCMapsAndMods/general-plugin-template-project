@@ -102,7 +102,7 @@ void __declspec(naked) unitMorphWrapper_Orders_Morph1_EggType() {
 
 //-------- hasSuppliesForUnit --------//
 
-Bool32 __stdcall hasSuppliesForUnitWrapper(s8 playerId, u16 unitId, Bool32 canShowErrorMessage) {
+Bool32 __stdcall hasSuppliesForUnitWrapper(u8 playerId, u16 unitId, Bool32 canShowErrorMessage) {
   if (hooks::hasSuppliesForUnitHook(playerId, unitId, canShowErrorMessage != 0))
     return 1;
   else

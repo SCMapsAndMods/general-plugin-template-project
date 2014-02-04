@@ -15,7 +15,7 @@ namespace hooks {
 /// Test whether @p castingPlayer can use @p techId on the @p target.
 /// If successful, returns zero. If unsuccessful, returns the index of the
 /// appropriate error message string in stat_txt.tbl.
-u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId) {
+u16 getTechUseErrorMessageHook(const CUnit *target, u8 castingPlayer, u16 techId) {
   //Default StarCraft behavior
 
   if (target->stasisTimer)

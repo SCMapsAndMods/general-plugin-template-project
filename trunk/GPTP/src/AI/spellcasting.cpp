@@ -8,7 +8,7 @@ namespace {
 bool canCastSpellOrder(const CUnit *unit, u8 techId, u8 orderId);
 bool aiCastSpellOrder(CUnit *unit, CUnit *target, u8 orderId, u8 aiActionFlag = 1);
 u16 getOrderEnergyCost(u8 orderId);
-bool isNukeTimerReady(s8 playerId);
+bool isNukeTimerReady(u8 playerId);
 CUnit* getLoadedSilo(CUnit *ghost);
 
 } //unnamed namespace
@@ -378,7 +378,7 @@ u16 getOrderEnergyCost(u8 orderId) {
 }
 
 //Logically equivalent to function @ 0x00446E50
-bool isNukeTimerReady(s8 playerId) {
+bool isNukeTimerReady(u8 playerId) {
   return *elapsedTimeSeconds >= AIScriptController[playerId].AI_LastNukeTime + 60 * AIScriptController[playerId].AI_NukeRate;
 }
 

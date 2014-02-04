@@ -9,8 +9,8 @@ namespace {
 void __declspec(naked) weaponDamageWrapper() {
   static CUnit *target, *attacker;
   static s32 damage;
-  static u8 weaponId, damageDivisor;
-  static s8 attackingPlayer, direction;
+  static u8 weaponId, damageDivisor, attackingPlayer;
+  static s8 direction;
 
   __asm {
     PUSHAD

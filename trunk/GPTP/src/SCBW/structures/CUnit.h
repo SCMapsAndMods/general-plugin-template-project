@@ -23,7 +23,7 @@ struct CUnit: public CUnitLayout {
   void damageWith(s32 damage,               ///< Amount of damage dealt to this unit.
                   u8 weaponId,              ///< weapons.dat ID to use.
                   CUnit *attacker = NULL,   ///< Attacking unit (for increasing kill count)
-                  s8 attackingPlayer = -1,  ///< Attacking player (for increasing kill score)
+                  u8 attackingPlayer = -1,  ///< Attacking player (for increasing kill score)
                   s8 direction = 0,         ///< Attacked direction (for shield flicker overlays)
                   u8 damageDivisor = 1      ///< Damage divisor (for splash damage / glave wurm calculations)
                   );
@@ -77,7 +77,7 @@ struct CUnit: public CUnitLayout {
   ///
   /// If the unit can use the tech, returns 1. If the tech needs to be
   /// researched, returns -1. If the unit cannot use the tech at all, returns 0.
-  int canUseTech(u8 techId, s8 playerId) const;
+  int canUseTech(u8 techId, u8 playerId) const;
 
   /// Checks if the @p unit can build / train / morph into @p unitId. This checks:
   /// * If the unit is actually owned by the commanding @p playerId
@@ -85,7 +85,7 @@ struct CUnit: public CUnitLayout {
   ///
   /// If the unit can build / train / morph, returns 1. If the tech needs to be
   /// researched, returns -1. If the unit cannot use the tech at all, returns 0.
-  int canBuild(u16 unitId, s8 playerId) const;
+  int canBuild(u16 unitId, u8 playerId) const;
 
   /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
   bool canDetect() const;
@@ -179,11 +179,11 @@ struct CUnit: public CUnitLayout {
   /// Returns the ID of the last player to own this unit. This is usually the
   /// same as CUnit::playerId, but if the unit belongs to a defeated player,
   /// this returns the correct player ID (instead of 11).
-  s8 getLastOwnerId() const;
+  u8 getLastOwnerId() const;
 
   /// Checks whether this unit can be seen by @playerId (i.e. not covered by the
   /// fog-of-war and is detectable).
-  bool isVisibleTo(s8 playerId) const;
+  bool isVisibleTo(u8 playerId) const;
 
   /// Returns the loaded unit at @p index (value between 0-7). If no unit is
   /// loaded at the slot, returns NULL instead.

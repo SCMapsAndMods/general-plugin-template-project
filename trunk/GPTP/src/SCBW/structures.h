@@ -378,7 +378,7 @@ static_assert(sizeof(AI_Main) == 1256, "The size of the AI_Main structure is inv
 struct AiCaptain {
   u16 region;
   u16 unknown_0x2;
-  s8  playerId;
+  u8  playerId;
   u8  captainType;
   u8  unknown_0x6;
   u8  unknown_0x7;
