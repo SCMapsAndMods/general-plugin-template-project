@@ -67,8 +67,8 @@ bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit) {
   return false;
 }
 
-bool isUmsMode(s8 playerId) {
-  assert(0 <= playerId && playerId < 8);
+bool isUmsMode(u8 playerId) {
+  assert(playerId < 8);
   return AIScriptController[playerId].AI_Flags.isUseMapSettings;
 }
 

@@ -106,7 +106,7 @@ s16 getUnitVerticalOffsetOnBirth(const CUnit *unit) {
 }
 
 //Check if @p playerId has enough supplies to build @p unitId.
-bool hasSuppliesForUnitHook(s8 playerId, u16 unitId, bool canShowErrorMessage) {
+bool hasSuppliesForUnitHook(u8 playerId, u16 unitId, bool canShowErrorMessage) {
   //Default StarCraft behavior
   s32 supplyCost = units_dat::SupplyRequired[unitId];
 

@@ -17,7 +17,7 @@ bool unitCanAttack(const CUnit *unit);
 bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit);
 
 /// Determines whether the given @p playerId is in a UMS map (i.e. campaign mode).
-bool isUmsMode(s8 playerId);
+bool isUmsMode(u8 playerId);
 
 /// Determines if the @p unit is within a region that is not commanded by its
 /// controlling AI. Details are not really understood.

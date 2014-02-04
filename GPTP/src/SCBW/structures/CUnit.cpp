@@ -37,7 +37,7 @@ void CUnit::setHp(s32 hitPoints) {
 
 extern const u32 Func_DoWeaponDamage = 0x00479930; //Note: Also used by weaponDamageHook()
 void CUnit::damageWith(s32 damage, u8 weaponId, CUnit *attacker,
-                       s8 attackingPlayer, s8 direction, u8 damageDivisor) {
+                       u8 attackingPlayer, s8 direction, u8 damageDivisor) {
   assert(this);
   assert(weaponId < WEAPON_TYPE_COUNT);
   assert(damageDivisor != 0);
@@ -236,7 +236,7 @@ bool CUnit::hasPathToPos(u32 x, u32 y) const {
 }
 
 const u32 Func_CanUseTech = 0x0046DD80;
-int CUnit::canUseTech(u8 techId, s8 playerId) const {
+int CUnit::canUseTech(u8 techId, u8 playerId) const {
   assert(this);
   s32 playerId_ = playerId;
   static s32 result;
@@ -255,7 +255,7 @@ int CUnit::canUseTech(u8 techId, s8 playerId) const {
 }
 
 const u32 Func_CanBuild = 0x0046E1C0;
-int CUnit::canBuild(u16 unitId, s8 playerId) const {
+int CUnit::canBuild(u16 unitId, u8 playerId) const {
   assert(this);
   s32 playerId_ = playerId;
   static s32 result;
@@ -577,7 +577,7 @@ u16 CUnit::getIndex() const {
   return this - unitTable;
 }
 
-s8 CUnit::getLastOwnerId() const {
+u8 CUnit::getLastOwnerId() const {
   assert(this);
   assert(this->sprite);
   if (this->playerId == 11) //The owner has left the game
@@ -586,7 +586,7 @@ s8 CUnit::getLastOwnerId() const {
     return this->playerId;
 }
 
-bool CUnit::isVisibleTo(s8 playerId) const {
+bool CUnit::isVisibleTo(u8 playerId) const {
   assert(this);
   return (this->visibilityStatus & (1 << playerId)) != 0;
 }

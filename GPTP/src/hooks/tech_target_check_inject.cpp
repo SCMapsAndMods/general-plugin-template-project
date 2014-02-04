@@ -38,7 +38,7 @@ void injectTechTargetCheckHooks() {
   jmpPatch(getTechUseErrorMessageWrapper, Func_GetTechUseErrorMessage);
 }
 
-u16 getTechUseErrorMessage(const CUnit *target, s8 castingPlayer, u16 techId) {
+u16 getTechUseErrorMessage(const CUnit *target, u8 castingPlayer, u16 techId) {
   u32 techId_ = techId;
   static u16 errorMessage;
 

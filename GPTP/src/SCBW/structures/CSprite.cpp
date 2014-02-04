@@ -164,7 +164,7 @@ CImage* CSprite::getOverlay(u16 imageId) const {
 
 //-------- Other --------//
 
-bool CSprite::isVisibleTo(s8 playerId) const {
+bool CSprite::isVisibleTo(u8 playerId) const {
   assert(this);
   return (this->visibilityFlags & (1 << playerId)) != 0;
 }

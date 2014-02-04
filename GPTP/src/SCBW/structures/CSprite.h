@@ -43,14 +43,14 @@ struct CSprite {
 
   /// Checks whether this sprite is visible to @p playerId (i.e. not covered by
   /// the fog of war). This does NOT check detectability.
-  bool isVisibleTo(s8 playerId) const;
+  bool isVisibleTo(u8 playerId) const;
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure
 
   /*0x00*/ CLink<CSprite> link;
   /*0x08*/ u16       spriteId;
-  /*0x0A*/ s8        playerId;          // officially "creator"
+  /*0x0A*/ u8        playerId;          // officially "creator"
   /*0x0B*/ u8        selectionIndex;    // 0 <= selectionIndex <= 11. Index in the selection area at bottom of screen.
   /*0x0C*/ u8        visibilityFlags;   // Determines whether the sprite is visible (not hidden by the fog-of-war).
   /*0x0D*/ u8        elevationLevel;
