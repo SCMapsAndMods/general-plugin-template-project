@@ -220,11 +220,11 @@ s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail) {
 }
 
 s32 getPolarX(s32 distance, u8 angle) {
-  return distance * angleDistance[angle].x / 256;
+  return distance * angleDistance[angle].x >> 8;
 }
 
 s32 getPolarY(s32 distance, u8 angle) {
-  return distance * angleDistance[angle].y / 256;
+  return distance * angleDistance[angle].y >> 8;
 }
 
 u8 getUpgradeLevel(u8 playerId, u8 upgradeId) {

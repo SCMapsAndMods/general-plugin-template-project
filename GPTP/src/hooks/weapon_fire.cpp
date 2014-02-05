@@ -11,7 +11,7 @@
 namespace {
 typedef void (__stdcall *GetWeaponHitPosFunc)(const CUnit *unit, s32 *x, s32 *y);
 GetWeaponHitPosFunc const getWeaponHitPos = (GetWeaponHitPosFunc) 0x004762C0;
-void createBullet(u8 weaponId, const CUnit *source, s16 x, s16 y, u8 attackingPlayer, u8 direction);
+void createBullet(u8 weaponId, CUnit *source, s16 x, s16 y, u8 attackingPlayer, u8 direction);
 } //unnamed namespace
 
 
@@ -22,14 +22,14 @@ namespace hooks {
 //Fires a weapon from the @p unit.
 //This hook affects the following iscript opcodes: attackwith, attack, castspell
 //This also affects CUnit::fireWeapon().
-void fireWeaponHook(const CUnit *unit, u8 weaponId) {
+void fireWeaponHook(CUnit *unit, u8 weaponId) {
   //Default StarCraft behavior
 
   //Retrieve the spawning position for the bullet.
   s32 x, y;
 
   if (weapons_dat::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit) {
-    if (unit->orderTarget.unit == NULL)
+    if (!unit->orderTarget.unit)
       return;
 
     getWeaponHitPos(unit, &x, &y);
@@ -48,7 +48,7 @@ void fireWeaponHook(const CUnit *unit, u8 weaponId) {
         - weapons_dat::VerticalOffset[weaponId];
   }
 
-  if (weapons_dat::FlingyId[weaponId])
+  if (weapons_dat::FlingyId[weaponId] != 0)
     createBullet(weaponId, unit, x, y, unit->playerId, unit->currentDirection1);
 }
 
@@ -60,7 +60,7 @@ void fireWeaponHook(const CUnit *unit, u8 weaponId) {
 namespace {
 
 const u32 Helper_CreateBullet = 0x0048C260;
-void createBullet(u8 weaponId, const CUnit *source, s16 x, s16 y, u8 attackingPlayer, u8 direction) {
+void createBullet(u8 weaponId, CUnit *source, s16 x, s16 y, u8 attackingPlayer, u8 direction) {
   u32 attackingPlayer_ = attackingPlayer, direction_ = direction;
   s32 x_ = x, y_ = y;
 
