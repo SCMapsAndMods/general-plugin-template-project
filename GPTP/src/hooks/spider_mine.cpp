@@ -12,7 +12,7 @@ CUnit* findBestSpiderMineTargetHook(const CUnit *spiderMine) {
 
   //Don't search for a target if the spider mine is under a Disruption Web
   if (spiderMine->status & UnitStatus::CanNotAttack)
-    return NULL;
+    return nullptr;
 
   s32 range = 32 * spiderMine->getSeekRange();
 
@@ -36,11 +36,10 @@ CUnit* findBestSpiderMineTargetHook(const CUnit *spiderMine) {
     return true;
   };
   
-  return scbw::UnitFinder::getNearest(
-    spiderMine->getX(), spiderMine->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     spiderMine->getX() - range, spiderMine->getY() - range,
     spiderMine->getX() + range, spiderMine->getY() + range,
-    spiderMineTargetFinder);
+    spiderMine, spiderMineTargetFinder);
 }
 
 //Return the initial burrowing delay time (in frames) for the Spider Mine.

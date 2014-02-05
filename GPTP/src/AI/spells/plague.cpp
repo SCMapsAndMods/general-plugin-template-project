@@ -11,9 +11,6 @@ CUnit* findBestPlagueTarget(const CUnit *caster, bool isUnderAttack) {
     bounds = 32 * 128;
 
   auto plagueTargetFinder = [&caster, &isUnderAttack] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (!isTargetWorthHitting(target, caster))
       return false;
 
@@ -37,10 +34,10 @@ CUnit* findBestPlagueTarget(const CUnit *caster, bool isUnderAttack) {
     return true;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    plagueTargetFinder);
+    caster, plagueTargetFinder);
 }
 
 } //AI

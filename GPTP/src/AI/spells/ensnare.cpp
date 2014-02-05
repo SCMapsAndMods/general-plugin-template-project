@@ -13,9 +13,6 @@ CUnit* findBestEnsnareTarget(const CUnit *caster, bool isUnderAttack) {
     bounds = 32 * 32;
 
   auto ensnareTargetFinder = [&caster, &isUnderAttack] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (!isTargetWorthHitting(target, caster))
       return false;
 
@@ -42,10 +39,10 @@ CUnit* findBestEnsnareTarget(const CUnit *caster, bool isUnderAttack) {
     return true;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    ensnareTargetFinder);
+    caster, ensnareTargetFinder);
 }
 
 } //AI

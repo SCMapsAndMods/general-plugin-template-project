@@ -13,9 +13,6 @@ CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
     bounds = 32 * 32;
 
   auto darkSwarmTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (!isTargetWorthHitting(target, caster))
       return false;
 
@@ -73,10 +70,10 @@ CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
     }
   };
 
-  CUnit *result = scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  CUnit *result = scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    darkSwarmTargetFinder);
+    caster, darkSwarmTargetFinder);
 
   if (result && (result->status & UnitStatus::InAir))
     result = result->orderTarget.unit;

@@ -13,9 +13,6 @@ CUnit* findBestFeedbackTarget(const CUnit *caster, bool isUnderAttack) {
     bounds = 32 * 32;
 
   auto feedbackTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (!isTargetWorthHitting(target, caster))
       return false;
 
@@ -34,10 +31,10 @@ CUnit* findBestFeedbackTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    feedbackTargetFinder);
+    caster, feedbackTargetFinder);
 }
 
 } //AI

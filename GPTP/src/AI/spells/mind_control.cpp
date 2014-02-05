@@ -7,9 +7,6 @@ CUnit* findBestMindControlTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds = 32 * 32;
 
   auto mindControlTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (!isTargetWorthHitting(target, caster))
       return false;
 
@@ -55,10 +52,10 @@ CUnit* findBestMindControlTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    mindControlTargetFinder);
+    caster, mindControlTargetFinder);
 }
 
 } //AI

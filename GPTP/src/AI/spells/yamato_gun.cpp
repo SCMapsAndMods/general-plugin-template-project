@@ -5,9 +5,6 @@ namespace AI {
 
 CUnit* findBestYamatoGunTarget(const CUnit *caster, bool isUnderAttack) {
   auto yamatoGunTargetFinder = [&caster, &isUnderAttack] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (!isTargetWorthHitting(target, caster))
       return false;
 
@@ -31,14 +28,13 @@ CUnit* findBestYamatoGunTarget(const CUnit *caster, bool isUnderAttack) {
 
   if (isUnderAttack) {
     int bounds = 32 * 16;
-    return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+    return scbw::UnitFinder::getNearestTarget(
       caster->getX() - bounds, caster->getY() - bounds,
       caster->getX() + bounds, caster->getY() + bounds,
-      yamatoGunTargetFinder);
+      caster, yamatoGunTargetFinder);
   }
   else {
-    return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
-      yamatoGunTargetFinder);
+    return scbw::UnitFinder::getNearestTarget(caster, yamatoGunTargetFinder);
   }
 }
 

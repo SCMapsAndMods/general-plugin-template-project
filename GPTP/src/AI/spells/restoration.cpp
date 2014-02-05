@@ -7,9 +7,6 @@ CUnit* findBestRestorationTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds = 32 * 32;
 
   auto restorationTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (target->playerId != caster->playerId)
       return false;
 
@@ -30,10 +27,10 @@ CUnit* findBestRestorationTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    restorationTargetFinder);
+    caster, restorationTargetFinder);
 }
 
 CUnit* findBestRestorationTargetSituational(const CUnit *caster, bool isUnderAttack) {
@@ -41,9 +38,6 @@ CUnit* findBestRestorationTargetSituational(const CUnit *caster, bool isUnderAtt
     return nullptr;
 
   auto restorationTargetFinderSituational = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (target->playerId != caster->playerId)
       return false;
 
@@ -56,8 +50,7 @@ CUnit* findBestRestorationTargetSituational(const CUnit *caster, bool isUnderAtt
     return true;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
-    restorationTargetFinderSituational);
+  return scbw::UnitFinder::getNearestTarget(caster, restorationTargetFinderSituational);
 }
 
 } //AI
