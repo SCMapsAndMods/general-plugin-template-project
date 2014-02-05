@@ -11,9 +11,6 @@ CUnit* findBestHallucinationTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds = 32 * 32;
 
   auto hallucinationTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (target->playerId != caster->playerId)
       return false;
 
@@ -32,10 +29,10 @@ CUnit* findBestHallucinationTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    hallucinationTargetFinder);
+    caster, hallucinationTargetFinder);
 }
 
 } //AI

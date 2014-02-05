@@ -5,9 +5,6 @@ namespace AI {
 
 CUnit* findBestNukeLaunchTarget(const CUnit *caster, bool isUnderAttack) {
   auto nukeLaunchTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if ((target->status & (UnitStatus::Cloaked | UnitStatus::RequiresDetection))
         && !target->isVisibleTo(caster->playerId))
       return false;
@@ -22,8 +19,7 @@ CUnit* findBestNukeLaunchTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
-    nukeLaunchTargetFinder);
+  return scbw::UnitFinder::getNearestTarget(caster, nukeLaunchTargetFinder);
 }
 
 } //AI

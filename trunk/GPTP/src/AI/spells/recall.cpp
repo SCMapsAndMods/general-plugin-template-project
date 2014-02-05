@@ -8,9 +8,6 @@ CUnit* findBestRecallTarget(const CUnit *caster, bool isUnderAttack) {
     return nullptr;
 
   auto recallTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (target->playerId != caster->playerId)
       return false;
 
@@ -28,8 +25,7 @@ CUnit* findBestRecallTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
-    recallTargetFinder);
+  return scbw::UnitFinder::getNearestTarget(caster, recallTargetFinder);
 }
 
 } //AI

@@ -13,9 +13,6 @@ CUnit* findBestLockdownTarget(const CUnit *caster, bool isUnderAttack) {
     bounds = 32 * 32;
 
   auto lockdownTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (!isTargetWorthHitting(target, caster))
       return false;
 
@@ -39,10 +36,10 @@ CUnit* findBestLockdownTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    lockdownTargetFinder);
+    caster, lockdownTargetFinder);
 }
 
 } //AI

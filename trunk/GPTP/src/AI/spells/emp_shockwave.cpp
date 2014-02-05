@@ -11,9 +11,6 @@ CUnit* findBestEmpShockwaveTarget(const CUnit *caster, bool isUnderAttack) {
     bounds = 32 * 64;
 
   auto empShieldTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (!isTargetWorthHitting(target, caster))
       return false;
 
@@ -30,10 +27,10 @@ CUnit* findBestEmpShockwaveTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  CUnit *result = scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  CUnit *result = scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    empShieldTargetFinder);
+    caster, empShieldTargetFinder);
 
   if (result || isUnderAttack)
     return result;
@@ -55,10 +52,10 @@ CUnit* findBestEmpShockwaveTarget(const CUnit *caster, bool isUnderAttack) {
     return false;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    empEnergyTargetFinder);
+    caster, empEnergyTargetFinder);
 }
 
 } //AI

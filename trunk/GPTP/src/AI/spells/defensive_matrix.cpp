@@ -12,9 +12,6 @@ CUnit* findBestDefensiveMatrixTarget(const CUnit *caster, bool isUnderAttack) {
     bounds = 32 * 64;
 
   auto defensiveMatrixTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (target == caster)
-      return false;
-
     if (target->defensiveMatrixHp)
       return false;
 
@@ -39,10 +36,10 @@ CUnit* findBestDefensiveMatrixTarget(const CUnit *caster, bool isUnderAttack) {
     return true;
   };
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    defensiveMatrixTargetFinder);
+    caster, defensiveMatrixTargetFinder);
 }
 
 } //AI

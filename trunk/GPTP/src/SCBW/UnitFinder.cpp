@@ -21,6 +21,22 @@ CUnit* UnitFinder::getUnit(int index) const {
   return NULL;
 }
 
+UnitFinderData* UnitFinder::getStartX() {
+  return unitOrderingX;
+}
+
+UnitFinderData* UnitFinder::getStartY() {
+  return unitOrderingY;
+}
+
+UnitFinderData* UnitFinder::getEndX() {
+  return unitOrderingX + *unitOrderingCount;
+}
+
+UnitFinderData* UnitFinder::getEndY() {
+  return unitOrderingY + *unitOrderingCount;
+}
+
 // The heart and core of StarCraft's unit search engine.
 // Based on BWAPI's Shared/Templates.h
 void UnitFinder::search(int left, int top, int right, int bottom) {
@@ -36,25 +52,21 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
   if (isHeightExtended)
     b += *MAX_UNIT_HEIGHT;
 
-  // Obtain finder indexes for all bounds
-  UnitFinderData *p_xend = unitOrderingX + *unitOrderingCount;
-  UnitFinderData *p_yend = unitOrderingY + *unitOrderingCount;
-
   // Create UnitFinderData elements for compatibility with stl functions
   UnitFinderData finderVal;
 
   // Search for the values using built-in binary search algorithm and comparator
   finderVal.position = left;
-  UnitFinderData *pLeft   = std::lower_bound(unitOrderingX, p_xend, finderVal);
+  UnitFinderData *pLeft   = std::lower_bound(getStartX(), getEndX(), finderVal);
 
   finderVal.position = top;
-  UnitFinderData *pTop    = std::lower_bound(unitOrderingY, p_yend, finderVal);
+  UnitFinderData *pTop    = std::lower_bound(getStartY(), getEndY(), finderVal);
 
   finderVal.position = r - 1;
-  UnitFinderData *pRight  = std::upper_bound(pLeft, p_xend, finderVal);
+  UnitFinderData *pRight  = std::upper_bound(pLeft, getEndX(), finderVal);
 
   finderVal.position = b - 1;
-  UnitFinderData *pBottom = std::upper_bound(pTop, p_yend, finderVal);
+  UnitFinderData *pBottom = std::upper_bound(pTop, getEndY(), finderVal);
 
   // Iterate the X entries of the finder
   for (UnitFinderData *px = pLeft; px < pRight; ++px) {
