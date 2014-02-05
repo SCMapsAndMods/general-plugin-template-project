@@ -5,7 +5,7 @@
 namespace {
 
 void __declspec(naked) fireWeaponWrapper() {
-  static const CUnit *unit;
+  static CUnit *unit;
   static u8 weaponId;
 
   __asm {
