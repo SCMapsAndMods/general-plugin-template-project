@@ -16,20 +16,17 @@ bool nextFrame() {
   if (!scbw::isGamePaused()) { //If the game is not paused
     graphics::resetAllGraphics();
     hooks::updatePsiFieldProviders();
-
+    
+    //This block is executed once every game.
     if (*elapsedTimeFrames == 0) {
-      scbw::printText("Hello, world!");
+      //Write your code here
+      scbw::printText(PLUGIN_NAME ": Hello, world!");
     }
 
-    // Loop through all visible units in the game.
+    //Loop through all visible units in the game.
     for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->link.next) {
       //Write your code here
     }
-
-    // Loop through all bullets in the game
-    //for (BULLET* bullet = *firstBullet; bullet; bullet = bullet->next) {
-    //  //Write your code here
-    //}
   }
   return true;
 }
