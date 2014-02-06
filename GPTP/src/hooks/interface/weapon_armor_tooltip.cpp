@@ -23,7 +23,7 @@ u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
 //Returns the C-string for the tooltip text of the unit's weapon icon.
 //This function is used for weapon icons and special icons.
 //Precondition: @p entryStrIndex is a stat_txt.tbl string index.
-const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrIndex) {
+const char* getDamageTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrIndex) {
   //Default StarCraft behavior
 
   const char *entryName = (*statTxtTbl)->getString(entryStrIndex);
@@ -60,7 +60,7 @@ namespace hooks {
 
 //Returns the C-string for the tooltip text of the unit's weapon icon.
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
-  return getWeaponTooltipString(weaponId, unit, weapons_dat::Label[weaponId]);
+  return getDamageTooltipString(weaponId, unit, weapons_dat::Label[weaponId]);
 }
 
 //Returns the C-string for the tooltip text of the unit's armor icon.
@@ -112,11 +112,11 @@ const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
   //Default StarCraft behavior
 
   if (iconUnitId == UnitId::interceptor) {
-    return getWeaponTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
+    return getDamageTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
   }
 
   if (iconUnitId == UnitId::scarab) {
-    return getWeaponTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
+    return getDamageTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
   }
 
   if (iconUnitId == UnitId::nuclear_missile) {
@@ -124,7 +124,7 @@ const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
   }
 
   if (iconUnitId == UnitId::spider_mine) {
-    return getWeaponTooltipString(WeaponId::SpiderMines, unit, 794);  //"Spider Mines"
+    return getDamageTooltipString(WeaponId::SpiderMines, unit, 794);  //"Spider Mines"
   }
 
   //Should never reach here
