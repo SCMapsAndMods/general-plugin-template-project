@@ -13,7 +13,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
   MessageBox(
     hParentWnd,
     PLUGIN_NAME " (ID: " STR(PLUGIN_ID) ")"
-    "\nMade by pastelmind"
+    "\nVisit http://gptp.googlecode.com/ for more information."
     "\nBuilt on " __DATE__ " " __TIME__
     "\n"
     "\n[Features]"
