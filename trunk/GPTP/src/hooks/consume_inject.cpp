@@ -5,7 +5,7 @@
 namespace {
 
 void __declspec(naked) consumeHitWrapper() {
-	CUnit *target, *caster;
+	static CUnit *target, *caster;
 
 	__asm {
 		PUSHAD
