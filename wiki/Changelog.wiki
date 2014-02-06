@@ -3,7 +3,7 @@
 = v2.4 =
  * General
   * GPTP has moved to Visual C++ 2010, and now uses several C++11 features, such as lambdas and `static_assert()`. GPTP is now incompatible with Visual C++ 2005/2008. The default project file is created in Visual C++ 2010 Express.
-  * GPTP now checks the version number of `StarCraft.exe` and displays a warning message if the player attempts to load the plugin with a version of StarCraft other than 1.16.1.
+  * GPTP now checks the version number of `StarCraft.exe` and displays a warning message if the player attempts to load the plugin with a version of !StarCraft other than 1.16.1.
  * Hooks
   * Several hook modules have been moved into subdirectories for better classification.
    * `hooks\unit_stats\`: `armor_bonus.cpp`, `max_energy.cpp`, `sight_range.cpp`, `weapon_range.cpp`
