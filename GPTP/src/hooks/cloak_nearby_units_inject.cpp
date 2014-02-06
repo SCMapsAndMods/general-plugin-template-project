@@ -1,5 +1,5 @@
 #include "cloak_nearby_units.h"
-#include "../hook_tools.h"
+#include <hook_tools.h>
 
 void __declspec(naked) cloakNearbyUnitsWrapper() {
   CUnit *unit;
