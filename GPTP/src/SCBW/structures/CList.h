@@ -7,16 +7,12 @@
 #include "../../types.h"
 
 
-//-------- CLink declaration --------//
-
 template <class T>
 class CLink {
   public:
     T *prev;
     T *next;
 };
-
-//-------- CList declaration --------//
 
 template <class T>
 class CList {
@@ -49,83 +45,7 @@ class CList {
     T* popHead();
 };
 
-template <class T>
-template <CLink<T> T::*link>
-void CList<T>::insertBefore(T *t, T *target) {
-  if (head) {
-    if (head == target)
-      head = t;
-    (t->*link).prev = (target->*link).prev;
-    (t->*link).next = target;
-    if ((target->*link).prev)
-      ((target->*link).prev->*link).next = t;
-    (target->*link).prev = t;
-  }
-  else {
-    head = t;
-    tail = t;
-  }
-}
-
-template <class T>
-template <CLink<T> T::*link>
-void CList<T>::insertBeforeHead(T *t) {
-  insertBefore<link>(t, head);
-}
-
-template <class T>
-template <CLink<T> T::*link>
-void CList<T>::insertAfter(T *t, T *target) {
-  if (head) {
-    if (tail == target)
-      tail = t;
-    (t->*link).prev = target;
-    (t->*link).next = (target->*link).next;
-    if ((target->*link).next)
-      ((target->*link).next->*link).prev = t;
-    (target->*link).next = t;
-  }
-  else {
-    head = t;
-    tail = t;
-  }
-}
-
-template <class T>
-template <CLink<T> T::*link>
-void CList<T>::insertAfterHead(T *t) {
-  insertAfter<link>(t, head);
-}
-
-template <class T>
-template <CLink<T> T::*link>
-void CList<T>::unlink(T *t) {
-  if (head == t)
-    head = (t->*link).next;
-  if (tail == t)
-    tail = (t->*link).prev;
-
-  if ((t->*link).prev)
-    ((t->*link).prev->*link).next = (t->*link).next;
-  if ((t->*link).next)
-    ((t->*link).next->*link).prev = (t->*link).prev;
-
-  (t->*link).prev = NULL;
-  (t->*link).next = NULL;
-}
-
-//Based on function @ 0x004D4E30
-template <class T>
-template <CLink<T> T::*link>
-T* CList<T>::popHead() {
-  T *t = head;
-  unlink<link>(t);
-  return t;
-}
-
-
-//-------- CListExtern declaration --------//
-
+//CList whose head and tail are placed separately in memory.
 template <class T, CLink<T> T::*link>
 class CListExtern {
   public:
@@ -154,15 +74,19 @@ class CListExtern {
     T* popHead() const;
 };
 
+//-------- Actual algorithms --------//
+
+namespace CListFuncs {
+
 template <class T, CLink<T> T::*link>
-void CListExtern<T, link>::insertBefore(T *t, T *target) const {
+void insertBefore(T* &head, T* &tail, T *t, T *target) {
   if (head) {
     if (head == target)
       head = t;
     (t->*link).prev = (target->*link).prev;
     (t->*link).next = target;
     if ((target->*link).prev)
-      ((target->*link).prev->*link).next = t;
+     ((target->*link).prev->*link).next = t;
     (target->*link).prev = t;
   }
   else {
@@ -172,12 +96,7 @@ void CListExtern<T, link>::insertBefore(T *t, T *target) const {
 }
 
 template <class T, CLink<T> T::*link>
-void CListExtern<T, link>::insertBeforeHead(T *t) const {
-  insertBefore(t, head);
-}
-
-template <class T, CLink<T> T::*link>
-void CListExtern<T, link>::insertAfter(T *t, T *target) const {
+void insertAfter(T* &head, T* &tail, T *t, T *target) {
   if (head) {
     if (tail == target)
       tail = t;
@@ -194,12 +113,7 @@ void CListExtern<T, link>::insertAfter(T *t, T *target) const {
 }
 
 template <class T, CLink<T> T::*link>
-void CListExtern<T, link>::insertAfterHead(T *t) const {
-  insertAfter(t, head);
-}
-
-template <class T, CLink<T> T::*link>
-void CListExtern<T, link>::unlink(T *t) const {
+void unlink(T* &head, T* &tail, T *t) {
   if (head == t)
     head = (t->*link).next;
   if (tail == t)
@@ -216,8 +130,81 @@ void CListExtern<T, link>::unlink(T *t) const {
 
 //Based on function @ 0x004D4E30
 template <class T, CLink<T> T::*link>
-T* CListExtern<T, link>::popHead() const {
+T* popHead(T* &head, T* &tail) {
   T *t = head;
-  unlink(t);
+  unlink<T, link>(head, tail, t);
   return t;
+}
+
+} //CListFuncs
+
+//-------- CList template member function definitions --------//
+
+template <class T>
+template <CLink<T> T::*link>
+void CList<T>::insertBefore(T *t, T *target) {
+  CListFuncs::insertBefore<T, link>(head, tail, t, target);
+}
+
+template <class T>
+template <CLink<T> T::*link>
+void CList<T>::insertBeforeHead(T *t) {
+  insertBefore<link>(t, head);
+}
+
+template <class T>
+template <CLink<T> T::*link>
+void CList<T>::insertAfter(T *t, T *target) {
+  CListFuncs::insertAfter<T, link>(head, tail, t, target);
+}
+
+template <class T>
+template <CLink<T> T::*link>
+void CList<T>::insertAfterHead(T *t) {
+  insertAfter<link>(t, head);
+}
+
+template <class T>
+template <CLink<T> T::*link>
+void CList<T>::unlink(T *t) {
+  CListFuncs::unlink<T, link>(head, tail, t);
+}
+
+
+template <class T>
+template <CLink<T> T::*link>
+T* CList<T>::popHead() {
+  return CListFuncs::popHead<T, link>(head, tail);
+}
+
+//-------- CListExtern template member function definitions --------//
+
+template <class T, CLink<T> T::*link>
+void CListExtern<T, link>::insertBefore(T *t, T *target) const {
+  CListFuncs::insertBefore<T, link>(head, tail, t, target);
+}
+
+template <class T, CLink<T> T::*link>
+void CListExtern<T, link>::insertBeforeHead(T *t) const {
+  insertBefore(t, head);
+}
+
+template <class T, CLink<T> T::*link>
+void CListExtern<T, link>::insertAfter(T *t, T *target) const {
+  CListFuncs::insertAfter<T, link>(head, tail, t, target);
+}
+
+template <class T, CLink<T> T::*link>
+void CListExtern<T, link>::insertAfterHead(T *t) const {
+  insertAfter(t, head);
+}
+
+template <class T, CLink<T> T::*link>
+void CListExtern<T, link>::unlink(T *t) const {
+  CListFuncs::unlink<T, link>(head, tail, t);
+}
+
+template <class T, CLink<T> T::*link>
+T* CListExtern<T, link>::popHead() const {
+  return CListFuncs::popHead<T, link>(head, tail);
 }
