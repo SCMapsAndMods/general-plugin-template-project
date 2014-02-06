@@ -1,4 +1,4 @@
-General Plugin Template Project v2.39
+General Plugin Template Project v2.4
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -34,6 +34,71 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 == Changes ==
 
 For the full changelog, see http://code.google.com/p/gptp/wiki/Changelog
+
+v2.4
+ * General
+   * GPTP has moved to Visual C++ 2010, and now uses several C++11 features,
+     such as lambdas and static_assert(). GPTP is now incompatible with
+     Visual C++ 2005/2008. The default project file is created in
+     Visual C++ 2010 Express.
+   * GPTP now checks the version number of StarCraft.exe and displays a warning
+     message if the player attempts to load the plugin with a version of
+     StarCraft other than 1.16.1.
+ * Hooks
+   * Several hook modules have been moved into subdirectories for better
+     classification.
+     * hooks\unit_stats\: armor_bonus.cpp, max_energy.cpp, sight_range.cpp,
+                          weapon_range.cpp
+     * hooks\interface\: weapon_armor_tooltip.cpp
+   * irradiate.cpp has been merged into update_status_effects.cpp.
+   * energy_regeneration.cpp and update_unit_timers.cpp has been merged into
+     update_unit_state.cpp.
+   * The default form of the nextFrame() function has been cleaned up a little
+     bit. It now uses elapsedTimeFrames instead of firstRun to print the
+     "Hello, world!" message on game start.
+   * cloak_nearby_units.cpp now uses a lambda function instead of manually
+     looping through multiple units.
+ * SCBW Library
+   * UnitFinder
+     * Once again, UnitFinder member functions now accept function pointers,
+       functors, and lambdas as callbacks.
+     * UnitFinder::getNearest() has been replaced by
+       UnitFinder::getNearestTarget(), which emulates SCBW behavior more
+       closely.
+   * API functions
+     * The CUnit structure header file has been split into two files--CUnit.h
+       for member function declarations and CUnitLayout.h for structure layout.
+       To use the CUnit structure, just #include the CUnit.h header file as
+       before.
+     + Added CUnit::isRemorphingBuilding().
+     + Added scbw::getPolarX(), scbw::getPolarY().
+     * CUnit::canBuild() has been renamed to CUnit::canMakeUnit().
+     * scbw::getRaceId() has been replaced with CUnit::getRace().
+     - scbw::getStatTxtTblString() has been removed. You can use
+       (*statTxtTbl)->getString() to retrieve strings.
+   * Data Variables
+     * The namespaces for DAT data arrays were renamed to distinguish them
+       better from class/structure names.
+       * Unit -> units_dat
+       * Weapon -> weapons_dat
+       * Flingy -> flingy_dat
+       * Sprite -> sprites_dat
+       * Image -> images_dat
+       * Tech -> techdata_dat
+       * Upgrade -> upgrades_dat
+       * Order -> orders_dat
+     + New data variables: GAME_TYPE, elapsedTimeFrames.
+     + Added statTxtTbl and mapStringTbl for retrieving TBL strings.
+     * The elapsedTime data constant has been renamed to elapsedTimeSeconds.
+   * Enumerations
+     * GameType::Enum has been expanded with more game types.
+     * PlayerRace::Enum has been renamed to RaceId::Enum.
+   * The STR() macro has been moved to definitions.h
+ * Bug fixes
+   * Player IDs are now stored as unsigned (as they should be).
+   * CUnit::getName() now returns the custom unit name (if it exists) in UMS
+     maps.
+   * Fixed an integer overflow bug in the Consume hook module.
 
 v2.39
  * Added CUnit::isValidCaster().
