@@ -40,7 +40,7 @@ UnitFinderData* UnitFinder::getEndY() {
 // The heart and core of StarCraft's unit search engine.
 // Based on BWAPI's Shared/Templates.h
 void UnitFinder::search(int left, int top, int right, int bottom) {
-  u8 finderFlags[UNIT_ARRAY_LENGTH + 1] = {0};
+  bool tempUnitStored[UNIT_ARRAY_LENGTH + 1] = {false};
 
   int r = right, b = bottom;
   const bool isWidthExtended  = right - left - 1 < *MAX_UNIT_WIDTH;
@@ -62,41 +62,37 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
   finderVal.position = top;
   UnitFinderData *pTop    = std::lower_bound(getStartY(), getEndY(), finderVal);
 
-  finderVal.position = r - 1;
-  UnitFinderData *pRight  = std::upper_bound(pLeft, getEndX(), finderVal);
+  finderVal.position = r;
+  UnitFinderData *pRight  = std::lower_bound(pLeft, getEndX(), finderVal);
 
-  finderVal.position = b - 1;
-  UnitFinderData *pBottom = std::upper_bound(pTop, getEndY(), finderVal);
+  finderVal.position = b;
+  UnitFinderData *pBottom = std::lower_bound(pTop, getEndY(), finderVal);
 
   // Iterate the X entries of the finder
   for (UnitFinderData *px = pLeft; px < pRight; ++px) {
-    if (finderFlags[px->unitIndex] == 0) {
+    if (!tempUnitStored[px->unitIndex]) {
       // If width is small, check unit bounds
       if (!isWidthExtended
-          || CUnit::getFromIndex(px->unitIndex)->getLeft() <= right)
-        finderFlags[px->unitIndex] = 1;
+          || CUnit::getFromIndex(px->unitIndex)->getLeft() < right)
+        tempUnitStored[px->unitIndex] = true;
     }
   }
 
   // Iterate the Y entries of the finder
   this->unitCount = 0;
   for (UnitFinderData *py = pTop; py < pBottom; ++py) {
-    if (finderFlags[py->unitIndex] == 1) {
+    if (tempUnitStored[py->unitIndex]) {
+      tempUnitStored[py->unitIndex] = false;  //Prevent duplicates
+
       // If height is small, check unit bounds
       if (!isHeightExtended
-          || CUnit::getFromIndex(py->unitIndex)->getTop() <= bottom)
-        finderFlags[py->unitIndex] = 2;
+          || CUnit::getFromIndex(py->unitIndex)->getTop() < bottom)
+      {
+        CUnit *unit = CUnit::getFromIndex(py->unitIndex);
+        if (unit && unit->mainOrderId)
+          this->units[this->unitCount++] = unit;
+      }
     }
-  }
-
-  // Final iteration
-  for (UnitFinderData *px = pLeft; px < pRight; ++px) {
-    if (finderFlags[px->unitIndex] == 2) {
-      CUnit *unit = CUnit::getFromIndex(px->unitIndex);
-      if (unit && unit->mainOrderId)
-        this->units[this->unitCount++] = unit;
-    }
-    finderFlags[px->unitIndex] = 0; //Prevent duplicates
   }
 }
 
