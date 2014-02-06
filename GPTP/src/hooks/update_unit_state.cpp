@@ -3,6 +3,7 @@
 #include <SCBW/scbwdata.h>
 #include <SCBW/enumerations.h>
 #include <SCBW/api.h>
+#include <algorithm>
 
 namespace {
 //Helper function: Returns true if the unit's HP <= 33%.
@@ -50,7 +51,7 @@ void updateUnitEnergy(CUnit *unit) {
     unit->energy -= cloakingEnergyCost;
   }
   else {
-    u16 maxEnergy;
+    int maxEnergy;
     if (unit->id == UnitId::dark_archon
         && unit->mainOrderId == OrderId::CompletingArchonSummon
         && !(unit->mainOrderState))
@@ -58,12 +59,8 @@ void updateUnitEnergy(CUnit *unit) {
     else
       maxEnergy = unit->getMaxEnergy();
 
-    if (unit->energy != maxEnergy) {
-      u16 energy = unit->energy + 8;
-      if (energy > maxEnergy)
-        energy = maxEnergy;
-      unit->energy = energy;
-    }
+    if (unit->energy != maxEnergy)
+      unit->energy = std::min(unit->energy + 8, maxEnergy);
   }
 
   //If the unit is currently selected, redraw its graphics
@@ -127,9 +124,10 @@ void updateUnitStateHook(CUnit* unit) {
     //HP regeneration
     if (units_dat::BaseProperty[unit->id] & UnitProperty::RegeneratesHP
         && unit->hitPoints > 0
-        && unit->hitPoints != units_dat::MaxHitPoints[unit->id]
-        )
-        unit->setHp(unit->hitPoints + 4);
+        && unit->hitPoints != units_dat::MaxHitPoints[unit->id])
+    {
+      unit->setHp(unit->hitPoints + 4);
+    }
 
     //Update unit energy (energy regen/drain)
     updateUnitEnergy(unit);
