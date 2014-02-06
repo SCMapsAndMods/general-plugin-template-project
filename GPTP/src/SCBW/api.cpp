@@ -52,16 +52,6 @@ void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId) {
   }
 }
 
-// Logically equivalent to function @ 0x004C36F0
-const char* getStatTxtTblString(u16 index) {
-  if (index == 0)
-    return NULL;
-  else if (index <= **statTxtTbl)
-    return (char*)(*statTxtTbl) + (*statTxtTbl)[index];
-  else
-    return "";
-}
-
 u32 getUnitOverlayAdjustment(const CUnit* const unit) {
   if (units_dat::BaseProperty[unit->id] & UnitProperty::MediumOverlay)
     return 1;

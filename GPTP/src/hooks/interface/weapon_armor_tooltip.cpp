@@ -26,8 +26,8 @@ u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrIndex) {
   //Default StarCraft behavior
 
-  const char *entryName = scbw::getStatTxtTblString(entryStrIndex);
-  const char *damageStr = scbw::getStatTxtTblString(777);         //"Damage:"
+  const char *entryName = (*statTxtTbl)->getString(entryStrIndex);
+  const char *damageStr = (*statTxtTbl)->getString(777);        //"Damage:"
 
   const u8 damageFactor = getDamageFactorForTooltip(weaponId, unit);
   const u8 upgradeLevel = scbw::getUpgradeLevel(unit->playerId, weapons_dat::DamageUpgrade[weaponId]);
@@ -36,7 +36,7 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrI
 
   if (weaponId == WeaponId::HaloRockets) {
     if (bonusDamage > 0) {
-      const char *perRocketStr = scbw::getStatTxtTblString(1301); //"per rocket"
+      const char *perRocketStr = (*statTxtTbl)->getString(1301);//"per rocket"
       sprintf_s(buffer, sizeof(buffer), "%s\n%s %d+%d %s",
                 entryName, damageStr, baseDamage, bonusDamage, perRocketStr);
     }
@@ -68,8 +68,8 @@ const char* getArmorTooltipString(const CUnit *unit) {
   //Default StarCraft behavior
   
   const u16 labelId = upgrades_dat::Label[units_dat::ArmorUpgrade[unit->id]];
-  const char *armorUpgradeName = scbw::getStatTxtTblString(labelId);
-  const char *armorStr = scbw::getStatTxtTblString(778);          //"Armor:"
+  const char *armorUpgradeName = (*statTxtTbl)->getString(labelId);
+  const char *armorStr = (*statTxtTbl)->getString(778);         //"Armor:"
 
   const u8 baseArmor = units_dat::ArmorAmount[unit->id];
   const u8 bonusArmor = unit->getArmorBonus();
@@ -90,8 +90,8 @@ const char* getShieldTooltipString(const CUnit *unit) {
   //Default StarCraft behavior
 
   const u16 labelId = upgrades_dat::Label[UpgradeId::ProtossPlasmaShields];
-  const char *shieldUpgradeName = scbw::getStatTxtTblString(labelId);
-  const char *shieldStr = scbw::getStatTxtTblString(779);         //"Shields:"
+  const char *shieldUpgradeName = (*statTxtTbl)->getString(labelId);
+  const char *shieldStr = (*statTxtTbl)->getString(779);        //"Shields:"
 
   const u8 shieldUpgradeLevel = scbw::getUpgradeLevel(unit->playerId, UpgradeId::ProtossPlasmaShields);
 
@@ -120,7 +120,7 @@ const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
   }
 
   if (iconUnitId == UnitId::nuclear_missile) {
-    return scbw::getStatTxtTblString(793);  //"Nukes"
+    return (*statTxtTbl)->getString(793);                             //"Nukes"
   }
 
   if (iconUnitId == UnitId::spider_mine) {

@@ -20,12 +20,6 @@ void playSound(u32 sfxId, const CUnit *sourceUnit = NULL);
 /// @param  sfxId     ID of the sound file in sfxdata.dat.
 void showErrorMessageWithSfx(u32 playerId, u32 statTxtId, u32 sfxId);
 
-/// Retrieves a string from stat_txt.tbl, using the given @p index.
-/// If an invalid @p index is specified, returns "" instead.
-/// If @p index == 0, returns NULL.
-/// Note: TBL string indexes start at 1, not 0.
-const char* getStatTxtTblString(u16 index);
-
 /// Calculates the images.dat overlay adjustment for the given unit.
 /// This piece of code is used throughout StarCraft.exe for various status
 /// effects, such as Ensnare, Plague, and Defensive Matrix.

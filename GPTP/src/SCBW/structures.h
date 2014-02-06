@@ -404,4 +404,26 @@ struct AiCaptain {
 
 static_assert(sizeof(AiCaptain) == 52, "The size of the AiCaptain structure is invalid");
 
+class StringTBL {
+  public:
+    /// Returns the number of string entries in the TBL file.
+    u16 getStringCount() const { return stringCount; }
+
+    /// Returns the string at @p index in the TBL file.
+    /// If the @p index is 0, returns nullptr.
+    /// If the @p index is out of bounds, returns an empty string.
+    const char* getString(u16 index) const {
+      //Based on function @ 0x004C36F0
+      if (index == 0) return nullptr;
+      else if (index <= getStringCount())
+        return (const char*)(this) + offsets[index - 1];
+      else
+        return "";
+    }
+
+  private:
+    u16 stringCount;
+    u16 offsets[1];
+};
+
 #pragma pack()
