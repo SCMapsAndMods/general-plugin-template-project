@@ -152,6 +152,8 @@ struct CUnit: public CUnitLayout {
   //////////////////////////////////////////////////////////////// @}
   
   /// @name Graphics and Animations
+  /// Note: See CSprite::createOverlay() and CSprite::createTopOverlay() for
+  ///       creating image overlays.
   //////////////////////////////////////////////////////////////// @{
   
   /// Returns the overlay image of this unit's sprite (or its subunit's sprite)
