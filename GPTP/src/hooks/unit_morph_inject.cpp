@@ -46,7 +46,7 @@ void __stdcall unitMorphWrapper_CMDRECV_UnitMorph(u8 *commandData) {
 s32 __fastcall unitMorphWrapper_BTNSCOND_CanBuildUnit(u16 buildUnitId, s32 playerId, const CUnit *unit) {
   if (*clientSelectionCount <= 1
       || hooks::getUnitMorphEggTypeHook(unit->id) != UnitId::None)
-    return unit->canBuild(buildUnitId, playerId);
+    return unit->canMakeUnit(buildUnitId, playerId);
   return 0;
 }
 
