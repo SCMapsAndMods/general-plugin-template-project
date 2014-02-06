@@ -18,7 +18,7 @@ bool unitCanMorphHook(const CUnit *unit, u16 morphUnitId) {
   }
 
   if (unit->id == UnitId::larva || unit->id == UnitId::mutalisk) {
-    if (unit->canBuild(morphUnitId, *ACTIVE_NATION_ID) == 1) {
+    if (unit->canMakeUnit(morphUnitId, *ACTIVE_NATION_ID) == 1) {
       return true;
     }
   }
