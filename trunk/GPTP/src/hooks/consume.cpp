@@ -40,8 +40,8 @@ void consumeHitHook(CUnit *target, CUnit* caster) {
 
   //Add energy to the caster if the target is not a hallucination.
   if (!(target->status & UnitStatus::IsHallucination)) {
-    u16 energy = caster->energy + 12800; //50 energy
-    caster->energy = std::min(energy, caster->getMaxEnergy());
+    int energy = caster->energy + 12800; //50 energy
+    caster->energy = std::min<int>(energy, caster->getMaxEnergy());
   }
 }
 
