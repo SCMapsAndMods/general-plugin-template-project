@@ -44,10 +44,11 @@ bool canBeEnteredBy(const CUnit* transport, const CUnit* unit);
 /// @p weapon.
 ///
 /// @param  weaponId  If this is an invalid weapons.dat ID, returns false.
-/// @param  target    If NULL, the function checks whether the weapon can target
-///                   a position on the ground. If @p target is invincible, the
-///                   function returns false.
-bool canWeaponTargetUnit(u8 weaponId, const CUnit *target = NULL, const CUnit *attacker = NULL);
+/// @param  target    If nullptr is passed, the function checks whether the
+///                   weapon can target a position on the ground. If @p target
+///                   is invincible, the function returns false.
+bool canWeaponTargetUnit(u8 weaponId, const CUnit *target = nullptr,
+                         const CUnit *attacker = nullptr);
 
 /// Checks if @p unit is under a Dark Swarm. This does NOT check whether the
 /// unit is a ground unit or a building.
@@ -153,10 +154,10 @@ u32 getGroundHeightAtPos(s32 x, s32 y);
 
 /// Attempts to create a unit at the specified coordinates. If the unit cannot
 /// be created (e.g. there is no space), this function displays an error message
-/// and returns NULL instead. This function is the same one used for creating
+/// and returns nullptr instead. This function is the same one used for creating
 /// pre-placed units in UMS maps.
 ///
-/// @return           The created unit or NULL if the unit cannot be created.
+/// @return           The created unit or nullptr if the unit cannot be created.
 CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y);
 
 /// Calculates the images.dat overlay adjustment for the given unit.

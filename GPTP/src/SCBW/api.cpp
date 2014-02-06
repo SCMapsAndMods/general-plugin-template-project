@@ -76,7 +76,7 @@ bool canWeaponTargetUnit(u8 weaponId, const CUnit *target, const CUnit *attacker
   if (weaponId >= WEAPON_TYPE_COUNT)
     return false;
 
-  if (target == NULL)
+  if (!target)
     return weapons_dat::TargetFlags[weaponId].terrain;
 
   if (target->status & UnitStatus::Invincible)
@@ -266,7 +266,7 @@ u32 getGroundHeightAtPos(s32 x, s32 y) {
 
 const u32 Func_CreateUnitAtPos = 0x004CD360; //AKA createUnitXY()
 CUnit* createUnitAtPos(u16 unitType, u16 playerId, u32 x, u32 y) {
-  if (unitType >= UNIT_TYPE_COUNT) return NULL;
+  if (unitType >= UNIT_TYPE_COUNT) return nullptr;
   CUnit* unit;
 
   __asm {
