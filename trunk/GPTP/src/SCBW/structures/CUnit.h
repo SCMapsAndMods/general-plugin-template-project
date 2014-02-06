@@ -34,8 +34,13 @@ struct CUnit: public CUnitLayout {
   /// This is affected by the Weapon Range hook module.
   u32 getMaxWeaponRange(u8 weaponId) const;
   
-  /// Retrieves the in-game name of this unit from stat_txt.tbl.
+  /// Retrieves the in-game name of this unit. In UMS maps, this returns custom
+  /// names (if they exist).
   const char* getName() const;
+
+  /// Retrieves the in-game name of the unit with @p unitId. In UMS maps, this
+  /// returns custom unit names (if they exist).
+  static const char* getName(u16 unitId);
 
   /// Returns the race of the current unit.
   /// @return   RaceId::Terran, Zerg, Protoss, or Neutral.

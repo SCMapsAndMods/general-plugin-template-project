@@ -116,7 +116,9 @@ struct PlayerFlags {
 SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);  //See scbw::isAlliedTo()
 SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 
-SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);  //See scbw::getStatTxtTblString()
+SCBW_DATA(StringTBL* const*, statTxtTbl,        0x006D1238);
+SCBW_DATA(StringTBL* const*, mapStringTbl,      0x005993D4);
+
 SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
 
 SCBW_DATA(AI_Main*,       AIScriptController,   0x0068FEE8);
