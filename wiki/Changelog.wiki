@@ -3,8 +3,7 @@
 = v2.4 =
  * General
   * GPTP has moved to Visual C++ 2010, and now uses several C++11 features, such as lambdas and `static_assert()`. GPTP is now incompatible with Visual C++ 2005/2008. The default project file is created in Visual C++ 2010 Express.
-  * GPTP now checks the version number of `StarCraft.exe` and displays a warning message if the player attempts to load the plugin with a version other than 1.16.1.
-  * The <tt>[CUnit]</tt> structure header file has been split into two files--`CUnit.h` for member function declarations and `CUnitLayout.h` for structure layout. To use the <tt>[CUnit]</tt> structure, just `#include` the `CUnit.h` header file as before.
+  * GPTP now checks the version number of `StarCraft.exe` and displays a warning message if the player attempts to load the plugin with a version of StarCraft other than 1.16.1.
  * Hooks
   * Several hook modules have been moved into subdirectories for better classification.
    * `hooks\unit_stats\`: `armor_bonus.cpp`, `max_energy.cpp`, `sight_range.cpp`, `weapon_range.cpp`
@@ -18,6 +17,7 @@
    * Once again, <tt>[UnitFinder]</tt> member functions now accept function pointers, functors, and lambdas as callbacks.
    * `UnitFinder::getNearest()` has been replaced by `UnitFinder::getNearestTarget()`, which emulates SCBW behavior more closely.
   * API functions
+   * The <tt>[CUnit]</tt> structure header file has been split into two files--`CUnit.h` for member function declarations and `CUnitLayout.h` for structure layout. To use the <tt>[CUnit]</tt> structure, just `#include` the `CUnit.h` header file as before.
    * Added <tt>[CUnit#isRemorphingBuilding CUnit::isRemorphingBuilding()]</tt>.
    * Added <tt>[ApiFunctions#getPolarX,_getPolarY scbw::getPolarX(), scbw::getPolarY()]</tt>.
    * `CUnit::canBuild()` has been renamed to `CUnit::canMakeUnit()`.
@@ -34,12 +34,12 @@
     * `Upgrade -> upgrades_dat`
     * `Order -> orders_dat`
    * New data variables: <tt>[DataValues#GAME_TYPE GAME_TYPE]</tt>, <tt>[DataValues#elapsedTimeFrames elapsedTimeFrames]</tt>.
-   * The `elapsedTime` data constant has been renamed to <tt>[DataValues#elapsedTimeSeconds elapsedTimeSeconds]</tt>.
    * Added `statTxtTbl` and `mapStringTbl` for retrieving TBL strings.
+   * The `elapsedTime` data constant has been renamed to <tt>[DataValues#elapsedTimeSeconds elapsedTimeSeconds]</tt>.
   * Enumerations
    * `GameType::Enum` has been expanded with more game types.
    * `PlayerRace::Enum` has been renamed to `RaceId::Enum`.
- * The `STR()` macro has been moved to <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/definitions.h definitions.h]</tt>
+  * The `STR()` macro has been moved to <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/definitions.h definitions.h]</tt>
  * Bug fixes
   * Player IDs are now stored as unsigned (as they should be).
   * `CUnit::getName()` now returns the custom unit name (if it exists) in UMS maps.
