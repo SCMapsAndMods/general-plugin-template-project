@@ -256,7 +256,7 @@ Set the secondary order of this unit. Internally used by several hooks.
 
 == Graphics and Animations ==
 
-Note: See `CSprite::createOverlay() and CSprite::createTopOverlay() for creating image overlays on units and sprites.
+Note: See `CSprite::createOverlay()` and `CSprite::createTopOverlay()` for creating image overlays on units and sprites.
 
 === `getOverlay` ===
 {{{
