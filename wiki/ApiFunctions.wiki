@@ -5,7 +5,6 @@ Header file: <a href="/p/gptp/source/browse/trunk/GPTP/src/SCBW/api.h>`SCBW/api.
 
 GPTP provides many useful functions for modding in the `scbw` namespace. Many of these functions wrap !StarCraft's internal functions.
 
-= Functions =
 
 <wiki:toc max_depth="2" />
 
