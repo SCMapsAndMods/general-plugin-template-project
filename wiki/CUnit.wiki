@@ -11,11 +11,15 @@ The `CUnit` structure is used by !StarCraft to store all information regarding a
 
 <wiki:toc max_depth="3" />
 
+----------------------------------------------------------------
+
 = Methods =
 
 GPTP extends the CUnit structure with many useful methods. All methods are guaranteed to behave exactly as they do in !StarCraft, or obey the modified behavior enforced by hook modules.
 
 Note: The methods in GPTP may not necessarily be actual functions within !StarCraft, but a custom method that merely emulates a certain behavior.
+
+----------------------------------------------------------------
 
 == Unit Stats and Properties ==
 
@@ -122,6 +126,7 @@ bool isValidCaster() const;
 
 Checks if the unit is a spellcaster (has energy) and not a hallucination.
 
+----------------------------------------------------------------
 
 == Positions and Dimensions ==
 
@@ -151,6 +156,7 @@ s16 getBottom() const;
 
 Returns the positions of the left, right, top, and bottom edges of the unit's collision box.
 
+----------------------------------------------------------------
 
 == Modifying Unit State ==
 
@@ -213,6 +219,7 @@ void removeStasisField();
 
 Removes status effects from the unit.
 
+----------------------------------------------------------------
 
 == Unit Orders ==
 
@@ -245,6 +252,7 @@ void setSecondaryOrder(u8 orderId);
 
 Set the secondary order of this unit. Internally used by several hooks.
 
+----------------------------------------------------------------
 
 == Graphics and Animations ==
 
@@ -272,6 +280,7 @@ void removeOverlay(u32 imageId);
 
 Removes the first image overlay found that has an ID value between `imageIdStart` and `imageIdEnd.` The one-parameter version removes the first image overlay with the given `imageId`.
 
+----------------------------------------------------------------
 
 == Distances and Terrain ==
 
@@ -298,6 +307,7 @@ bool hasPathToUnit(const CUnit *target) const;
 
 Checks whether this unit can reach the `target` unit. This checks only the terrain layout, and does not consider obstacles (units and buildings).
 
+----------------------------------------------------------------
 
 == DAT Requirements ==
 
@@ -326,6 +336,7 @@ Checks the following:
 
 If the unit can use the tech, returns 1. If the tech needs to be researched, returns -1. If the unit cannot use the tech at all, returns 0.
 
+----------------------------------------------------------------
 
 == Utility Methods ==
 
