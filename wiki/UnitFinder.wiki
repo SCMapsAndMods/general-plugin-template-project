@@ -91,7 +91,7 @@ Returns the unit for which `score()` returns the highest nonnegative score. If a
 
 This example searches for an Ultralisk with the most HP in an area:
 {{{
-CUnit *bestUltralisk = finder.getBest([] (CUnit *unit) {
+CUnit *bestUltralisk = finder.getBest([] (CUnit *unit) -> int {
   if (unit->id == UnitId::ultralisk)
     return unit->hitPoints; //The unit's HP serves as the "score"
   else
@@ -102,19 +102,16 @@ CUnit *bestUltralisk = finder.getBest([] (CUnit *unit) {
 == `getNearestTarget` ==
 
 {{{
-static CUnit* getNearest(int x, int y, int left, int top, int right, int bottom, UnitFinderCallbackMatchInterface &callback);
-static CUnit* getNearest(int x, int y, UnitFinderCallbackMatchInterface &callback);
+template <class Callback>
+static CUnit* getNearestTarget(int left, int top, int right, int bottom, const CUnit* sourceUnit, Callback& match);
+template <class Callback>
+static CUnit* getNearestTarget(const CUnit* sourceUnit, Callback& match);
 }}}
 
-Returns the unit nearest to (`x`, `y`) for which `callback.match()` returns `true`, using the given map bounds (`left`, `top`, `right`, `bottom`). If there are no matches, returns `NULL`.
+Searches the area given by (`left`, `top`, `right`, `bottom`), returning the nearest unit to `sourceUnit` for which `match(unit)` evaluates to true. If there are no matches, returns `nullptr`.
 
 The 3-parameter version searches the entire map. Depending on the number of units in the game, it may be significantly slower than the version that uses custom search boundaries.
 
-_Note: This does NOT take unit size into account when calculating distance._
+This does not use unit collision boxes for calculating distances.
 
 _Note: This is a static member function, and does NOT require an instance of the class._
-
-=== Parameters ===
- * `x`, `y`: The "goal" of the search point.
- * `left`, `top`, `right`, `bottom`: Specifies the search bounds on the map. If omitted, the function searches the entire map.
- * `callback`: A callback class that inherits from the `UnitFinderCallbackMatchInterface ` class.
