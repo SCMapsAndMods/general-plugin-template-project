@@ -2,15 +2,15 @@
 
 Class header file: [http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/UnitFinder.h SCBW/UnitFinder.h]
 
-The `UnitFinder` class utilizies the internal data structures that !StarCraft uses to efficiently search for units within a portion of the map.
+The `UnitFinder` class utilizies the internal data structures that !StarCraft uses to efficiently search for units within a portion of the map. Several of its methods support callback functions and functors that can process these units.
 
-Note: This class internally handles an array of 1700 [CUnit] pointers, so instantiating it every time may become expensive. Consider declaring the `UnitFinder` variable as <tt>static</tt>.
+Note: This class internally handles an array of 1700 <tt>[CUnit]</tt> pointers, so instantiating it every time may become expensive. Consider declaring the `UnitFinder` variable as static.
 
 <wiki:toc max_depth="2" />
 
 = Methods =
 
-== !UnitFinder ==
+== `UnitFinder` ==
 
 {{{
 UnitFinder();
@@ -19,7 +19,7 @@ UnitFinder(int left, int top, int right, int bottom);
 
 Constructors for the `UnitFinder` class. The four-parameter version immediately calls [#search UnitFinder::search()].
 
-== search ==
+== `search` ==
 
 {{{
 void search(int left, int top, int right, int bottom);
@@ -27,7 +27,7 @@ void search(int left, int top, int right, int bottom);
 
 Searches for all units within the given bounds, using !StarCraft's internal data structures. This is much more efficient than manually looping through the entire unit table or linked list. The search result is stored in the current instance of the class, and can be used with other member functions.
 
-== getUnitCount ==
+== `getUnitCount` ==
 
 {{{
 int getUnitCount() const;
@@ -35,52 +35,71 @@ int getUnitCount() const;
 
 Returns the number of units found by [#search UnitFinder::search()]. If no searches have been conducted, returns 0.
 
-== getUnit ==
+== `getUnit` ==
 
 {{{
 CUnit* getUnit(int index) const;
 }}}
 
-Returns the unit at the given index. Invalid index returns `NULL` instead.
+Returns the unit at the given index. Invalid index returns `nullptr` instead.
 
 
-== forEach ==
-
-{{{
-void forEach(UnitFinderCallbackProcInterface &callback) const;
-}}}
-
-Iterates through all units found, calling `callback.proc()` once for each unit.
-
-=== Parameters ===
- * `callback`: A callback class that inherits from the `UnitFinderCallbackProcInterface` class.
-
-
-== getFirst ==
+== `forEach` ==
 
 {{{
-CUnit* getFirst(UnitFinderCallbackMatchInterface &callback) const;
+template <class Callback>
+void forEach(Callback &func) const;
 }}}
 
-Returns the first unit for which `callback.match()` returns true. If there are no matches, returns `NULL`.
+Iterates through all units found, calling `func()` once for each unit.
 
-=== Parameters ===
- * `callback`: A callback class that inherits from the `UnitFinderCallbackMatchInterface` class.
+This example increases the HP of all units found by 10:
+{{{
+finder.forEach([] (CUnit *unit) {
+  unit->setHp(unit->hitPoints + 2560);
+});
+}}}
 
-
-== getBest ==
+== `getFirst` ==
 
 {{{
-CUnit* getBest(UnitFinderCallbackScoreInterface &callback) const;
+template <class Callback>
+CUnit* getFirst(Callback &match) const;
 }}}
 
-Returns the unit for which `callback.score()` returns the highest nonnegative score. If a unit receives negative score, it is excluded from the search. If there are no units, returns `NULL`.
+Returns the first unit for which `match()` returns true. If there are no matches, returns `nullptr`.
 
-=== Parameters ===
- * `score`: A callback class that inherits from the `UnitFinderCallbackScoreInterface` class.
+This example searches for a Zerg Defiler in an area:
+{{{
+CUnit *defiler = finder.getFirst([] (CUnit *unit) {
+  if (unit->id == UnitId::defiler)
+    return true;
+  else
+    return false;
+});
+}}}
+
+== `getBest` ==
+
+{{{
+template <class Callback>
+CUnit* getBest(Callback &score) const;
+}}}
+
+Returns the unit for which `score()` returns the highest nonnegative score. If a unit receives negative score, it is excluded from the search. If there are no units, returns `nullptr`.
 
 
-== getNearest ==
+This example searches for an Ultralisk with the most HP in an area:
+{{{
+CUnit *bestUltralisk = finder.getBest([] (CUnit *unit) {
+  if (unit->id == UnitId::ultralisk)
+    return unit->hitPoints; //The unit's HP serves as the "score"
+  else
+    return -1; //Don't bother if the unit is not an Ultralisk
+});
+}}}
+
+== `getNearestTarget` ==
 
 {{{
 static CUnit* getNearest(int x, int y, int left, int top, int right, int bottom, UnitFinderCallbackMatchInterface &callback);

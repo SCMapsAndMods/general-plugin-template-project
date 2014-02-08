@@ -383,7 +383,7 @@ The following arrays are available in the `images_dat` namespace, and can be ind
 
 == `upgrades.dat` ==
 
-The following arrays are available in the `upgrades_dat` namespace, and can be indexed with the 'UpgradeId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/UpgradeId.h SCBW/enumerations/UpgradeId.h]</tt>).
+The following arrays are available in the `upgrades_dat` namespace, and can be indexed with the `UpgradeId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/UpgradeId.h SCBW/enumerations/UpgradeId.h]</tt>).
 
 || *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
 || `MineralCostBase` || `u16` || Base Cost > Minerals || ||
@@ -398,7 +398,7 @@ The following arrays are available in the `upgrades_dat` namespace, and can be i
 
 == `techdata.dat` ==
 
-The following arrays are available in the `techdata_dat` namespace, and can be indexed with the 'TechId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/TechId.h SCBW/enumerations/TechId.h]</tt>).
+The following arrays are available in the `techdata_dat` namespace, and can be indexed with the `TechId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/TechId.h SCBW/enumerations/TechId.h]</tt>).
 
 || *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
 || `MineralCost` || `u16` || Technology Cost > Minerals || ||
@@ -409,7 +409,7 @@ The following arrays are available in the `techdata_dat` namespace, and can be i
 
 == `orders.dat` ==
 
-The following arrays are available in the 'orders_dat' namespace, and can be indexed with the `CUnit::mainOrderId`, `CUnit::secondaryOrderId` member variables or the 'OrderId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/OrderId.h SCBW/enumerations/OrderId.h]</tt>).
+The following arrays are available in the 'orders_dat' namespace, and can be indexed with the `CUnit::mainOrderId`, `CUnit::secondaryOrderId` member variables or the `OrderId::Enum` enumeration (<tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/enumerations/OrderId.h SCBW/enumerations/OrderId.h]</tt>).
 
 || *Array* || *Type* || *Name in !DatEdit* || *Stored Value* ||
 || `Label` || `u16` || Order Properties > Label || `stat_txt.tbl` index of the order's name (0 for no label) ||

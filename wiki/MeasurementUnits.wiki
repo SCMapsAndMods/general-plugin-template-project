@@ -24,3 +24,9 @@
 == HP, Shields, and Energy ==
 
 !StarCraft uses integers to calculate fractions of HP, shields, and energy. For example, a unit with 40 hit points in-game actually has the internal value of 40 x 256 = 10240 hit points.
+
+== Supply ==
+
+!StarCraft handles supply in integers. To handle the 0.5 supply of Zerglings and Scourges, it internally uses 2 times the supply amount displayed in-game.
+
+For example, Zerglings actually have 1 supply (instead of 0.5) in the plugin; Marines and Medics have 2 supply, instead of 1; and Zealots and Dragoons have 4 supply (instead of 2).
