@@ -169,7 +169,7 @@ Sets the unit's HP, and also updates burning / bleeding graphics and unit streng
 
 === `damageWith` ===
 {{{
-void damageWith(s32 damage, u8 weaponId, CUnit *attacker = NULL,
+void damageWith(s32 damage, u8 weaponId, CUnit *attacker = nullptr,
   s8 attackingPlayer = -1, s8 direction = 0, u8 damageDivisor = 1);
 }}}
 
@@ -187,7 +187,7 @@ _Note: This function is controlled by the Weapon Damage hook module._ (<tt>[http
 
 === `damageHp` ===
 {{{
-void damageHp(s32 damage, CUnit *attacker = NULL, s32 attackingPlayer = -1, bool notify = true);
+void damageHp(s32 damage, CUnit *attacker = nullptr, s32 attackingPlayer = -1, bool notify = true);
 }}}
 
 Deals damage directly to unit HP, killing it if possible.
@@ -225,7 +225,7 @@ Removes status effects from the unit.
 
 === `orderTo` ===
 {{{
-void orderTo(u32 orderId, const CUnit *target = NULL);
+void orderTo(u32 orderId, const CUnit *target = nullptr);
 void orderTo(u32 orderId, u16 x, u16 y);
 }}}
 
