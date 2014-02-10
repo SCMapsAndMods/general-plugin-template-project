@@ -241,6 +241,10 @@ struct CUnit: public CUnitLayout {
   /// Returns the loaded unit at @p index (value between 0-7). If no unit is
   /// loaded at the slot, returns nullptr instead.
   CUnit* getLoadedUnit(int index) const;
+  
+  /// Returns the first unit loaded in this unit. If this unit is not a
+  /// transport, or has no units inside, this function returns nullptr instead.
+  CUnit* getFirstLoadedUnit() const;
 
   /// Checks if this unit has other units loaded inside.
   bool hasLoadedUnit() const;
