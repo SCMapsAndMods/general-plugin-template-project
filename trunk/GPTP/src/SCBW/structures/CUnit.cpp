@@ -617,6 +617,18 @@ bool CUnit::hasLoadedUnit() const {
   return false;
 }
 
+namespace {
+typedef u32 (__stdcall *GiveUnitToPlayerFunc)(CUnit *unit, u32 playerId);
+GiveUnitToPlayerFunc const giveUnitToPlayer = (GiveUnitToPlayerFunc) 0x004C8040;
+} //unnamed namespace
+
+bool CUnit::giveTo(u8 playerId) {
+  assert(this);
+  assert(playerId < 12);
+
+  return giveUnitToPlayer(this, playerId) != 0;
+}
+
 bool CUnit::isVisibleTo(u8 playerId) const {
   assert(this);
   return (this->visibilityStatus & (1 << playerId)) != 0;

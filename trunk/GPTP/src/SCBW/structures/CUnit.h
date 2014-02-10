@@ -117,7 +117,9 @@ struct CUnit: public CUnitLayout {
   /// Reduces Defensive Matrix by @p amount, removing it if possible.
   void reduceDefensiveMatrixHp(s32 amount);
 
-  /// Immediately kills the unit. To silently remove the unit, 
+  /// Immediately kills the unit. To silently remove the unit, use:
+  ///   unit->userActionFlags |= 0x4;
+  ///   unit->remove();
   void remove();
 
   /// Removes the Lockdown effect from the unit.
@@ -242,6 +244,11 @@ struct CUnit: public CUnitLayout {
 
   /// Checks if this unit has other units loaded inside.
   bool hasLoadedUnit() const;
+
+  /// Transfers ownership of this unit to @p playerId. This function is
+  /// identical to Mind Control and the "Give Units To Player" trigger action.
+  /// @return   true if successful, false otherwise.
+  bool giveTo(u8 playerId);
   
   /// Checks whether this unit can be seen by @playerId (i.e. not covered by the
   /// fog-of-war and is detectable).
