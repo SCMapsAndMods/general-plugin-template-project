@@ -606,6 +606,19 @@ CUnit* CUnit::getLoadedUnit(int index) const {
   return nullptr;
 }
 
+//Logically equivalent to function @ 0x004E6C90
+CUnit* CUnit::getFirstLoadedUnit() const {
+  assert(this);
+
+  for (int i = 0; i < units_dat::SpaceProvided[this->id]; ++i) {
+    CUnit *firstLoadedUnit = getLoadedUnit(i);
+    if (firstLoadedUnit)
+      return firstLoadedUnit;
+  }
+
+  return nullptr;
+}
+
 //Logically equivalent to function @ 0x004E7110
 bool CUnit::hasLoadedUnit() const {
   assert(this);

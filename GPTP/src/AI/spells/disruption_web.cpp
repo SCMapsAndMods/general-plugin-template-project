@@ -18,12 +18,7 @@ CUnit* findBestDisruptionWebTarget(const CUnit *caster, bool isUnderAttack) {
 
     CUnit *targetOfTarget;
     if (target->id == UnitId::bunker && target->hasLoadedUnit()) {
-      CUnit *firstLoadedUnit;
-      for (int i = 0; i < 8; ++i)
-        if (firstLoadedUnit = target->getLoadedUnit(i))
-          break;
-
-      targetOfTarget = firstLoadedUnit->orderTarget.unit;
+      targetOfTarget = target->getFirstLoadedUnit()->orderTarget.unit;
     }
     else
       targetOfTarget = target->orderTarget.unit;
