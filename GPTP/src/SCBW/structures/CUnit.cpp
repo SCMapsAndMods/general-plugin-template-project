@@ -94,9 +94,9 @@ const char* CUnit::getName(u16 unitId) {
   assert(unitId < UNIT_TYPE_COUNT);
 
   if (units_dat::MapStringId[unitId])
-    return (*mapStringTbl)->getString(units_dat::MapStringId[unitId]);
+    return mapStringTbl->getString(units_dat::MapStringId[unitId]);
   else
-    return (*statTxtTbl)->getString(unitId + 1);
+    return statTxtTbl->getString(unitId + 1);
 }
 
 RaceId::Enum CUnit::getRace() const {
