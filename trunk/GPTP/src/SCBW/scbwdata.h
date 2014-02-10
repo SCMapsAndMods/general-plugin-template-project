@@ -10,21 +10,32 @@
 
 #define SCBW_DATA(type, name, offset) type const name = (type)offset;
 
+
+/// @name Linked list nodes
+//////////////////////////////////////////////////////////////// @{
+
+/// The first nodes in StarCraft's internal linked lists (taken from BWAPI's Offsets.h)
+SCBW_DATA(CUnit**,      firstVisibleUnit,       0x00628430);
+/// Includes units in transports/bunkers, workers inside gas buildings, nukes in
+/// silos, queens inside command centers, and units in production.
+SCBW_DATA(CUnit**,      firstHiddenUnit,        0x006283EC);
+SCBW_DATA(CUnit**,      firstScannerSweep,      0x006283F4);
+SCBW_DATA(CUnit**,      firstPsiFieldProvider,  0x0063FF54);
+SCBW_DATA(CBullet**,    firstBullet,            0x0064DEC4);
+
+struct Units12 { CUnit* unit[PLAYER_COUNT]; };
+SCBW_DATA(Units12*,     firstPlayerUnit,        0x006283F8);  //Indexed by player Id
+
+//////////////////////////////////////////////////////////////// @}
+
+/// @name Structure tables
+//////////////////////////////////////////////////////////////// @{
+
 SCBW_DATA(CUnit*,       unitTable,    0x0059CCA8);
 SCBW_DATA(CBullet*,     bulletTable,  0x0064B2E8);
 SCBW_DATA(UNITDEATHS*,  deathTable,   0x0058A364);
 SCBW_DATA(UNITDEATHS*,  unit_deaths,  deathTable);
 SCBW_DATA(CSprite*,     spriteTable,  0x00629D98);
-
-//From resources.cpp
-struct Resources {
-  int minerals[12];
-  int gas[12];
-  int cumulativeGas[12];
-  int cumulativeMinerals[12];
-};
-SCBW_DATA(Resources*,     resources,      0x0057F0F0);
-SCBW_DATA(const PLAYER*,  playerTable,    0x0057EEE0);  //From player.cpp
 
 //From locations.cpp
 SCBW_DATA(const MapSize*, mapTileSize,    0x0057F1D4);
@@ -40,90 +51,37 @@ SCBW_DATA(ActionPointer*, actionTable,    0x00512800);  //From triggers.cpp
 //Not sure what this does, so I'm leaving it as a comment.
 //actionTable[59] = &EnableDebugModeAction;
 
-/// The first nodes in StarCraft's internal linked lists (taken from BWAPI's Offsets.h)
-SCBW_DATA(CUnit**,      firstVisibleUnit,       0x00628430);
-/// Includes units in transports/bunkers, workers inside gas buildings, nukes in
-/// silos, queens inside command centers, and units in production.
-SCBW_DATA(CUnit**,      firstHiddenUnit,        0x006283EC);
-SCBW_DATA(CUnit**,      firstScannerSweep,      0x006283F4);
-SCBW_DATA(CUnit**,      firstPsiFieldProvider,  0x0063FF54);
-SCBW_DATA(CBullet**,    firstBullet,            0x0064DEC4);
+//////////////////////////////////////////////////////////////// @}
 
-struct Units12 { CUnit* unit[PLAYER_COUNT]; };
-SCBW_DATA(Units12*,     firstPlayerUnit,        0x006283F8);  //Indexed by player Id
+/// @name Data Variables and Constants
+//////////////////////////////////////////////////////////////// @{
 
-// Units that are selected by the current player (or the player viewing the replay).
-SCBW_DATA(const Units12*, clientSelectionGroup, 0x00597208);
-SCBW_DATA(const u8*,    clientSelectionCount,   0x0059723D);
-
-//Helper functions for several hooks
-SCBW_DATA(u8*,          selectionIndexStart,    0x006284B6);
-typedef CUnit* (__cdecl *GetActivePlayerNextSelectionFunc)();
-SCBW_DATA(GetActivePlayerNextSelectionFunc, getActivePlayerNextSelection, 0x0049A850);
-
-typedef void (__fastcall *PrepareForNextOrderFunc)(CUnit*);
-SCBW_DATA(PrepareForNextOrderFunc, prepareForNextOrder, 0x00475000);
-
-//Contains various info on the tiles.
-SCBW_DATA(ActiveTile**, activeTileArray,        0x006D1260);
-
-// Stores an ordered list of all units currently in the game.
-SCBW_DATA(UnitFinderData*, unitOrderingX,       0x0066FF78);
-SCBW_DATA(UnitFinderData*, unitOrderingY,       0x006769B8);
-SCBW_DATA(const u32*,   unitOrderingCount,      0x0066FF74);
-
-SCBW_DATA(const Point32*, angleDistance,        0x00512D28);
-
-// Font & Drawing
-namespace graphics { class Font; class Bitmap; }
-SCBW_DATA(graphics::Font**, fontBase,           0x006CE0F4);
-SCBW_DATA(graphics::Bitmap*, gameScreenBuffer,  0x006CEFF0);
-SCBW_DATA(u8*,          refreshRegions,         0x006CEFF8);  //640 x 480 divided into 1200 squares of 16x16
-SCBW_DATA(s32*,         screenX,                0x00628448);
-SCBW_DATA(s32*,         screenY,                0x00628470);
-SCBW_DATA(const Point32*, mouse,                0x006CDDC4);
-SCBW_DATA(Layers*,      screenLayers,           0x006CEF50);
-typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
-static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
-
-const CListExtern<CImage, &CImage::link> unusedImages(0x0057EB68, 0x0057EB70);
-SCBW_DATA(CList<CSprite>*, unusedSprites,       0x0063FE30);
-
-struct SpriteTileData {
-  CSprite* tails[256];
-  CSprite* heads[256];
+//From resources.cpp
+struct Resources {
+  int minerals[12];
+  int gas[12];
+  int cumulativeGas[12];
+  int cumulativeMinerals[12];
 };
-SCBW_DATA(SpriteTileData*, spritesOnTileRow,    0x00629288);
+SCBW_DATA(Resources*,     resources,      0x0057F0F0);
 
-//Image-related
-struct ImagesDatExtraOverlayLO_Files {
-  LO_Header* attackOverlays[IMAGE_TYPE_COUNT];
-  LO_Header* damageOverlays[IMAGE_TYPE_COUNT];
-  LO_Header* specialOverlays[IMAGE_TYPE_COUNT];
-  LO_Header* landingDustOverlays[IMAGE_TYPE_COUNT];
-  LO_Header* liftoffDustOverlays[IMAGE_TYPE_COUNT];
-};
-SCBW_DATA(const ImagesDatExtraOverlayLO_Files*, lo_files, 0x0051F2A8);
-SCBW_DATA(const LO_Header* const*, shieldOverlays, 0x0052E5C8);
-
-SCBW_DATA(const ColorShiftData*, colorShift, 0x005128F8); //Use ColorRemapping::Enum as index
-SCBW_DATA(GrpHead* const*, imageGrpGraphics, 0x0051CED0);
-
-template <typename T>
-struct PlayerFlags {
-  T flags[PLAYER_COUNT];
-};
-SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);  //See scbw::isAlliedTo()
-SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
-
+/// TBL files
 SCBW_DATA(const StringTbl*, statTxtTbl,         0x006D1238);
 SCBW_DATA(const StringTbl*, mapStringTbl,       0x005993D4);
 
-SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
+/// Units that are selected by the current player (or the player viewing the replay).
+SCBW_DATA(const Units12*, clientSelectionGroup, 0x00597208);
+SCBW_DATA(const u8*,    clientSelectionCount,   0x0059723D);
 
-SCBW_DATA(AI_Main*,       AIScriptController,   0x0068FEE8);
-SCBW_DATA(AiCaptain* const*, AiRegionCaptains,  0x0069A604);
-SCBW_DATA(u32*,           aiSupplyReserved,     0x006CA4BC);
+/// Screen position relative to the map
+SCBW_DATA(s32*,         screenX,                0x00628448);
+SCBW_DATA(s32*,         screenY,                0x00628470);
+
+/// Mouse position relative to the screen
+SCBW_DATA(const Point32*, mouse,                0x006CDDC4);
+
+/// Contains various information (names, player types, race types, and associated forces) of each player in the current game
+SCBW_DATA(const PLAYER*,  playerTable,          0x0057EEE0);
 
 struct SupplyData {
   u32 provided[PLAYER_COUNT];
@@ -132,26 +90,17 @@ struct SupplyData {
 };
 SCBW_DATA(SupplyData*,    raceSupply,           0x00582144);  //Array; Use CUnit::getRace() to get the index.
 
-//-------- Internal constants --------//
-
-SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);  //See scbw::isGamePaused()
-SCBW_DATA(const Bool8*,   IS_BROOD_WAR,         0x0058F440);  //See scbw::isBroodWarMode()
-SCBW_DATA(const u32*,     CHEAT_STATE,          0x006D5A6C);  //See scbw::isCheatEnabled()
+SCBW_DATA(const u32*,     elapsedTimeFrames,    0x0057F23C);  //Elapsed game time in frames
+SCBW_DATA(const u32*,     elapsedTimeSeconds,   0x0058D6F8);  //Elapsed game time in seconds
 SCBW_DATA(const u8*,      GAME_TYPE,            0x00596820);  //Part of a larger structure; Compare with GameType::Enum.
-SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,       0x006BEE68);
-SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,      0x006BB930);
-SCBW_DATA(const Bool32*,  IS_IN_REPLAY,         0x006D0F14);  //See scbw::isInReplay()
 SCBW_DATA(const s32*,     ACTIVE_NATION_ID,     0x00512678);  //AKA g_ActiveNationID
 SCBW_DATA(const s32*,     LOCAL_NATION_ID,      0x00512684);  //AKA g_LocalNationID; Actually stores the player ID.
 SCBW_DATA(const s32*,     LOCAL_HUMAN_ID,       0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
-SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,      0x006D11C8);
-SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);  //See scbw::random(), scbw::randBetween()
-SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
-SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING,  0x00640880);
-SCBW_DATA(const u32*,     elapsedTimeFrames,    0x0057F23C);  //Elapsed game time in frames
-SCBW_DATA(const u32*,     elapsedTimeSeconds,   0x0058D6F8);  //Elapsed game time in seconds
 
-//-------- DAT Files --------//
+//////////////////////////////////////////////////////////////// @}
+
+/// @name *.DAT File Data
+//////////////////////////////////////////////////////////////// @{
 
 // The following code is based on BWAPI's BW/Offsets.h
 // you can get the other addresses in http://code.google.com/p/bwapi/source/browse/trunk/bwapi/BWAPI/Source/BW/Offsets.h
@@ -293,6 +242,89 @@ SCBW_DATA(const u8*,  Remapping,    imagesDat[6].address);
 } //images_dat
 
 
+//////////////////////////////////////////////////////////////// @}
+
+/// @name Reserved data
+/// Warning: The following section contains data reserved for internal use only.
+///          If you are a modder, use these at your own risk!
+//////////////////////////////////////////////////////////////// @{
+
+//Helper functions for several hooks
+SCBW_DATA(u8*,          selectionIndexStart,    0x006284B6);
+typedef CUnit* (__cdecl *GetActivePlayerNextSelectionFunc)();
+SCBW_DATA(GetActivePlayerNextSelectionFunc, getActivePlayerNextSelection, 0x0049A850);
+
+typedef void (__fastcall *PrepareForNextOrderFunc)(CUnit*);
+SCBW_DATA(PrepareForNextOrderFunc, prepareForNextOrder, 0x00475000);
+
+//Contains various info on the tiles.
+SCBW_DATA(ActiveTile**, activeTileArray,        0x006D1260);
+
+// Stores an ordered list of all units currently in the game.
+SCBW_DATA(UnitFinderData*, unitOrderingX,       0x0066FF78);
+SCBW_DATA(UnitFinderData*, unitOrderingY,       0x006769B8);
+SCBW_DATA(const u32*,   unitOrderingCount,      0x0066FF74);
+
+SCBW_DATA(const Point32*, angleDistance,        0x00512D28);
+
+// Font & Drawing
+namespace graphics { class Font; class Bitmap; }
+SCBW_DATA(graphics::Font**, fontBase,           0x006CE0F4);
+SCBW_DATA(graphics::Bitmap*, gameScreenBuffer,  0x006CEFF0);
+SCBW_DATA(u8*,          refreshRegions,         0x006CEFF8);  //640 x 480 divided into 1200 squares of 16x16
+SCBW_DATA(Layers*,      screenLayers,           0x006CEF50);
+typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
+static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
+
+const CListExtern<CImage, &CImage::link> unusedImages(0x0057EB68, 0x0057EB70);
+SCBW_DATA(CList<CSprite>*, unusedSprites,       0x0063FE30);
+
+struct SpriteTileData {
+  CSprite* tails[256];
+  CSprite* heads[256];
+};
+SCBW_DATA(SpriteTileData*, spritesOnTileRow,    0x00629288);
+
+//Image-related
+struct ImagesDatExtraOverlayLO_Files {
+  LO_Header* attackOverlays[IMAGE_TYPE_COUNT];
+  LO_Header* damageOverlays[IMAGE_TYPE_COUNT];
+  LO_Header* specialOverlays[IMAGE_TYPE_COUNT];
+  LO_Header* landingDustOverlays[IMAGE_TYPE_COUNT];
+  LO_Header* liftoffDustOverlays[IMAGE_TYPE_COUNT];
+};
+SCBW_DATA(const ImagesDatExtraOverlayLO_Files*, lo_files, 0x0051F2A8);
+SCBW_DATA(const LO_Header* const*, shieldOverlays, 0x0052E5C8);
+
+SCBW_DATA(const ColorShiftData*, colorShift, 0x005128F8); //Use ColorRemapping::Enum as index
+SCBW_DATA(GrpHead* const*, imageGrpGraphics, 0x0051CED0);
+
+template <typename T>
+struct PlayerFlags {
+  T flags[PLAYER_COUNT];
+};
+SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);  //See scbw::isAlliedTo()
+SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
+
+SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
+
+SCBW_DATA(AI_Main*,       AIScriptController,   0x0068FEE8);
+SCBW_DATA(AiCaptain* const*, AiRegionCaptains,  0x0069A604);
+SCBW_DATA(u32*,           aiSupplyReserved,     0x006CA4BC);
+
+//-------- Internal constants --------//
+
+SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);  //See scbw::isGamePaused()
+SCBW_DATA(const Bool8*,   IS_BROOD_WAR,         0x0058F440);  //See scbw::isBroodWarMode()
+SCBW_DATA(const u32*,     CHEAT_STATE,          0x006D5A6C);  //See scbw::isCheatEnabled()
+SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,       0x006BEE68);
+SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,      0x006BB930);
+SCBW_DATA(const Bool32*,  IS_IN_REPLAY,         0x006D0F14);  //See scbw::isInReplay()
+SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,      0x006D11C8);
+SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);  //See scbw::random(), scbw::randBetween()
+SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
+SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING,  0x00640880);
+
 //-------- Tech levels --------//
 
 struct _scTechs {
@@ -319,6 +351,7 @@ struct _bwUpgrs {
 SCBW_DATA(_scUpgrs*, UpgradesSc,  0x0058D088); //Use with ScUpgrade::Enum
 SCBW_DATA(_bwUpgrs*, UpgradesBw,  0x0058F278); //Use with BwUpgrade::Enum
 
+//////////////////////////////////////////////////////////////// @}
 
 #undef SCBW_DATA
 #pragma pack()
