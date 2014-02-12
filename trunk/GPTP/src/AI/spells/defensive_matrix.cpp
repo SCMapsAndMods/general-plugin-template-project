@@ -24,7 +24,7 @@ CUnit* findBestDefensiveMatrixTarget(const CUnit *caster, bool isUnderAttack) {
     if (target->status & UnitStatus::RequiresDetection)
       return false;
 
-    if (getMaxHpInGame(target) < 100 || getCurrentHpInGame(target) > 75)
+    if (target->getMaxHpInGame() < 100 || target->getCurrentHpInGame() > 75)
       return false;
 
     if (target->status & UnitStatus::Invincible)

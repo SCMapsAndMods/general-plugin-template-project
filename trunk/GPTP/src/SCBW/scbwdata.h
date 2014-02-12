@@ -186,7 +186,7 @@ SCBW_DATA(u16*, DamageAmount,       weaponsDat[14].address);
 SCBW_DATA(u16*, DamageBonus,        weaponsDat[15].address);
 SCBW_DATA(u8*,  Cooldown,           weaponsDat[16].address);
 SCBW_DATA(u8*,  DamageFactor,       weaponsDat[17].address);
-SCBW_DATA(u8*,  AttackDirection,    weaponsDat[18].address);
+SCBW_DATA(u8*,  AttackAngle,        weaponsDat[18].address);
 SCBW_DATA(u8*,  LaunchSpin,         weaponsDat[19].address);
 SCBW_DATA(u8*,  ForwardOffset,      weaponsDat[20].address);
 SCBW_DATA(u8*,  VerticalOffset,     weaponsDat[21].address);

@@ -18,16 +18,6 @@ bool isUmsMode(u8 playerId);
 /// controlling AI. Details are not really understood.
 bool isUnitInUnsafeRegion(const CUnit *unit);
 
-/// Returns the total HP shown in-game.
-int getCurrentHpInGame(const CUnit *unit);
-
-/// Returns the maximum HP shown in-game.
-int getMaxHpInGame(const CUnit *unit);
-
-/// Returns the total HP + Shields of this unit (HP only if unit has no shield).
-/// This returns in-game values, NOT internal values.
-int getCurrentLifeInGame(const CUnit *unit);
-
 int getTotalEnemyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId);
 int getTotalAllyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId);
 int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *caster);

@@ -23,7 +23,7 @@ CUnit* findBestOpticalFlareTarget(const CUnit *caster, bool isUnderAttack) {
     if (target->canDetect())
       return true;
 
-    if (getCurrentLifeInGame(target) > 80)
+    if (target->getCurrentLifeInGame() > 80)
       return true;
 
     return false;
