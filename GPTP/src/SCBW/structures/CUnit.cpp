@@ -21,12 +21,18 @@ bool CUnit::canDetect() const {
   return result != 0;
 }
 
-u8 CUnit::getActiveGroundWeapon() const {
+//Identical to function @ 0x00475AD0
+u8 CUnit::getGroundWeapon() const {
   assert(this);
   if (this->id == UnitId::lurker && !(this->status & UnitStatus::Burrowed))
     return WeaponId::None;
   else
     return units_dat::GroundWeapon[this->id];
+}
+
+u8 CUnit::getAirWeapon() const {
+  assert(this);
+  return units_dat::AirWeapon[this->id];
 }
 
 u8 CUnit::getArmor() const {
@@ -150,6 +156,33 @@ u32 CUnit::getSightRange(bool isForSpellCasting) const {
   }
 
   return sightRange;
+}
+
+//Identical to function @ 0x00476180
+bool CUnit::hasWeapon() const {
+  assert(this);
+
+  if (this->getGroundWeapon() != WeaponId::None
+      || this->getAirWeapon() != WeaponId::None)
+    return true;
+
+  if (this->id == UnitId::carrier || this->id == UnitId::gantrithor) {
+    if ((this->carrier.inHangarCount + this->carrier.outHangarCount) > 0)
+      return true;
+  }
+
+  if (this->id == UnitId::reaver || this->id == UnitId::warbringer) {
+    if (this->carrier.inHangarCount > 0)
+      return true;
+  }
+
+  if (this->subunit) {
+    if (this->subunit->getGroundWeapon() != WeaponId::None
+        || this->subunit->getAirWeapon() != WeaponId::None)
+      return true;
+  }
+
+  return false;
 }
 
 //Identical to function @ 0x004020B0

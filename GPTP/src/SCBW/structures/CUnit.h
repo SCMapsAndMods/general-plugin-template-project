@@ -16,7 +16,11 @@ struct CUnit: public CUnitLayout {
   
   /// Returns the unit's ground weapon ID. If the unit is an unburrowed Lurker,
   /// returns WeaponId::None instead.
-  u8 getActiveGroundWeapon() const;
+  u8 getGroundWeapon() const;
+
+  /// Returns the unit's air weapon ID. This is identical to reading the value
+  /// from units_dat::AirWeapon[unit->id].
+  u8 getAirWeapon() const;
   
   /// Returns the total armor amount of this unit (with upgrades).
   /// To retrieve a unit's base armor amount, use units_dat::ArmorAmount[].
@@ -57,6 +61,12 @@ struct CUnit: public CUnitLayout {
   /// Returns the sight range of this unit (with upgrades).
   /// If @p isForSpellCasting is true, also factors in status effects.
   u32 getSightRange(bool isForSpellCasting = false) const;
+
+  /// Returns true if:
+  /// * The unit has a weapon, or
+  /// * The unit's subunit has a weapon, or
+  /// * If the unit is a loaded Carrier/Reaver.
+  bool hasWeapon() const;
   
   /// Checks if the unit is unpowered / lockdowned / stasised / maelstromed.
   bool isFrozen() const;
