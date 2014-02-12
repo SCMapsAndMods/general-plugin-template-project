@@ -33,30 +33,6 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
   return true;
 }
 
-//Logically equivalent to function @ 0x00476180
-bool unitCanAttack(const CUnit *unit) {
-  if (unit->id == UnitId::lurker) {
-    if (unit->status & UnitStatus::Burrowed
-        && units_dat::GroundWeapon[unit->id] != WeaponId::None)
-      return true;
-  }
-  else if (unit->id == UnitId::carrier || unit->id == UnitId::gantrithor) {
-    if ((unit->carrier.inHangarCount + unit->carrier.outHangarCount) > 0)
-      return true;
-  }
-  else if (unit->id == UnitId::reaver || unit->id == UnitId::warbringer) {
-    if (unit->carrier.inHangarCount > 0)
-      return true;
-  }
-  else {
-    if (units_dat::GroundWeapon[unit->id] != WeaponId::None
-        || units_dat::AirWeapon[unit->id] != WeaponId::None)
-      return true;
-  }
-
-  return false;
-}
-
 bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit) {
   if (CUnit *secondTarget = target->orderTarget.unit) {
     if (secondTarget->playerId < 8

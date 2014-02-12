@@ -8,11 +8,6 @@ namespace AI {
 
 bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker);
 
-/// Checks whether the unit has a means of attacking.
-/// Carriers and Reavers are checked for available Scarabs and Interceptors.
-/// Lurkers are checked whether they are burrowed.
-bool unitCanAttack(const CUnit *unit);
-
 /// Returns true if @p target is attacking a player allied to @p unit.
 bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit);
 

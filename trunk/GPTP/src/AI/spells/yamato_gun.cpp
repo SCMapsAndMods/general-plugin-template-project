@@ -8,8 +8,7 @@ CUnit* findBestYamatoGunTarget(const CUnit *caster, bool isUnderAttack) {
     if (!isTargetWorthHitting(target, caster))
       return false;
 
-    if ((target->status & UnitStatus::GroundedBuilding)
-        && unitCanAttack(target))
+    if ((target->status & UnitStatus::GroundedBuilding) && target->hasWeapon())
       return true;
 
     if (target->id == UnitId::bunker && target->hasLoadedUnit())

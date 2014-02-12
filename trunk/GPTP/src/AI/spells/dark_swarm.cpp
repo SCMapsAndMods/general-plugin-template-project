@@ -29,7 +29,7 @@ CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
     if (targetOfTarget->status & UnitStatus::InAir)
       return false;
 
-    u8 totGroundWeapon = targetOfTarget->getActiveGroundWeapon();
+    u8 totGroundWeapon = targetOfTarget->getGroundWeapon();
     if (totGroundWeapon == WeaponId::None)
       return false;
 
@@ -39,7 +39,7 @@ CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
     if (target->subunit && (units_dat::BaseProperty[target->subunit->id] & UnitProperty::Subunit))
       target = target->subunit;
 
-    u8 targetGroundWeapon = target->getActiveGroundWeapon();
+    u8 targetGroundWeapon = target->getGroundWeapon();
 
     if (targetGroundWeapon == WeaponId::None)
       return false;
