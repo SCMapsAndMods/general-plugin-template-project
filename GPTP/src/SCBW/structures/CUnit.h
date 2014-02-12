@@ -14,6 +14,18 @@ struct CUnit: public CUnitLayout {
   /// Checks if the unit is a clean detector (no Lockdown, Optical Flare, etc.)
   bool canDetect() const;
   
+  /// Returns the amount of HP displayed in-game. This is equal to
+  /// (this->hitPoints + 255) / 256.
+  u32 getCurrentHpInGame() const;
+
+  /// Returns the amount of shield points displayed in-game. This is equal to
+  /// unit->shields / 256.
+  u32 getCurrentShieldsInGame() const;
+
+  /// Returns the amount of HP + shields displayed in game. If the unit does not
+  /// have shields enabled, this returns the amount of HP displayed.
+  u32 getCurrentLifeInGame() const;
+  
   /// Returns the unit's ground weapon ID. If the unit is an unburrowed Lurker,
   /// returns WeaponId::None instead.
   u8 getGroundWeapon() const;
@@ -32,6 +44,10 @@ struct CUnit: public CUnitLayout {
   
   /// Returns the maximum energy amount of this unit (with upgrades).
   u16 getMaxEnergy() const;
+
+  /// Returns the maximum HP amount displayed in-game. This is equal to
+  /// units_dat::MaxHitPoints[unit->id] >> 8 (minimum value is 1).
+  u32 getMaxHpInGame() const;
   
   /// Returns the maximum range of a weapon in pixels. The weapon is assumed to
   /// be attached to this unit for calculating upgrade effects.
@@ -74,6 +90,10 @@ struct CUnit: public CUnitLayout {
   /// Check if the unit is a remorphing building (i.e. is a Lair, Hive,
   /// Greater Spire, Sunken or Spore Colony under construction).
   bool isRemorphingBuilding() const;
+
+  /// Checks if the current unit is a subunit (i.e. not nullptr and has the
+  /// UnitProperty::Subunit flag set).
+  bool isSubunit() const;
   
   /// Checks if the unit is a spellcaster (has energy) and not a hallucination.
   bool isValidCaster() const;
@@ -228,6 +248,18 @@ struct CUnit: public CUnitLayout {
 
   /// @name Utility Methods
   //////////////////////////////////////////////////////////////// @{
+
+  /// Returns true if the current unit is not frozen and the @p target unit is
+  /// not invincible and can be attacked or infested. If @p checkVisibility is
+  /// set to false, the function will not check whether the unit can see the
+  /// @p target (i.e. it is being detected properly). Additionally:
+  ///
+  /// * Queens (and Matriarchs) return true only if the @p target is an
+  ///   infestable Command Center.
+  /// * Reavers (and Warbringers) return true only if they have a ground path
+  ///   to the @p target unit.
+  /// * AI-controlled Arbiters (not including Danimoths) always return false.
+  bool canAttackTarget(const CUnit* target, bool checkVisibility = true) const;
   
   /// Makes the unit use the specified weapon to attack its current target unit
   /// stored in the CUnit::orderTarget.unit member. This does not affect the

@@ -77,23 +77,6 @@ bool isUnitInUnsafeRegion(const CUnit *unit) {
     || currentAiCaptain->captainFlags & 0x20;
 }
 
-//-------- Unit stats shown in-game --------//
-
-int getCurrentHpInGame(const CUnit *unit) {
-  return (unit->hitPoints + 255) / 256;
-}
-
-int getMaxHpInGame(const CUnit *unit) {
-  return (units_dat::MaxHitPoints[unit->id] + 255) / 256;
-}
-
-int getCurrentLifeInGame(const CUnit *unit) {
-  if (units_dat::ShieldsEnabled[unit->id])
-    return getCurrentHpInGame(unit) + unit->shields / 256;
-  else
-    return getCurrentHpInGame(unit);
-}
-
 
 //-------- Get total unit stats in area --------//
 
@@ -119,15 +102,15 @@ int getTotalEnemyLifeInArea(int x, int y, int searchBounds, const CUnit *caster,
       return;
 
     if (weaponId == WeaponId::Plague)
-      totalEnemyLife += getCurrentHpInGame(target);
+      totalEnemyLife += target->getCurrentHpInGame();
     else if (weaponId == WeaponId::Maelstrom) {
       if (units_dat::BaseProperty[target->id] & UnitProperty::Organic
           && target->maelstromTimer == 0) {
-        totalEnemyLife += getCurrentLifeInGame(target);
+        totalEnemyLife += target->getCurrentLifeInGame();
       }
     }
     else
-      totalEnemyLife += getCurrentLifeInGame(target);
+      totalEnemyLife += target->getCurrentLifeInGame();
   });
 
   return totalEnemyLife;
@@ -152,7 +135,7 @@ int getTotalAllyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, 
     if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
       return;
 
-    totalAllyLife += getCurrentLifeInGame(target);
+    totalAllyLife += target->getCurrentLifeInGame();
   });
 
   return totalAllyLife;
@@ -171,10 +154,8 @@ int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *cast
     if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
       return;
 
-    if (!units_dat::ShieldsEnabled[target->id])
-      return;
-
-    totalEnemyShields += target->shields / 256;
+    if (units_dat::ShieldsEnabled[target->id])
+      totalEnemyShields += target->getCurrentShieldsInGame();
   });
 
   return totalEnemyShields;
@@ -217,7 +198,7 @@ int getTotalEnemyNukeValueInArea(int x, int y, int searchBounds, const CUnit *ca
 
     if ((units_dat::BaseProperty[target->id] & UnitProperty::Worker)
         || !(target->status & UnitStatus::IsBuilding))
-      totalNukeTargetValue += getCurrentLifeInGame(target);
+      totalNukeTargetValue += target->getCurrentLifeInGame();
 
     if (units_dat::BaseProperty[target->id] & UnitProperty::Building) {
       if (target->canDetect()

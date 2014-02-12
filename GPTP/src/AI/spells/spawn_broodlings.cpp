@@ -20,7 +20,7 @@ CUnit* findBestSpawnBroodlingsTarget(const CUnit *caster, bool isUnderAttack) {
     if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
       return false;
 
-    if (!isUnderAttack && getCurrentLifeInGame(target) < 100)
+    if (!isUnderAttack && target->getCurrentLifeInGame() < 100)
       return false;
 
     if (units_dat::BaseProperty[target->id] & UnitProperty::Worker

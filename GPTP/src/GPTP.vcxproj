@@ -119,6 +119,8 @@
     <ClCompile Include="graphics\Shape.cpp" />
     <ClCompile Include="hooks\apply_upgrade_flags.cpp" />
     <ClCompile Include="hooks\apply_upgrade_flags_inject.cpp" />
+    <ClCompile Include="hooks\attack_priority.cpp" />
+    <ClCompile Include="hooks\attack_priority_inject.cpp" />
     <ClCompile Include="hooks\building_morph.cpp" />
     <ClCompile Include="hooks\building_morph_inject.cpp" />
     <ClCompile Include="hooks\bunker_hooks.cpp" />
@@ -198,6 +200,7 @@
     <ClInclude Include="graphics\graphics_misc.h" />
     <ClInclude Include="graphics\Shape.h" />
     <ClInclude Include="hooks\apply_upgrade_flags.h" />
+    <ClInclude Include="hooks\attack_priority.h" />
     <ClInclude Include="hooks\building_morph.h" />
     <ClInclude Include="hooks\bunker_hooks.h" />
     <ClInclude Include="hooks\cloak_nearby_units.h" />

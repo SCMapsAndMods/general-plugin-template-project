@@ -36,7 +36,7 @@ CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
     if (weapons_dat::Behavior[totGroundWeapon] != WeaponBehavior::AppearOnAttacker)
       return false;
 
-    if (target->subunit && (units_dat::BaseProperty[target->subunit->id] & UnitProperty::Subunit))
+    if (target->subunit->isSubunit())
       target = target->subunit;
 
     u8 targetGroundWeapon = target->getGroundWeapon();

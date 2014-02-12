@@ -13,7 +13,7 @@ CUnit* findBestRestorationTarget(const CUnit *caster, bool isUnderAttack) {
     if (!scbw::canWeaponTargetUnit(WeaponId::Restoration, target, caster))
       return false;
 
-    if (getCurrentLifeInGame(target) <= 60)
+    if (target->getCurrentLifeInGame() <= 60)
       return false;
 
     if (target->ensnareTimer

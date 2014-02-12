@@ -88,7 +88,7 @@ enum Enum {
   Burrowed              = 0x00000010,
   InBuilding            = 0x00000020,
   InTransport           = 0x00000040,
-  UNKNOWN1              = 0x00000080,  /**< @todo Unknown */
+  CanBeChased           = 0x00000080,  /**< @todo Unknown */
   RequiresDetection     = 0x00000100,
   Cloaked               = 0x00000200,
   DoodadStatesThing     = 0x00000400,  ///< Unknown. ++protoss unpowered buildings have this flag set
@@ -97,7 +97,7 @@ enum Enum {
   NoBrkCodeStart        = 0x00002000,  /**< Unbreakable code section in iscript */
   UNKNOWN2              = 0x00004000,  /**< @todo Unknown */
   CanNotAttack          = 0x00008000,  /**< @todo Unknown */
-  IsUnit                = 0x00010000,  // canAttack? /**< @todo Unknown */
+  CanTurnAroundToAttack = 0x00010000,  // canAttack? /**< @todo Unknown */
   IsBuilding            = 0x00020000,
   IgnoreTileCollision   = 0x00040000,
   Unmovable             = 0x00080000,
