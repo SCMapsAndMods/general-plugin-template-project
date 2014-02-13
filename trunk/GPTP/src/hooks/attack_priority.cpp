@@ -116,13 +116,8 @@ u32 getAttackPriorityHook(const CUnit* unit, const CUnit* target) {
     attackPriority = 2;
 
   //Units that can fight back
-  else if (actualTarget->canAttackTarget(unit)) {
+  else if (actualTarget->canAttackTarget(unit))
     attackPriority = 0;
-    
-    //Units under Disruption Web are less important
-    if (actualTarget->status & UnitStatus::CanNotAttack)
-      attackPriority = 1;
-  }
 
   //Active combat units
   else if (actualTarget->hasWeapon())
@@ -133,6 +128,10 @@ u32 getAttackPriorityHook(const CUnit* unit, const CUnit* target) {
 
   if (!(actualTarget->status & UnitStatus::Completed) || actualTarget != target)
     attackPriority += 1;
+    
+  //Units under Disruption Web are less important
+  if (attackPriority == 0 && actualTarget->status & UnitStatus::CanNotAttack)
+    attackPriority = 1;
 
   return attackPriority;
 }
@@ -201,17 +200,17 @@ const CUnit* findRandomAttackTargetHook(CUnit* unit) {
 const CUnit* AttackPriorityData::findRandomTarget() const {
   //Default StarCraft behavior
 
-  for (int priority = 0; priority < countof(targetCounts); ++priority) {
-    if (targetCounts[priority] > 0) {
-      if (targetCounts[priority] == 1)
-        return targets[priority][0];
-      else
-        return targets[priority][scbw::random() % targetCounts[priority]];
-    }
+  int priority = 0;
+  while (targetCounts[priority] == 0) {
+    ++priority;
+    if (priority >= countof(targetCounts))
+      return nullptr;
   }
 
-  //If all attack target groups are empty
-  return nullptr;
+  if (targetCounts[priority] == 1)
+    return targets[priority][0];
+  else
+    return targets[priority][scbw::random() % targetCounts[priority]];
 }
 
 //Returns the best target selected from the attack target groups.
@@ -219,54 +218,53 @@ const CUnit* AttackPriorityData::findRandomTarget() const {
 const CUnit* AttackPriorityData::findBestTarget(const CUnit* attacker) const {
   //Default StarCraft behavior
 
-  for (int priority = 0; priority < countof(targetCounts); ++priority) {
-    if (targetCounts[priority] > 0) {
-      if (targetCounts[priority] == 1)
-        return targets[priority][0];
+  int priority = 0;
+  while (targetCounts[priority] == 0) {
+    ++priority;
+    if (priority >= countof(targetCounts))
+      return nullptr;
+  }
 
-      //Prepare for search
-      const CUnit *bestTarget = targets[priority][0];
+  if (targetCounts[priority] == 1)
+    return targets[priority][0];
 
-      if (attacker->pAI && attacker->id == UnitId::scourge) {
-        //AI-controlled Scourges auto-target units with the most HP + shields
-        u32 bestTargetLife = bestTarget->getCurrentLifeInGame();
+  //Prepare for search
+  const CUnit *bestTarget = targets[priority][0];
 
-        for (unsigned int i = 1; i < targetCounts[priority]; ++i) {
-          const CUnit *currentTarget = targets[priority][i];
-          const u32 currentTargetLife = currentTarget->getCurrentLifeInGame();
+  if (attacker->pAI && attacker->id == UnitId::scourge) {
+    //AI-controlled Scourges auto-target units with the most HP + shields
+    u32 bestTargetLife = bestTarget->getCurrentLifeInGame();
 
-          if (currentTargetLife > bestTargetLife) {
-            bestTarget = currentTarget;
-            bestTargetLife = currentTargetLife;
-          }
-        }
+    for (unsigned int i = 1; i < targetCounts[priority]; ++i) {
+      const CUnit *currentTarget = targets[priority][i];
+      const u32 currentTargetLife = currentTarget->getCurrentLifeInGame();
+
+      if (currentTargetLife > bestTargetLife) {
+        bestTarget = currentTarget;
+        bestTargetLife = currentTargetLife;
       }
-      else {
-        //Find the nearest target (don't use unit box sizes)
-        u32 bestTargetDistance = scbw::getDistanceFast(
-          attacker->getX(),   attacker->getY(),
-          bestTarget->getX(), bestTarget->getY());
-
-        for (unsigned int i = 1; i < targetCounts[priority]; ++i) {
-          const CUnit *currentTarget = targets[priority][i];
-          const u32 currentTargetDistance = scbw::getDistanceFast(
-            attacker->getX(),       attacker->getY(),
-            currentTarget->getX(),  currentTarget->getY());
-
-          if (currentTargetDistance < bestTargetDistance) {
-            bestTarget = currentTarget;
-            bestTargetDistance = currentTargetDistance;
-          }
-        }
-      }
-
-      //Search finished
-      return bestTarget;
     }
   }
-  
-  //If all attack target groups are empty
-  return nullptr;
+  else {
+    //Find the nearest target (don't use unit box sizes)
+    u32 bestTargetDistance = scbw::getDistanceFast(
+      attacker->getX(),   attacker->getY(),
+      bestTarget->getX(), bestTarget->getY());
+
+    for (unsigned int i = 1; i < targetCounts[priority]; ++i) {
+      const CUnit *currentTarget = targets[priority][i];
+      const u32 currentTargetDistance = scbw::getDistanceFast(
+        attacker->getX(),       attacker->getY(),
+        currentTarget->getX(),  currentTarget->getY());
+
+      if (currentTargetDistance < bestTargetDistance) {
+        bestTarget = currentTarget;
+        bestTargetDistance = currentTargetDistance;
+      }
+    }
+  }
+
+  return bestTarget;
 }
 
 
@@ -294,14 +292,19 @@ namespace {
 bool isTargetPosWithinAttackAngle(s32 x, s32 y, CUnit *unit, u8 weaponId) {
   assert(unit);
 
-  s32 angle = scbw::getAngle(x, y, unit->getX(), unit->getY());
+  s32 angle = scbw::getAngle(unit->getX(), unit->getY(), x, y);
 
   if (unit->id == UnitId::lurker) {
     unit->currentDirection1 = angle;
     return true;
   }
 
-  return abs(angle - unit->currentDirection1) <= weapons_dat::AttackAngle[weaponId];
+  s32 angleDiff = unit->currentDirection1 - angle;
+  if (angleDiff < 0)
+    angleDiff += 128;
+  if (angleDiff > 128)
+    angleDiff = 256 - angleDiff;
+  return angleDiff <= weapons_dat::AttackAngle[weaponId];
 }
 
 const u32 Func_CannotChaseTarget = 0x004A1140;

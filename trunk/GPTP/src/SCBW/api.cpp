@@ -167,8 +167,8 @@ int arctangent(int slope) {
 }
 
 //Identical to function @ 0x00495300
-s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail) {
-  s32 dx = xHead - xTail, dy = yHead - yTail;
+s32 getAngle(s32 xStart, s32 yStart, s32 xEnd, s32 yEnd) {
+  s32 dx = xEnd - xStart, dy = yEnd - yStart;
   
   if (dx == 0)
     return dy > 0 ? 128 : 0;
