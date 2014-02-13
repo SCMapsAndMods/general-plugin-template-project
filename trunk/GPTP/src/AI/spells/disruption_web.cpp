@@ -23,10 +23,13 @@ CUnit* findBestDisruptionWebTarget(const CUnit *caster, bool isUnderAttack) {
     else
       targetOfTarget = target->orderTarget.unit;
 
-    if (!targetOfTarget
-        || targetOfTarget->playerId >= 8
-        || !(targetOfTarget->status & UnitStatus::InAir)
-        || !scbw::isAlliedTo(caster->playerId, targetOfTarget->getLastOwnerId()))
+    if (!targetOfTarget || targetOfTarget->playerId >= 8)
+      return false;
+
+    if (!(targetOfTarget->status & UnitStatus::InAir))
+      return false;
+
+    if (caster->isTargetEnemy(targetOfTarget))
       return false;
 
     if (target->status & UnitStatus::CanNotAttack)

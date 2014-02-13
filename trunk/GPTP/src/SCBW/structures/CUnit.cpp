@@ -734,6 +734,11 @@ bool CUnit::giveTo(u8 playerId) {
   return giveUnitToPlayer(this, playerId) != 0;
 }
 
+bool CUnit::isTargetEnemy(const CUnit* target) const {
+  assert(this);
+  return scbw::isUnitEnemy(this->playerId, target);
+}
+
 bool CUnit::isVisibleTo(u8 playerId) const {
   assert(this);
   return (this->visibilityStatus & (1 << playerId)) != 0;

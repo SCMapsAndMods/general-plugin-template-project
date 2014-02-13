@@ -112,6 +112,17 @@ inline bool isAlliedTo(u8 playerA, u8 playerB) {
   return 0 != playerAlliance[playerA].flags[playerB];
 }
 
+/// Checks whether the @p unit is recognized by @p playerId as an enemy.
+/// This will work even when the owner of the @p unit has left the game.
+/// @see CUnit::isTargetEnemy().
+inline bool isUnitEnemy(u8 playerId, const CUnit* unit) {
+  //Identical to function @ 0x0047B740
+  u8 unitOwner = unit->playerId;
+    if (unitOwner == 11)
+      unitOwner = unit->sprite->playerId;
+  return 0 == playerAlliance[playerId].flags[unitOwner];
+}
+
 /// Returns the amount of remaining supply (total available - total used) for
 /// the @p playerId, using @p raceId to determine the appropriate race to use.
 /// This is affected by the "Food For Thought" cheat flag.

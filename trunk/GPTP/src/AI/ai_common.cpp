@@ -16,7 +16,7 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
       && !target->isVisibleTo(attacker->playerId))
     return false;
 
-  if (scbw::isAlliedTo(attacker->playerId, target->getLastOwnerId()))
+  if (!attacker->isTargetEnemy(target))
     return false;
 
   if (target->id == UnitId::scarab
@@ -34,9 +34,8 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
 }
 
 bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit) {
-  if (CUnit *secondTarget = target->orderTarget.unit) {
-    if (secondTarget->playerId < 8
-        && scbw::isAlliedTo(unit->playerId, secondTarget->getLastOwnerId()))
+  if (CUnit *targetOfTarget = target->orderTarget.unit) {
+    if (targetOfTarget->playerId < 8 && !unit->isTargetEnemy(targetOfTarget))
       return true;
   }
 
@@ -98,7 +97,7 @@ int getTotalEnemyLifeInArea(int x, int y, int searchBounds, const CUnit *caster,
     if (!scbw::canWeaponTargetUnit(weaponId, target, caster))
       return;
 
-    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+    if (!caster->isTargetEnemy(target))
       return;
 
     if (weaponId == WeaponId::Plague)
@@ -132,7 +131,7 @@ int getTotalAllyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, 
     if (!scbw::canWeaponTargetUnit(weaponId, target, caster))
       return;
 
-    if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+    if (caster->isTargetEnemy(target))
       return;
 
     totalAllyLife += target->getCurrentLifeInGame();
@@ -151,7 +150,7 @@ int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *cast
     if (target->status & UnitStatus::Invincible)
       return;
 
-    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+    if (!caster->isTargetEnemy(target))
       return;
 
     if (units_dat::ShieldsEnabled[target->id])
@@ -171,7 +170,7 @@ int getTotalEnemyEnergyInArea(int x, int y, int searchBounds, const CUnit *caste
     if (target->status & UnitStatus::Invincible)
       return;
 
-    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+    if (!caster->isTargetEnemy(target))
       return;
 
     if (!target->isValidCaster())
@@ -193,7 +192,7 @@ int getTotalEnemyNukeValueInArea(int x, int y, int searchBounds, const CUnit *ca
     if (target->status & UnitStatus::Invincible)
       return;
 
-    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+    if (!caster->isTargetEnemy(target))
       return;
 
     if ((units_dat::BaseProperty[target->id] & UnitProperty::Worker)
