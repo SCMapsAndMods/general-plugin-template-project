@@ -74,7 +74,7 @@ namespace hooks {
 void injectAttackPriorityHooks() {
   jmpPatch(getAttackPriorityWrapper,      Hook_GetAttackPriority);
   jmpPatch(findBestAttackTargetWrapper,   Hook_FindBestAttackTarget);
-  jmpPatch(findRandomAttackTargetWrapper, Hook_FindRandomAttackTarget);
+  //jmpPatch(findRandomAttackTargetWrapper, Hook_FindRandomAttackTarget);
 }
 
 } //hooks

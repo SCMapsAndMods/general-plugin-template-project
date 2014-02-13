@@ -60,8 +60,8 @@ bool isUnderDarkSwarm(const CUnit *unit);
 //////////////////////////////////////////////////////////////// @{
 
 /// Calculates the angle (in binary radians) of the arrow that starts at
-/// (xTail, yTail) and ends at (xHead, yHead).
-s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
+/// (xStart, yStart) and ends at (xEnd, yEnd).
+s32 getAngle(s32 xStart, s32 yStart, s32 xEnd, s32 yEnd);
 
 /// StarCraft's internal function used to quickly calculate distances between
 /// two points (x1, y1) and (x2, y2).
