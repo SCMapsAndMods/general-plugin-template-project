@@ -20,7 +20,7 @@ CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
     if (!targetOfTarget || targetOfTarget->playerId >= 8)
       return false;
 
-    if (!scbw::isAlliedTo(caster->playerId, targetOfTarget->getLastOwnerId()))
+    if (caster->isTargetEnemy(targetOfTarget))
       return false;
 
     if (targetOfTarget->subunit)

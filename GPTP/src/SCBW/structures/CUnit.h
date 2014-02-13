@@ -278,6 +278,7 @@ struct CUnit: public CUnitLayout {
   /// Returns the ID of the last player to own this unit. This is usually the
   /// same as CUnit::playerId, but if the unit belongs to a defeated player,
   /// this returns the correct player ID (instead of 11).
+  /// @deprecated   Will be removed in v2.42. Use CUnit::isTargetEnemy().
   u8 getLastOwnerId() const;
 
   /// Returns the loaded unit at @p index (value between 0-7). If no unit is
@@ -295,6 +296,10 @@ struct CUnit: public CUnitLayout {
   /// identical to Mind Control and the "Give Units To Player" trigger action.
   /// @return   true if successful, false otherwise.
   bool giveTo(u8 playerId);
+
+  /// Checks whether the @p target unit is an enemy of this unit.
+  /// Internally, this calls scbw::isUnitEnemy().
+  bool isTargetEnemy(const CUnit* target) const;
   
   /// Checks whether this unit can be seen by @playerId (i.e. not covered by the
   /// fog-of-war and is detectable).

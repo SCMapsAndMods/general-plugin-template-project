@@ -15,7 +15,7 @@ CUnit* findBestDefensiveMatrixTarget(const CUnit *caster, bool isUnderAttack) {
     if (target->defensiveMatrixHp)
       return false;
 
-    if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+    if (caster->isTargetEnemy(target))
       return false;
 
     if (!target->orderTarget.unit)  //Ignore idle units?
