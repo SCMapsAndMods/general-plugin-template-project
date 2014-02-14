@@ -6,17 +6,17 @@ namespace {
 const u32 Hook_GetAttackPriority = 0x00442160;
 //Inject with jmpPatch()
 void __declspec(naked) getAttackPriorityWrapper() {
-  static CUnit *unit, *target;
+  static CUnit *target, *attacker;
   static u32 result;
 
   __asm {
     PUSHAD
     MOV EBP, ESP
     MOV target, EDI
-    MOV unit, EBX
+    MOV attacker, EBX
   }
 
-  result = hooks::getAttackPriorityHook(unit, target);
+  result = hooks::getAttackPriorityHook(target, attacker);
 
   __asm {
     POPAD
@@ -33,7 +33,6 @@ void __declspec(naked) findBestAttackTargetWrapper() {
 
   __asm {
     PUSHAD
-    MOV EBP, ESP
     MOV unit, EAX
   }
 
@@ -54,7 +53,6 @@ void __declspec(naked) findRandomAttackTargetWrapper() {
 
   __asm {
     PUSHAD
-    MOV EBP, ESP
     MOV unit, ESI
   }
 
@@ -74,7 +72,7 @@ namespace hooks {
 void injectAttackPriorityHooks() {
   jmpPatch(getAttackPriorityWrapper,      Hook_GetAttackPriority);
   jmpPatch(findBestAttackTargetWrapper,   Hook_FindBestAttackTarget);
-  //jmpPatch(findRandomAttackTargetWrapper, Hook_FindRandomAttackTarget);
+  jmpPatch(findRandomAttackTargetWrapper, Hook_FindRandomAttackTarget);
 }
 
 } //hooks

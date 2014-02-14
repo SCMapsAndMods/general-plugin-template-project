@@ -674,7 +674,7 @@ CUnit* CUnit::getFromIndex(u16 index) {
 }
 
 u16 CUnit::getIndex() const {
-  return this - unitTable;
+  return this - unitTable + 1;
 }
 
 u8 CUnit::getLastOwnerId() const {
