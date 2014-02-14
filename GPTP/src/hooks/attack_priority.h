@@ -2,7 +2,7 @@
 
 namespace hooks {
 
-u32 getAttackPriorityHook(const CUnit* unit, const CUnit* target);
+u32 getAttackPriorityHook(const CUnit* target, const CUnit* attacker);
 const CUnit* findBestAttackTargetHook(CUnit* unit);
 const CUnit* findRandomAttackTargetHook(CUnit* unit);
 

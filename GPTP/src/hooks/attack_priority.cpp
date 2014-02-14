@@ -7,6 +7,9 @@
 #include <cstdlib>
 #include <algorithm>
 #include <SCBW/UnitFinder.h>
+#include <logger.h>
+
+using GPTP::logger;
 
 const int ATTACK_PRIORITY_GROUP_SIZE  = 16;
 const int ATTACK_PRIORITY_LEVELS      = 6;
@@ -89,8 +92,8 @@ bool checkAttackableTarget(CUnit* unit, const CUnit* target, u32 seekRange, u32 
 
 namespace hooks {
   
-//Calculates the attack priority of the @p target for the @p unit.
-u32 getAttackPriorityHook(const CUnit* unit, const CUnit* target) {
+//Calculates the attack priority of the @p target for the @p attacker.
+u32 getAttackPriorityHook(const CUnit* target, const CUnit* attacker) {
   //Default StarCraft behavior
 
   const CUnit *actualTarget = target;
@@ -116,7 +119,7 @@ u32 getAttackPriorityHook(const CUnit* unit, const CUnit* target) {
     attackPriority = 2;
 
   //Units that can fight back
-  else if (actualTarget->canAttackTarget(unit))
+  else if (actualTarget->canAttackTarget(attacker))
     attackPriority = 0;
 
   //Active combat units
@@ -160,7 +163,7 @@ const CUnit* findBestAttackTargetHook(CUnit* unit) {
 
   attackTargetFinder.forEach([unit, seekRange, minRange] (const CUnit* target) {
     if (checkAttackableTarget(unit, target, seekRange, minRange))
-      attackPriorityData.addTarget(target, getAttackPriorityHook(unit, target));
+      attackPriorityData.addTarget(target, getAttackPriorityHook(target, unit));
   });
 
   return attackPriorityData.findBestTarget(unit);
@@ -178,7 +181,7 @@ const CUnit* findRandomAttackTargetHook(CUnit* unit) {
   if (unit->status & UnitStatus::InBuilding)
     seekRange += 64;
 
-  int searchRange = seekRange += 64;
+  int searchRange = seekRange + 64;
   
   attackTargetFinder.search(
     unit->getX() - searchRange, unit->getY() - searchRange,
@@ -186,7 +189,7 @@ const CUnit* findRandomAttackTargetHook(CUnit* unit) {
 
   attackTargetFinder.forEach([unit, seekRange] (const CUnit* target) {
     if (checkAttackableTarget(unit, target, seekRange))
-      attackPriorityData.addTarget(target, getAttackPriorityHook(unit, target));
+      attackPriorityData.addTarget(target, getAttackPriorityHook(target, unit));
   });
 
   return attackPriorityData.findRandomTarget();
