@@ -4,12 +4,9 @@
 #include <SCBW/scbwdata.h>
 #include <SCBW/api.h>
 #include <cassert>
-#include <cstdlib>
 #include <algorithm>
 #include <SCBW/UnitFinder.h>
-#include <logger.h>
 
-using GPTP::logger;
 
 const int ATTACK_PRIORITY_GROUP_SIZE  = 16;
 const int ATTACK_PRIORITY_LEVELS      = 6;
@@ -27,7 +24,7 @@ class AttackPriorityData {
     unsigned int targetCounts[ATTACK_PRIORITY_LEVELS];
 };
 
-//Global variables (evil, I know)
+//Global variables (bad practice, but it's faster)
 AttackPriorityData attackPriorityData;
 scbw::UnitFinder attackTargetFinder;
 
