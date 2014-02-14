@@ -179,6 +179,7 @@
     <ClCompile Include="hooks\weapon_fire_inject.cpp" />
     <ClCompile Include="hook_tools.cpp" />
     <ClCompile Include="initialize.cpp" />
+    <ClCompile Include="logger.cpp" />
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="plugin_main.cpp" />
     <ClCompile Include="SCBW\api.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="hooks\weapon_damage.h" />
     <ClInclude Include="hooks\weapon_fire.h" />
     <ClInclude Include="hook_tools.h" />
+    <ClInclude Include="logger.h" />
     <ClInclude Include="MPQDraftPlugin.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="SCBW\api.h" />
