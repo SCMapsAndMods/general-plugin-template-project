@@ -25,18 +25,21 @@ When the plugin is loaded by !StarCraft, the logger creates a text file with a `
 
 The log file looks something like this:
 
-<pre>Game started on Tue Feb 18 16:49:11 2014
+{{{
+Game started on Tue Feb 18 16:49:11 2014
 
 Frame 0:
 This is some log text
 Terran Marine at map position (252, 793)
+
 Frame 1:
 This is some log text
 Terran Marine at map position (254, 798)
 
 ...
 
-Game ended on Tue Feb 18 17:07:31 2014</pre>
+Game ended on Tue Feb 18 17:07:31 2014
+}}}
 
 GPTP's logger automatically adds the current game frame number, as well as the time when the game was started/ended.
 
