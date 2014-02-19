@@ -1,7 +1,8 @@
 #summary Documentation of the CUnit struct
 
-Structure header file (functions): <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/structures/CUnit.h SCBW/structures/CUnit.h]</tt>
-Structure header file (methods): <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/structures/CUnitLayout.h SCBW/structures/CUnitLayout.h]</tt>
+Structure header files:
+ * Functions: <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/structures/CUnit.h SCBW/structures/CUnit.h]</tt>
+ * Member variables: <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/SCBW/structures/CUnitLayout.h SCBW/structures/CUnitLayout.h]</tt>
 
 The `CUnit` structure is used by !StarCraft to store all information regarding a unit's state, such as its HP amount, controlling player, Stim Packs timer, and units loaded inside a transport. Because the base structure is quite large, and GPTP provides numerous methods for working with units, the structure is split into two files, `CUnit.h` (for function information) and `CUnitLayout.h` (for member variable information). To use `CUnit`, place the following statement at the top of your code:
 
