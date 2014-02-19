@@ -34,4 +34,4 @@ GPTP provides numerous functions and data structures that allow you to control u
 
 There are some plugin examples available on this wiki.
 
-* HowToMakeTheHardenedShieldsEffect
+ * HowToMakeTheHardenedShieldsEffect
