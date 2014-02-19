@@ -28,7 +28,7 @@ GPTP provides numerous functions and data structures that allow you to control u
  * StructuresAndClasses
  * ApiFunctions
  * DataValues
- * Logging
+ * [Logging]
 
 = Plugin Examples =
 
