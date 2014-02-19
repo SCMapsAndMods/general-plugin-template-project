@@ -40,11 +40,11 @@ struct GroupFlag {
 
 == `ActiveTile` ==
 
-This structure is a collection of data flags and bitfields containing information about a map tile (32px &times; 32px map section). This is used when accessing map tile data with <tt>[ApiFunctions#getActiveTileAt scbw::getActiveTileAt()]</tt>.
+This structure is a collection of data flags and bitfields containing information about a map tile (32px × 32px map section). This is used when accessing map tile data with <tt>[ApiFunctions#getActiveTileAt scbw::getActiveTileAt()]</tt>.
 
 {{{
 struct ActiveTile {
-  u8 visibilityFlags;
+  u8 visibilityFlags;        // Each bit is set if the player does NOT have vision of the current tile.
   u8 exploredFlags;
   u8 isWalkable         : 1; // Set on tiles that can be walked on
   u8 unknown1           : 1; // Unused?
