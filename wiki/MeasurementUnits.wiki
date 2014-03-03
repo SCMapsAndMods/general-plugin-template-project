@@ -14,7 +14,16 @@
 == Time ==
 
  * Frame: The basic unit of time. Used in `flingy.dat` for unit speed and acceleration.
- * Second: Depends on game speed settings. 1 second = 6/9/12/15/18/21/24 frames, for Slowest/Slower/Slow/Normal/Fast/Faster/Fastest.
+ * Second: Depends on game speed settings. See the table below:
+
+|| *Game Speed* || *Frames Per Second* ||
+|| Slowest || 6 ||
+|| Slower || 9 ||
+|| Slow || 12 ||
+|| Normal || 15 ||
+|| Fast || 18 ||
+|| Faster || 21 ||
+|| Fastest || 24 ||
 
 == Angle ==
 
