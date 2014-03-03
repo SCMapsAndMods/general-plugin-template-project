@@ -14,7 +14,7 @@ All units keep two timers for checking ground and air weapon cooldown. Whenever 
 The trick here is:
 
  # Prevent the Wraith's ground weapon cooldown timer from reaching 0 if it does not have enough energy. Since ground and air weapons use separate timers, we can prevent the Wraith from using its air-to-ground weapon while not affecting its air-to-air weapon.
- # If the Wraith actually attacks a ground unit, its ground weapon cooldown  reduce its energy by 5.
+ # If the Wraith actually attacks a ground unit, reduce its energy by 5.
 
 = The Code =
 
@@ -107,13 +107,13 @@ If the attack target is a ground unit, reduce the Wraith's energy amount by 5.
     
     //Check if the target exists and is a ground unit
     if (target && !(target->status & UnitStatus::InAir)) {
-      unit->energy -= 2560;
+      unit->energy -= 1280;
     }
   }
 }
 }}}
 
-Note that if, for some reason, the Wraith has less than 2560 energy, this code will create an integer overflow bug. Therefore, the Wraith's energy amount must be checked; if it is less than 2560, set it to 0:
+Note that if, for some reason, the Wraith has less than 1280 energy, this code will create an integer overflow bug. Therefore, the Wraith's energy amount must be checked; if it is less than 1280, set it to 0:
 
 {{{
   if (weapons_dat::FlingyId[weaponId] != 0)
@@ -125,8 +125,8 @@ Note that if, for some reason, the Wraith has less than 2560 energy, this code w
     
     //Check if the target exists and is a ground unit
     if (target && !(target->status & UnitStatus::InAir)) {
-      if (unit->energy >= 2560)
-        unit->energy -= 2560;
+      if (unit->energy >= 1280)
+        unit->energy -= 1280;
       else
         unit->energy = 0;
     }

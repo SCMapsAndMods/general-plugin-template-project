@@ -1,0 +1,137 @@
+#summary A tutorial on how to make a unit spend energy for attacks.
+#labels Tutorial
+
+= 소개 =
+
+이 글에서는 특정한 유닛이 (여기에서는 레이스) 지상 유닛을 공격할 때마다 에너지를 5만큼 쓰게 만들 것이다. 레이스의 에너지가 부족하면 에너지가 찰 때까지 기다렸다가 공격하게 된다. 이것은 지상 공격에만 적용되며, 공중 유닛은 아무런 제한이나 에너지 소모 없이 공격할 수 있다.
+
+참고: 이 글은 "[http://modcrafters.com/forum/viewtopic.php?f=17&t=94 Wraith with energy weapons]"라는 글을 바탕으로 했으나 실제 내용은 어느 정도 차이가 있습니다.
+
+= 구상하기 =
+
+모든 유닛은 지상 공격과 공중 공격에 대해 각각 하나씩의 공격 주기(쿨다운) 타이머를 가지고 있다. 한 유닛이 다른 유닛을 공격하면 지상 및 공중에 대한 공격 주기 타이머가 `weapons.dat`에 지정된 값으로 설정된다. 이후 타이머 값이 0이 될 때까지 매 프레임마다 1씩 줄어들게 되며, 타이머 값이 0이 되어야만 다음 공격을 할 수 있게 된다.
+
+이를 이용하면 다음과 같은 기능을 만들 수 있다:
+
+ # 레이스의 에너지가 부족해서 지상 공격을 할 수 없을 경우 지상 공격 타이머가 0이 되지 못하게 막는다. 지상 공격과 공중 공격은 서로 다른 공격 주기 타이머를 사용하므로 공중 공격은 영향을 받지 않게 할 수 있다.
+ # 레이스가 지상 유닛을 공격하게 되면 에너지를 5만큼 깎는다.
+
+= 코드 짜기 =
+
+== 1단계. 공격 주기 타이머 관리하기 ==
+
+유닛의 공격 주기 타이머를 매 프레임마다 감소시키는 작업은 <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/update_unit_state.cpp hooks/update_unit_state.cpp]</tt>의 82-83번 줄에서 이루어진다:
+
+{{{
+  if (unit->groundWeaponCooldown)
+    unit->groundWeaponCooldown--;
+}}}
+
+여기에 현재 유닛이 레이스인지, 현재 에너지 값이 5보다 작은지 확인하는 코드를 넣는다. 참고로 1 에너지의 실제 값은 256이므로 게임 내에서 5 에너지의 실제 값은 1280이다.
+
+{{{
+  if (unit->groundWeaponCooldown)
+    unit->groundWeaponCooldown--;
+
+  //에너지가 부족한 레이스인지 확인
+  if (unit->id == UnitId::wraith
+      && unit->energy < 1280)
+  {
+  }
+}}}
+
+이제 레이스의 지상 공격 주기 타이머를 검사한다. 타이머의 값이 0이라면 이 값을 1로 올려서 공격하는 것을 막는다:
+
+{{{
+  if (unit->groundWeaponCooldown)
+    unit->groundWeaponCooldown--;
+
+  //에너지가 부족한 레이스인지 확인
+  if (unit->id == UnitId::wraith
+      && unit->energy < 1280
+      && unit->groundWeaponCooldown == 0)
+  {
+    unit->groundWeaponCooldown = 1;
+  }
+}}}
+
+이제 레이스는 에너지가 5 이상 있지 않으면 지상 유닛을 공격할 수 없게 된다.
+
+== 2단계. 공격 시 에너지 감소 ==
+
+유닛이 원거리 공격을 하거나 마법을 쓸 때마다 투사체의 정보를 담은 `CBullet`이라는 구조체가 하나 만들어진다. 이 구조체가 만들어지는 과정은 <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/hooks/weapon_fire.cpp hooks/weapon_fire.cpp]</tt>에서 수정할 수 있다. 이 파일의 52-53번 줄 사이에 공격을 탐지하는 코드를 집어넣을 것이다:
+
+{{{
+  if (weapons_dat::FlingyId[weaponId] != 0)
+    createBullet(weaponId, unit, x, y, unit->playerId, unit->currentDirection1);
+}
+}}}
+
+우선 현재 공격하는 유닛이 레이스인지 확인한다:
+
+{{{
+  if (weapons_dat::FlingyId[weaponId] != 0)
+    createBullet(weaponId, unit, x, y, unit->playerId, unit->currentDirection1);
+
+  //공격하는 유닛이 레이스인지 확인
+  if (unit->id == UnitId::Wraith) {
+  }
+}
+}}}
+
+레이스가 맞다면 이제 공격 대상이 지상 유닛인지 확인한다:
+
+{{{
+  if (weapons_dat::FlingyId[weaponId] != 0)
+    createBullet(weaponId, unit, x, y, unit->playerId, unit->currentDirection1);
+
+  //공격하는 유닛이 레이스인지 확인
+  if (unit->id == UnitId::Wraith) {
+    CUnit *target = unit->orderTarget.unit;
+    
+    //공격 대상이 생존한 상태이며 지상 유닛인지 확인
+    if (target && !(target->status & UnitStatus::InAir))
+  }
+}
+}}}
+
+공격 대상이 지상 유닛이 맞다면 레이스의 에너지를 5만큼 깎으면 된다.
+
+{{{
+  if (weapons_dat::FlingyId[weaponId] != 0)
+    createBullet(weaponId, unit, x, y, unit->playerId, unit->currentDirection1);
+
+  //공격하는 유닛이 레이스인지 확인
+  if (unit->id == UnitId::Wraith) {
+    CUnit *target = unit->orderTarget.unit;
+    
+    //공격 대상이 생존한 상태이며 지상 유닛인지 확인
+    if (target && !(target->status & UnitStatus::InAir)) {
+      unit->energy -= 1280;
+    }
+  }
+}
+}}}
+
+여기에서 문제가 하나 생긴다. 어떤 이유에서든지 레이스의 현재 에너지가 5보다 작다면 에너지가 음수 값이 되어 정수 오버플로우 버그가 생기는 것이다. 따라서 레이스의 현재 에너지를 체크해서 1280보다 작으면 0으로 설정하는 작업이 필요하다:
+
+{{{
+  if (weapons_dat::FlingyId[weaponId] != 0)
+    createBullet(weaponId, unit, x, y, unit->playerId, unit->currentDirection1);
+
+  //공격하는 유닛이 레이스인지 확인
+  if (unit->id == UnitId::Wraith) {
+    CUnit *target = unit->orderTarget.unit;
+    
+    //공격 대상이 생존한 상태이며 지상 유닛인지 확인
+    if (target && !(target->status & UnitStatus::InAir)) {
+      if (unit->energy >= 1280)
+        unit->energy -= 1280;
+      else
+        unit->energy = 0;
+    }
+  }
+}
+}}}
+
+이제 레이스가 지상 공격을 할 때마다 에너지를 5씩 소모하게 된다.
