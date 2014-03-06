@@ -8,7 +8,6 @@
 #include <SCBW/UnitFinder.h>
 #include <cstdio>
 
-bool firstRun = true;
 
 //Custom helper class
 class RepairTargetFinder: public scbw::UnitFinderCallbackMatchInterface {
@@ -97,23 +96,15 @@ namespace hooks {
 bool nextFrame() {
   if (!scbw::isGamePaused()) { //If the game is not paused
     graphics::resetAllGraphics();
-
-    if (firstRun) {
-      //scbw::printText("Hello, world!");
-      firstRun = false;
+    
+    //This block is executed once every game.
+    if (*elapsedTimeFrames == 0) {
+      //Write your code here
+      //scbw::printText(PLUGIN_NAME ": Hello, world!");
     }
 
-    // Loop through the unit table.
-    // Warning: There is no guarantee that the current unit is actually a unit
-    // rather than an unused space in memory.
-    //for (int i = 0; i < UNIT_ARRAY_LENGTH; ++i) {
-    //  CUnit* unit = &unitTable[i];
-    //  //Write your code here
-    //}
-
-    // Alternative looping method
-    // Guarantees that [unit] points to an actual unit.
-    for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->next) {
+    //Loop through all visible units in the game.
+    for (CUnit *unit = *firstVisibleUnit; unit; unit = unit->link.next) {
       //Write your code here
 
       //Auto-Repair
@@ -292,7 +283,6 @@ bool nextFrame() {
 }
 
 bool gameOn() {
-  firstRun = true;
   return true;
 }
 

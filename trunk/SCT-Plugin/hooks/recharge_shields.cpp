@@ -61,8 +61,8 @@ namespace hooks {
 
 /// Decides whether the @p target can recharge shields from the @p battery.
 bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
-  using Unit::ShieldsEnabled;
-  using Unit::GroupFlags;
+  using units_dat::ShieldsEnabled;
+  using units_dat::MaxShieldPoints;
 
   //Check target conditions
   if (target->playerId != battery->playerId   //Is not owned by the player
@@ -72,8 +72,7 @@ bool unitCanRechargeShieldsHook(const CUnit *target, const CUnit *battery) {
     return false;
 
   //Check target race
-  const GroupFlag &ugf = GroupFlags[target->id];
-  if (!ugf.isProtoss || (ugf.isTerran || ugf.isZerg)) //Is not a protoss unit
+  if (target->getRace() != RaceId::Protoss)
     return false;
 
   //Check target shield amount

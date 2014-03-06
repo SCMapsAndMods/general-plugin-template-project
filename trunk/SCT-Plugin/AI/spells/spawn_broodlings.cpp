@@ -1,42 +1,7 @@
-#include "spawn_broodlings.h"
+#include "spells.h"
+#include <AI/ai_common.h>
 
 namespace AI {
-
-class SpawnBroodlingsTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
-  private:
-    const CUnit *caster;
-    bool isUnderAttack;
-  public:
-    SpawnBroodlingsTargetFinderProc(const CUnit *caster, bool isUnderAttack)
-      : caster(caster), isUnderAttack(isUnderAttack) {}
-
-    bool match(const CUnit *target) {
-      if (target == caster)
-        return false;
-
-      if (!isTargetWorthHitting(target, caster))
-        return false;
-
-      if (!scbw::canWeaponTargetUnit(WeaponId::SpawnBroodlings, target, caster))
-        return false;
-
-      if (Unit::BaseProperty[target->id] & UnitProperty::Hero)
-        return false;
-
-      if (!isUnderAttack && getCurrentLifeInGame(target) < 100)
-        return false;
-
-      if (Unit::BaseProperty[target->id] & UnitProperty::Worker
-          || target->id == UnitId::siege_tank
-          || target->id == UnitId::siege_tank_s
-          || target->id == UnitId::medic
-          || (target->mainOrderId == OrderId::NukeWait
-              || target->mainOrderId == OrderId::NukeTrack))
-        return true;
-
-      return false;
-    }
-};
 
 CUnit* findBestSpawnBroodlingsTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds;
@@ -45,10 +10,34 @@ CUnit* findBestSpawnBroodlingsTarget(const CUnit *caster, bool isUnderAttack) {
   else
     bounds = 32 * 64;
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  auto spawnBroodlingsTargetFinder = [&caster, &isUnderAttack] (const CUnit *target) -> bool {
+    if (!isTargetWorthHitting(target, caster))
+      return false;
+
+    if (!scbw::canWeaponTargetUnit(WeaponId::SpawnBroodlings, target, caster))
+      return false;
+
+    if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
+      return false;
+
+    if (!isUnderAttack && getCurrentLifeInGame(target) < 100)
+      return false;
+
+    if (units_dat::BaseProperty[target->id] & UnitProperty::Worker
+        || target->id == UnitId::siege_tank
+        || target->id == UnitId::siege_tank_s
+        || target->id == UnitId::medic
+        || (target->mainOrderId == OrderId::NukeWait
+            || target->mainOrderId == OrderId::NukeTrack))
+      return true;
+
+    return false;
+  };
+
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    SpawnBroodlingsTargetFinderProc(caster, isUnderAttack));
+    caster, spawnBroodlingsTargetFinder);
 }
 
 } //AI

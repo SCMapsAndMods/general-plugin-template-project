@@ -1,7 +1,7 @@
-#include "max_unit_energy.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include "max_energy.h"
+#include <SCBW/scbwdata.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 namespace hooks {
 
@@ -11,7 +11,7 @@ namespace hooks {
 u16 getUnitMaxEnergyHook(const CUnit* const unit) {
   //Default StarCraft behavior
   using scbw::getUpgradeLevel;
-  if (Unit::BaseProperty[unit->id] & UnitProperty::Hero)
+  if (units_dat::BaseProperty[unit->id] & UnitProperty::Hero)
     return 64000; //250
 
   switch (unit->id) {

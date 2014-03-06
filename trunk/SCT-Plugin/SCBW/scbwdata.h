@@ -23,21 +23,18 @@ struct Resources {
   int cumulativeGas[12];
   int cumulativeMinerals[12];
 };
-SCBW_DATA(Resources*,   resources,    0x0057F0F0);
-
-//From player.cpp
-PLAYER*     const playerTable     = (PLAYER*)(0x0057EEE0);
+SCBW_DATA(Resources*,     resources,      0x0057F0F0);
+SCBW_DATA(const PLAYER*,  playerTable,    0x0057EEE0);  //From player.cpp
 
 //From locations.cpp
-MapSize*    const mapTileSize     = (MapSize*) 0x0057F1D4;
-LOCATION*   const locationTable   = (LOCATION*)(0x0058DC60);
+SCBW_DATA(const MapSize*, mapTileSize,    0x0057F1D4);
+SCBW_DATA(LOCATION*,      locationTable,  0x0058DC60);
 
 //From buttons.cpp
 BUTTON*     const button          = 0;  //???
 BUTTON_SET* const buttonSet       = 0;  //???
 
-//From triggers.cpp
-ActionPointer*  const actionTable = (ActionPointer*)(0x00512800);
+SCBW_DATA(ActionPointer*, actionTable,    0x00512800);  //From triggers.cpp
 
 //This was in the InitializePlugin() code in qdp.cpp.
 //Not sure what this does, so I'm leaving it as a comment.
@@ -89,10 +86,8 @@ SCBW_DATA(Layers*,      screenLayers,           0x006CEF50);
 typedef void (__stdcall *DrawGameProc)(graphics::Bitmap *surface, Bounds *bounds);
 static DrawGameProc const oldDrawGameProc = (DrawGameProc) 0x004BD580;
 
-SCBW_DATA(CImage**,     firstUnusedImage,       0x0057EB68);
-SCBW_DATA(CImage**,     lastUnusedImage,        0x0057EB70);
 const CListExtern<CImage, &CImage::link> unusedImages(0x0057EB68, 0x0057EB70);
-const CListExtern<CSprite, &CSprite::link> unusedSprites(0x0063FE30, 0x0063FE34);
+SCBW_DATA(CList<CSprite>*, unusedSprites,       0x0063FE30);
 
 struct SpriteTileData {
   CSprite* tails[256];
@@ -118,10 +113,12 @@ template <typename T>
 struct PlayerFlags {
   T flags[PLAYER_COUNT];
 };
-SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);
+SCBW_DATA(PlayerFlags<u8>*, playerAlliance,     0x0058D634);  //See scbw::isAlliedTo()
 SCBW_DATA(PlayerFlags<u32>*, playerVision,      0x0057F1EC);
 
-SCBW_DATA(u16* const*,    statTxtTbl,           0x006D1238);
+SCBW_DATA(StringTBL* const*, statTxtTbl,        0x006D1238);
+SCBW_DATA(StringTBL* const*, mapStringTbl,      0x005993D4);
+
 SCBW_DATA(CUnit* const*,  activePortraitUnit,   0x00597248);
 
 SCBW_DATA(AI_Main*,       AIScriptController,   0x0068FEE8);
@@ -133,24 +130,26 @@ struct SupplyData {
   u32 used[PLAYER_COUNT];
   u32 max[PLAYER_COUNT];
 };
-SCBW_DATA(SupplyData*,    raceSupply,           0x00582144);  //Array; Use scbw::getRaceId() to get the index.
+SCBW_DATA(SupplyData*,    raceSupply,           0x00582144);  //Array; Use CUnit::getRace() to get the index.
 
 //-------- Internal constants --------//
 
-SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);
-SCBW_DATA(const Bool8*,   IS_BROOD_WAR,         0x0058F440);
-SCBW_DATA(const u32*,     CHEAT_STATE,          0x006D5A6C);
+SCBW_DATA(const Bool32*,  IS_GAME_PAUSED,       0x006509C4);  //See scbw::isGamePaused()
+SCBW_DATA(const Bool8*,   IS_BROOD_WAR,         0x0058F440);  //See scbw::isBroodWarMode()
+SCBW_DATA(const u32*,     CHEAT_STATE,          0x006D5A6C);  //See scbw::isCheatEnabled()
+SCBW_DATA(const u8*,      GAME_TYPE,            0x00596820);  //Part of a larger structure; Compare with GameType::Enum.
 SCBW_DATA(const s32*,     MAX_UNIT_WIDTH,       0x006BEE68);
 SCBW_DATA(const s32*,     MAX_UNIT_HEIGHT,      0x006BB930);
-SCBW_DATA(const Bool32*,  IS_IN_REPLAY,         0x006D0F14);
+SCBW_DATA(const Bool32*,  IS_IN_REPLAY,         0x006D0F14);  //See scbw::isInReplay()
 SCBW_DATA(const s32*,     ACTIVE_NATION_ID,     0x00512678);  //AKA g_ActiveNationID
 SCBW_DATA(const s32*,     LOCAL_NATION_ID,      0x00512684);  //AKA g_LocalNationID; Actually stores the player ID.
 SCBW_DATA(const s32*,     LOCAL_HUMAN_ID,       0x00512688);  //AKA g_LocalHumanID; Invalid in replay games.
 SCBW_DATA(const Bool32*,  IS_IN_GAME_LOOP,      0x006D11C8);
-SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);
+SCBW_DATA(u32*,           lastRandomNumber,     0x0051CA14);  //See scbw::random(), scbw::randBetween()
 SCBW_DATA(Bool32*,        canUpdatePoweredStatus, 0x0063FF44);
 SCBW_DATA(const Bool32*,  IS_PLACING_BUILDING,  0x00640880);
-SCBW_DATA(const u32*,     elapsedTime,          0x0058D6F8);  //Elapsed game time in seconds
+SCBW_DATA(const u32*,     elapsedTimeFrames,    0x0057F23C);  //Elapsed game time in frames
+SCBW_DATA(const u32*,     elapsedTimeSeconds,   0x0058D6F8);  //Elapsed game time in seconds
 
 //-------- DAT Files --------//
 
@@ -165,7 +164,7 @@ struct DatLoad {
   u32 entries;
 };
 
-namespace Unit {
+namespace units_dat {
 SCBW_DATA(const DatLoad*, unitsDat, 0x00513C30);
 
 SCBW_DATA(u8*,  Graphic,            unitsDat[0].address);
@@ -205,9 +204,9 @@ SCBW_DATA(u16*, BuildScore,         unitsDat[49].address);
 SCBW_DATA(u16*, DestroyScore,       unitsDat[50].address);
 SCBW_DATA(u16*, MapStringId,        unitsDat[51].address);
 SCBW_DATA(u8*,  BroodwarOnly,       unitsDat[52].address);
-}
+} //units_dat
 
-namespace Flingy {
+namespace flingy_dat {
 SCBW_DATA(const DatLoad*, flingyDat, 0x00515A38);
 
 SCBW_DATA(u16*, SpriteID,           flingyDat[0].address);
@@ -216,9 +215,9 @@ SCBW_DATA(u16*, Acceleration,       flingyDat[2].address);
 SCBW_DATA(u32*, HaltDistance,       flingyDat[3].address);
 SCBW_DATA(u8*,  TurnSpeed,          flingyDat[4].address);  //Incorrectly known as "Turn Radius"
 SCBW_DATA(u8*,  MovementControl,    flingyDat[6].address);
-}
+} //flingy_dat
 
-namespace Weapon {
+namespace weapons_dat {
 SCBW_DATA(const DatLoad*, weaponsDat, 0x00513868);
 
 SCBW_DATA(u16*, Label,              weaponsDat[0].address);
@@ -242,9 +241,9 @@ SCBW_DATA(u8*,  AttackDirection,    weaponsDat[18].address);
 SCBW_DATA(u8*,  LaunchSpin,         weaponsDat[19].address);
 SCBW_DATA(u8*,  ForwardOffset,      weaponsDat[20].address);
 SCBW_DATA(u8*,  VerticalOffset,     weaponsDat[21].address);
-}
+} //weapons_dat
 
-namespace Upgrade {
+namespace upgrades_dat {
 SCBW_DATA(const DatLoad*, upgradesDat, 0x005136E0);
 
 SCBW_DATA(u16*, MineralCostBase,    upgradesDat[0].address);
@@ -256,9 +255,9 @@ SCBW_DATA(u16*, TimeCostFactor,     upgradesDat[5].address);
 SCBW_DATA(u16*, Label,              upgradesDat[8].address);
 SCBW_DATA(u8*,  Race,               upgradesDat[9].address);
 SCBW_DATA(u8*,  MaxRepeats,         upgradesDat[10].address);
-}
+} //upgrades_dat
 
-namespace Tech {
+namespace techdata_dat {
 SCBW_DATA(const DatLoad*, techdataDat, 0x005137D8);
 
 SCBW_DATA(u16*, MineralCost,        techdataDat[0].address);
@@ -266,37 +265,36 @@ SCBW_DATA(u16*, GasCost,            techdataDat[1].address);
 SCBW_DATA(u16*, TimeCost,           techdataDat[2].address);
 SCBW_DATA(u16*, EnergyCost,         techdataDat[3].address);
 SCBW_DATA(u16*, Label,              techdataDat[7].address);
-}
+} //techdata_dat
 
-namespace Order {
+namespace orders_dat {
 SCBW_DATA(const DatLoad*, ordersDat, 0x00513EC8);
 
 SCBW_DATA(u16*, Label,              ordersDat[0].address);
 SCBW_DATA(u8*,  UseWeaponTargeting, ordersDat[1].address);
 SCBW_DATA(u8*,  TechUsed,           ordersDat[14].address);
-}
+} //orders_dat
 
-namespace Sprite {
+namespace sprites_dat {
 SCBW_DATA(const DatLoad*, spritesDat, 0x00513FB8);
 
 SCBW_DATA(u16*, ImageId,            spritesDat[0].address);
 SCBW_DATA(s8*,  HpBarSize,          spritesDat[1].address);
 SCBW_DATA(u8*,  IsVisible,          spritesDat[3].address);
-}
+} //sprites_dat
 
-namespace Image {
+namespace images_dat {
 SCBW_DATA(const DatLoad*, imagesDat, 0x00514010);
 
 SCBW_DATA(const u8*,  IsTurnable,   imagesDat[1].address);
 SCBW_DATA(const u8*,  IsClickable,  imagesDat[2].address);
 SCBW_DATA(const u8*,  RLE_Function, imagesDat[5].address);
 SCBW_DATA(const u8*,  Remapping,    imagesDat[6].address);
-}
+} //images_dat
 
 
 //-------- Tech levels --------//
 
-namespace Tech {
 struct _scTechs {
   u8 isEnabled[PLAYER_COUNT][24];
   u8 isResearched[PLAYER_COUNT][24];
@@ -307,11 +305,9 @@ struct _bwTechs {
 };
 SCBW_DATA(_scTechs*, TechSc,   0x0058CE24); //Use with ScTech::Enum
 SCBW_DATA(_bwTechs*, TechBw,   0x0058F050); //Use with BwTech::Enum
-}
 
 //-------- Upgrade levels --------//
 
-namespace Upgrade {
 struct _scUpgrs {
   u8 maxLevel[PLAYER_COUNT][46];
   u8 currentLevel[PLAYER_COUNT][46];
@@ -320,9 +316,9 @@ struct _bwUpgrs {
   u8 maxLevel[PLAYER_COUNT][15];
   u8 currentLevel[PLAYER_COUNT][15];
 };
-SCBW_DATA(_scUpgrs*, UpgSc,  0x0058D088); //Use with ScUpgrade::Enum
-SCBW_DATA(_bwUpgrs*, UpgBw,  0x0058F278); //Use with BwUpgrade::Enum
-}
+SCBW_DATA(_scUpgrs*, UpgradesSc,  0x0058D088); //Use with ScUpgrade::Enum
+SCBW_DATA(_bwUpgrs*, UpgradesBw,  0x0058F278); //Use with BwUpgrade::Enum
+
 
 #undef SCBW_DATA
 #pragma pack()

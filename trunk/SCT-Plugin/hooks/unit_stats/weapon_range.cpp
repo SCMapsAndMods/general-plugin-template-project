@@ -1,9 +1,9 @@
 //Contains hooks that control attack range and seek range (AKA target acquisition range).
 
 #include "weapon_range.h"
-#include "../SCBW/scbwdata.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/api.h"
+#include <SCBW/scbwdata.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/api.h>
 
 namespace hooks {
 
@@ -92,7 +92,7 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
   if (unit->id == UnitId::arbiter || unit->id == UnitId::danimoth)
     if (weaponId == WEAPON_MEDIATION_FIELD
         || weaponId == WEAPON_MEDIATION_FIELD_HERO)
-      return Weapon::MaxRange[weaponId];
+      return weapons_dat::MaxRange[weaponId];
 
   u32 bonusAmount = 0;
 
@@ -153,12 +153,12 @@ u32 getMaxWeaponRangeHook(const CUnit *unit, u8 weaponId) {
       && weaponId != WeaponId::DisruptionWeb
       && weaponId != WeaponId::StasisField)
     {
-      if (Weapon::MaxRange[weaponId] >= 64)
+      if (weapons_dat::MaxRange[weaponId] >= 64)
         bonusAmount += 32;
     }
   }
 
-  return Weapon::MaxRange[weaponId] + bonusAmount;
+  return weapons_dat::MaxRange[weaponId] + bonusAmount;
 }
 
 } //hooks

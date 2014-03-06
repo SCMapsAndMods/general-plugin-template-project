@@ -15,14 +15,14 @@ namespace hooks {
 /// Test whether @p castingPlayer can use @p techId on the @p target.
 /// If successful, returns zero. If unsuccessful, returns the index of the
 /// appropriate error message string in stat_txt.tbl.
-u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId) {
+u16 getTechUseErrorMessageHook(const CUnit *target, u8 castingPlayer, u16 techId) {
 
   if (target->stasisTimer)
     return 900;         //Units in stasis can't be targeted.<0>
 
   switch (techId) {
     case TechId::Feedback:
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
       if (!target->isValidCaster())
         return 1330;    //Must target units with energy.<0>
@@ -31,7 +31,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::MindControl:
       if (target->playerId == castingPlayer)
         return 1327;    //Must target enemy units<0>
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
       if (target->id == UnitId::spider_mine
           || target->id == UnitId::larva
@@ -48,7 +48,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::Hallucination:
       if (target->id == UnitId::interceptor)
         return 876;     //Invalid target.<0>
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
       break;
 
@@ -60,7 +60,7 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
     case TechId::DefensiveMatrix:
     case TechId::Irradiate:
     case TechId::Restoration:
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
         return 877;     //Unable to target structure.<0>
       break;
 
@@ -70,9 +70,9 @@ u16 getTechUseErrorMessageHook(const CUnit *target, s8 castingPlayer, u16 techId
       break;
 
     case TechId::Consume:
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Building
           || target->playerId != castingPlayer
-          || !(Unit::GroupFlags[target->id].isZerg)
+          || target->getRace() != RaceId::Zerg
           || target->id == UnitId::larva
           || target->id == UnitId::broodling) //Prevent Consuming Broodlings since they are a "free" unit now
         return 897;     //Invalid target.<0>

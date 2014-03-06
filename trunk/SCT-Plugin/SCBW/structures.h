@@ -31,51 +31,51 @@ struct UNITDEATHS {
 //Based on http://code.google.com/p/bwapi/source/browse/branches/bwapi4/bwapi/BWAPI/Source/BW/CImage.h
 
 struct TEXT {
-  char       textdisplay[218][13];  //[last is text at bottom; ex: "Cheat enabled."]
-  UNK        unknown1;
-  UNK        unknown2;
-  u8         color[13];
-  UNK        unknown3[3];  //[last is text at bottom; ex: "Cheat enabled."]
-  u8         timer[13];
+  char  textdisplay[218][13];  //[last is text at bottom; ex: "Cheat enabled."]
+  UNK   unknown1;
+  UNK   unknown2;
+  u8    color[13];
+  UNK   unknown3[3];  //[last is text at bottom; ex: "Cheat enabled."]
+  u8    timer[13];
 };
 
 struct TILE {
-      u16 index;
-      u8 buildability; /**< 8th bit should sign not buildable. */
-      u8 groundHeight; /**< Ground Height(4 lower bits) - Deprecated? Some values are incorrect. */
-      u16 leftEdge;
-      u16 topEdge;
-      u16 rightEdge;
-      u16 buttomEdge;
-      u16 _1;
-      u16 _2; /**<  Unknown - Edge piece has rows above it. (Recently noticed; not fully understood.)
-                    o 1 = Basic edge piece.
-                    o 2 = Right edge piece.
-                    o 3 = Left edge piece.*/
-      u16 _3;
-      u16 _4;
-      u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
+  u16 index;
+  u8 buildability; /**< 8th bit should sign not buildable. */
+  u8 groundHeight; /**< Ground Height(4 lower bits) - Deprecated? Some values are incorrect. */
+  u16 leftEdge;
+  u16 topEdge;
+  u16 rightEdge;
+  u16 buttomEdge;
+  u16 _1;
+  u16 _2; /**<  Unknown - Edge piece has rows above it. (Recently noticed; not fully understood.)
+                o 1 = Basic edge piece.
+                o 2 = Right edge piece.
+                o 3 = Left edge piece.*/
+  u16 _3;
+  u16 _4;
+  u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
 };
 
 struct DOODAD {
-      u16 index;
-      u8 buildability; /**< 8th bit should sign not buildable. */
-      u8 groundHeightAndOverlayFlags; /**< Ground Height(4 lower bits) - Deprecated? Some values are incorrect.
-                       * Overlay Flags:
-                       * o 0x0 - None
-                       * o 0x1 - Sprites.dat Reference
-                       * o 0x2 - Units.dat Reference (unit sprite)
-                       * o 0x4 - Overlay is Flipped
-                       */
-      u16 overlayID;
-      u16 _1;
-      u16 doodatGrupString;
-      u16 _2;
-      u16 dddataBinIndex;
-      u16 doodatHeight;
-      u16 doodatWidth;
-      u16 _3;
-      u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
+  u16 index;
+  u8 buildability; /**< 8th bit should sign not buildable. */
+  u8 groundHeightAndOverlayFlags; /**< Ground Height(4 lower bits) - Deprecated? Some values are incorrect.
+                   * Overlay Flags:
+                   * o 0x0 - None
+                   * o 0x1 - Sprites.dat Reference
+                   * o 0x2 - Units.dat Reference (unit sprite)
+                   * o 0x4 - Overlay is Flipped
+                   */
+  u16 overlayID;
+  u16 _1;
+  u16 doodatGrupString;
+  u16 _2;
+  u16 dddataBinIndex;
+  u16 doodatHeight;
+  u16 doodatWidth;
+  u16 _3;
+  u16 miniTile[16]; /** MegaTile References (VF4/VX4) */
 };
 
 struct CThingy {
@@ -93,23 +93,20 @@ struct MapSize {
 };
 
 struct LOCATION {
-  u32       topLeftX;
-  u32       topLeftY;
-  u32       bottomRightX;
-  u32       bottomRightY;
-  u16       stringId;
-  u16       flags;
+  Box32 dimensions;
+  u16   stringId;
+  u16   flags;
 };
 
 //---- Taken from player.cpp ----//
 
 struct PLAYER {
-  u32           id;
-  u32           actions; // unused; FF FF FF FF if not a human player
-  u8            type;
-  u8            race; //Use with Player::Race
-  u8            force;
-  char          name[25];
+  u32   id;
+  u32   actions;    //Unused; FF FF FF FF if not a human player
+  u8    type;
+  u8    race;       //Use with scbw::RaceId
+  u8    force;
+  char  name[25];
 };
 
 //---- Taken from buttons.cpp ----//
@@ -121,20 +118,20 @@ typedef void (__fastcall *ACT_FUNC)(u32,u32);
 //(u32 actVar, u32 shiftClick);
 
 struct BUTTON {
-  u16        position;
-  u16        iconID;
-  REQ_FUNC*    reqFunc;
-  ACT_FUNC*    actFunc;
-  u16        reqVar;
-  u16        actVar;
-  u16        reqStringID;
-  u16        actStringID;
+  u16       position;
+  u16       iconID;
+  REQ_FUNC  *reqFunc;
+  ACT_FUNC  *actFunc;
+  u16       reqVar;
+  u16       actVar;
+  u16       reqStringID;
+  u16       actStringID;
 };
 
 struct BUTTON_SET {
-  u32        buttonsInSet;
-  BUTTON*      firstButton;
-  u32        connectedUnit;
+  u32     buttonsInSet;
+  BUTTON  *firstButton;
+  u32     connectedUnit;
 };
 
 //---- Taken from triggers.h ----//
@@ -175,7 +172,7 @@ struct GrpFrame {
   u32 dataOffset;
 };
 
-C_ASSERT(sizeof(GrpFrame) == 8);
+static_assert(sizeof(GrpFrame) == 8, "The size of the GrpFrame structure is invalid");
 
 //GRP file header
 struct GrpHead {
@@ -185,7 +182,7 @@ struct GrpHead {
   GrpFrame frames[1];
 };
 
-C_ASSERT(sizeof(GrpHead) == 14);
+static_assert(sizeof(GrpHead) == 14, "The size of the GrpHead structure is invalid");
 
 //LO* file header
 struct LO_Header {
@@ -198,7 +195,7 @@ struct LO_Header {
   }
 };
 
-C_ASSERT(sizeof(LO_Header) == 12);
+static_assert(sizeof(LO_Header) == 12, "The size of the LO_Header structure is invalid");
 
 //Image Remapping Data
 struct ColorShiftData {
@@ -207,7 +204,7 @@ struct ColorShiftData {
   char name[12];
 };
 
-C_ASSERT(sizeof(ColorShiftData) == 20);
+static_assert(sizeof(ColorShiftData) == 20, "The size of the ColorShiftData structure is invalid");
 
 //-------- Flag structures --------//
 
@@ -231,7 +228,7 @@ struct ActiveTile {
   u8 unknown4           : 1; // Unused?
 };
 
-C_ASSERT(sizeof(ActiveTile) == 4);
+static_assert(sizeof(ActiveTile) == 4, "The size of the ActiveTile structure is invalid");
 
 struct GroupFlag {
   u8 isZerg         : 1;
@@ -244,7 +241,7 @@ struct GroupFlag {
   u8 isNeutral      : 1;
 };
 
-C_ASSERT(sizeof(GroupFlag) == 1);
+static_assert(sizeof(GroupFlag) == 1, "The size of the GroupFlag structure is invalid");
 
 struct TargetFlag {
   u16 air         : 1;
@@ -258,7 +255,7 @@ struct TargetFlag {
   u16 playerOwned : 1;
 };
 
-C_ASSERT(sizeof(TargetFlag) == 2);
+static_assert(sizeof(TargetFlag) == 2, "The size of the TargetFlag structure is invalid");
 
 //-------- End of flag structures --------//
 
@@ -270,7 +267,7 @@ struct UnitFinderData {
   }
 };
 
-C_ASSERT(sizeof(UnitFinderData) == 8);
+static_assert(sizeof(UnitFinderData) == 8, "The size of the UnitFinderData structure is invalid");
 
 struct Bounds {
   u16 left;
@@ -281,7 +278,7 @@ struct Bounds {
   u16 height;
 };
 
-C_ASSERT(sizeof(Bounds) == 12);
+static_assert(sizeof(Bounds) == 12, "The size of the Bounds structure is invalid");
 
 struct BinDlg {
   BinDlg  *next;
@@ -306,7 +303,7 @@ struct BinDlg {
   UNK     unk_4e[8];
 };
 
-C_ASSERT(sizeof(BinDlg) == 86);
+static_assert(sizeof(BinDlg) == 86, "The size of the BinDlg structure is invalid");
 
 struct GuiOverlay {
   UNK     unk_0[6];
@@ -315,7 +312,7 @@ struct GuiOverlay {
   UNK     unk_a[34];
 };
 
-C_ASSERT(sizeof(GuiOverlay) == 44);
+static_assert(sizeof(GuiOverlay) == 44, "The size of the GuiOverlay structure is invalid");
 
 //-------- AI related stuff --------//
 
@@ -376,12 +373,12 @@ struct AI_Main {
   Box32 genCmdLoc;
 };
 
-C_ASSERT(sizeof(AI_Main) == 1256);
+static_assert(sizeof(AI_Main) == 1256, "The size of the AI_Main structure is invalid");
 
 struct AiCaptain {
   u16 region;
   u16 unknown_0x2;
-  s8  playerId;
+  u8  playerId;
   u8  captainType;
   u8  unknown_0x6;
   u8  unknown_0x7;
@@ -405,6 +402,28 @@ struct AiCaptain {
   void  *town;
 };
 
-C_ASSERT(sizeof(AiCaptain) == 52);
+static_assert(sizeof(AiCaptain) == 52, "The size of the AiCaptain structure is invalid");
+
+class StringTBL {
+  public:
+    /// Returns the number of string entries in the TBL file.
+    u16 getStringCount() const { return stringCount; }
+
+    /// Returns the string at @p index in the TBL file.
+    /// If the @p index is 0, returns nullptr.
+    /// If the @p index is out of bounds, returns an empty string.
+    const char* getString(u16 index) const {
+      //Based on function @ 0x004C36F0
+      if (index == 0) return nullptr;
+      else if (index <= getStringCount())
+        return (const char*)(this) + offsets[index - 1];
+      else
+        return "";
+    }
+
+  private:
+    u16 stringCount;
+    u16 offsets[1];
+};
 
 #pragma pack()

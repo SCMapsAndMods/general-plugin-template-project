@@ -1,20 +1,73 @@
 #include "update_status_effects.h"
-#include "../SCBW/api.h"
-#include "../SCBW/enumerations.h"
-#include "../SCBW/scbwdata.h"
-#include "irradiate.h"
+#include <SCBW/api.h>
+#include <SCBW/enumerations.h>
+#include <SCBW/scbwdata.h>
+#include <SCBW/UnitFinder.h>
 #include <algorithm>
-
-namespace {
-//Helper functions that should be used only in this file
-u8 getAcidSporeOverlayAdjustment(const CUnit* const unit);
-} //unnamed namespace
+#include <algorithm>
 
 namespace hooks {
 
-//Detour for UpdateStatusEffects() (AKA RestoreAllUnitStats())
-//Original function address: 0x00492F70 (SCBW 1.16.1)
-//Note: this function is called every 8 ticks (when unit->cycleCounter reaches 8 == 0)
+//Applies Irradiate effects for @p unit (which is Irradiated)
+void doIrradiateDamage(CUnit *irradiatedUnit) {
+
+  auto irradiateProc = [&irradiatedUnit] (CUnit *unit) {
+    //Damage organic units only
+    //if (!(units_dat::BaseProperty[unit->id] & UnitProperty::Organic))
+    //  return;
+
+    //Don't damage buildings
+    if (units_dat::BaseProperty[unit->id] & UnitProperty::Building)
+      return;
+
+    //Don't damage larvae, eggs, and lurker eggs
+    if (unit->id == UnitId::larva || unit->id == UnitId::egg || unit->id == UnitId::lurker_egg)
+      return;
+
+    //Don't damage fellow Science Vessels
+    if (unit->id == UnitId::science_vessel)
+      return;
+
+    //Irradiate splash damage does not affect burrowed units
+    if (unit != irradiatedUnit && unit->status & UnitStatus::Burrowed)
+      return;
+
+    //Check if the unit is within distance, or is inside the same transport
+    if (irradiatedUnit->status & UnitStatus::InTransport
+        || irradiatedUnit->getDistanceToTarget(unit) <= 32)
+    {
+      const s32 damage = weapons_dat::DamageAmount[WeaponId::Irradiate] * 256 / weapons_dat::Cooldown[WeaponId::Irradiate];
+      unit->damageWith(damage, WeaponId::Irradiate, irradiatedUnit->irradiatedBy, irradiatedUnit->irradiatePlayerId);
+    }
+  };
+
+  //No splash if burrowed
+  if (irradiatedUnit->status & UnitStatus::Burrowed) {
+    irradiateProc(irradiatedUnit);
+  }
+  //If inside a transport, damage all units loaded within
+  else if (irradiatedUnit->status & UnitStatus::InTransport) {
+    const CUnit *transport = irradiatedUnit->connectedUnit;
+    if (transport != NULL) {
+      for (int i = 0; i < units_dat::SpaceProvided[transport->id]; ++i) {
+        CUnit *loadedUnit = transport->getLoadedUnit(i);
+        if (loadedUnit)
+          irradiateProc(loadedUnit);
+      }
+    }
+  }
+  //Find and iterate nearby units
+  else {
+    scbw::UnitFinder unitFinder(irradiatedUnit->getX() - 160,
+                                irradiatedUnit->getY() - 160,
+                                irradiatedUnit->getX() + 160,
+                                irradiatedUnit->getY() + 160);
+    unitFinder.forEach(irradiateProc);
+  }
+}
+
+//Hook function for UpdateStatusEffects() (AKA RestoreAllUnitStats())
+//Note: This function is called every 8 ticks (when unit->cycleCounter reaches 8 == 0)
 void updateStatusEffectsHook(CUnit *unit) {
   if (unit->stasisTimer) {
     unit->stasisTimer--;
@@ -71,7 +124,7 @@ void updateStatusEffectsHook(CUnit *unit) {
     unit->plagueTimer--;
     if (!(unit->status & UnitStatus::Invincible)) {
       //Try to reduce the unit's HP to 1/256 without killing it
-      const s32 damage = (Weapon::DamageAmount[WeaponId::Plague] << 8) / 75;
+      const s32 damage = (weapons_dat::DamageAmount[WeaponId::Plague] << 8) / 75;
       if (unit->hitPoints > 1)
         unit->damageHp(std::min(damage, unit->hitPoints - 1));
     }
@@ -99,7 +152,12 @@ void updateStatusEffectsHook(CUnit *unit) {
     }
   }
   if (unit->acidSporeCount) {
-    u32 acidOverlayId = getAcidSporeOverlayAdjustment(unit) + ImageId::AcidSpores_1_Overlay_Small;
+    //Calculate the appropriate overlay ID
+    //TODO: Move this into a separate hook module (see GetAcidSporeImage())
+    u32 acidOverlayId = std::min(3, unit->acidSporeCount / 2)
+                      + 4 * scbw::getUnitOverlayAdjustment(unit)
+                      + ImageId::AcidSpores_1_Overlay_Small;
+
     if (!unit->getOverlay(acidOverlayId)) {
       unit->removeOverlay(ImageId::AcidSpores_1_Overlay_Small, ImageId::AcidSpores_6_9_Overlay_Large);
       if (unit->subunit)
@@ -113,14 +171,3 @@ void updateStatusEffectsHook(CUnit *unit) {
 }
 
 } //hooks
-
-namespace {
-/**** Helper function definitions. Do not change anything below this! ****/
-
-u8 getAcidSporeOverlayAdjustment(const CUnit* const unit) {
-  u8 adjustment = unit->acidSporeCount >> 1;
-  return (adjustment < 3 ? adjustment : 3)
-          + 4 * scbw::getUnitOverlayAdjustment(unit);
-}
-
-} //unnamed namespace

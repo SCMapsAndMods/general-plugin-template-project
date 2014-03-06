@@ -9,7 +9,7 @@ namespace hooks {
 ///
 /// @return		The modified cooldown value.
 u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId) {
-	u32 cooldown = Weapon::Cooldown[weaponId];
+	u32 cooldown = weapons_dat::Cooldown[weaponId];
 
 	if (unit->acidSporeCount) {
     //Use proper rounding to better simulate the 12.5%-per-spore

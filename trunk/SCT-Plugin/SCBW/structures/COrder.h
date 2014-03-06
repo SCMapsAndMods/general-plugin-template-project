@@ -11,6 +11,6 @@ struct COrder {
   Target    target;
 };
 
-C_ASSERT(sizeof(COrder) == 20);
+static_assert(sizeof(COrder) == 20, "The size of the COrder structure is invalid");
 
 #pragma pack()

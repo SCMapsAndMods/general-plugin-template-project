@@ -52,7 +52,7 @@ enum Enum {
 }
 
 
-//For use with Tech::AvailableSC[] and Tech::ResearchedBw[]
+//For use with techdata_dat::AvailableSC[] and techdata_dat::ResearchedBw[]
 namespace ScTech {
 enum Enum {
   Stimpacks         = 0,
@@ -82,7 +82,7 @@ enum Enum {
 };
 }
 
-//For use with Tech::AvailableBW[] and Tech::ResearchedBw[]
+//For use with techdata_dat::AvailableBW[] and techdata_dat::ResearchedBw[]
 namespace BwTech {
 enum Enum {
   Restoration       = 0,

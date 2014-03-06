@@ -19,7 +19,7 @@ struct Layer {
   void (__stdcall *pUpdate)(graphics::Bitmap *pSurface, bounds *pBounds);
 };
 
-C_ASSERT(sizeof(Layer) == 20);
+static_assert(sizeof(Layer) == 20, "The size of the Layer structure is invalid");
 
 
 struct Layers {

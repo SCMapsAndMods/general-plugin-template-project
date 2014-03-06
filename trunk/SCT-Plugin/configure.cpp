@@ -1,7 +1,5 @@
 #include "definitions.h"
 #include "Plugin.h"
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
 
 //Called when the user hits the configure button in MPQDraft or FireGraft
 BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
@@ -15,7 +13,7 @@ BOOL WINAPI Plugin::Configure(HWND hParentWnd) {
   MessageBox(
     hParentWnd,
     PLUGIN_NAME " (ID: " STR(PLUGIN_ID) ")"
-    "\nMade by pastelmind"
+    "\nVisit http://gptp.googlecode.com/ for more information."
     "\nBuilt on " __DATE__ " " __TIME__
     "\n"
     "\n[System Changes]"

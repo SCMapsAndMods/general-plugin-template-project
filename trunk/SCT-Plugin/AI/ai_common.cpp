@@ -37,7 +37,7 @@ bool isTargetWorthHitting(const CUnit *target, const CUnit *attacker) {
 bool unitCanAttack(const CUnit *unit) {
   if (unit->id == UnitId::lurker) {
     if (unit->status & UnitStatus::Burrowed
-        && Unit::GroundWeapon[unit->id] != WeaponId::None)
+        && units_dat::GroundWeapon[unit->id] != WeaponId::None)
       return true;
   }
   else if (unit->id == UnitId::carrier || unit->id == UnitId::gantrithor) {
@@ -49,8 +49,8 @@ bool unitCanAttack(const CUnit *unit) {
       return true;
   }
   else {
-    if (Unit::GroundWeapon[unit->id] != WeaponId::None
-        || Unit::AirWeapon[unit->id] != WeaponId::None)
+    if (units_dat::GroundWeapon[unit->id] != WeaponId::None
+        || units_dat::AirWeapon[unit->id] != WeaponId::None)
       return true;
   }
 
@@ -67,8 +67,8 @@ bool isTargetAttackingAlly(const CUnit *target, const CUnit *unit) {
   return false;
 }
 
-bool isUmsMode(s8 playerId) {
-  assert(0 <= playerId && playerId < 8);
+bool isUmsMode(u8 playerId) {
+  assert(playerId < 8);
   return AIScriptController[playerId].AI_Flags.isUseMapSettings;
 }
 
@@ -108,131 +108,16 @@ int getCurrentHpInGame(const CUnit *unit) {
 }
 
 int getMaxHpInGame(const CUnit *unit) {
-  return (Unit::MaxHitPoints[unit->id] + 255) / 256;
+  return (units_dat::MaxHitPoints[unit->id] + 255) / 256;
 }
 
 int getCurrentLifeInGame(const CUnit *unit) {
-  if (Unit::ShieldsEnabled[unit->id])
+  if (units_dat::ShieldsEnabled[unit->id])
     return getCurrentHpInGame(unit) + unit->shields / 256;
   else
     return getCurrentHpInGame(unit);
 }
 
-//-------- Unit stat accumulators --------//
-
-class UnitStatSumProc: public scbw::UnitFinderCallbackProcInterface {
-  protected:
-    const CUnit *caster;
-    int sum;
-    u8 weaponId;
-  public:
-    void set(const CUnit *caster, u8 weaponId = WEAPON_TYPE_COUNT) {
-      this->caster = caster; this->weaponId = weaponId; sum = 0;
-    }
-    int getSum() const { return sum; }
-
-    virtual void proc(CUnit *target) = 0;
-};
-
-class EnemyLifeSumProc: public UnitStatSumProc {
-  public:
-    void proc(CUnit *target) {
-      if (target == caster)
-        return;
-
-      if (target->status & UnitStatus::Invincible)
-        return;
-
-      if (!scbw::canWeaponTargetUnit(weaponId, target, caster))
-        return;
-
-      if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-        return;
-
-      if (weaponId == WeaponId::Plague)
-        sum += getCurrentHpInGame(target);
-      else if (weaponId == WeaponId::Maelstrom) {
-        if (target->maelstromTimer == 0) {
-          sum += getCurrentLifeInGame(target);
-        }
-      }
-      else
-        sum += getCurrentLifeInGame(target);
-    }
-};
-
-class AllyLifeSumProc: public UnitStatSumProc {
-  public:
-    void proc(CUnit *target) {
-      if (target == caster)
-        return;
-
-      if (target->status & UnitStatus::Invincible)
-        return;
-
-      if (!scbw::canWeaponTargetUnit(weaponId, target, caster))
-        return;
-
-      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-        return;
-
-      sum += getCurrentLifeInGame(target);
-    }
-};
-
-class EnemyShieldsSumProc: public UnitStatSumProc {
-  public:
-    void proc(CUnit *target) {
-      if (target->status & UnitStatus::Invincible)
-        return;
-
-      if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-        return;
-
-      if (!Unit::ShieldsEnabled[target->id])
-        return;
-
-      sum += target->shields / 256;
-    }
-};
-
-class EnemyEnergySumProc: public UnitStatSumProc {
-  public:
-    void proc(CUnit *target) {
-      if (target->status & UnitStatus::Invincible)
-        return;
-
-      if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-        return;
-
-      if (!target->isValidCaster())
-        return;
-
-      sum += target->energy / 256;
-    }
-};
-
-class EnemyNukeValueSumProc: public UnitStatSumProc {
-  public:
-    void proc(CUnit *target) {
-      if (target->status & UnitStatus::Invincible)
-        return;
-
-      if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-        return;
-
-      if ((Unit::BaseProperty[target->id] & UnitProperty::Worker)
-          || !(target->status & UnitStatus::IsBuilding))
-        sum += getCurrentLifeInGame(target);
-
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building) {
-        if (target->canDetect()
-            || target->id == UnitId::sunken_colony
-            || target->id == UnitId::lurker)
-          sum = 800;  //Any static defense is at least 800 value
-      }
-    }
-};
 
 //-------- Get total unit stats in area --------//
 
@@ -241,46 +126,132 @@ scbw::UnitFinder unitStatTotalFinder;
 int getTotalEnemyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId) {
   unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
                              x + searchBounds, y + searchBounds);
-  EnemyLifeSumProc sumProc;
-  sumProc.set(caster, weaponId);
-  unitStatTotalFinder.forEach(sumProc);
-  return sumProc.getSum();
+
+  int totalEnemyLife = 0;
+
+  unitStatTotalFinder.forEach([&caster, &weaponId, &totalEnemyLife] (const CUnit *target) {
+    if (target == caster)
+      return;
+
+    if (target->status & UnitStatus::Invincible)
+      return;
+
+    if (!scbw::canWeaponTargetUnit(weaponId, target, caster))
+      return;
+
+    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+      return;
+
+    if (weaponId == WeaponId::Plague)
+      totalEnemyLife += getCurrentHpInGame(target);
+    else if (weaponId == WeaponId::Maelstrom) {
+      if (units_dat::BaseProperty[target->id] & UnitProperty::Organic
+          && target->maelstromTimer == 0) {
+        totalEnemyLife += getCurrentLifeInGame(target);
+      }
+    }
+    else
+      totalEnemyLife += getCurrentLifeInGame(target);
+  });
+
+  return totalEnemyLife;
 }
 
 int getTotalAllyLifeInArea(int x, int y, int searchBounds, const CUnit *caster, u8 weaponId) {
   unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
                              x + searchBounds, y + searchBounds);
-  AllyLifeSumProc sumProc;
-  sumProc.set(caster, weaponId);
-  unitStatTotalFinder.forEach(sumProc);
-  return sumProc.getSum();
+
+  int totalAllyLife = 0;
+
+  unitStatTotalFinder.forEach([&caster, &weaponId, &totalAllyLife] (const CUnit *target) {
+    if (target == caster)
+      return;
+
+    if (target->status & UnitStatus::Invincible)
+      return;
+
+    if (!scbw::canWeaponTargetUnit(weaponId, target, caster))
+      return;
+
+    if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+      return;
+
+    totalAllyLife += getCurrentLifeInGame(target);
+  });
+
+  return totalAllyLife;
 }
 
 int getTotalEnemyShieldsInArea(int x, int y, int searchBounds, const CUnit *caster) {
   unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
                              x + searchBounds, y + searchBounds);
-  EnemyShieldsSumProc sumProc;
-  sumProc.set(caster);
-  unitStatTotalFinder.forEach(sumProc);
-  return sumProc.getSum();
+  
+  int totalEnemyShields = 0;
+
+  unitStatTotalFinder.forEach([&caster, &totalEnemyShields] (const CUnit *target) {
+    if (target->status & UnitStatus::Invincible)
+      return;
+
+    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+      return;
+
+    if (!units_dat::ShieldsEnabled[target->id])
+      return;
+
+    totalEnemyShields += target->shields / 256;
+  });
+
+  return totalEnemyShields;
 }
 
 int getTotalEnemyEnergyInArea(int x, int y, int searchBounds, const CUnit *caster) {
   unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
                              x + searchBounds, y + searchBounds);
-  EnemyEnergySumProc sumProc;
-  sumProc.set(caster);
-  unitStatTotalFinder.forEach(sumProc);
-  return sumProc.getSum();
+
+  int totalEnemyEnergy = 0;
+
+  unitStatTotalFinder.forEach([&caster, &totalEnemyEnergy] (const CUnit *target) {
+    if (target->status & UnitStatus::Invincible)
+      return;
+
+    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+      return;
+
+    if (!target->isValidCaster())
+      return;
+
+    totalEnemyEnergy += target->energy / 256;
+  });
+
+  return totalEnemyEnergy;
 }
 
 int getTotalEnemyNukeValueInArea(int x, int y, int searchBounds, const CUnit *caster) {
   unitStatTotalFinder.search(x - searchBounds, y - searchBounds,
                              x + searchBounds, y + searchBounds);
-  EnemyNukeValueSumProc sumProc;
-  sumProc.set(caster);
-  unitStatTotalFinder.forEach(sumProc);
-  return sumProc.getSum();
+  
+  int totalNukeTargetValue = 0;
+
+  unitStatTotalFinder.forEach([&caster, &totalNukeTargetValue] (const CUnit *target) {
+    if (target->status & UnitStatus::Invincible)
+      return;
+
+    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+      return;
+
+    if ((units_dat::BaseProperty[target->id] & UnitProperty::Worker)
+        || !(target->status & UnitStatus::IsBuilding))
+      totalNukeTargetValue += getCurrentLifeInGame(target);
+
+    if (units_dat::BaseProperty[target->id] & UnitProperty::Building) {
+      if (target->canDetect()
+          || target->id == UnitId::sunken_colony
+          || target->id == UnitId::lurker)
+        totalNukeTargetValue = 800;  //Any static defense is at least 800 value
+    }
+  });
+
+  return totalNukeTargetValue;
 }
 
 } //AI

@@ -8,7 +8,7 @@ namespace hooks {
 /// This affects CUnit::canDetect().
 /// This overrides the EXE edit settings for Detectors in FireGraft.
 bool unitCanDetectHook(const CUnit *unit) {
-  return Unit::BaseProperty[unit->id] & UnitProperty::Detector
+  return units_dat::BaseProperty[unit->id] & UnitProperty::Detector
          && unit->status & UnitStatus::Completed    // Is completed
          && !unit->isFrozen();
          //&& !unit->isBlind;

@@ -69,7 +69,7 @@ void weaponDamageHook(s32     damage,
                       CUnit*  target,
                       u8      weaponId,
                       CUnit*  attacker,
-                      s8      attackingPlayer,
+                      u8      attackingPlayer,
                       s8      direction,
                       u8      dmgDivisor) {
   //Default StarCraft behavior
@@ -107,11 +107,11 @@ void weaponDamageHook(s32     damage,
     target->reduceDefensiveMatrixHp(d_matrix_reduceAmount);
   }
 
-  const u8 damageType = Weapon::DamageType[weaponId];
+  const u8 damageType = weapons_dat::DamageType[weaponId];
 
   //Reduce Plasma Shields...but not just yet
   s32 shieldReduceAmount = 0;
-  if (Unit::ShieldsEnabled[target->id] && target->shields >= 256) {
+  if (units_dat::ShieldsEnabled[target->id] && target->shields >= 256) {
     if (damageType != DamageType::IgnoreArmor) {
       s32 plasmaShieldUpg = scbw::getUpgradeLevel(target->playerId, UpgradeId::ProtossPlasmaShields) << 8;
       if (damage > plasmaShieldUpg) //Weird logic, Blizzard dev must have been sleepy
@@ -130,7 +130,7 @@ void weaponDamageHook(s32     damage,
   }
 
   //Apply damage type/unit size factor
-  damage = (damage * damageFactor[damageType].unitSizeFactor[Unit::SizeType[target->id]]) >> 8;
+  damage = (damage * damageFactor[damageType].unitSizeFactor[units_dat::SizeType[target->id]]) >> 8;
   if (shieldReduceAmount == 0 && damage < 128)
     damage = 128;
 

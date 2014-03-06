@@ -1,5 +1,6 @@
-#include "../SCBW/api.h"
-#include "../SCBW/enumerations.h"
+#include "weapon_armor_tooltip.h"
+#include <SCBW/api.h>
+#include <SCBW/enumerations/WeaponId.h>
 #include <cstdio>
 
 
@@ -15,22 +16,22 @@ u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
     maxHits = Unit::MaxAirHits[unit->id];
 
   if (maxHits > 1)
-    return maxHits * Weapon::DamageFactor[weaponId];
+    return maxHits * weapons_dat::DamageFactor[weaponId];
 
-  return Weapon::DamageFactor[weaponId];
+  return weapons_dat::DamageFactor[weaponId];
 }
 
 //Returns the C-string for the tooltip text of the unit's weapon icon.
 //This function is used for weapon icons and special icons.
 //Precondition: @p entryStrIndex is a stat_txt.tbl string index.
-const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrIndex) {
+const char* getDamageTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrIndex) {
   const char *entryName = scbw::getStatTxtTblString(entryStrIndex);
   const char *damageStr = scbw::getStatTxtTblString(777);         //"Damage:"
 
   const u8 damageFactor = getDamageFactorForTooltip(weaponId, unit);
-  const u8 upgradeLevel = scbw::getUpgradeLevel(unit->playerId, Weapon::DamageUpgrade[weaponId]);
-  const u16 baseDamage = Weapon::DamageAmount[weaponId] * damageFactor;
-  const u16 bonusDamage = Weapon::DamageBonus[weaponId] * damageFactor * upgradeLevel;
+  const u8 upgradeLevel = scbw::getUpgradeLevel(unit->playerId, weapons_dat::DamageUpgrade[weaponId]);
+  const u16 baseDamage = weapons_dat::DamageAmount[weaponId] * damageFactor;
+  const u16 bonusDamage = weapons_dat::DamageBonus[weaponId] * damageFactor * upgradeLevel;
 
   char damageTypeColor = '\x01'; //Default
   switch (Weapon::DamageType[weaponId]) {
@@ -64,11 +65,11 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
 
   //Display activation range when Spider Mines are selected
   if (weaponId == WeaponId::SpiderMines) {
-    baseRange = Unit::SeekRange[unit->id];
+    baseRange = units_dat::SeekRange[unit->id];
     modifiedRange = unit->getSeekRange();
   }
 
-  const char* baseTooltipStr = getWeaponTooltipString(weaponId, unit, Weapon::Label[weaponId]);
+  const char* baseTooltipStr = getDamageTooltipString(weaponId, unit, Weapon::Label[weaponId]);
   if (baseRange == modifiedRange) {
     sprintf_s(buffer2, sizeof(buffer2), "%s\nRange: %d",
               baseTooltipStr, baseRange);
@@ -85,11 +86,11 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
 const char* getArmorTooltipString(const CUnit *unit) {
   //Default StarCraft behavior
   
-  const u16 labelId = Upgrade::Label[Unit::ArmorUpgrade[unit->id]];
-  const char *armorUpgradeName = scbw::getStatTxtTblString(labelId);
-  const char *armorStr = scbw::getStatTxtTblString(778);          //"Armor:"
+  const u16 labelId = upgrades_dat::Label[units_dat::ArmorUpgrade[unit->id]];
+  const char *armorUpgradeName = (*statTxtTbl)->getString(labelId);
+  const char *armorStr = (*statTxtTbl)->getString(778);         //"Armor:"
 
-  const u8 baseArmor = Unit::ArmorAmount[unit->id];
+  const u8 baseArmor = units_dat::ArmorAmount[unit->id];
   const u8 bonusArmor = unit->getArmorBonus();
 
   if (bonusArmor > 0)
@@ -107,9 +108,9 @@ const char* getArmorTooltipString(const CUnit *unit) {
 const char* getShieldTooltipString(const CUnit *unit) {
   //Default StarCraft behavior
 
-  const u16 labelId = Upgrade::Label[UpgradeId::ProtossPlasmaShields];
-  const char *shieldUpgradeName = scbw::getStatTxtTblString(labelId);
-  const char *shieldStr = scbw::getStatTxtTblString(779);         //"Shields:"
+  const u16 labelId = upgrades_dat::Label[UpgradeId::ProtossPlasmaShields];
+  const char *shieldUpgradeName = (*statTxtTbl)->getString(labelId);
+  const char *shieldStr = (*statTxtTbl)->getString(779);        //"Shields:"
 
   const u8 shieldUpgradeLevel = scbw::getUpgradeLevel(unit->playerId, UpgradeId::ProtossPlasmaShields);
 
@@ -133,9 +134,9 @@ const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
   if (iconUnitId == UnitId::interceptor || iconUnitId == UnitId::scarab) {
     const char *damageTooltipStr;
     if (iconUnitId == UnitId::interceptor)
-      damageTooltipStr = getWeaponTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
+      damageTooltipStr = getDamageTooltipString(WeaponId::PulseCannon, unit, 791);  //"Interceptors"
     else
-      damageTooltipStr = getWeaponTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
+      damageTooltipStr = getDamageTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
     
     //Carriers and Reavers use the Target Seek Range
     const u32 baseRange = Unit::SeekRange[unit->id];
@@ -154,11 +155,11 @@ const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
   }
 
   if (iconUnitId == UnitId::nuclear_missile) {
-    return scbw::getStatTxtTblString(793);  //"Nukes"
+    return (*statTxtTbl)->getString(793);                             //"Nukes"
   }
 
   if (iconUnitId == UnitId::spider_mine) {
-    return getWeaponTooltipString(WeaponId::SpiderMines, unit, 794);  //"Spider Mines"
+    return getDamageTooltipString(WeaponId::SpiderMines, unit, 794);  //"Spider Mines"
   }
 
   //Should never reach here

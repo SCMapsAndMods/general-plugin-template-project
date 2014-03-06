@@ -3,10 +3,8 @@
 
 namespace hooks {
 
-void cloakNearbyUnitsHook(CUnit *unit);
+u8 getArmorBonusHook(const CUnit *unit);
 
-void injectCloakNearbyUnits();
+void injectArmorBonusHook();
 
 } //hooks
-
-

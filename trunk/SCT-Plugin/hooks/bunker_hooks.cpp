@@ -5,7 +5,7 @@
 //Helper function declarations. Do NOT modify!
 namespace {
 
-CThingy* createThingy(u16 spriteId, s16 x, s16 y, s8 playerId = 0);
+CThingy* createThingy(u16 spriteId, s16 x, s16 y, u8 playerId = 0);
 void setImageDirection(CImage *image, s8 direction);
 void setThingyVisibilityFlags(CThingy *thingy);
 
@@ -51,7 +51,7 @@ void createBunkerAttackThingyHook(const CUnit *unit) {
   if (!bunkerAttackEffect) return;
 
   bunkerAttackEffect->sprite->elevationLevel = unit->sprite->elevationLevel + 1;
-  for (CImage *image = bunkerAttackEffect->sprite->imageHead;
+  for (CImage *image = bunkerAttackEffect->sprite->images.head;
        image; image = image->link.next) {
     setImageDirection(image, frameDirection * 32);
   }
@@ -66,7 +66,7 @@ void createBunkerAttackThingyHook(const CUnit *unit) {
 namespace {
 
 const u32 Func_CreateThingy = 0x00488210;
-CThingy* createThingy(u16 spriteId, s16 x, s16 y, s8 playerId) {
+CThingy* createThingy(u16 spriteId, s16 x, s16 y, u8 playerId) {
   static CThingy *thingy;
   s32 x_ = x, playerId_ = playerId;
   u32 spriteId_ = spriteId;
