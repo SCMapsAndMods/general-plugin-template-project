@@ -29,7 +29,7 @@ u8 getSeekRangeHook(const CUnit *unit) {
 
   //Arbiter seek range is unaffected by upgrades / Ocular Implants
   if (unitId == UnitId::arbiter || unitId == UnitId::danimoth)
-    return Unit::SeekRange[unitId];
+    return units_dat::SeekRange[unitId];
 
   u8 bonusAmount = 0;
   switch (unitId) {
@@ -72,7 +72,7 @@ u8 getSeekRangeHook(const CUnit *unit) {
   if (unit->isBlind || unit->subunit && unit->subunit->isBlind)
     bonusAmount += 1;
 
-  return Unit::SeekRange[unitId] + bonusAmount;
+  return units_dat::SeekRange[unitId] + bonusAmount;
 }
 
 /// Returns the modified max range for the weapon, which is assumed to be

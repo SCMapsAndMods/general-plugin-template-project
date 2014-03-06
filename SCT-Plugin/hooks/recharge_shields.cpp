@@ -20,11 +20,11 @@ int getUnitMovementState(const CUnit *unit);
 
 //Custom function
 s32 getRechargeShieldsMax(const CUnit *unit) {
-  using Unit::MaxShieldPoints;
+  using units_dat::MaxShieldPoints;
   return (MaxShieldPoints[unit->id] + std::min<s32>(100, MaxShieldPoints[unit->id])) * 256;
 }
 
-s32 getRechargeShieldsDistance(const CUnit *battery) {
+u32 getRechargeShieldsDistance(const CUnit *battery) {
   if (scbw::getUpgradeLevel(battery->playerId, UPGRADE_PARTICLE_FILTER) > 0)
     return 640; //Increase Recharge Shields distance to 20
   else

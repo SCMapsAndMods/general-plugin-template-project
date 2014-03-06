@@ -12,7 +12,7 @@ CUnit* findBestOpticalFlareTarget(const CUnit *caster, bool isUnderAttack) {
 
   auto opticalFlareTargetFinder = [&caster] (const CUnit *target) -> bool {
     //Cast Ocular Implants only on friendly units
-    if (caster->isTargetEnemy(target))
+    if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
       return false;
 
     if (units_dat::BaseProperty[target->id] & UnitProperty::Building)

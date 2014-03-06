@@ -31,10 +31,10 @@ bool weaponTypeCanMiss(u8 weaponId) {
       || weaponId == WEAPON_CARNIVOROUS_MITES)
     return false;
 
-  if (Weapon::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit
-      || Weapon::Behavior[weaponId] == WeaponBehavior::Bounce
-      || Weapon::Behavior[weaponId] == WeaponBehavior::Fly_DoNotFollowTarget
-      || Weapon::Behavior[weaponId] == WeaponBehavior::Fly_FollowTarget)
+  if (weapons_dat::Behavior[weaponId] == WeaponBehavior::AppearOnTargetUnit
+      || weapons_dat::Behavior[weaponId] == WeaponBehavior::Bounce
+      || weapons_dat::Behavior[weaponId] == WeaponBehavior::Fly_DoNotFollowTarget
+      || weapons_dat::Behavior[weaponId] == WeaponBehavior::Fly_FollowTarget)
     return true;
 
   return false;
@@ -43,7 +43,7 @@ bool weaponTypeCanMiss(u8 weaponId) {
 bool isProtectedByDarkSwarm(const CUnit *target) {
   //Dark Swarm does not protect buildings and air units
   if (target->status & UnitStatus::InAir
-      || Unit::BaseProperty[target->id] & UnitProperty::Building)
+      || units_dat::BaseProperty[target->id] & UnitProperty::Building)
     return false;
   
   return scbw::isUnderDarkSwarm(target);
@@ -140,7 +140,7 @@ void weaponDamageHook(s32     damage,
 
   //Reduce shields (finally)
   if (shieldReduceAmount != 0) {
-    const bool shieldWasOvercharged = (target->shields > (Unit::MaxShieldPoints[target->id] * 256));
+    const bool shieldWasOvercharged = (target->shields > (units_dat::MaxShieldPoints[target->id] * 256));
     target->shields -= shieldReduceAmount;
     if (weaponId != WeaponId::Plague && target->shields != 0)
       createShieldOverlay(target, direction, shieldWasOvercharged);

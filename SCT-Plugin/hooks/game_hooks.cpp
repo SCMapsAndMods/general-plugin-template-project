@@ -8,87 +8,145 @@
 #include <SCBW/UnitFinder.h>
 #include <cstdio>
 
-
-//Custom helper class
-class RepairTargetFinder: public scbw::UnitFinderCallbackMatchInterface {
-  const CUnit *scv;
-  public:
-    void setScv(const CUnit *scv) { this->scv = scv; }
-    bool match(const CUnit *unit) {
-      if (!unit)
-        return false;
-      if (unit->playerId != scv->playerId)
-        return false;
-      if (unit == scv)
-        return false; //Prevent repairing self
-
-      GroupFlag gf = Unit::GroupFlags[unit->id];
-      if (!gf.isTerran || gf.isZerg || gf.isProtoss)
-        return false;
-      
-      if (scv->getDistanceToTarget(unit) > 128) //Repair distance
-        return false;
-
-      if (unit->hitPoints >= Unit::MaxHitPoints[unit->id])
-        return false;
-      if (unit->stasisTimer)
-        return false;
-      if (unit->status & UnitStatus::InTransport)
-        return false;
-      if (!(Unit::BaseProperty[unit->id] & UnitProperty::Mechanical))
-        return false;
-      if (!(unit->status & UnitStatus::Completed))
-        return false;
-      if (!scv->hasPathToUnit(unit))
-        return false;
-
-      return true;
-    }
-};
-
-RepairTargetFinder repairTargetFinder;
-
-class DepotRaiseObstacleFinder: public scbw::UnitFinderCallbackMatchInterface {
-  const CUnit *depot;
-  public:
-    void setDepot(const CUnit *depot) { this->depot = depot; }
-    bool match(const CUnit *unit) {
-      //Check if the unit is a ground unit
-      if (!unit)
-        return false;
-      if (unit == depot)
-        return false;
-      if (unit->status & UnitStatus::InAir)
-        return false;
-      return true;
-    }
-};
-
-DepotRaiseObstacleFinder depotRaiseObstacleFinder;
+//Shared by several functions in here
 scbw::UnitFinder finder;
 
-class AiDepotRaiseConditionChecker: public scbw::UnitFinderCallbackMatchInterface {
-  const CUnit *depot;
-  public:
-    void setDepot(const CUnit *depot) { this->depot = depot; }
-    bool match(const CUnit *unit) {
-      //Check if there is an enemy ground unit nearby
-      if (!unit)
+void scvAutoRepair(CUnit* scv) {
+  auto repairTargetFinder = [&] (const CUnit* unit) -> bool {
+    if (unit->playerId != scv->playerId)
+      return false;
+
+    if (unit->getRace() != RaceId::Terran)
+      return false;
+      
+    if (scv->getDistanceToTarget(unit) > 128) //Repair distance
+      return false;
+
+    if (unit->hitPoints >= units_dat::MaxHitPoints[unit->id])
+      return false;
+
+    if (unit->stasisTimer)
+      return false;
+
+    if (unit->status & UnitStatus::InTransport)
+      return false;
+
+    if (!(units_dat::BaseProperty[unit->id] & UnitProperty::Mechanical))
+      return false;
+
+    if (!(unit->status & UnitStatus::Completed))
+      return false;
+
+    if (!scv->hasPathToUnit(unit))
+      return false;
+
+    return true;
+  };
+
+  const CUnit *repairTarget = scbw::UnitFinder::getNearestTarget(
+    scv->getX() - 200, scv->getY() - 200,
+    scv->getX() + 200, scv->getY() + 200,
+    scv, repairTargetFinder);
+
+  if (repairTarget)
+    scv->orderTo(OrderId::Repair1, repairTarget);
+}
+
+//Order signal: 0x10 denotes "completely lowered" state
+void manageSupplyDepot(CUnit* depot) {
+  //TODO: Add this to GPTP
+  CUnit** const currentIscriptFlingy = (CUnit**) 0x6D11F4;
+  CUnit** const currentIscriptUnit = (CUnit**) 0x6D11FC;
+
+  //If the depot has finished lowering, allow ground units to pass
+  //Placed here so the AI does not go crazy with lower/raise
+  if (depot->orderSignal & 0x10 && !(depot->status & UnitStatus::NoCollide)) {
+    depot->status |= UnitStatus::NoCollide;
+    depot->sprite->elevationLevel = 3;
+  }
+
+  //AI raise/lower behavior
+  if (depot->mainOrderId == units_dat::ComputerIdleOrder[depot->id]
+      && !(depot->status & UnitStatus::NoBrkCodeStart))
+  {
+    finder.search(depot->getLeft()  - 120, depot->getTop()    - 120,
+                  depot->getRight() + 120, depot->getBottom() + 120);
+    
+    //Check if there is an enemy ground unit nearby
+    auto isNearbyEnemyGroundUnit = [&] (const CUnit* unit) -> bool {
+      if (!unit || unit == depot)
         return false;
-      if (unit == depot)
-        return false;
+      
       if (unit->status & UnitStatus::InAir)
         return false;
+
       if (scbw::isAlliedTo(depot->playerId, unit->getLastOwnerId()))
         return false;
       
       return depot->getDistanceToTarget(unit) <= 96;
+    };
+          
+    //Is lowered -> raise
+    if (depot->status & UnitStatus::NoCollide) {
+      if (finder.getFirst(isNearbyEnemyGroundUnit))
+        depot->orderTo(OrderId::Stop);
     }
-} aiDepotRaiseConditionChecker;
+    //Is raised -> lower
+    else {
+      if (!finder.getFirst(isNearbyEnemyGroundUnit))
+        depot->orderTo(OrderId::Stop);
+    }
+  }
 
-//TODO: Add this to GPTP
-CUnit** const currentIscriptFlingy = (CUnit**) 0x6D11F4;
-CUnit** const currentIscriptUnit = (CUnit**) 0x6D11FC;
+  //Lower/raise trigger
+  if (depot->mainOrderId == OrderId::Stop
+      && !(depot->status & UnitStatus::NoBrkCodeStart))
+  {
+    //Erase Stop order (?)
+    depot->orderToIdle();
+
+    //Is lowered -> raise
+    if (depot->status & UnitStatus::NoCollide) {
+      //Check if there is a ground unit on top of the Supply Depot
+      finder.search(depot->getLeft(), depot->getTop(), depot->getRight(), depot->getBottom());
+      
+      auto unitPreventsRaisingDepot = [&] (const CUnit* unit) {
+        return unit && unit != depot && (unit->status & UnitStatus::InAir);
+      };
+
+      if (finder.getFirst(unitPreventsRaisingDepot)) {
+        //Display error message and stop
+        scbw::showErrorMessageWithSfx(depot->playerId, 1572, 2);
+      }
+      else {
+        CUnit* const tempUnit = *currentIscriptUnit;
+        CUnit* const tempFlingy = *currentIscriptFlingy;
+        *currentIscriptUnit = depot;
+        *currentIscriptFlingy = depot;
+        depot->playIscriptAnim(IscriptAnimation::Landing);
+        *currentIscriptUnit = tempUnit;
+        *currentIscriptFlingy = tempFlingy;
+
+        depot->status &= ~(UnitStatus::NoCollide);
+        depot->orderSignal &= ~0x10;
+        depot->sprite->elevationLevel = 4;
+        depot->currentButtonSet = depot->id;
+      }
+    }
+    //Is raised -> lower
+    else {
+      CUnit* const tempUnit = *currentIscriptUnit;
+      CUnit* const tempFlingy = *currentIscriptFlingy;
+      *currentIscriptUnit = depot;
+      *currentIscriptFlingy = depot;
+      depot->playIscriptAnim(IscriptAnimation::LiftOff);
+      *currentIscriptUnit = tempUnit;
+      *currentIscriptFlingy = tempFlingy;
+
+      depot->currentButtonSet = UnitId::UnusedTerran1;  //Buttonset with Raise button
+    }
+  }
+}
 
 namespace hooks {
 
@@ -108,17 +166,8 @@ bool nextFrame() {
       //Write your code here
 
       //Auto-Repair
-      if (unit->id == UnitId::scv && unit->mainOrderId == OrderId::PlayerGuard) {
-        repairTargetFinder.setScv(unit);
-        const CUnit *repairTarget = scbw::UnitFinder::getNearest(
-          unit->getX(), unit->getY(),
-          unit->getX() - 200, unit->getY() - 200,
-          unit->getX() + 200, unit->getY() + 200,
-          repairTargetFinder);
-
-        if (repairTarget)
-          unit->orderTo(OrderId::Repair1, repairTarget);
-      }
+      if (unit->id == UnitId::scv && unit->mainOrderId == OrderId::PlayerGuard)
+        scvAutoRepair(unit);
 
       //Set nexus attack overlay color
       if (unit->id == UnitId::nexus
@@ -130,83 +179,8 @@ bool nextFrame() {
       }
 
       //Lower & raise Supply Depots
-      //Order signal: 0x10 denotes "completely lowered" state
-      if (unit->id == UnitId::supply_depot
-          && unit->status & UnitStatus::Completed)
-      {
-        //Finished lowering, allow ground units to pass
-        //Placed here so the AI does not go crazy with lower/raise
-        if (unit->orderSignal & 0x10 && !(unit->status & UnitStatus::NoCollide)) {
-          unit->status |= UnitStatus::NoCollide;
-          unit->sprite->elevationLevel = 3;
-        }
-
-        //AI raise/lower behavior
-        if (unit->mainOrderId == Unit::ComputerIdleOrder[unit->id]
-            && !(unit->status & UnitStatus::NoBrkCodeStart))
-        {
-          aiDepotRaiseConditionChecker.setDepot(unit);
-          finder.search(unit->getLeft() - 120,  unit->getTop() - 120,
-                        unit->getRight() + 120, unit->getBottom() + 120);
-          
-          //Is lowered -> raise
-          if (unit->status & UnitStatus::NoCollide) {
-            if (finder.getFirst(aiDepotRaiseConditionChecker))
-              unit->orderTo(OrderId::Stop);
-          }
-          //Is raised -> lower
-          else {
-            if (!finder.getFirst(aiDepotRaiseConditionChecker))
-              unit->orderTo(OrderId::Stop);
-          }
-        }
-
-        //Lower/raise trigger
-        if (unit->mainOrderId == OrderId::Stop
-            && !(unit->status & UnitStatus::NoBrkCodeStart))
-        {
-          //Erase Stop order (?)
-          unit->orderToIdle();
-
-          //Is lowered -> raise
-          if (unit->status & UnitStatus::NoCollide) {
-            //Check if there is a ground unit on top of the Supply Depot
-            depotRaiseObstacleFinder.setDepot(unit);
-            finder.search(unit->getLeft(), unit->getTop(), unit->getRight(), unit->getBottom());
-
-            if (finder.getFirst(depotRaiseObstacleFinder)) {
-              //Display error message and stop
-              scbw::showErrorMessageWithSfx(unit->playerId, 1572, 2);
-            }
-            else {
-              CUnit* const tempUnit = *currentIscriptUnit;
-              CUnit* const tempFlingy = *currentIscriptFlingy;
-              *currentIscriptUnit = unit;
-              *currentIscriptFlingy = unit;
-              unit->playIscriptAnim(IscriptAnimation::Landing);
-              *currentIscriptUnit = tempUnit;
-              *currentIscriptFlingy = tempFlingy;
-
-              unit->status &= ~(UnitStatus::NoCollide);
-              unit->orderSignal &= ~0x10;
-              unit->sprite->elevationLevel = 4;
-              unit->currentButtonSet = unit->id;
-            }
-          }
-          //Is raised -> lower
-          else {
-            CUnit* const tempUnit = *currentIscriptUnit;
-            CUnit* const tempFlingy = *currentIscriptFlingy;
-            *currentIscriptUnit = unit;
-            *currentIscriptFlingy = unit;
-            unit->playIscriptAnim(IscriptAnimation::LiftOff);
-            *currentIscriptUnit = tempUnit;
-            *currentIscriptFlingy = tempFlingy;
-
-            unit->currentButtonSet = UnitId::UnusedTerran1; //Buttonset with Raise button
-          }
-        }
-      }
+      if (unit->id == UnitId::supply_depot && unit->status & UnitStatus::Completed)
+        manageSupplyDepot(unit);
     }
 
     for (int i = 0; i < *clientSelectionCount; ++i) {
@@ -215,20 +189,20 @@ bool nextFrame() {
       //Draw attack radius circles for Siege Mode Tanks in current selection
       if (selUnit->id == UnitId::siege_tank_s) {
         graphics::drawCircle(selUnit->getX(), selUnit->getY(),
-          selUnit->getMaxWeaponRange(Unit::GroundWeapon[selUnit->subunit->id]) + 30,
+          selUnit->getMaxWeaponRange(units_dat::GroundWeapon[selUnit->subunit->id]) + 30,
           graphics::TEAL, graphics::ON_MAP);
       }
 
       //Draw attack radius circles for Nexuses
       if (selUnit->id == UnitId::nexus) {
         graphics::drawCircle(selUnit->getX(), selUnit->getY(),
-          selUnit->getMaxWeaponRange(Unit::GroundWeapon[selUnit->id]) + 72,
+          selUnit->getMaxWeaponRange(units_dat::GroundWeapon[selUnit->id]) + 72,
           graphics::CYAN, graphics::ON_MAP);
       }
 
       //Display rally points for factories selected
       if (selUnit->status & UnitStatus::GroundedBuilding
-          && Unit::GroupFlags[selUnit->id].isFactory
+          && units_dat::GroupFlags[selUnit->id].isFactory
           && (selUnit->playerId == *LOCAL_NATION_ID || scbw::isInReplay())) //Show only if unit is your own or the game is in replay mode
       {
         const CUnit *rallyUnit = selUnit->rally.unit;
