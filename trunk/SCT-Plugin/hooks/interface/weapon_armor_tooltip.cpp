@@ -10,10 +10,10 @@ char buffer[128];
 //"Damage Factor" property in weapons.dat.
 u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
   u8 maxHits = 0;
-  if (Unit::GroundWeapon[unit->id] == weaponId)
-    maxHits = Unit::MaxGroundHits[unit->id];
-  else if (Unit::AirWeapon[unit->id] == weaponId)
-    maxHits = Unit::MaxAirHits[unit->id];
+  if (units_dat::GroundWeapon[unit->id] == weaponId)
+    maxHits = units_dat::MaxGroundHits[unit->id];
+  else if (units_dat::AirWeapon[unit->id] == weaponId)
+    maxHits = units_dat::MaxAirHits[unit->id];
 
   if (maxHits > 1)
     return maxHits * weapons_dat::DamageFactor[weaponId];
@@ -25,8 +25,8 @@ u8 getDamageFactorForTooltip(u8 weaponId, const CUnit *unit) {
 //This function is used for weapon icons and special icons.
 //Precondition: @p entryStrIndex is a stat_txt.tbl string index.
 const char* getDamageTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrIndex) {
-  const char *entryName = scbw::getStatTxtTblString(entryStrIndex);
-  const char *damageStr = scbw::getStatTxtTblString(777);         //"Damage:"
+  const char *entryName = (*statTxtTbl)->getString(entryStrIndex);
+  const char *damageStr = (*statTxtTbl)->getString(777);          //"Damage:"
 
   const u8 damageFactor = getDamageFactorForTooltip(weaponId, unit);
   const u8 upgradeLevel = scbw::getUpgradeLevel(unit->playerId, weapons_dat::DamageUpgrade[weaponId]);
@@ -34,7 +34,7 @@ const char* getDamageTooltipString(u8 weaponId, const CUnit *unit, u16 entryStrI
   const u16 bonusDamage = weapons_dat::DamageBonus[weaponId] * damageFactor * upgradeLevel;
 
   char damageTypeColor = '\x01'; //Default
-  switch (Weapon::DamageType[weaponId]) {
+  switch (weapons_dat::DamageType[weaponId]) {
     case DamageType::Independent: //Venomous damage (light green)
       damageTypeColor = '\x07'; break;
     case DamageType::Explosive:   //Explosive damage (P5 orange)
@@ -60,7 +60,7 @@ namespace hooks {
 const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
   static char buffer2[200];
 
-  u32 baseRange = (Weapon::MaxRange[weaponId] + 16) / 32;
+  u32 baseRange = (weapons_dat::MaxRange[weaponId] + 16) / 32;
   u32 modifiedRange = (unit->getMaxWeaponRange(weaponId) + 16) / 32;
 
   //Display activation range when Spider Mines are selected
@@ -69,7 +69,7 @@ const char* getWeaponTooltipString(u8 weaponId, const CUnit *unit) {
     modifiedRange = unit->getSeekRange();
   }
 
-  const char* baseTooltipStr = getDamageTooltipString(weaponId, unit, Weapon::Label[weaponId]);
+  const char* baseTooltipStr = getDamageTooltipString(weaponId, unit, weapons_dat::Label[weaponId]);
   if (baseRange == modifiedRange) {
     sprintf_s(buffer2, sizeof(buffer2), "%s\nRange: %d",
               baseTooltipStr, baseRange);
@@ -139,7 +139,7 @@ const char* getSpecialTooltipString(u16 iconUnitId, const CUnit *unit) {
       damageTooltipStr = getDamageTooltipString(WeaponId::Scarab, unit, 792);       //"Scarabs"
     
     //Carriers and Reavers use the Target Seek Range
-    const u32 baseRange = Unit::SeekRange[unit->id];
+    const u32 baseRange = units_dat::SeekRange[unit->id];
     const u32 modifiedRange = unit->getSeekRange();
 
     if (baseRange == modifiedRange) {

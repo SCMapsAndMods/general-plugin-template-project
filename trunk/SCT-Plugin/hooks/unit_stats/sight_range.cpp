@@ -21,7 +21,7 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
 
   //Upgrades and Ocular Implants do not affect spellcasting range
   if (isForSpellCasting)
-    return Unit::SightRange[unit->id];
+    return units_dat::SightRange[unit->id];
 
   u32 sightRangeBonus = 0;
 
@@ -68,7 +68,7 @@ u32 getSightRangeHook(const CUnit *unit, bool isForSpellCasting) {
   }
 
   //Hard cap
-  return std::min(11u, Unit::SightRange[unit->id] + sightRangeBonus);
+  return std::min(11u, units_dat::SightRange[unit->id] + sightRangeBonus);
 }
 
 } //hooks

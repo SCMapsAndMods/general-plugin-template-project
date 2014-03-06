@@ -9,11 +9,11 @@
 #include "hooks/apply_upgrade_flags.h"
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
-#include "hooks/cloak_tech.h"
-#include "hooks/consume.h"
+//#include "hooks/cloak_tech.h"
+//#include "hooks/consume.h"
 #include "hooks/detector.h"
-#include "hooks/harvest.h"
-#include "hooks/rally_point.h"
+//#include "hooks/harvest.h"
+//#include "hooks/rally_point.h"
 #include "hooks/recharge_shields.h"
 #include "hooks/spider_mine.h"
 #include "hooks/stim_packs.h"
@@ -26,8 +26,8 @@
 #include "hooks/weapon_damage.h"
 #include "hooks/weapon_fire.h"
 
-#include "hooks/unit_destructor_special.h"
-#include "hooks/psi_field.h"
+//#include "hooks/unit_destructor_special.h"
+//#include "hooks/psi_field.h"
 
 #include "hooks/unit_morph.h"
 #include "hooks/building_morph.h"
@@ -62,11 +62,11 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectApplyUpgradeFlags();
   hooks::injectBunkerHooks();
   hooks::injectCloakNearbyUnits();
-  hooks::injectCloakingTechHooks();
-  hooks::injectConsumeHooks();
+//  hooks::injectCloakingTechHooks();
+//  hooks::injectConsumeHooks();
   hooks::injectDetectorHooks();
-  hooks::injectHarvestResource();
-  hooks::injectRallyHooks();
+//  hooks::injectHarvestResource();
+//  hooks::injectRallyHooks();
   hooks::injectRechargeShieldsHooks();
   hooks::injectSpiderMineHooks();
   hooks::injectStimPacksHooks();
@@ -79,8 +79,8 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectWeaponDamageHook();
   hooks::injectWeaponFireHooks();
   
-  hooks::injectUnitDestructorSpecial();
-  hooks::injectPsiFieldHooks();
+//  hooks::injectUnitDestructorSpecial();
+//  hooks::injectPsiFieldHooks();
 
   hooks::injectUnitMorphHooks();
   hooks::injectBuildingMorphHooks();

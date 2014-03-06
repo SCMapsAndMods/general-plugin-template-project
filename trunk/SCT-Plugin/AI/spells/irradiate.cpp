@@ -41,9 +41,11 @@ CUnit* findBestIrradiateTarget(const CUnit *caster, bool isUnderAttack) {
     //if (target->id == UnitId::overlord || target->id == UnitId::medic)
     //  return true;
 
-
-    if (Unit::DestroyScore[target->id] >= 600)
+    if (units_dat::DestroyScore[target->id] >= 600)
       return true;
+
+    return false;
+  };
 
   return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
