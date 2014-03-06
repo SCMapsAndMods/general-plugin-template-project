@@ -169,15 +169,6 @@ bool nextFrame() {
       if (unit->id == UnitId::scv && unit->mainOrderId == OrderId::PlayerGuard)
         scvAutoRepair(unit);
 
-      //Set nexus attack overlay color
-      if (unit->id == UnitId::nexus
-          && scbw::getUpgradeLevel(unit->playerId, UPGRADE_PARTICLE_FILTER))
-      {
-        CImage *nexusAttackOverlay = unit->getOverlay(IMAGE_NEXUS_ATTACK_OVERLAY);
-        if (nexusAttackOverlay)
-          nexusAttackOverlay->setRemapping(ColorRemapping::BFire);
-      }
-
       //Lower & raise Supply Depots
       if (unit->id == UnitId::supply_depot && unit->status & UnitStatus::Completed)
         manageSupplyDepot(unit);
@@ -191,13 +182,6 @@ bool nextFrame() {
         graphics::drawCircle(selUnit->getX(), selUnit->getY(),
           selUnit->getMaxWeaponRange(units_dat::GroundWeapon[selUnit->subunit->id]) + 30,
           graphics::TEAL, graphics::ON_MAP);
-      }
-
-      //Draw attack radius circles for Nexuses
-      if (selUnit->id == UnitId::nexus) {
-        graphics::drawCircle(selUnit->getX(), selUnit->getY(),
-          selUnit->getMaxWeaponRange(units_dat::GroundWeapon[selUnit->id]) + 72,
-          graphics::CYAN, graphics::ON_MAP);
       }
 
       //Display rally points for factories selected

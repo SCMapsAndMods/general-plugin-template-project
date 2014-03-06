@@ -8,6 +8,25 @@
 namespace {
 //Helper function: Returns true if the unit's HP <= 33%.
 static bool unitHpIsInRedZone(const CUnit *unit);
+
+bool canUnitRegenerateHp(const CUnit* unit) {
+  if (units_dat::BaseProperty[unit->id] & UnitProperty::RegeneratesHP)
+    return true;
+
+  if (units_dat::GroupFlags[unit->id].isTerran
+      && units_dat::BaseProperty[unit->id] & UnitProperty::Organic 
+      && !(units_dat::BaseProperty[unit->id] & UnitProperty::Mechanical))
+  {
+    if (scbw::getUpgradeLevel(unit->playerId, UPGRADE_FIRST_AID_PACKS)
+        || units_dat::BaseProperty[unit->id] & UnitProperty::Hero)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 } //unnamed namespace
 
 namespace hooks {
@@ -94,7 +113,7 @@ void updateUnitStateHook(CUnit* unit) {
   //Shield regeneration
   if (units_dat::ShieldsEnabled[unit->id]) {
     s32 maxShields = (s32)(units_dat::MaxShieldPoints[unit->id]) << 8;
-    if (unit->shields != maxShields) {
+    if (unit->shields < maxShields) {
       unit->shields += 7;
       if (unit->shields > maxShields)
         unit->shields = maxShields;
@@ -127,7 +146,7 @@ void updateUnitStateHook(CUnit* unit) {
   //Only for fully-constructed units and buildings
   if (unit->status & UnitStatus::Completed) {
     //HP regeneration
-    if (units_dat::BaseProperty[unit->id] & UnitProperty::RegeneratesHP
+    if (canUnitRegenerateHp(unit)
         && unit->hitPoints > 0
         && unit->hitPoints != units_dat::MaxHitPoints[unit->id])
     {
