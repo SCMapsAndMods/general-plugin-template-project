@@ -3,10 +3,8 @@
 
 namespace hooks {
 
-void cloakNearbyUnitsHook(CUnit *unit);
+void updateUnitStateHook(CUnit* unit);
 
-void injectCloakNearbyUnits();
+void injectUpdateUnitState();
 
 } //hooks
-
-

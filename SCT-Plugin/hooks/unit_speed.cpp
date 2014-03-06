@@ -42,7 +42,7 @@ u32 getModifiedUnitSpeedHook(const CUnit* unit, u32 baseSpeed) {
 /// @return		The modified acceleration value.
 u32 getModifiedUnitAccelerationHook(const CUnit* unit) {
 	//Default StarCraft behavior
-	u32 acceleration = Flingy::Acceleration[Unit::Graphic[unit->id]];
+	u32 acceleration = flingy_dat::Acceleration[units_dat::Graphic[unit->id]];
 	int modifier = (unit->stimTimer ? 1 : 0) - (unit->ensnareTimer ? 1 : 0)
                  + (unit->status & UnitStatus::SpeedUpgrade ? 1 : 0);
 	if (modifier > 0)
@@ -56,7 +56,7 @@ u32 getModifiedUnitAccelerationHook(const CUnit* unit) {
 ///
 /// @return		The modified turning speed value.
 u32 getModifiedUnitTurnSpeedHook(const CUnit* unit) {
-	u32 turnSpeed = Flingy::TurnSpeed[Unit::Graphic[unit->id]];
+	u32 turnSpeed = flingy_dat::TurnSpeed[units_dat::Graphic[unit->id]];
 	int modifier = (unit->stimTimer ? 1 : 0) - (unit->ensnareTimer ? 1 : 0)
                  + (unit->status & UnitStatus::SpeedUpgrade ? 1 : 0);
 	if (modifier > 0)

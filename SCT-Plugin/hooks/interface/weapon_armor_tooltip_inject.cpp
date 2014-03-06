@@ -1,6 +1,6 @@
-#include "unit_tooltip.h"
-#include "../hook_tools.h"
-#include "../SCBW/scbwdata.h"
+#include "weapon_armor_tooltip.h"
+#include <hook_tools.h>
+#include <SCBW/scbwdata.h>
 
 namespace {
 

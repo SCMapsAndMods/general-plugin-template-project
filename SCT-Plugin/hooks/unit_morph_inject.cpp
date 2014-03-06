@@ -46,7 +46,7 @@ void __stdcall unitMorphWrapper_CMDRECV_UnitMorph(u8 *commandData) {
 s32 __fastcall unitMorphWrapper_BTNSCOND_CanBuildUnit(u16 buildUnitId, s32 playerId, const CUnit *unit) {
   if (*clientSelectionCount <= 1
       || hooks::getUnitMorphEggTypeHook(unit->id) != UnitId::None)
-    return unit->canBuild(buildUnitId, playerId);
+    return unit->canMakeUnit(buildUnitId, playerId);
   return 0;
 }
 
@@ -102,7 +102,7 @@ void __declspec(naked) unitMorphWrapper_Orders_Morph1_EggType() {
 
 //-------- hasSuppliesForUnit --------//
 
-Bool32 __stdcall hasSuppliesForUnitWrapper(s8 playerId, u16 unitId, Bool32 canShowErrorMessage) {
+Bool32 __stdcall hasSuppliesForUnitWrapper(u8 playerId, u16 unitId, Bool32 canShowErrorMessage) {
   if (hooks::hasSuppliesForUnitHook(playerId, unitId, canShowErrorMessage != 0))
     return 1;
   else
@@ -165,12 +165,12 @@ void __fastcall cancelUnitWrapper(CUnit *unit) {
     return;
 
   if (unit->status & UnitStatus::GroundedBuilding) {
-    if (Unit::GroupFlags[unit->id].isZerg) {
+    if (unit->getRace() == RaceId::Zerg) {
       cancelZergBuilding(unit);
       return;
     }
-    resources->minerals[unit->playerId] += Unit::MineralCost[unit->id] * 3 / 4;
-    resources->gas[unit->playerId] += Unit::GasCost[unit->id] * 3 / 4;
+    resources->minerals[unit->playerId] += units_dat::MineralCost[unit->id] * 3 / 4;
+    resources->gas[unit->playerId] += units_dat::GasCost[unit->id] * 3 / 4;
   }
   else {
     u16 refundUnitId;
@@ -179,8 +179,8 @@ void __fastcall cancelUnitWrapper(CUnit *unit) {
     else
       refundUnitId = unit->id;
 
-    resources->minerals[unit->playerId] += Unit::MineralCost[refundUnitId];
-    resources->gas[unit->playerId] += Unit::GasCost[refundUnitId];
+    resources->minerals[unit->playerId] += units_dat::MineralCost[refundUnitId];
+    resources->gas[unit->playerId] += units_dat::GasCost[refundUnitId];
   }
 
   u16 cancelChangeUnitId = hooks::getCancelMorphRevertTypeHook(unit);
@@ -200,7 +200,7 @@ void __fastcall cancelUnitWrapper(CUnit *unit) {
     unit->remainingBuildTime = 0;
     unit->buildQueue[unit->buildQueueSlot] = UnitId::None;
     replaceSpriteImages(unit->sprite,
-      Sprite::ImageId[Flingy::SpriteID[Unit::Graphic[unit->displayedUnitId]]], 0);
+      sprites_dat::ImageId[flingy_dat::SpriteID[units_dat::Graphic[unit->displayedUnitId]]], 0);
 
     unit->orderSignal &= ~0x4;
     unit->playIscriptAnim(IscriptAnimation::SpecialState2);
@@ -215,7 +215,7 @@ s32 getRemainingBuildTimePctHook(const CUnit *unit) {
   if (hooks::isEggUnitHook(unitId) || unit->isRemorphingBuilding())
     unitId = unit->buildQueue[unit->buildQueueSlot];
 
-  return 100 * (Unit::TimeCost[unitId] - unit->remainingBuildTime) / Unit::TimeCost[unitId];
+  return 100 * (units_dat::TimeCost[unitId] - unit->remainingBuildTime) / units_dat::TimeCost[unitId];
 }
 
 //Inject @ 0x004669E0

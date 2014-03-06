@@ -1,39 +1,7 @@
-#include "psi_storm.h"
+#include "spells.h"
+#include <AI/ai_common.h>
 
 namespace AI {
-
-class OpticalFlareTargetFinderProc: public scbw::UnitFinderCallbackMatchInterface {
-  private:
-    const CUnit *caster;
-    bool isUnderAttack;
-  public:
-    OpticalFlareTargetFinderProc(const CUnit *caster, bool isUnderAttack)
-      : caster(caster), isUnderAttack(isUnderAttack) {}
-
-    bool match(const CUnit *target) {
-      if (target == caster)
-        return false;
-
-      //Cast Ocular Implants only on friendly units
-      if (!scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
-        return false;
-
-      if (Unit::BaseProperty[target->id] & UnitProperty::Building)
-        return false;
-
-      if (target->isBlind)
-        return false;
-
-      if (target->canDetect())
-        return true;
-
-      //Cast Ocular Implants only on expensive units
-      if (Unit::DestroyScore[target->id] >= 300)
-        return true;
-
-      return false;
-    }
-};
 
 CUnit* findBestOpticalFlareTarget(const CUnit *caster, bool isUnderAttack) {
   int bounds;
@@ -42,10 +10,34 @@ CUnit* findBestOpticalFlareTarget(const CUnit *caster, bool isUnderAttack) {
   else
     bounds = 32 * 32;
 
-  return scbw::UnitFinder::getNearest(caster->getX(), caster->getY(),
+  auto opticalFlareTargetFinder = [&caster] (const CUnit *target) -> bool {
+    //Cast Ocular Implants only on friendly units
+    if (caster->isTargetEnemy(target))
+      return false;
+
+    if (units_dat::BaseProperty[target->id] & UnitProperty::Building)
+      return false;
+
+    if (target->isBlind)
+      return false;
+
+    if (target->canDetect())
+      return true;
+
+    if (getCurrentLifeInGame(target) > 80)
+      return true;
+
+    //Cast Ocular Implants only on expensive units
+    if (units_dat::DestroyScore[target->id] >= 300)
+      return true;
+
+    return false;
+  };
+
+  return scbw::UnitFinder::getNearestTarget(
     caster->getX() - bounds, caster->getY() - bounds,
     caster->getX() + bounds, caster->getY() + bounds,
-    OpticalFlareTargetFinderProc(caster, isUnderAttack));
+    caster, opticalFlareTargetFinder);
 }
 
 } //AI

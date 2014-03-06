@@ -78,6 +78,6 @@ struct CImage {
   CSprite     *parentSprite;
 };
 
-C_ASSERT(sizeof(CImage) == 64);
+static_assert(sizeof(CImage) == 64, "The size of the CImage structure is invalid");
 
 #pragma pack()

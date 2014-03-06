@@ -11,7 +11,6 @@ struct CImage;
 struct CSprite {
 //Utility method definitions added by pastelmind
 
-
   /// Makes the sprite play the specified Iscript animation entry.
   void playIscriptAnim(IscriptAnimation::Enum animation);
 
@@ -44,14 +43,14 @@ struct CSprite {
 
   /// Checks whether this sprite is visible to @p playerId (i.e. not covered by
   /// the fog of war). This does NOT check detectability.
-  bool isVisibleTo(s8 playerId) const;
+  bool isVisibleTo(u8 playerId) const;
 
 ////////////////////////////////////////////////////////////////
 //Actual data structure
 
   /*0x00*/ CLink<CSprite> link;
   /*0x08*/ u16       spriteId;
-  /*0x0A*/ s8        playerId;          // officially "creator"
+  /*0x0A*/ u8        playerId;          // officially "creator"
   /*0x0B*/ u8        selectionIndex;    // 0 <= selectionIndex <= 11. Index in the selection area at bottom of screen.
   /*0x0C*/ u8        visibilityFlags;   // Determines whether the sprite is visible (not hidden by the fog-of-war).
   /*0x0D*/ u8        elevationLevel;
@@ -69,8 +68,7 @@ struct CSprite {
   /*0x10*/ u32       index;
   /*0x14*/ Point16   position;
   /*0x18*/ CImage    *mainGraphic;    // officially "pImagePrimary"
-  /*0x1C*/ CImage    *imageHead;      // officially "pImageHead"
-  /*0x20*/ CImage    *imageTail;      // officially "pImageTail"
+  /*0x1C*/ CList<CImage> images;      // officially "pImageHead" and "pImageTail"
 
   ////////////////////////////////////////////////////////////////////
   // Official Broodwar methods (from beta), ignore these
@@ -80,6 +78,6 @@ struct CSprite {
   */
 };
 
-C_ASSERT(sizeof(CSprite) == 36);
+static_assert(sizeof(CSprite) == 36, "The size of the CSprite structure is invalid");
 
 #pragma pack()

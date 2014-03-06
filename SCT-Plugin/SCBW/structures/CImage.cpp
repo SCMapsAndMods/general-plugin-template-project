@@ -27,11 +27,7 @@ void CImage::free() {
                         this->screenPosition.y + this->grpSize.bottom
                         );
 
-  CSprite* const parent = this->parentSprite;
-  const CListExtern<CImage, &CImage::link>
-    imageList(parent->imageHead, parent->imageTail);
-
-  imageList.unlink(this);
+  this->parentSprite->images.unlink<&CImage::link>(this);
   this->grpOffset = NULL;
 
   unusedImages.insertAfterHead(this);
@@ -48,7 +44,7 @@ void CImage::initializeData(CSprite *parent, u16 imageId, s8 x, s8 y) {
   assert(this);
   this->id = imageId;
   this->grpOffset = imageGrpGraphics[imageId];
-  this->flags = ((Image::IsTurnable[imageId] & 1) << 3) | ((Image::IsClickable[imageId] & 1) << 5);
+  this->flags = ((images_dat::IsTurnable[imageId] & 1) << 3) | ((images_dat::IsClickable[imageId] & 1) << 5);
   this->frameSet = 0;
   this->direction = 0;
   this->frameIndex = 0;
@@ -67,8 +63,8 @@ void CImage::initializeData(CSprite *parent, u16 imageId, s8 x, s8 y) {
   this->animation = 0;
   this->wait = 0;
 
-  if (Image::RLE_Function[imageId] == 14)
+  if (images_dat::RLE_Function[imageId] == 14)
     *(u32*)(&this->coloringData) = parent->playerId;
-  if (Image::RLE_Function[imageId] == 9)
-    this->coloringData = colorShift[Image::Remapping[imageId]].data;
+  if (images_dat::RLE_Function[imageId] == 9)
+    this->coloringData = colorShift[images_dat::Remapping[imageId]].data;
 }

@@ -179,7 +179,7 @@ void zergBuildSelf_UpdateBuildTimerAndHp(CUnit *unit, u16 unitId) {
       unit->remainingBuildTime--;
   }
   if (!hooks::isMorphedBuildingHook(unitId)) {
-    u32 hpGain = unit->buildRepairHPGain;
+    u32 hpGain = unit->buildRepairHpGain;
     if (isOperationCwalEnabled)
       hpGain *= 16;
     unit->setHp(unit->hitPoints + hpGain);

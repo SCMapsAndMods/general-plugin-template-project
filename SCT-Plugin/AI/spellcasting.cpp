@@ -1,29 +1,5 @@
 #include "spellcasting.h"
-
-#include "spells/yamato_gun.h"
-#include "spells/lockdown.h"
-#include "spells/launch_nuke.h"
-#include "spells/emp_shockwave.h"
-#include "spells/defensive_matrix.h"
-#include "spells/irradiate.h"
-#include "spells/restoration.h"
-#include "spells/optical_flare.h"
-
-#include "spells/parasite.h"
-#include "spells/spawn_broodlings.h"
-#include "spells/ensnare.h"
-#include "spells/plague.h"
-#include "spells/dark_swarm.h"
-
-#include "spells/psi_storm.h"
-#include "spells/hallucination.h"
-#include "spells/stasis_field.h"
-#include "spells/recall.h"
-#include "spells/feedback.h"
-#include "spells/mind_control.h"
-#include "spells/maelstrom.h"
-#include "spells/disruption_web.h"
-
+#include "spells/spells.h"
 #include <algorithm>
 
 //-------- Helper function declarations. Do NOT modify! --------//
@@ -32,7 +8,7 @@ namespace {
 bool canCastSpellOrder(const CUnit *unit, u8 techId, u8 orderId);
 bool aiCastSpellOrder(CUnit *unit, CUnit *target, u8 orderId, u8 aiActionFlag = 1);
 u16 getOrderEnergyCost(u8 orderId);
-bool isNukeTimerReady(s8 playerId);
+bool isNukeTimerReady(u8 playerId);
 CUnit* getLoadedSilo(CUnit *ghost);
 
 } //unnamed namespace
@@ -85,7 +61,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
 
         if (aiCastSpellOrder(unit, target, OrderId::NukePaint)) {
           silo->building.silo.nuke->connectedUnit = unit;
-          AIScriptController[unit->playerId].AI_LastNukeTime = *elapsedTime;
+          AIScriptController[unit->playerId].AI_LastNukeTime = *elapsedTimeSeconds;
           return true;
         }
       }
@@ -177,7 +153,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
           return false;
 
         if (aiCastSpellOrder(unit, target, OrderId::SummonBroodlings)) {
-          unit->order(OrderId::Move, unit->getX(), unit->getY(), NULL, UnitId::None, false);
+          unit->order(OrderId::Move, unit->getX(), unit->getY(), nullptr, UnitId::None, false);
           return true;
         }
       }
@@ -368,8 +344,8 @@ namespace {
 //Logically equivalent to function @ 0x004A11E0
 bool canCastSpellOrder(const CUnit *unit, u8 techId, u8 orderId) {
   u16 energyCost = 0;
-  if (Order::TechUsed[orderId] < TechId::None)
-    energyCost = Tech::EnergyCost[Order::TechUsed[orderId]] * 256;
+  if (orders_dat::TechUsed[orderId] < TechId::None)
+    energyCost = techdata_dat::EnergyCost[orders_dat::TechUsed[orderId]] * 256;
 
   if (unit->energy >= energyCost || scbw::isCheatEnabled(CheatFlags::TheGathering))
     return unit->canUseTech(techId, unit->playerId) == 1;
@@ -391,26 +367,23 @@ bool aiCastSpellOrder(CUnit *unit, CUnit *target, u8 orderId, u8 aiActionFlag) {
 
 //Logically equivalent to function @ 0x0049E1C0
 u16 getOrderEnergyCost(u8 orderId) {
-  if (Order::TechUsed[orderId] < TechId::None)
-    return Tech::EnergyCost[Order::TechUsed[orderId]] * 256;
+  if (orders_dat::TechUsed[orderId] < TechId::None)
+    return techdata_dat::EnergyCost[orders_dat::TechUsed[orderId]] * 256;
   else
     return 0;
 }
 
 //Logically equivalent to function @ 0x00446E50
-bool isNukeTimerReady(s8 playerId) {
-  return *elapsedTime >= AIScriptController[playerId].AI_LastNukeTime
-                         + 60 * AIScriptController[playerId].AI_NukeRate;
+bool isNukeTimerReady(u8 playerId) {
+  return *elapsedTimeSeconds >= AIScriptController[playerId].AI_LastNukeTime + 60 * AIScriptController[playerId].AI_NukeRate;
 }
 
 //Based on function @ 0x00463360
 CUnit* getLoadedSilo(CUnit *ghost) {
   for (CUnit *unit = firstPlayerUnit->unit[ghost->playerId];
-       unit; unit = unit->playerNext)
+       unit; unit = unit->player_link.next)
   {
-    if (unit->id == UnitId::nuclear_silo
-        && unit->building.silo.hasNuke)
-    {
+    if (unit->id == UnitId::nuclear_silo && unit->building.silo.isReady) {
       CUnit *nuke = unit->building.silo.nuke;
       if (!nuke->connectedUnit
           || nuke->connectedUnit == ghost
@@ -418,7 +391,7 @@ CUnit* getLoadedSilo(CUnit *ghost) {
         return unit;
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 } //unnamed namespace
