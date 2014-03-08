@@ -10,6 +10,7 @@ There is no need for Microsoft Platform SDK or Windows SDK.
 == Downloading Visual C++ 2010 Express ==
 
 You can download the Visual C++ 2010 Express installer (in the language of your choice) at: http://www.visualstudio.com/downloads/download-visual-studio-vs#DownloadFamilies_4
+
 The Express version can be used without restrictions up to 30 days, after which you need to register (free of charge).
 
 Note that the installer is a stub that downloads the actual install data, and thus requires internet access during the install process.
