@@ -7,40 +7,40 @@ GPTP는 Microsoft Visual C++ 2010이나 그 상위 버전에서 빌드할 수 �
 
 Platform SDK나 Windows SDK는 필요하지 않다.
 
-= Visual C++ 2010 Express 내려받기 =
+== Visual C++ 2010 Express 내려받기 ==
 
 원하는 언어를 선택하여 Visual C++ 2010 Express의 설치 프로그램을 여기에서 받을 수 있다: http://www.visualstudio.com/downloads/download-visual-studio-vs#DownloadFamilies_4
 Express 버전은 최대 30일 동안 아무 제한 없이 쓸 수 있으며, 그 이후에도 계속 사용하려면 무료 등록을 해야 한다.
 
 참고로 설치 과정에서 실제로 설치되는 데이터를 받아야 하기 때문에 설치하려면 인터넷이 연결되어 있어야 한다.
 
-= 설치 과정 =
+== 설치 과정 ==
 
  # 설치 프로그램을 실행한다.
 
-http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/1-begin-ko.png
+ http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/1-begin-ko.png
 
  # 사용 약관을 읽어본다.
 
-http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/2-read-license-ko.png
+ http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/2-read-license-ko.png
 
  # 설치 옵션을 검토한다. GPTP를 사용하는데 SQL Server 2008 Express 서비스 팩은 필요하지 않으니 설치를 빨리 하고 싶으면 선택하지 않아도 상관없다.
 
-http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/3-install-options-ko.png
+ http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/3-install-options-ko.png
 
  # 설치 경로를 확인한다.
 
-http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/4-install-path-ko.png
+ http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/4-install-path-ko.png
 
  # 설치를 시작한다. 인터넷에서 필요한 데이터를 내려받아서 컴퓨터에 설치하게 된다.
 
-http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/5-install-progress-ko.png
+ http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/5-install-progress-ko.png
 
  # 설치를 마쳤다.
 
-http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/6-finish-ko.png
+ http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/6-finish-ko.png
 
-= 마무리 =
+== 마무리 ==
 
 Windows Update를 꼭 실행하여 Visual C++ 2010 Express의 서비스 팩을 설치해야 한다.
 
