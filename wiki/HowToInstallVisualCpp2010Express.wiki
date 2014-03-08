@@ -16,29 +16,12 @@ Note that the installer is a stub that downloads the actual install data, and th
 
 == Install Process ==
 
- # Run the installer.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/1-begin-ko.png
-
- # Read the EULA.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/2-read-license-ko.png
-
- # Check the options page. The SQL Server 2008 Express Service Pack is not necessary for building GPTP, so you can uncheck it to reduce download time and save disk space.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/3-install-options-ko.png
-
- # Check the installation target path.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/4-install-path-ko.png
-
- # Start the download & install process.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/5-install-progress-ko.png
-
- # Wait until the installation finishes.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/6-finish-ko.png
+ # Run the installer.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/1-begin-ko.png<br />
+ # Read the EULA.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/2-read-license-ko.png<br />
+ # Check the options page. The SQL Server 2008 Express Service Pack is not necessary for building GPTP, so you can uncheck it to reduce download time and save disk space.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/3-install-options-ko.png<br />
+ # Check the installation target path.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/4-install-path-ko.png<br />
+ # Start the download & install process.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/5-install-progress-ko.png<br />
+ # Wait until the installation finishes.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/6-finish-ko.png<br />
 
 == Updating Visual C++ 2010 Express ==
 

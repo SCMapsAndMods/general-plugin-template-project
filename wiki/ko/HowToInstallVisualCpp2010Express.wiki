@@ -16,29 +16,12 @@ Express 버전은 최대 30일 동안 아무 제한 없이 쓸 수 있으며, �
 
 == 설치 과정 ==
 
- # 설치 프로그램을 실행한다.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/1-begin-ko.png
-
- # 사용 약관을 읽어본다.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/2-read-license-ko.png
-
- # 설치 옵션을 검토한다. GPTP를 사용하는데 SQL Server 2008 Express 서비스 팩은 필요하지 않으니 설치를 빨리 하고 싶으면 선택하지 않아도 상관없다.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/3-install-options-ko.png
-
- # 설치 경로를 확인한다.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/4-install-path-ko.png
-
- # 설치를 시작한다. 인터넷에서 필요한 데이터를 내려받아서 컴퓨터에 설치하게 된다.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/5-install-progress-ko.png
-
- # 설치를 마쳤다.
-
- http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/6-finish-ko.png
+ # 설치 프로그램을 실행한다.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/1-begin-ko.png<br />
+ # 사용 약관을 읽어본다.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/2-read-license-ko.png<br />
+ # 설치 옵션을 검토한다. GPTP를 사용하는데 SQL Server 2008 Express 서비스 팩은 필요하지 않으니 설치를 빨리 하고 싶으면 선택하지 않아도 상관없다.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/3-install-options-ko.png<br />
+ # 설치 경로를 확인한다.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/4-install-path-ko.png<br />
+ # 설치를 시작한다. 인터넷에서 필요한 데이터를 내려받아서 컴퓨터에 설치하게 된다.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/5-install-progress-ko.png<br />
+ # 설치를 마쳤다.<br />http://gptp.googlecode.com/svn/wiki/images/HowToInstallVisualCpp2010Express/6-finish-ko.png
 
 == 마무리 ==
 
