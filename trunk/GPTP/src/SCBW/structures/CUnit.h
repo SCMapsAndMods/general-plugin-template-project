@@ -297,6 +297,10 @@ struct CUnit: public CUnitLayout {
   /// @return   true if successful, false otherwise.
   bool giveTo(u8 playerId);
 
+  /// Checks if the unit has an associated sprite and is not running the
+  /// OrderId::Die order.
+  bool isDead() const;
+
   /// Checks whether the @p target unit is an enemy of this unit.
   /// Internally, this calls scbw::isUnitEnemy().
   bool isTargetEnemy(const CUnit* target) const;

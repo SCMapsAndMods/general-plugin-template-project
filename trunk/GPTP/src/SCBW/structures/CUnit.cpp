@@ -734,6 +734,12 @@ bool CUnit::giveTo(u8 playerId) {
   return giveUnitToPlayer(this, playerId) != 0;
 }
 
+//Identical to function @ 0x00475A50
+bool CUnit::isDead() const {
+  assert(this);
+  return (!this->sprite) || (this->mainOrderId == OrderId::Die);
+}
+
 bool CUnit::isTargetEnemy(const CUnit* target) const {
   assert(this);
   return scbw::isUnitEnemy(this->playerId, target);
