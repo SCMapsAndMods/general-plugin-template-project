@@ -160,6 +160,37 @@ u32 getGroundHeightAtPos(s32 x, s32 y);
 
 //////////////////////////////////////////////////////////////// @}
 
+/// @name Moving Units
+//////////////////////////////////////////////////////////////// @{
+
+/// Attempts to move the unit to @p (x, y), or to a nearby position if possible.
+///
+/// @return true if successful, false otherwise.
+bool moveUnit(CUnit* unit, s16 x, s16 y);
+
+/// Removes various references to the @p unit.
+/// Details not understood. See the source for moveUnit().
+void prepareUnitMove(CUnit* unit, bool hideUnit = false);
+
+/// Checks whether the given unit overlaps other units, and if so, whether it
+/// can be moved to an unoccupied nearby position. The resulting position is
+/// saved to @p outPos.
+///
+/// @return True if the unit does not collide with other units, or can be moved
+///         to a nearby non-colliding position.
+bool checkUnitCollisionPos(CUnit *unit, const Point16* inPos, Point16* outPos, Box16* moveArea = nullptr, bool hideErrorMsg = false, u32 someFlag = 0);
+
+/// Moves the unit's position to @p (x, y). If the unit is a ground unit and the
+/// the target position is on unwalkable terrain, this function moves the unit
+/// to the nearest walkable tile instead.
+void setUnitPosition(CUnit *unit, u16 x, u16 y);
+
+/// Updates pathing data and various information related to the @p unit.
+/// Details not understood.  See the source for moveUnit().
+void refreshUnitAfterMove(CUnit *unit);
+
+//////////////////////////////////////////////////////////////// @}
+
 /// @name Utility functions
 //////////////////////////////////////////////////////////////// @{
 
