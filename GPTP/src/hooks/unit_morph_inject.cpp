@@ -143,9 +143,7 @@ void replaceSpriteImages(CSprite *sprite, u16 imageId, u8 imageDirection) {
 
 void __fastcall cancelUnitWrapper(CUnit *unit) {
   //Default StarCraft behavior
-  if (!unit->sprite) return;
-
-  if (unit->mainOrderId == OrderId::Die)
+  if (unit->isDead())
     return;
 
   if (unit->status & UnitStatus::Completed)

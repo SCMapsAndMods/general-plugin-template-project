@@ -91,7 +91,7 @@ void __cdecl cloakingTechWrapper_CMDRECV_Cloak() {
 }
 
 void __declspec(naked) cloakingTechWrapper_AI_cloakUnit() {
-  CUnit *unit;
+  static CUnit *unit;
   __asm {
     PUSHAD
     MOV EBP, ESP
@@ -120,7 +120,7 @@ void __cdecl cloakingTechWrapper_CMDRECV_Decloak() {
 //-------- Other wrappers --------//
 
 void __declspec(naked) getCloakingTechWrapper() {
-  CUnit *unit;
+  static CUnit *unit;
   static u8 result;
   __asm {
     PUSHAD
