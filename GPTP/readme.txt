@@ -1,4 +1,4 @@
-General Plugin Template Project v2.4
+General Plugin Template Project v2.41
 
 Created by A_of_s_t
 Modified by RavenWolf and pastelmind
@@ -18,7 +18,7 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 
 2. The hooks/ directory contains many hook functions that control various
    aspects of the StarCraft engine. All hooks are enabled by default, but you
-   disable and remove them by removing the the hooking code in initialize.h.
+   can remove them by deleting the hooking code in initialize.h.
    Most of the time, you will only have to interact with these two files.
 
 3. As before, you can edit the plugin's name and ID in definitions.h.
@@ -34,6 +34,46 @@ Alternatively, visit http://gptp.googlecode.com/ and submit the issue.
 == Changes ==
 
 For the full changelog, see http://code.google.com/p/gptp/wiki/Changelog
+
+v2.41
+ * General
+   + GPTP now supports a basic text file logging mechanism. See logger.h.
+   + A new compile-time macro, countof(), has been added to definitions.h. This
+     retrieves the full length of an array.
+ * API Functions
+   + New functions
+     + CUnit:
+         giveTo(), getFirstLoadedUnit(), getAirWeapon(),
+	 getCurrentShieldsInGame(), isSubunit(), canAttackTarget(),
+	 isTargetEnemy(), isUnitEnemy(), isDead()
+     + API functions:
+         moveUnit(), prepareUnitMove(), checkUnitCollisionPos(),
+	 setUnitPosition(), refreshUnitAfterMove(), setInGameLoopState()
+   * Renamed functions
+     * CUnit::getActiveGroundWeapon() -> CUnit::getGroundWeapon()
+     * AI::unitCanAttack() -> CUnit::hasWeapon()
+     * AI::getCurrentHpInGame() -> CUnit::getCurrentHpInGame()
+     * AI::getMaxHpInGame() -> CUnit::getMaxHpInGame()
+     * AI::getCurrentLifeInGame() -> CUnit::getCurrentLifeInGame()
+   * CUnit::getLastOwnerId() has been deprecated. it will be removed in v2.42.
+ * Data Variables
+   * scbwdata.h has been reorganized and (mostly) properly documented.
+   * The syntax for using statTxtTbl and mapStringTbl has become a bit cleaner.
+     You can use statTxtTbl->getString() instead of (*statTxtTbl)->getString().
+   * Renamed weapons_dat::AttackDirection[] to weapons_dat::AttackAngle[].
+ * Hook modules
+   + Added hooks/attack_priority.cpp. This hook module controls how units
+     find and acquire attackable targets.
+ * Bug fixes
+   * Fixed an off-by-1 bug in CUnit::getIndex().
+   * UnitFinder::search() now also returns units that are dying
+     (i.e. running the OrderId::Die order).
+   * Fix a bug in hooks/cloak_tech_inject.cpp that caused game crash when the AI
+     attempted to cloak its units.
+   * Fixed a bug in AI/spellcasting.cpp that caused Queens to become obsessed
+     with Parasite in UMS maps.
+   * scbw::random() and scbw::randBetween() now works properly in nextFrame(),
+     thanks to scbw::setInGameLoopState().
 
 v2.4
  * General
