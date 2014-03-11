@@ -265,6 +265,15 @@ inline void setLocation(int locNumber, int left, int top, int right, int bottom,
   location->flags = flags;
 }
 
+/// Sets or clears the "is currently inside the game loop" property.
+/// This must be called in nextFrame() to use scbw::random() there.
+inline bool setInGameLoopState(bool newState) {
+  //Identical to function @ 0x004DC540
+  Bool32 previousState = *IS_IN_GAME_LOOP;
+  *IS_IN_GAME_LOOP = (newState ? 1 : 0);
+  return previousState != 0;
+}
+
 //////////////////////////////////////////////////////////////// @}
 
 } //scbw
