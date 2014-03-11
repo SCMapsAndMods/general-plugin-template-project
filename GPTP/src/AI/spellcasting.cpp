@@ -1,6 +1,9 @@
 #include "spellcasting.h"
 #include "spells/spells.h"
 #include <algorithm>
+#include <logger.h>
+
+u8 tempRandomVal;
 
 //-------- Helper function declarations. Do NOT modify! --------//
 namespace {
@@ -145,8 +148,7 @@ bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked) {
 
     case UnitId::queen:
       //Parasite
-      if (isUmsMode(unit->playerId) && scbw::random() % 256 == 1
-          || unit->getMaxEnergy() == unit->energy)
+      if (isUmsMode(unit->playerId) ? scbw::random() % 256 == 1 : unit->getMaxEnergy() == unit->energy)
       {
         if (canCastSpellOrder(unit, TechId::Parasite, OrderId::CastParasite)) {
           CUnit *target = findBestParasiteTarget(unit, isUnitBeingAttacked);
