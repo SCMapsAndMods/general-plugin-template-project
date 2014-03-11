@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A895A127-22E5-4D4D-AA28-099FF7422603}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>GPTP</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;$(ProjectDir)</IncludePath>
+    <TargetExt>.qdp</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;$(ProjectDir)</IncludePath>
+    <TargetExt>.qdp</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GPTP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>$(ProjectDir)plugin.def</ModuleDefinitionFile>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;GPTP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>$(ProjectDir)plugin.def</ModuleDefinitionFile>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AI\ai_common.cpp" />
+    <ClCompile Include="AI\spellcasting.cpp" />
+    <ClCompile Include="AI\spellcasting_inject.cpp" />
+    <ClCompile Include="AI\spells\dark_swarm.cpp" />
+    <ClCompile Include="AI\spells\defensive_matrix.cpp" />
+    <ClCompile Include="AI\spells\disruption_web.cpp" />
+    <ClCompile Include="AI\spells\emp_shockwave.cpp" />
+    <ClCompile Include="AI\spells\ensnare.cpp" />
+    <ClCompile Include="AI\spells\feedback.cpp" />
+    <ClCompile Include="AI\spells\hallucination.cpp" />
+    <ClCompile Include="AI\spells\irradiate.cpp" />
+    <ClCompile Include="AI\spells\launch_nuke.cpp" />
+    <ClCompile Include="AI\spells\lockdown.cpp" />
+    <ClCompile Include="AI\spells\maelstrom.cpp" />
+    <ClCompile Include="AI\spells\mind_control.cpp" />
+    <ClCompile Include="AI\spells\optical_flare.cpp" />
+    <ClCompile Include="AI\spells\parasite.cpp" />
+    <ClCompile Include="AI\spells\plague.cpp" />
+    <ClCompile Include="AI\spells\psi_storm.cpp" />
+    <ClCompile Include="AI\spells\recall.cpp" />
+    <ClCompile Include="AI\spells\restoration.cpp" />
+    <ClCompile Include="AI\spells\spawn_broodlings.cpp" />
+    <ClCompile Include="AI\spells\stasis_field.cpp" />
+    <ClCompile Include="AI\spells\yamato_gun.cpp" />
+    <ClCompile Include="configure.cpp" />
+    <ClCompile Include="graphics\Bitmap.cpp" />
+    <ClCompile Include="graphics\draw_hook.cpp" />
+    <ClCompile Include="graphics\Font.cpp" />
+    <ClCompile Include="graphics\graphics.cpp" />
+    <ClCompile Include="graphics\graphics_errors.cpp" />
+    <ClCompile Include="graphics\Shape.cpp" />
+    <ClCompile Include="hooks\apply_upgrade_flags.cpp" />
+    <ClCompile Include="hooks\apply_upgrade_flags_inject.cpp" />
+    <ClCompile Include="hooks\attack_priority.cpp" />
+    <ClCompile Include="hooks\attack_priority_inject.cpp" />
+    <ClCompile Include="hooks\building_morph.cpp" />
+    <ClCompile Include="hooks\building_morph_inject.cpp" />
+    <ClCompile Include="hooks\bunker_hooks.cpp" />
+    <ClCompile Include="hooks\bunker_hooks_inject.cpp" />
+    <ClCompile Include="hooks\cloak_nearby_units.cpp" />
+    <ClCompile Include="hooks\cloak_nearby_units_inject.cpp" />
+    <ClCompile Include="hooks\cloak_tech.cpp" />
+    <ClCompile Include="hooks\cloak_tech_inject.cpp" />
+    <ClCompile Include="hooks\consume.cpp" />
+    <ClCompile Include="hooks\consume_inject.cpp" />
+    <ClCompile Include="hooks\detector.cpp" />
+    <ClCompile Include="hooks\detector_inject.cpp" />
+    <ClCompile Include="hooks\game_hooks.cpp" />
+    <ClCompile Include="hooks\game_hooks_inject.cpp" />
+    <ClCompile Include="hooks\harvest.cpp" />
+    <ClCompile Include="hooks\harvest_inject.cpp" />
+    <ClCompile Include="hooks\interface\weapon_armor_tooltip.cpp" />
+    <ClCompile Include="hooks\interface\weapon_armor_tooltip_inject.cpp" />
+    <ClCompile Include="hooks\psi_field.cpp" />
+    <ClCompile Include="hooks\psi_field_inject.cpp" />
+    <ClCompile Include="hooks\psi_field_util.cpp" />
+    <ClCompile Include="hooks\rally_point.cpp" />
+    <ClCompile Include="hooks\rally_point_inject.cpp" />
+    <ClCompile Include="hooks\recharge_shields.cpp" />
+    <ClCompile Include="hooks\recharge_shields_inject.cpp" />
+    <ClCompile Include="hooks\spider_mine.cpp" />
+    <ClCompile Include="hooks\spider_mine_inject.cpp" />
+    <ClCompile Include="hooks\stim_packs.cpp" />
+    <ClCompile Include="hooks\stim_packs_inject.cpp" />
+    <ClCompile Include="hooks\tech_target_check.cpp" />
+    <ClCompile Include="hooks\tech_target_check_inject.cpp" />
+    <ClCompile Include="hooks\transfer_tech_upgrades.cpp" />
+    <ClCompile Include="hooks\transfer_tech_upgrades_inject.cpp" />
+    <ClCompile Include="hooks\unit_destructor_special.cpp" />
+    <ClCompile Include="hooks\unit_morph.cpp" />
+    <ClCompile Include="hooks\unit_morph_inject.cpp" />
+    <ClCompile Include="hooks\unit_speed.cpp" />
+    <ClCompile Include="hooks\unit_speed_inject.cpp" />
+    <ClCompile Include="hooks\unit_stats\armor_bonus.cpp" />
+    <ClCompile Include="hooks\unit_stats\armor_bonus_inject.cpp" />
+    <ClCompile Include="hooks\unit_stats\max_energy.cpp" />
+    <ClCompile Include="hooks\unit_stats\max_energy_inject.cpp" />
+    <ClCompile Include="hooks\unit_stats\sight_range.cpp" />
+    <ClCompile Include="hooks\unit_stats\sight_range_inject.cpp" />
+    <ClCompile Include="hooks\unit_stats\weapon_range.cpp" />
+    <ClCompile Include="hooks\unit_stats\weapon_range_inject.cpp" />
+    <ClCompile Include="hooks\update_status_effects.cpp" />
+    <ClCompile Include="hooks\update_status_effects_inject.cpp" />
+    <ClCompile Include="hooks\update_unit_state.cpp" />
+    <ClCompile Include="hooks\update_unit_state_inject.cpp" />
+    <ClCompile Include="hooks\weapon_cooldown.cpp" />
+    <ClCompile Include="hooks\weapon_cooldown_inject.cpp" />
+    <ClCompile Include="hooks\weapon_damage.cpp" />
+    <ClCompile Include="hooks\weapon_damage_inject.cpp" />
+    <ClCompile Include="hooks\weapon_fire.cpp" />
+    <ClCompile Include="hooks\weapon_fire_inject.cpp" />
+    <ClCompile Include="hook_tools.cpp" />
+    <ClCompile Include="initialize.cpp" />
+    <ClCompile Include="logger.cpp" />
+    <ClCompile Include="Plugin.cpp" />
+    <ClCompile Include="plugin_main.cpp" />
+    <ClCompile Include="SCBW\api.cpp" />
+    <ClCompile Include="SCBW\structures\CImage.cpp" />
+    <ClCompile Include="SCBW\structures\CSprite.cpp" />
+    <ClCompile Include="SCBW\structures\CUnit.cpp" />
+    <ClCompile Include="SCBW\UnitFinder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AI\ai_common.h" />
+    <ClInclude Include="ai\spellcasting.h" />
+    <ClInclude Include="AI\spells\spells.h" />
+    <ClInclude Include="definitions.h" />
+    <ClInclude Include="graphics\Bitmap.h" />
+    <ClInclude Include="graphics\draw_hook.h" />
+    <ClInclude Include="graphics\Font.h" />
+    <ClInclude Include="graphics\graphics.h" />
+    <ClInclude Include="graphics\graphics_errors.h" />
+    <ClInclude Include="graphics\graphics_misc.h" />
+    <ClInclude Include="graphics\Shape.h" />
+    <ClInclude Include="hooks\apply_upgrade_flags.h" />
+    <ClInclude Include="hooks\attack_priority.h" />
+    <ClInclude Include="hooks\building_morph.h" />
+    <ClInclude Include="hooks\bunker_hooks.h" />
+    <ClInclude Include="hooks\cloak_nearby_units.h" />
+    <ClInclude Include="hooks\cloak_tech.h" />
+    <ClInclude Include="hooks\consume.h" />
+    <ClInclude Include="hooks\detector.h" />
+    <ClInclude Include="hooks\game_hooks.h" />
+    <ClInclude Include="hooks\harvest.h" />
+    <ClInclude Include="hooks\interface\weapon_armor_tooltip.h" />
+    <ClInclude Include="hooks\psi_field.h" />
+    <ClInclude Include="hooks\rally_point.h" />
+    <ClInclude Include="hooks\recharge_shields.h" />
+    <ClInclude Include="hooks\spider_mine.h" />
+    <ClInclude Include="hooks\stim_packs.h" />
+    <ClInclude Include="hooks\tech_target_check.h" />
+    <ClInclude Include="hooks\transfer_tech_upgrades.h" />
+    <ClInclude Include="hooks\unit_destructor_special.h" />
+    <ClInclude Include="hooks\unit_morph.h" />
+    <ClInclude Include="hooks\unit_speed.h" />
+    <ClInclude Include="hooks\unit_stats\armor_bonus.h" />
+    <ClInclude Include="hooks\unit_stats\max_energy.h" />
+    <ClInclude Include="hooks\unit_stats\sight_range.h" />
+    <ClInclude Include="hooks\unit_stats\weapon_range.h" />
+    <ClInclude Include="hooks\update_status_effects.h" />
+    <ClInclude Include="hooks\update_unit_state.h" />
+    <ClInclude Include="hooks\weapon_cooldown.h" />
+    <ClInclude Include="hooks\weapon_damage.h" />
+    <ClInclude Include="hooks\weapon_fire.h" />
+    <ClInclude Include="hook_tools.h" />
+    <ClInclude Include="logger.h" />
+    <ClInclude Include="MPQDraftPlugin.h" />
+    <ClInclude Include="Plugin.h" />
+    <ClInclude Include="SCBW\api.h" />
+    <ClInclude Include="scbw\enumerations.h" />
+    <ClInclude Include="scbw\enumerations\ImageId.h" />
+    <ClInclude Include="scbw\enumerations\OrderId.h" />
+    <ClInclude Include="scbw\enumerations\TechId.h" />
+    <ClInclude Include="scbw\enumerations\UnitId.h" />
+    <ClInclude Include="scbw\enumerations\UpgradeId.h" />
+    <ClInclude Include="scbw\enumerations\WeaponId.h" />
+    <ClInclude Include="SCBW\ExtendSightLimit.h" />
+    <ClInclude Include="SCBW\scbwdata.h" />
+    <ClInclude Include="scbw\structures.h" />
+    <ClInclude Include="scbw\structures\CBullet.h" />
+    <ClInclude Include="scbw\structures\CImage.h" />
+    <ClInclude Include="scbw\structures\CList.h" />
+    <ClInclude Include="scbw\structures\common.h" />
+    <ClInclude Include="scbw\structures\COrder.h" />
+    <ClInclude Include="scbw\structures\CSprite.h" />
+    <ClInclude Include="scbw\structures\CUnit.h" />
+    <ClInclude Include="SCBW\structures\CUnitLayout.h" />
+    <ClInclude Include="scbw\structures\Layer.h" />
+    <ClInclude Include="scbw\structures\Target.h" />
+    <ClInclude Include="SCBW\UnitFinder.h" />
+    <ClInclude Include="types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="plugin.def" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
