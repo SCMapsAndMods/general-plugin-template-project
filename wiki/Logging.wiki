@@ -4,7 +4,7 @@ Header file: <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/log
 
 = Introduction =
 
-As of v2.41 (not released yet), GPTP provides a tool for writing text to a log file. This is useful when you want to debug your plugin, as conventional testing can be difficult with MPQDraft plugins.
+As of v2.41, GPTP provides a tool for writing text to a log file. This is useful when you want to debug your plugin, as conventional testing can be difficult with MPQDraft plugins.
 
 = Basic Usage =
 
