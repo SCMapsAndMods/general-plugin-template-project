@@ -1,5 +1,38 @@
 #summary Changelog of GPTP
 
+= v2.41 =
+
+== General ==
+ * GPTP now supports a basic text file logging mechanism. See [Logging] for details.
+ * A new compile-time macro, `countof()`, has been added to definitions.h. This retrieves the full length of an array.
+
+== API Functions ==
+ * New functions
+  * `CUnit::giveTo(), CUnit::getFirstLoadedUnit(), CUnit::getAirWeapon(), CUnit::getCurrentShieldsInGame(), CUnit::isSubunit(), CUnit::canAttackTarget(), CUnit::isTargetEnemy(), CUnit::isUnitEnemy(), CUnit::isDead()`
+  * API functions: `scbw::moveUnit(), scbw::prepareUnitMove(), scbw::checkUnitCollisionPos(), scbw::setUnitPosition(), scbw::refreshUnitAfterMove(), scbw::setInGameLoopState()`
+ * Renamed functions
+  * `CUnit::getActiveGroundWeapon() -> CUnit::getGroundWeapon()`
+  * `AI::unitCanAttack() -> CUnit::hasWeapon()`
+  * `AI::getCurrentHpInGame() -> CUnit::getCurrentHpInGame()`
+  * `AI::getMaxHpInGame() -> CUnit::getMaxHpInGame()`
+  * `AI::getCurrentLifeInGame() -> CUnit::getCurrentLifeInGame()`
+ * `CUnit::getLastOwnerId()` has been deprecated. It will be removed in v2.42.
+
+== Data Variables ==
+ * `scbwdata.h` has been reorganized and (mostly) properly documented.
+ * The syntax for using `statTxtTbl` and `mapStringTbl` has become a bit cleaner. You can use `statTxtTbl->getString()` instead of `(*statTxtTbl)->getString()`.
+ * Renamed `weapons_dat::AttackDirection[]` to `weapons_dat::AttackAngle[]`.
+
+== Hook modules ==
+ * Added `hooks/attack_priority.cpp`. This hook module controls how units find and acquire attackable targets.
+
+== Bug fixes ==
+ * Fixed an off-by-1 bug in `CUnit::getIndex()`.
+ * `UnitFinder::search()` now also returns units that are dying (i.e. running the `OrderId::Die` order).
+ * Fix a bug in `hooks/cloak_tech_inject.cpp` that caused game crash when the AI attempted to cloak its units.
+ * Fixed a bug in `AI/spellcasting.cpp` that caused Queens to become obsessed with Parasite in UMS maps.
+ * `scbw::random()` and `scbw::randBetween()` now works properly in `nextFrame()`, thanks to `scbw::setInGameLoopState()`.
+
 = v2.4 =
  * General
   * GPTP has moved to Visual C++ 2010, and now uses several C++11 features, such as lambdas and `static_assert()`. GPTP is now incompatible with Visual C++ 2005/2008. The default project file is created in Visual C++ 2010 Express.
