@@ -1,9 +1,6 @@
 #include "spellcasting.h"
 #include "spells/spells.h"
 #include <algorithm>
-#include <logger.h>
-
-u8 tempRandomVal;
 
 //-------- Helper function declarations. Do NOT modify! --------//
 namespace {
