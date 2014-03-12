@@ -113,7 +113,6 @@
     <ClInclude Include="SCBW\enumerations\UnitId.h" />
     <ClInclude Include="SCBW\enumerations\UpgradeId.h" />
     <ClInclude Include="SCBW\enumerations\WeaponId.h" />
-    <ClInclude Include="SCBW\ExtendSightLimit.h" />
     <ClInclude Include="SCBW\scbwdata.h" />
     <ClInclude Include="SCBW\structures.h" />
     <ClInclude Include="SCBW\structures\CBullet.h" />
