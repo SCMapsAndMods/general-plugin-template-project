@@ -24,19 +24,13 @@ s32 getRechargeShieldsMax(const CUnit *unit) {
   return (MaxShieldPoints[unit->id] + std::min<s32>(100, MaxShieldPoints[unit->id])) * 256;
 }
 
-u32 getRechargeShieldsDistance(const CUnit *battery) {
-  if (scbw::getUpgradeLevel(battery->playerId, UPGRADE_PARTICLE_FILTER) > 0)
-    return 640; //Increase Recharge Shields distance to 20
-  else
-    return 320;
-}
-
 //This function is called every frame when a unit recharges shields.
 void rechargeShieldsProc(CUnit *target, CUnit *battery) {
   using scbw::isCheatEnabled;
   using CheatFlags::TheGathering;
 
-  s32 shieldGain = 1280, energySpent = 256;
+  s32 shieldGain = 1280;
+  s32 energySpent = (target->status & UnitStatus::InAir) ? 1280 : 640;
   const s32 maxShields = getRechargeShieldsMax(target);
 
    if (maxShields - target->shields < shieldGain) {
@@ -116,7 +110,7 @@ void orderRechargeShieldsHook(CUnit *unit) {
     case 1:
       switch (getUnitMovementState(unit)) {
         case 0: //Unit has not reached target yet
-          if (unit->getDistanceToTarget(battery) > getRechargeShieldsDistance(battery))
+          if (unit->getDistanceToTarget(battery) > 640) //20 matrices
             return;
         case 1: //Unit cannot move
           orderToHoldPosition(unit);

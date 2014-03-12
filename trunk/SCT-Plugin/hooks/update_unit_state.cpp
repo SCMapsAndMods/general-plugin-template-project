@@ -79,8 +79,19 @@ void updateUnitEnergy(CUnit *unit) {
       maxEnergy = unit->getMaxEnergy();
 
     if (unit->energy != maxEnergy) {
-      //+25% energy regen if the unit has energy upgrade
-      u16 energy = unit->energy + (maxEnergy == 64000 ? 10 : 8);
+      u16 energyGain = 8;
+
+      if (maxEnergy != 51200) {
+        if (unit->id == UnitId::nexus || unit->id == UnitId::shield_battery) {
+          if (scbw::getUpgradeLevel(unit->playerId, UPGRADE_PARTICLE_FILTER))
+            energyGain = 16;
+        }
+        //+25% energy regen if the unit has energy upgrade
+        else
+          energyGain = 10;
+      }
+
+      u16 energy = unit->energy + energyGain;
       if (energy > maxEnergy)
         energy = maxEnergy;
       unit->energy = energy;
