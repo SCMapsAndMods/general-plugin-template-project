@@ -15,7 +15,7 @@ char ( &_ArraySizeHelper( T (&array)[N] ))[N];
 #define PLUGIN_ID 0x13CE1707
 
 //What is the plugin's name (and version)?
-#define PLUGIN_NAME "SCT Plugin v1.22"
+#define PLUGIN_NAME "SCT Plugin v1.23"
 
 //Custom plugin stuff
 #define UNIT_FIEND              32

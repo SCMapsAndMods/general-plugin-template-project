@@ -55,8 +55,8 @@ void fireWeaponHook(CUnit *unit, u8 weaponId) {
     if (weapons_dat::Behavior[weaponId] == WeaponBehavior::GoToMaxRange
         && unit->orderTarget.unit)
       bulletDirection = scbw::getAngle(
-        unit->orderTarget.unit->getX(), unit->orderTarget.unit->getY(),
-        unit->getX(), unit->getY());
+        unit->getX(), unit->getY(),
+        unit->orderTarget.unit->getX(), unit->orderTarget.unit->getY());
 
     createBullet(weaponId, unit, x, y, unit->playerId, bulletDirection);
   }
