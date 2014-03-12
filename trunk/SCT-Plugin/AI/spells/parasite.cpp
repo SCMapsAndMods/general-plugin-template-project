@@ -37,7 +37,7 @@ CUnit* findBestParasiteTarget(const CUnit *caster, bool isUnderAttack) {
     if (units_dat::BaseProperty[target->id] & UnitProperty::Worker)
       return true;
 
-    if (getCurrentLifeInGame(target) >= 300)
+    if (target->getCurrentLifeInGame() >= 300)
       return true;
 
     return false;

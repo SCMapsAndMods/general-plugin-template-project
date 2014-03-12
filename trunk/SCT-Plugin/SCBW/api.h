@@ -60,8 +60,8 @@ bool isUnderDarkSwarm(const CUnit *unit);
 //////////////////////////////////////////////////////////////// @{
 
 /// Calculates the angle (in binary radians) of the arrow that starts at
-/// (xTail, yTail) and ends at (xHead, yHead).
-s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail);
+/// (xStart, yStart) and ends at (xEnd, yEnd).
+s32 getAngle(s32 xStart, s32 yStart, s32 xEnd, s32 yEnd);
 
 /// StarCraft's internal function used to quickly calculate distances between
 /// two points (x1, y1) and (x2, y2).
@@ -112,6 +112,17 @@ inline bool isAlliedTo(u8 playerA, u8 playerB) {
   return 0 != playerAlliance[playerA].flags[playerB];
 }
 
+/// Checks whether the @p unit is recognized by @p playerId as an enemy.
+/// This will work even when the owner of the @p unit has left the game.
+/// @see CUnit::isTargetEnemy().
+inline bool isUnitEnemy(u8 playerId, const CUnit* unit) {
+  //Identical to function @ 0x0047B740
+  u8 unitOwner = unit->playerId;
+    if (unitOwner == 11)
+      unitOwner = unit->sprite->playerId;
+  return 0 == playerAlliance[playerId].flags[unitOwner];
+}
+
 /// Returns the amount of remaining supply (total available - total used) for
 /// the @p playerId, using @p raceId to determine the appropriate race to use.
 /// This is affected by the "Food For Thought" cheat flag.
@@ -146,6 +157,37 @@ inline ActiveTile& getActiveTileAt(s32 x, s32 y) {
 /// Returns the elevation of the tile at (x, y). 0 for low terrain, 1 for
 /// medium, and 2 for high terrain.
 u32 getGroundHeightAtPos(s32 x, s32 y);
+
+//////////////////////////////////////////////////////////////// @}
+
+/// @name Moving Units
+//////////////////////////////////////////////////////////////// @{
+
+/// Attempts to move the unit to @p (x, y), or to a nearby position if possible.
+///
+/// @return true if successful, false otherwise.
+bool moveUnit(CUnit* unit, s16 x, s16 y);
+
+/// Removes various references to the @p unit.
+/// Details not understood. See the source for moveUnit().
+void prepareUnitMove(CUnit* unit, bool hideUnit = false);
+
+/// Checks whether the given unit overlaps other units, and if so, whether it
+/// can be moved to an unoccupied nearby position. The resulting position is
+/// saved to @p outPos.
+///
+/// @return True if the unit does not collide with other units, or can be moved
+///         to a nearby non-colliding position.
+bool checkUnitCollisionPos(CUnit *unit, const Point16* inPos, Point16* outPos, Box16* moveArea = nullptr, bool hideErrorMsg = false, u32 someFlag = 0);
+
+/// Moves the unit's position to @p (x, y). If the unit is a ground unit and the
+/// the target position is on unwalkable terrain, this function moves the unit
+/// to the nearest walkable tile instead.
+void setUnitPosition(CUnit *unit, u16 x, u16 y);
+
+/// Updates pathing data and various information related to the @p unit.
+/// Details not understood.  See the source for moveUnit().
+void refreshUnitAfterMove(CUnit *unit);
 
 //////////////////////////////////////////////////////////////// @}
 
@@ -221,6 +263,15 @@ inline void setLocation(int locNumber, int left, int top, int right, int bottom,
   location->dimensions.right  = right;
   location->dimensions.bottom = bottom;
   location->flags = flags;
+}
+
+/// Sets or clears the "is currently inside the game loop" property.
+/// This must be called in nextFrame() to use scbw::random() there.
+inline bool setInGameLoopState(bool newState) {
+  //Identical to function @ 0x004DC540
+  Bool32 previousState = *IS_IN_GAME_LOOP;
+  *IS_IN_GAME_LOOP = (newState ? 1 : 0);
+  return previousState != 0;
 }
 
 //////////////////////////////////////////////////////////////// @}

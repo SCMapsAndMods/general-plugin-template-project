@@ -8,8 +8,7 @@ CUnit* findBestYamatoGunTarget(const CUnit *caster, bool isUnderAttack) {
     if (!isTargetWorthHitting(target, caster))
       return false;
 
-    if ((target->status & UnitStatus::GroundedBuilding)
-        && unitCanAttack(target))
+    if ((target->status & UnitStatus::GroundedBuilding) && target->hasWeapon())
       return true;
 
     if (target->id == UnitId::bunker && target->hasLoadedUnit())
@@ -18,7 +17,7 @@ CUnit* findBestYamatoGunTarget(const CUnit *caster, bool isUnderAttack) {
     if (target->id == UnitId::egg)
       return false;
 
-    const int targetLife = getCurrentLifeInGame(target);
+    const int targetLife = target->getCurrentLifeInGame();
     if (200 <= targetLife && targetLife <= 450
         && !(units_dat::BaseProperty[target->id] & UnitProperty::Hero))
       return true;

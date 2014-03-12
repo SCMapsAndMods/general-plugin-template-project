@@ -1,6 +1,7 @@
 #include "game_hooks.h"
 #include <SCBW/api.h>
 #include <hook_tools.h>
+#include <logger.h>
 
 bool isGameOn = false;
 
@@ -14,6 +15,7 @@ void __declspec(naked) onGameStart() { // From BWAPI by Kovarex, slightly modifi
 	{
 		isGameOn = true;
     hooks::gameOn();
+    GPTP::logger.startGame();
 	}
 	__asm {
 		POPAD
@@ -30,6 +32,7 @@ void __declspec(naked) onGameEnd() { // From BWAPI by Kovarex, slightly modified
 	{
 		isGameOn = false;
     hooks::gameEnd();
+    GPTP::logger.endGame();
 	}
 	__asm {
 		POPAD

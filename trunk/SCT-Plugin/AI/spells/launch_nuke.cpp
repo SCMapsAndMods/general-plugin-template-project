@@ -9,7 +9,7 @@ CUnit* findBestNukeLaunchTarget(const CUnit *caster, bool isUnderAttack) {
         && !target->isVisibleTo(caster->playerId))
       return false;
 
-    if (scbw::isAlliedTo(caster->playerId, target->getLastOwnerId()))
+    if (!caster->isTargetEnemy(target))
       return false;
 
     const int totalEnemyClumpValue = getTotalEnemyNukeValueInArea(target->getX(), target->getY(), 192, caster);

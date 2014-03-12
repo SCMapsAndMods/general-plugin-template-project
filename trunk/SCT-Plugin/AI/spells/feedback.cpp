@@ -25,7 +25,7 @@ CUnit* findBestFeedbackTarget(const CUnit *caster, bool isUnderAttack) {
     if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
       return false;
 
-    if (target->energy / 256 >= getCurrentLifeInGame(target))
+    if (target->energy / 256u >= target->getCurrentLifeInGame())
       return true;
 
     return false;

@@ -7,6 +7,7 @@
 #include "graphics/draw_hook.h"
 
 #include "hooks/apply_upgrade_flags.h"
+#include "hooks/attack_priority.h"
 #include "hooks/bunker_hooks.h"
 #include "hooks/cloak_nearby_units.h"
 //#include "hooks/cloak_tech.h"
@@ -60,6 +61,7 @@ BOOL WINAPI Plugin::InitializePlugin(IMPQDraftServer *lpMPQDraftServer) {
   hooks::injectDrawHook();
 
   hooks::injectApplyUpgradeFlags();
+  hooks::injectAttackPriorityHooks();
   hooks::injectBunkerHooks();
   hooks::injectCloakNearbyUnits();
 //  hooks::injectCloakingTechHooks();

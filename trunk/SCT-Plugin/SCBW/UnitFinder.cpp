@@ -40,7 +40,9 @@ UnitFinderData* UnitFinder::getEndY() {
 // The heart and core of StarCraft's unit search engine.
 // Based on BWAPI's Shared/Templates.h
 void UnitFinder::search(int left, int top, int right, int bottom) {
-  bool tempUnitStored[UNIT_ARRAY_LENGTH + 1] = {false};
+  //0: No match, 1: Passed X iteration, 2: Passed Y iteration
+  //(Necessary because each UnitFinderData array has 2 entries per unit)
+  u8 unitSearchFlags[UNIT_ARRAY_LENGTH + 1] = {0};
 
   int r = right, b = bottom;
   const bool isWidthExtended  = right - left - 1 < *MAX_UNIT_WIDTH;
@@ -67,31 +69,30 @@ void UnitFinder::search(int left, int top, int right, int bottom) {
 
   finderVal.position = b;
   UnitFinderData *pBottom = std::lower_bound(pTop, getEndY(), finderVal);
-
-  // Iterate the X entries of the finder
-  for (UnitFinderData *px = pLeft; px < pRight; ++px) {
-    if (!tempUnitStored[px->unitIndex]) {
-      // If width is small, check unit bounds
-      if (!isWidthExtended
-          || CUnit::getFromIndex(px->unitIndex)->getLeft() < right)
-        tempUnitStored[px->unitIndex] = true;
-    }
-  }
-
+  
   // Iterate the Y entries of the finder
-  this->unitCount = 0;
   for (UnitFinderData *py = pTop; py < pBottom; ++py) {
-    if (tempUnitStored[py->unitIndex]) {
-      tempUnitStored[py->unitIndex] = false;  //Prevent duplicates
-
+    if (unitSearchFlags[py->unitIndex] == 0) {
       // If height is small, check unit bounds
       if (!isHeightExtended
           || CUnit::getFromIndex(py->unitIndex)->getTop() < bottom)
+        unitSearchFlags[py->unitIndex] = 1;
+    }
+  }
+
+  // Iterate the X entries of the finder
+  this->unitCount = 0;
+  for (UnitFinderData *px = pLeft; px < pRight; ++px) {
+    if (unitSearchFlags[px->unitIndex] == 1) {
+      // If width is small, check unit bounds
+      if (!isWidthExtended
+          || CUnit::getFromIndex(px->unitIndex)->getLeft() < right)
       {
-        CUnit *unit = CUnit::getFromIndex(py->unitIndex);
-        if (unit && unit->mainOrderId)
+        CUnit *unit = CUnit::getFromIndex(px->unitIndex);
+        if (unit)
           this->units[this->unitCount++] = unit;
-      }
+      }      
+      unitSearchFlags[px->unitIndex] = 0; //Prevent duplicates
     }
   }
 }
