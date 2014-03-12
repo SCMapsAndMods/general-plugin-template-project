@@ -153,6 +153,7 @@ namespace hooks {
 /// This hook is called every frame; most of your plugin's logic goes here.
 bool nextFrame() {
   if (!scbw::isGamePaused()) { //If the game is not paused
+    scbw::setInGameLoopState(true); //Needed for scbw::random() to work
     graphics::resetAllGraphics();
     
     //This block is executed once every game.
@@ -236,6 +237,8 @@ bool nextFrame() {
     //for (BULLET* bullet = *firstBullet; bullet; bullet = bullet->next) {
     //  //Write your code here
     //}
+
+    scbw::setInGameLoopState(false);
   }
   return true;
 }

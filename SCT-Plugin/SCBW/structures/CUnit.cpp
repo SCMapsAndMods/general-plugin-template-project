@@ -21,12 +21,37 @@ bool CUnit::canDetect() const {
   return result != 0;
 }
 
-u8 CUnit::getActiveGroundWeapon() const {
+u32 CUnit::getCurrentHpInGame() const {
+  assert(this);
+  return (this->hitPoints + 255) >> 8;
+}
+
+u32 CUnit::getCurrentShieldsInGame() const {
+  assert(this);
+  return this->shields >> 8;
+}
+
+//Identical to function @ 0x004026D0
+u32 CUnit::getCurrentLifeInGame() const {
+  assert(this);
+  if (units_dat::ShieldsEnabled[this->id])
+    return getCurrentHpInGame() + getCurrentShieldsInGame();
+  else
+    return getCurrentHpInGame();
+};
+
+//Identical to function @ 0x00475AD0
+u8 CUnit::getGroundWeapon() const {
   assert(this);
   if (this->id == UnitId::lurker && !(this->status & UnitStatus::Burrowed))
     return WeaponId::None;
   else
     return units_dat::GroundWeapon[this->id];
+}
+
+u8 CUnit::getAirWeapon() const {
+  assert(this);
+  return units_dat::AirWeapon[this->id];
 }
 
 u8 CUnit::getArmor() const {
@@ -66,6 +91,20 @@ u16 CUnit::getMaxEnergy() const {
   return result;
 }
 
+//Identical to function @ 0x00401400
+u32 CUnit::getMaxHpInGame() const {
+  assert(this);
+  
+  u32 maxHp = units_dat::MaxHitPoints[this->id];
+  if (maxHp == 0) {
+    maxHp = this->getCurrentHpInGame();
+    if (maxHp == 0)
+      maxHp = 1;
+  }
+
+  return maxHp;
+}
+
 extern const u32 Func_GetMaxWeaponRange = 0x00475870;
 u32 CUnit::getMaxWeaponRange(u8 weaponId) const {
   assert(this);
@@ -94,9 +133,9 @@ const char* CUnit::getName(u16 unitId) {
   assert(unitId < UNIT_TYPE_COUNT);
 
   if (units_dat::MapStringId[unitId])
-    return (*mapStringTbl)->getString(units_dat::MapStringId[unitId]);
+    return mapStringTbl->getString(units_dat::MapStringId[unitId]);
   else
-    return (*statTxtTbl)->getString(unitId + 1);
+    return statTxtTbl->getString(unitId + 1);
 }
 
 RaceId::Enum CUnit::getRace() const {
@@ -152,6 +191,33 @@ u32 CUnit::getSightRange(bool isForSpellCasting) const {
   return sightRange;
 }
 
+//Identical to function @ 0x00476180
+bool CUnit::hasWeapon() const {
+  assert(this);
+
+  if (this->getGroundWeapon() != WeaponId::None
+      || this->getAirWeapon() != WeaponId::None)
+    return true;
+
+  if (this->id == UnitId::carrier || this->id == UnitId::gantrithor) {
+    if ((this->carrier.inHangarCount + this->carrier.outHangarCount) > 0)
+      return true;
+  }
+
+  if (this->id == UnitId::reaver || this->id == UnitId::warbringer) {
+    if (this->carrier.inHangarCount > 0)
+      return true;
+  }
+
+  if (this->subunit) {
+    if (this->subunit->getGroundWeapon() != WeaponId::None
+        || this->subunit->getAirWeapon() != WeaponId::None)
+      return true;
+  }
+
+  return false;
+}
+
 //Identical to function @ 0x004020B0
 bool CUnit::isFrozen() const {
   assert(this);
@@ -173,6 +239,11 @@ bool CUnit::isRemorphingBuilding() const {
   }
 
   return result != 0;
+}
+
+//Identical to function @ 0x00401D40
+bool CUnit::isSubunit() const {
+  return (this && units_dat::BaseProperty[this->id] & UnitProperty::Subunit);
 }
 
 //Identical to function @ 0x00401210
@@ -464,7 +535,7 @@ u32 CUnit::getDistanceToTarget(const CUnit *target) const {
   assert(target);
 
   const CUnit *unit = this;
-  if (BaseProperty[this->id] & UnitProperty::Subunit)
+  if (this->isSubunit())
     unit = this->subunit; // Current unit is a turret, so use it's base instead
 
   s32 dx = unit->getLeft() - target->getRight() - 1;
@@ -562,6 +633,27 @@ int CUnit::canUseTech(u8 techId, u8 playerId) const {
 
 //-------- Utility methods --------//
 
+const u32 Func_CanUnitAttackTarget = 0x00476730;
+bool CUnit::canAttackTarget(const CUnit* target, bool checkVisibility) const {
+  assert(this);
+  assert(target);
+
+  u32 _checkVisibility = checkVisibility ? 1 : 0;
+  static u32 result;
+
+  __asm {
+    PUSHAD
+    PUSH _checkVisibility
+    MOV EBX, target
+    MOV ESI, this
+    CALL Func_CanUnitAttackTarget
+    MOV result, EAX
+    POPAD
+  }
+
+  return result != 0;
+}
+
 extern const u32 Func_FireUnitWeapon = 0x00479C90;
 void CUnit::fireWeapon(u8 weaponId) const {
   assert(this);
@@ -582,7 +674,7 @@ CUnit* CUnit::getFromIndex(u16 index) {
 }
 
 u16 CUnit::getIndex() const {
-  return this - unitTable;
+  return this - unitTable + 1;
 }
 
 u8 CUnit::getLastOwnerId() const {
@@ -606,6 +698,19 @@ CUnit* CUnit::getLoadedUnit(int index) const {
   return nullptr;
 }
 
+//Logically equivalent to function @ 0x004E6C90
+CUnit* CUnit::getFirstLoadedUnit() const {
+  assert(this);
+
+  for (int i = 0; i < units_dat::SpaceProvided[this->id]; ++i) {
+    CUnit *firstLoadedUnit = getLoadedUnit(i);
+    if (firstLoadedUnit)
+      return firstLoadedUnit;
+  }
+
+  return nullptr;
+}
+
 //Logically equivalent to function @ 0x004E7110
 bool CUnit::hasLoadedUnit() const {
   assert(this);
@@ -615,6 +720,29 @@ bool CUnit::hasLoadedUnit() const {
       return true;
 
   return false;
+}
+
+namespace {
+typedef u32 (__stdcall *GiveUnitToPlayerFunc)(CUnit *unit, u32 playerId);
+GiveUnitToPlayerFunc const giveUnitToPlayer = (GiveUnitToPlayerFunc) 0x004C8040;
+} //unnamed namespace
+
+bool CUnit::giveTo(u8 playerId) {
+  assert(this);
+  assert(playerId < 12);
+
+  return giveUnitToPlayer(this, playerId) != 0;
+}
+
+//Identical to function @ 0x00475A50
+bool CUnit::isDead() const {
+  assert(this);
+  return (!this->sprite) || (this->mainOrderId == OrderId::Die);
+}
+
+bool CUnit::isTargetEnemy(const CUnit* target) const {
+  assert(this);
+  return scbw::isUnitEnemy(this->playerId, target);
 }
 
 bool CUnit::isVisibleTo(u8 playerId) const {

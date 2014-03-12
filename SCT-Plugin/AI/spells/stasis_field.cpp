@@ -29,7 +29,7 @@ CUnit* findBestStasisFieldTarget(const CUnit *caster, bool isUnderAttack) {
     if (targetOfTarget->playerId >= 8)
       return false;
 
-    if (!scbw::isAlliedTo(caster->playerId, targetOfTarget->getLastOwnerId()))
+    if (caster->isTargetEnemy(targetOfTarget))
       return false;
 
     const int totalEnemyLife = getTotalEnemyLifeInArea(target->getX(), target->getY(), 96, caster, WeaponId::StasisField);

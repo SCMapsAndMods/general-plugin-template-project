@@ -18,7 +18,7 @@ CUnit* findBestRecallTarget(const CUnit *caster, bool isUnderAttack) {
         || target->id == UnitId::gantrithor
         || target->id == UnitId::reaver
         || target->id == UnitId::warbringer) {
-      if (target->shields / 256 <= 10)
+      if (target->getCurrentShieldsInGame() <= 10)
         return true;
     }
 

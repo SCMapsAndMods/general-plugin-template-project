@@ -119,6 +119,8 @@
     <ClCompile Include="graphics\Shape.cpp" />
     <ClCompile Include="hooks\apply_upgrade_flags.cpp" />
     <ClCompile Include="hooks\apply_upgrade_flags_inject.cpp" />
+    <ClCompile Include="hooks\attack_priority.cpp" />
+    <ClCompile Include="hooks\attack_priority_inject.cpp" />
     <ClCompile Include="hooks\building_morph.cpp" />
     <ClCompile Include="hooks\building_morph_inject.cpp" />
     <ClCompile Include="hooks\bunker_hooks.cpp" />
@@ -165,6 +167,7 @@
     <ClCompile Include="hooks\weapon_fire_inject.cpp" />
     <ClCompile Include="hook_tools.cpp" />
     <ClCompile Include="initialize.cpp" />
+    <ClCompile Include="logger.cpp" />
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="plugin_main.cpp" />
     <ClCompile Include="SCBW\api.cpp" />
@@ -186,6 +189,7 @@
     <ClInclude Include="graphics\graphics_misc.h" />
     <ClInclude Include="graphics\Shape.h" />
     <ClInclude Include="hooks\apply_upgrade_flags.h" />
+    <ClInclude Include="hooks\attack_priority.h" />
     <ClInclude Include="hooks\building_morph.h" />
     <ClInclude Include="hooks\bunker_hooks.h" />
     <ClInclude Include="hooks\cloak_nearby_units.h" />
@@ -215,6 +219,7 @@
     <ClInclude Include="hooks\weapon_damage.h" />
     <ClInclude Include="hooks\weapon_fire.h" />
     <ClInclude Include="hook_tools.h" />
+    <ClInclude Include="logger.h" />
     <ClInclude Include="MPQDraftPlugin.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="SCBW\api.h" />

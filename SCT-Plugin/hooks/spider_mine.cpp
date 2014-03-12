@@ -18,8 +18,8 @@ CUnit* findBestSpiderMineTargetHook(const CUnit *spiderMine) {
 
   //Check if @p target is a suitable target for the @p spiderMine.
   auto spiderMineTargetFinder = [&spiderMine] (const CUnit *target) -> bool{
-    //Don't attack allied units
-    if (scbw::isAlliedTo(spiderMine->playerId, target->getLastOwnerId()))
+    //Don't attack friendly / allied units
+    if (!spiderMine->isTargetEnemy(target))
       return false;
 
     //Don't attack invincible units / air units / buildings

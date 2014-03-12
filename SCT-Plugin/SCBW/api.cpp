@@ -167,8 +167,8 @@ int arctangent(int slope) {
 }
 
 //Identical to function @ 0x00495300
-s32 getAngle(s32 xHead, s32 yHead, s32 xTail, s32 yTail) {
-  s32 dx = xHead - xTail, dy = yHead - yTail;
+s32 getAngle(s32 xStart, s32 yStart, s32 xEnd, s32 yEnd) {
+  s32 dx = xEnd - xStart, dy = yEnd - yStart;
   
   if (dx == 0)
     return dy > 0 ? 128 : 0;
@@ -260,6 +260,92 @@ u32 getGroundHeightAtPos(s32 x, s32 y) {
   }
 
   return height;
+}
+
+//-------- Moving Units --------//
+
+bool moveUnit(CUnit* unit, s16 x, s16 y) {
+  Point16 targetPos = {x, y};
+  Point16 actualPos;
+  Point16 prevPos = unit->sprite->position;
+
+  //Based on the code for Recall/Nydus Canal/Move Unit trigger
+  setUnitPosition(unit, x, y);
+  if (checkUnitCollisionPos(unit, &targetPos, &actualPos)) {
+    prepareUnitMove(unit);
+    setUnitPosition(unit, actualPos.x, actualPos.y);
+    refreshUnitAfterMove(unit);
+    return true;
+  }
+  else {
+    setUnitPosition(unit, prevPos.x, prevPos.y);
+    return false;
+  }
+}
+
+const u32 Func_PrepareUnitMoveClearRefs = 0x00493CA0;
+void prepareUnitMove(CUnit *unit, bool hideUnit) {
+  assert(unit);
+
+  static u32 _hideUnit = hideUnit;
+  __asm {
+    PUSHAD
+    PUSH _hideUnit
+    MOV EDI, unit
+    CALL Func_PrepareUnitMoveClearRefs
+    POPAD
+  }
+}
+
+const u32 Func_CheckUnitCollisionPos = 0x0049D3E0;
+bool checkUnitCollisionPos(CUnit *unit, const Point16* inPos, Point16* outPos, Box16* moveArea, bool hideErrorMsg, u32 someFlag) {
+  assert(unit);
+  assert(inPos);
+  assert(outPos);
+
+  static u32 result;
+  static u32 _hideErrorMsg = hideErrorMsg;
+  
+  __asm {
+    PUSHAD
+    PUSH someFlag;
+    PUSH _hideErrorMsg
+    PUSH outPos
+    PUSH inPos
+    PUSH unit
+    MOV EAX, moveArea
+    CALL Func_CheckUnitCollisionPos
+    MOV result, EAX
+    POPAD
+  }
+
+  return result != 0;
+}
+
+const u32 Func_SetUnitPosition = 0x004EB9F0;
+void setUnitPosition(CUnit *unit, u16 x, u16 y) {
+  assert(unit);
+
+  __asm {
+    PUSHAD
+    MOV CX, y
+    MOV AX, x
+    MOV EDX, unit
+    CALL Func_SetUnitPosition
+    POPAD
+  }
+}
+
+const u32 Func_RefreshRevealUnitAfterMove = 0x00494160;
+void refreshUnitAfterMove(CUnit *unit) {
+  assert(unit);
+
+  __asm {
+    PUSHAD
+    MOV EAX, unit
+    CALL Func_RefreshRevealUnitAfterMove
+    POPAD
+  }
 }
 
 //-------- Utility functions --------//

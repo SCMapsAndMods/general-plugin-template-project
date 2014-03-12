@@ -20,7 +20,7 @@ CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
     if (!targetOfTarget || targetOfTarget->playerId >= 8)
       return false;
 
-    if (!scbw::isAlliedTo(caster->playerId, targetOfTarget->getLastOwnerId()))
+    if (caster->isTargetEnemy(targetOfTarget))
       return false;
 
     if (targetOfTarget->subunit)
@@ -29,17 +29,17 @@ CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
     if (targetOfTarget->status & UnitStatus::InAir)
       return false;
 
-    u8 totGroundWeapon = targetOfTarget->getActiveGroundWeapon();
+    u8 totGroundWeapon = targetOfTarget->getGroundWeapon();
     if (totGroundWeapon == WeaponId::None)
       return false;
 
     if (weapons_dat::Behavior[totGroundWeapon] != WeaponBehavior::AppearOnAttacker)
       return false;
 
-    if (target->subunit && (units_dat::BaseProperty[target->subunit->id] & UnitProperty::Subunit))
+    if (target->subunit->isSubunit())
       target = target->subunit;
 
-    u8 targetGroundWeapon = target->getActiveGroundWeapon();
+    u8 targetGroundWeapon = target->getGroundWeapon();
 
     if (targetGroundWeapon == WeaponId::None)
       return false;
