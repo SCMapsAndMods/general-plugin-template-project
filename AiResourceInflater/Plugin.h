@@ -5,6 +5,7 @@
 
 class Plugin: public IMPQDraftPlugin {
   public:
+    //Methods from IMPQDraftPlugin
     BOOL WINAPI Identify(LPDWORD lpdwPluginID);
     BOOL WINAPI GetPluginName(LPSTR lpszPluginName, DWORD nNameBufferLength);
     BOOL WINAPI CanPatchExecutable(LPCSTR lpszEXEFileName);
@@ -14,11 +15,6 @@ class Plugin: public IMPQDraftPlugin {
     BOOL WINAPI InitializePlugin(IMPQDraftServer *lpMPQDraftServer);
     BOOL WINAPI TerminatePlugin();
 
-    unsigned int AI_mineralMined;
-    unsigned int AI_mineralGain;
-    unsigned int AI_gasMined;
-    unsigned int AI_gasGain;
-    unsigned int AI_depletedGasGain;
+    //Custom methods
+    BOOL checkStarCraftExeVersion(LPCSTR exePath) const;
 };
-
-extern Plugin plugin;
