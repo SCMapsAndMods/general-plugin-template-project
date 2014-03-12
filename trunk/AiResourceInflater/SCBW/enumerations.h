@@ -1,6 +1,7 @@
 //All-in-one header file for various enumerations used by GPTP.
 
 #pragma once
+#pragma warning( disable: 4482 )
 
 #include "enumerations/UnitId.h"
 #include "enumerations/WeaponId.h"
@@ -9,12 +10,13 @@
 #include "enumerations/OrderId.h"
 #include "enumerations/ImageId.h"
 
-namespace PlayerRace {
-enum Enum {
+namespace RaceId {
+enum Enum : u8 {
   Zerg    = 0,
   Terran  = 1,
   Protoss = 2,
   Other   = 3,
+  Neutral = 4,
   Select  = 5,
   Random  = 6,
   None    = 7,
@@ -38,7 +40,7 @@ enum Enum {
 };
 }
 
-//Based on BWAPI; for use with Unit::BaseProperty[]
+//Based on BWAPI; for use with units_dat::BaseProperty[]
 namespace UnitProperty {
 enum Enum {
   Building            = 0x00000001,
@@ -86,7 +88,7 @@ enum Enum {
   Burrowed              = 0x00000010,
   InBuilding            = 0x00000020,
   InTransport           = 0x00000040,
-  UNKNOWN1              = 0x00000080,  /**< @todo Unknown */
+  CanBeChased           = 0x00000080,  /**< @todo Unknown */
   RequiresDetection     = 0x00000100,
   Cloaked               = 0x00000200,
   DoodadStatesThing     = 0x00000400,  ///< Unknown. ++protoss unpowered buildings have this flag set
@@ -95,7 +97,7 @@ enum Enum {
   NoBrkCodeStart        = 0x00002000,  /**< Unbreakable code section in iscript */
   UNKNOWN2              = 0x00004000,  /**< @todo Unknown */
   CanNotAttack          = 0x00008000,  /**< @todo Unknown */
-  IsUnit                = 0x00010000,  // canAttack? /**< @todo Unknown */
+  CanTurnAroundToAttack = 0x00010000,  // canAttack? /**< @todo Unknown */
   IsBuilding            = 0x00020000,
   IgnoreTileCollision   = 0x00040000,
   Unmovable             = 0x00080000,
@@ -243,7 +245,7 @@ enum Enum {
 };
 }
 
-//Use with Weapon::ExplosionType[]
+//Use with weapons_dat::ExplosionType[]
 namespace WeaponEffect {
 enum Enum {
   None            = 0,
@@ -274,7 +276,7 @@ enum Enum {
 };
 }
 
-//Use with Weapon::Behavior[]
+//Use with weapons_dat::Behavior[]
 namespace WeaponBehavior {
 enum Enum {
   Fly_DoNotFollowTarget = 0,
@@ -301,5 +303,24 @@ enum Enum {
   Trans50     = 5,  //Special - OwnCloak
   Red_Crash   = 6,
   Green_Crash = 7,
+};
+}
+
+//Compare with (*GAME_TYPE)
+namespace GameType {
+enum Enum {
+  Melee           = 2,
+  FreeForAll      = 3,
+  OneOnOne        = 4,
+  CaptureTheFlag  = 5,
+  Greed           = 6,
+  Slaughter       = 7,
+  SuddenDeath     = 8,
+  Ladder          = 9,
+  UseMapSettings  = 10,
+  TeamMelee       = 11,
+  TeamFreeForAll  = 12,
+  TeamCTF         = 13,
+  TopVsBottom     = 15,
 };
 }

@@ -16,7 +16,7 @@ namespace hooks {
 u8 harvestResourceFrom(CUnit *resource, bool isMineral, CUnit *worker) {
   //If worker is AI-controlled, use separate code
   if (worker->pAI) {
-    const u16 harvestAmount = isMineral ? plugin.AI_mineralMined : plugin.AI_gasMined;
+    const u16 harvestAmount = isMineral ? 8 : 8;  //Amount of resource harvested by AI
 
     if (resource->building.resource.resourceAmount < harvestAmount) {
       if (isMineral) {
@@ -25,7 +25,7 @@ u8 harvestResourceFrom(CUnit *resource, bool isMineral, CUnit *worker) {
       }
       else {
         resource->building.resource.resourceAmount = 0;
-        return plugin.AI_depletedGasGain;
+        return 4; //Amount of gas returned from a depleted geyser (for AI)
       }
     }
     else {
@@ -40,7 +40,7 @@ u8 harvestResourceFrom(CUnit *resource, bool isMineral, CUnit *worker) {
       else if (resource->building.resource.resourceAmount < harvestAmount)
         scbw::showErrorMessageWithSfx(resource->playerId, 875, 20); //Gas depleted message and sound
       
-      return isMineral ? plugin.AI_mineralGain : plugin.AI_gasGain;
+      return isMineral ? 16 : 16; //Amount of resource gained by AI
     }
   }
 
