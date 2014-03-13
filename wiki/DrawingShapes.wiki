@@ -1,0 +1,52 @@
+#summary Tutorial/reference on the GPTP's drawing module
+
+Header file: <tt>[http://code.google.com/p/gptp/source/browse/trunk/GPTP/src/graphics/graphics.h graphics/graphics.h]</tt>
+
+The shape drawing module arrived with GPTP v2.33. It provides functions for drawing basic shapes and text on any part of the in-game screen and map.
+
+To use the drawing module, the `graphics::resetAllGraphics()` function must be called every frame. By default, this is already done in `hooks/game_hooks.cpp`, so you don't have to worry about this.
+
+To use the actual drawing functions in a source file, you must add the following code at the top:
+
+{{{
+#include <graphics/graphics.h>
+}}}
+
+
+<wiki:toc />
+
+= Colors =
+
+All shape-drawing functions (except `drawText()`) take the shape's color as an argument. The list of available colors is defined in `graphics/graphics.h`:
+
+|| *Color name* || Actual Color ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+||  ||  ||
+
+`graphics::drawText() does not take a color as an argument. Instead, it uses the same string color codes used in map editors and TBL files. Use hexadecimal character codes to manually specify text color.
+
+= Positioning =
+
+All drawing functions take a `CoordType` parameter that specifies how the given coordinates are interpreted. For example, when drawing a box at (10, 20):
+
+ * `graphics::ON_SCREEN` places it at (10, 20) relative to the top left corner of the screen. This is the default.
+ * `graphics::ON_MAP` places it at (10, 20) relative to the top left corner of the map.
+ * `graphics::ON_MOUSE` places it at (10, 20) relative to the current mouse position.
+
+Note that all shapes are drawn over the in-game map and units, but not over the in-game console (unit status display and minimap). Overlapping shapes are drawn over the ones created previously, regardless of their positioning.
+
+
+
+
+
+
+= Drawing Function Reference =
