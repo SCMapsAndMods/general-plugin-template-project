@@ -28,6 +28,8 @@ GPTP provides numerous functions and data structures that allow you to control u
  * StructuresAndClasses
  * ApiFunctions
  * DataValues
+ * HookModules
+ * DrawingShapes
  * [Logging]
 
 = Plugin Examples =
@@ -35,3 +37,4 @@ GPTP provides numerous functions and data structures that allow you to control u
 There are some plugin examples available on this wiki.
 
  * HowToMakeTheHardenedShieldsEffect
+ * Tutorial_EnergyConsumingAttacks
