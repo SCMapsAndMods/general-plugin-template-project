@@ -89,7 +89,6 @@ const std::string& getStringFromIndex(int stringIndex) {
 }
 
 int drawAllShapes() {
-  int drawnShapeCount = 0;
   for (int i = 0; i < shapeCount; ++i)
     shapes[i].draw();
   drawErrorMessages();
