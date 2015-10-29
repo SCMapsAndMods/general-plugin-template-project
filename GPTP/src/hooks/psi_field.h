@@ -9,15 +9,15 @@
 
 namespace hooks {
 
-/// Edit these functions in psi_field.cpp.
-bool isReadyToMakePsiField(CUnit *unit);
-bool canMakePsiField(u16 unitId);
+	/// Edit these functions in psi_field.cpp.
+	bool isReadyToMakePsiField(CUnit *unit);
+	bool canMakePsiField(u16 unitId);
 
-/// This function must be called once per frame in nextFrame().
-/// This uses canMakePsiField() and isReadyToMakePsiField() internally.
-void updatePsiFieldProviders();
+	/// This function must be called once per frame in nextFrame().
+	/// This uses canMakePsiField() and isReadyToMakePsiField() internally.
+	void updatePsiFieldProviders();
 
-//Call this in initialize.h.
-void injectPsiFieldHooks();
+	//Call this in initialize.h.
+	void injectPsiFieldHooks();
 
 } //hooks

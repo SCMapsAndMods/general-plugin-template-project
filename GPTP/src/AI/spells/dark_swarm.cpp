@@ -3,82 +3,82 @@
 
 namespace AI {
 
-CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
-  int bounds;
-  if (isUnderAttack)
-    bounds = 32 * 9;
-  else if (isUmsMode(caster->playerId))
-    bounds = 32 * 64;
-  else
-    bounds = 32 * 32;
+	CUnit* findBestDarkSwarmTarget(const CUnit *caster, bool isUnderAttack) {
+		int bounds;
+		if (isUnderAttack)
+			bounds = 32 * 9;
+		else if (isUmsMode(caster->playerId))
+			bounds = 32 * 64;
+		else
+			bounds = 32 * 32;
 
-  auto darkSwarmTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (!isTargetWorthHitting(target, caster))
-      return false;
+		auto darkSwarmTargetFinder = [&caster](const CUnit *target) -> bool {
+			if (!isTargetWorthHitting(target, caster))
+				return false;
 
-    CUnit *targetOfTarget = target->orderTarget.unit;
-    if (!targetOfTarget || targetOfTarget->playerId >= 8)
-      return false;
+			CUnit *targetOfTarget = target->orderTarget.unit;
+			if (!targetOfTarget || targetOfTarget->playerId >= 8)
+				return false;
 
-    if (caster->isTargetEnemy(targetOfTarget))
-      return false;
+			if (caster->isTargetEnemy(targetOfTarget))
+				return false;
 
-    if (targetOfTarget->subunit)
-      return false;
-      
-    if (targetOfTarget->status & UnitStatus::InAir)
-      return false;
+			if (targetOfTarget->subunit)
+				return false;
 
-    u8 totGroundWeapon = targetOfTarget->getGroundWeapon();
-    if (totGroundWeapon == WeaponId::None)
-      return false;
+			if (targetOfTarget->status & UnitStatus::InAir)
+				return false;
 
-    if (weapons_dat::Behavior[totGroundWeapon] != WeaponBehavior::AppearOnAttacker)
-      return false;
+			u8 totGroundWeapon = targetOfTarget->getGroundWeapon();
+			if (totGroundWeapon == WeaponId::None)
+				return false;
 
-    if (target->subunit->isSubunit())
-      target = target->subunit;
+			if (weapons_dat::Behavior[totGroundWeapon] != WeaponBehavior::AppearOnAttacker)
+				return false;
 
-    u8 targetGroundWeapon = target->getGroundWeapon();
+			if (target->subunit->isSubunit())
+				target = target->subunit;
 
-    if (targetGroundWeapon == WeaponId::None)
-      return false;
+			u8 targetGroundWeapon = target->getGroundWeapon();
 
-    switch (weapons_dat::Behavior[targetGroundWeapon]) {
-      case WeaponBehavior::Fly_DoNotFollowTarget:
-      case WeaponBehavior::Fly_FollowTarget:
-      case WeaponBehavior::AppearOnTargetUnit:
-      case WeaponBehavior::AppearOnTargetSite:
-      case WeaponBehavior::Bounce:
-        if (!(targetOfTarget->status & UnitStatus::InAir)
-            && !(units_dat::BaseProperty[targetOfTarget->id] & UnitProperty::Building)
-            && scbw::isUnderDarkSwarm(targetOfTarget))
-          return true;
+			if (targetGroundWeapon == WeaponId::None)
+				return false;
 
-        if (scbw::getActiveTileAt(targetOfTarget->getX(), targetOfTarget->getY()).hasDoodadCover)
-          return true;
+			switch (weapons_dat::Behavior[targetGroundWeapon]) {
+			case WeaponBehavior::Fly_DoNotFollowTarget:
+			case WeaponBehavior::Fly_FollowTarget:
+			case WeaponBehavior::AppearOnTargetUnit:
+			case WeaponBehavior::AppearOnTargetSite:
+			case WeaponBehavior::Bounce:
+				if (!(targetOfTarget->status & UnitStatus::InAir)
+					&& !(units_dat::BaseProperty[targetOfTarget->id] & UnitProperty::Building)
+					&& scbw::isUnderDarkSwarm(targetOfTarget))
+					return true;
 
-        if (!(targetOfTarget->status & UnitStatus::InAir || target->status & UnitStatus::InAir))
-        {
-          u32 targGndHeight = scbw::getGroundHeightAtPos(target->getX(), target->getY());
-          u32 totGndHeight = scbw::getGroundHeightAtPos(targetOfTarget->getX(), targetOfTarget->getY());
-          if (targGndHeight < totGndHeight)
-            return true;
-        }
-      default:
-        return false;
-    }
-  };
+				if (scbw::getActiveTileAt(targetOfTarget->getX(), targetOfTarget->getY()).hasDoodadCover)
+					return true;
 
-  CUnit *result = scbw::UnitFinder::getNearestTarget(
-    caster->getX() - bounds, caster->getY() - bounds,
-    caster->getX() + bounds, caster->getY() + bounds,
-    caster, darkSwarmTargetFinder);
+				if (!(targetOfTarget->status & UnitStatus::InAir || target->status & UnitStatus::InAir))
+				{
+					u32 targGndHeight = scbw::getGroundHeightAtPos(target->getX(), target->getY());
+					u32 totGndHeight = scbw::getGroundHeightAtPos(targetOfTarget->getX(), targetOfTarget->getY());
+					if (targGndHeight < totGndHeight)
+						return true;
+				}
+			default:
+				return false;
+			}
+		};
 
-  if (result && (result->status & UnitStatus::InAir))
-    result = result->orderTarget.unit;
+		CUnit *result = scbw::UnitFinder::getNearestTarget(
+			caster->getX() - bounds, caster->getY() - bounds,
+			caster->getX() + bounds, caster->getY() + bounds,
+			caster, darkSwarmTargetFinder);
 
-  return result;
-}
+		if (result && (result->status & UnitStatus::InAir))
+			result = result->orderTarget.unit;
+
+		return result;
+	}
 
 } //AI

@@ -3,11 +3,11 @@
 
 namespace hooks {
 
-void updateStatusEffectsHook(CUnit *unit);
+	void updateStatusEffectsHook(CUnit *unit);
 
-void injectUpdateStatusEffects();
+	void injectUpdateStatusEffects();
 
-//Wrapper for native version of updateStatusEffects()
-void updateStatusEffects(CUnit *unit);
+	//Wrapper for native version of updateStatusEffects()
+	void updateStatusEffects(CUnit *unit);
 
 } //hooks

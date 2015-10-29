@@ -3,59 +3,59 @@
 
 namespace AI {
 
-CUnit* findBestEmpShockwaveTarget(const CUnit *caster, bool isUnderAttack) {
-  int bounds;
-  if (isUnderAttack)
-    bounds = 32 * 9;
-  else
-    bounds = 32 * 64;
+	CUnit* findBestEmpShockwaveTarget(const CUnit *caster, bool isUnderAttack) {
+		int bounds;
+		if (isUnderAttack)
+			bounds = 32 * 9;
+		else
+			bounds = 32 * 64;
 
-  auto empShieldTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (!isTargetWorthHitting(target, caster))
-      return false;
+		auto empShieldTargetFinder = [&caster](const CUnit *target) -> bool {
+			if (!isTargetWorthHitting(target, caster))
+				return false;
 
-    if (!units_dat::ShieldsEnabled[target->id])
-      return false;
+			if (!units_dat::ShieldsEnabled[target->id])
+				return false;
 
-    if (!scbw::canWeaponTargetUnit(WeaponId::EMP_Shockwave, target, caster))
-      return false;
+			if (!scbw::canWeaponTargetUnit(WeaponId::EMP_Shockwave, target, caster))
+				return false;
 
-    const int totalEnemyShields = getTotalEnemyShieldsInArea(target->getX(), target->getY(), 160, caster);
-    if (totalEnemyShields >= 200)
-      return true;
+			const int totalEnemyShields = getTotalEnemyShieldsInArea(target->getX(), target->getY(), 160, caster);
+			if (totalEnemyShields >= 200)
+				return true;
 
-    return false;
-  };
+			return false;
+		};
 
-  CUnit *result = scbw::UnitFinder::getNearestTarget(
-    caster->getX() - bounds, caster->getY() - bounds,
-    caster->getX() + bounds, caster->getY() + bounds,
-    caster, empShieldTargetFinder);
+		CUnit *result = scbw::UnitFinder::getNearestTarget(
+			caster->getX() - bounds, caster->getY() - bounds,
+			caster->getX() + bounds, caster->getY() + bounds,
+			caster, empShieldTargetFinder);
 
-  if (result || isUnderAttack)
-    return result;
-  
-  auto empEnergyTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (!isTargetWorthHitting(target, caster))
-      return false;
+		if (result || isUnderAttack)
+			return result;
 
-    if (!target->isValidCaster())
-      return false;
+		auto empEnergyTargetFinder = [&caster](const CUnit *target) -> bool {
+			if (!isTargetWorthHitting(target, caster))
+				return false;
 
-    if (!scbw::canWeaponTargetUnit(WeaponId::EMP_Shockwave, target, caster))
-      return false;
+			if (!target->isValidCaster())
+				return false;
 
-    const int totalEnemyEnergy = getTotalEnemyEnergyInArea(target->getX(), target->getY(), 160, caster);
-    if (totalEnemyEnergy >= 200)
-      return true;
+			if (!scbw::canWeaponTargetUnit(WeaponId::EMP_Shockwave, target, caster))
+				return false;
 
-    return false;
-  };
+			const int totalEnemyEnergy = getTotalEnemyEnergyInArea(target->getX(), target->getY(), 160, caster);
+			if (totalEnemyEnergy >= 200)
+				return true;
 
-  return scbw::UnitFinder::getNearestTarget(
-    caster->getX() - bounds, caster->getY() - bounds,
-    caster->getX() + bounds, caster->getY() + bounds,
-    caster, empEnergyTargetFinder);
-}
+			return false;
+		};
+
+		return scbw::UnitFinder::getNearestTarget(
+			caster->getX() - bounds, caster->getY() - bounds,
+			caster->getX() + bounds, caster->getY() + bounds,
+			caster, empEnergyTargetFinder);
+	}
 
 } //AI

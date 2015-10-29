@@ -25,146 +25,146 @@ Wraiths use "Can Cloak" and Infested Kerrigan uses "Can Cloak - Mixed")
 
 namespace {
 
-//-------- Button conditions --------//
+	//-------- Button conditions --------//
 
-Bool32 __fastcall cloakingTechWrapper_IsCloaked(u32 _unused, s32 playerId) {
-  for (int i = 0; i < 12; ++i) {
-    CUnit *unit = clientSelectionGroup->unit[i];
-    if (unit != NULL) {
-      if (unit->canUseTech(hooks::getCloakingTech(unit), playerId) != 1)
-        return false;
+	Bool32 __fastcall cloakingTechWrapper_IsCloaked(u32 _unused, s32 playerId) {
+		for (int i = 0; i < 12; ++i) {
+			CUnit *unit = clientSelectionGroup->unit[i];
+			if (unit != NULL) {
+				if (unit->canUseTech(hooks::getCloakingTech(unit), playerId) != 1)
+					return false;
 
-      if (unit->status & UnitStatus::CloakingForFree
-        && !(unit->status & UnitStatus::Burrowed))
-        return false;
+				if (unit->status & UnitStatus::CloakingForFree
+					&& !(unit->status & UnitStatus::Burrowed))
+					return false;
 
-      if (!(unit->status & UnitStatus::RequiresDetection))
-        return false;
-    }
-  }
+				if (!(unit->status & UnitStatus::RequiresDetection))
+					return false;
+			}
+		}
 
-  return true;
-}
+		return true;
+	}
 
-Bool32 __fastcall cloakingTechWrapper_CanCloak(u32 _unused, s32 playerId) {
-  for (int i = 0; i < 12; ++i) {
-    CUnit *unit = clientSelectionGroup->unit[i];
-    if (unit != NULL) {
-      if (unit->canUseTech(hooks::getCloakingTech(unit), playerId) != 1)
-        continue;
+	Bool32 __fastcall cloakingTechWrapper_CanCloak(u32 _unused, s32 playerId) {
+		for (int i = 0; i < 12; ++i) {
+			CUnit *unit = clientSelectionGroup->unit[i];
+			if (unit != NULL) {
+				if (unit->canUseTech(hooks::getCloakingTech(unit), playerId) != 1)
+					continue;
 
-      if (unit->status & UnitStatus::CloakingForFree
-          && !(unit->status & UnitStatus::Burrowed))
-        continue;
+				if (unit->status & UnitStatus::CloakingForFree
+					&& !(unit->status & UnitStatus::Burrowed))
+					continue;
 
-      if (unit->status & UnitStatus::RequiresDetection)
-        continue;
+				if (unit->status & UnitStatus::RequiresDetection)
+					continue;
 
-      return true;
-    }
-  }
+				return true;
+			}
+		}
 
-  return false;
-}
+		return false;
+	}
 
-//-------- Actual cloak orders --------//
+	//-------- Actual cloak orders --------//
 
-void applyCloakingOrderHook(CUnit *unit) {
-  if (unit->status & UnitStatus::RequiresDetection)
-    return;
+	void applyCloakingOrderHook(CUnit *unit) {
+		if (unit->status & UnitStatus::RequiresDetection)
+			return;
 
-  const u16 energyCost = techdata_dat::EnergyCost[hooks::getCloakingTech(unit)] * 256;
-  if (scbw::isCheatEnabled(CheatFlags::TheGathering) || unit->energy >= energyCost) {
-    if (!scbw::isCheatEnabled(CheatFlags::TheGathering))
-      unit->energy -= energyCost;
+		const u16 energyCost = techdata_dat::EnergyCost[hooks::getCloakingTech(unit)] * 256;
+		if (scbw::isCheatEnabled(CheatFlags::TheGathering) || unit->energy >= energyCost) {
+			if (!scbw::isCheatEnabled(CheatFlags::TheGathering))
+				unit->energy -= energyCost;
 
-    unit->setSecondaryOrder(OrderId::Cloak);
-  }
-}
+			unit->setSecondaryOrder(OrderId::Cloak);
+		}
+	}
 
-void __cdecl cloakingTechWrapper_CMDRECV_Cloak() {
-  *selectionIndexStart = 0;  
-  while (CUnit *unit = getActivePlayerNextSelection()) {
-    if (unit->canUseTech(hooks::getCloakingTech(unit), *ACTIVE_NATION_ID) == 1)
-      applyCloakingOrderHook(unit);
-  }
-}
+	void __cdecl cloakingTechWrapper_CMDRECV_Cloak() {
+		*selectionIndexStart = 0;
+		while (CUnit *unit = getActivePlayerNextSelection()) {
+			if (unit->canUseTech(hooks::getCloakingTech(unit), *ACTIVE_NATION_ID) == 1)
+				applyCloakingOrderHook(unit);
+		}
+	}
 
-void __declspec(naked) cloakingTechWrapper_AI_cloakUnit() {
-  static CUnit *unit;
-  __asm {
-    PUSHAD
-    MOV EBP, ESP
-    MOV unit, ESI
-  }
+	void __declspec(naked) cloakingTechWrapper_AI_cloakUnit() {
+		static CUnit *unit;
+		__asm {
+			PUSHAD
+				MOV EBP, ESP
+				MOV unit, ESI
+		}
 
-  if (!(unit->status & UnitStatus::RequiresDetection)) {
-    if (unit->canUseTech(hooks::getCloakingTech(unit), unit->playerId) == 1)
-      applyCloakingOrderHook(unit);
-  }
+		if (!(unit->status & UnitStatus::RequiresDetection)) {
+			if (unit->canUseTech(hooks::getCloakingTech(unit), unit->playerId) == 1)
+				applyCloakingOrderHook(unit);
+		}
 
-  __asm {
-    POPAD
-    RETN
-  }
-}
+		__asm {
+			POPAD
+				RETN
+		}
+	}
 
-void __cdecl cloakingTechWrapper_CMDRECV_Decloak() {
-  *selectionIndexStart = 0;
-  while (CUnit *unit = getActivePlayerNextSelection()) {
-    if (unit->canUseTech(hooks::getCloakingTech(unit), *ACTIVE_NATION_ID) == 1)
-      unit->setSecondaryOrder(OrderId::Decloak);
-  }
-}
+	void __cdecl cloakingTechWrapper_CMDRECV_Decloak() {
+		*selectionIndexStart = 0;
+		while (CUnit *unit = getActivePlayerNextSelection()) {
+			if (unit->canUseTech(hooks::getCloakingTech(unit), *ACTIVE_NATION_ID) == 1)
+				unit->setSecondaryOrder(OrderId::Decloak);
+		}
+	}
 
-//-------- Other wrappers --------//
+	//-------- Other wrappers --------//
 
-void __declspec(naked) getCloakingTechWrapper() {
-  static CUnit *unit;
-  static u8 result;
-  __asm {
-    PUSHAD
-    MOV EBP, ESP
-    MOV unit, EAX
-  }
+	void __declspec(naked) getCloakingTechWrapper() {
+		static CUnit *unit;
+		static u8 result;
+		__asm {
+			PUSHAD
+				MOV EBP, ESP
+				MOV unit, EAX
+		}
 
-  result = hooks::getCloakingTech(unit);
+		result = hooks::getCloakingTech(unit);
 
-  __asm {
-    POPAD
-    MOV AL, result
-    RETN
-  }
-}
+		__asm {
+			POPAD
+				MOV AL, result
+				RETN
+		}
+	}
 
-Bool32 __cdecl currentUnitSelectionCanCloakWrapper() {
-  for (int i = 0; i < 12; ++i) {
-    CUnit *unit = clientSelectionGroup->unit[i];
-    if (unit != NULL) {
-      if (scbw::isCheatEnabled(CheatFlags::TheGathering)
-          || unit->energy >= techdata_dat::EnergyCost[hooks::getCloakingTech(unit)] * 256)
-        return true;
-    }
-  }
+	Bool32 __cdecl currentUnitSelectionCanCloakWrapper() {
+		for (int i = 0; i < 12; ++i) {
+			CUnit *unit = clientSelectionGroup->unit[i];
+			if (unit != NULL) {
+				if (scbw::isCheatEnabled(CheatFlags::TheGathering)
+					|| unit->energy >= techdata_dat::EnergyCost[hooks::getCloakingTech(unit)] * 256)
+					return true;
+			}
+		}
 
-  const RaceId::Enum race = (*activePortraitUnit)->getRace();
+		const RaceId::Enum race = (*activePortraitUnit)->getRace();
 
-  scbw::showErrorMessageWithSfx((*activePortraitUnit)->playerId, 864 + race, 156 + race);
-  return false;
-}
+		scbw::showErrorMessageWithSfx((*activePortraitUnit)->playerId, 864 + race, 156 + race);
+		return false;
+	}
 
 } //unnamed namespace
 
 namespace hooks {
 
-void injectCloakingTechHooks() {
-  jmpPatch(cloakingTechWrapper_IsCloaked,       0x00429210);
-  jmpPatch(cloakingTechWrapper_CanCloak,        0x004292C0);
-  jmpPatch(cloakingTechWrapper_CMDRECV_Cloak,   0x004C0720);
-  jmpPatch(cloakingTechWrapper_AI_cloakUnit,    0x0043B970);
-  jmpPatch(cloakingTechWrapper_CMDRECV_Decloak, 0x004C0660);
-  jmpPatch(getCloakingTechWrapper,              0x00491A50);
-  jmpPatch(currentUnitSelectionCanCloakWrapper, 0x00423540);
-}
+	void injectCloakingTechHooks() {
+		jmpPatch(cloakingTechWrapper_IsCloaked, 0x00429210);
+		jmpPatch(cloakingTechWrapper_CanCloak, 0x004292C0);
+		jmpPatch(cloakingTechWrapper_CMDRECV_Cloak, 0x004C0720);
+		jmpPatch(cloakingTechWrapper_AI_cloakUnit, 0x0043B970);
+		jmpPatch(cloakingTechWrapper_CMDRECV_Decloak, 0x004C0660);
+		jmpPatch(getCloakingTechWrapper, 0x00491A50);
+		jmpPatch(currentUnitSelectionCanCloakWrapper, 0x00423540);
+	}
 
 } //hooks

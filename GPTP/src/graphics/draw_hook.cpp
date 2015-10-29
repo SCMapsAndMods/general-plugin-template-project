@@ -5,33 +5,33 @@
 
 namespace {
 
-//-------- Draw hook taken from BWAPI --------//
-bool wantRefresh = false;
-void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds) {
-  if (wantRefresh) {
-    wantRefresh = false;
-    scbw::refreshScreen();
-  }
+	//-------- Draw hook taken from BWAPI --------//
+	bool wantRefresh = false;
+	void __stdcall DrawHook(graphics::Bitmap *surface, Bounds *bounds) {
+		if (wantRefresh) {
+			wantRefresh = false;
+			scbw::refreshScreen();
+		}
 
-  oldDrawGameProc(surface, bounds);
+		oldDrawGameProc(surface, bounds);
 
-  //if ( BW::BWDATA::GameScreenBuffer->isValid() )
-  //{
-  //  unsigned int numShapes = BWAPI::BroodwarImpl.drawShapes();
-  //  
-  //  if ( numShapes )
-  //    wantRefresh = true;
-  //}
-  if (graphics::drawAllShapes() > 0)
-    wantRefresh = true;
-}
+		//if ( BW::BWDATA::GameScreenBuffer->isValid() )
+		//{
+		//  unsigned int numShapes = BWAPI::BroodwarImpl.drawShapes();
+		//  
+		//  if ( numShapes )
+		//    wantRefresh = true;
+		//}
+		if (graphics::drawAllShapes() > 0)
+			wantRefresh = true;
+	}
 
 } //unnamed namespace
 
 namespace hooks {
 
-void injectDrawHook() {
-  memoryPatch(0x004BD68D, &DrawHook);
-}
+	void injectDrawHook() {
+		memoryPatch(0x004BD68D, &DrawHook);
+	}
 
 } //hooks

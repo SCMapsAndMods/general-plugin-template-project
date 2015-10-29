@@ -2,12 +2,12 @@
 
 namespace AI {
 
-bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked);
+	bool AI_spellcasterHook(CUnit *unit, bool isUnitBeingAttacked);
 
 } //AI
 
 namespace hooks {
 
-void injectSpellcasterAI();
+	void injectSpellcasterAI();
 
 } //hooks

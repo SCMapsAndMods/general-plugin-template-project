@@ -3,10 +3,10 @@
 
 namespace hooks {
 
-void orderNewUnitToRally(CUnit* unit, CUnit* factory);
-void setRallyPosition(CUnit* unit, u16 x, u16 y);
-void setRallyUnit(CUnit* unit, CUnit* target);
+	void orderNewUnitToRally(CUnit* unit, CUnit* factory);
+	void setRallyPosition(CUnit* unit, u16 x, u16 y);
+	void setRallyUnit(CUnit* unit, CUnit* target);
 
-void injectRallyHooks();
+	void injectRallyHooks();
 
 } //hooks

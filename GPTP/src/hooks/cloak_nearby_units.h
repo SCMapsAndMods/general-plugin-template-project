@@ -3,9 +3,9 @@
 
 namespace hooks {
 
-void cloakNearbyUnitsHook(CUnit *unit);
+	void cloakNearbyUnitsHook(CUnit *unit);
 
-void injectCloakNearbyUnits();
+	void injectCloakNearbyUnits();
 
 } //hooks
 

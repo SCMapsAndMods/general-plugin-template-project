@@ -97,9 +97,9 @@
 
 	Shutdown implementation is variable. Plugins should be prepared to
 	handle shutdown either through the DLL_PROCESS_DETACH notification or
-	the IMPQDraftPlugin::TerminatePlugin function. The plugin DLL itself is 
-	never unloaded. The plugin must beware of calls to functions it has hooked 
-	in other modules after both TerminatePlugin and DLL_PROCESS_DETACH are 
+	the IMPQDraftPlugin::TerminatePlugin function. The plugin DLL itself is
+	never unloaded. The plugin must beware of calls to functions it has hooked
+	in other modules after both TerminatePlugin and DLL_PROCESS_DETACH are
 	called, as it is possible these may still be called. This requires special
 	care in plugin development.
 */
@@ -117,7 +117,7 @@
 
 /*
 	MPQDRAFTPLUGINMODULE
-	
+
 	Structure used by IMPQDraftPlugin::GetModules to notify MPQDraft of any
 	files (called plugin modules) that are to be loaded. Read description of
 	that function for more information.
@@ -145,7 +145,7 @@ struct MPQDRAFTPLUGINMODULE
 	not only be executed by MPQDraft, but also it communicate with MPQDraft.
 	A plugin will be given an IMPQDraftServer pointer when MPQDraft calls
 	IMPQDraftPlugin::InitializePlugin.
-*/ 
+*/
 struct IMPQDraftServer
 {
 	/*
@@ -160,7 +160,7 @@ struct IMPQDraftServer
 			its modules.
 			dwModuleID [in] - The ID of the module to be located.
 			lpszFileName [out] - Pointer to a buffer where MPQDraft will copy
-			the file name of the module to. This buffer should be 
+			the file name of the module to. This buffer should be
 			MPQDRAFT_MAX_PATH characters long.
 
 		Behavior:
@@ -233,7 +233,7 @@ struct IMPQDraftPlugin
 
 		Behavior:
 			- If lpszPluginName is null, GetPluginName will assert.
-			
+
 			- If nNameBufferLength is shorter than the name of the plugin,
 			GetPluginName will fail.
 

@@ -11,39 +11,39 @@
 
 //-------- Helper function declarations. Do NOT modify! --------//
 namespace {
-void incrementDeathScores(const CUnit *unit, u8 player);
+	void incrementDeathScores(const CUnit *unit, u8 player);
 } //Unnamed namespace
 
 //-------- Actual hook functions --------//
 
 namespace hooks {
 
-/// This function is called when a @p target is consumed by the @p caster.
-void consumeHitHook(CUnit *target, CUnit* caster) {
-  //Default StarCraft behavior
+	/// This function is called when a @p target is consumed by the @p caster.
+	void consumeHitHook(CUnit *target, CUnit* caster) {
+		//Default StarCraft behavior
 
-  //Don't proceed if the target does not exist.
-  if (!target)
-    return;
+		//Don't proceed if the target does not exist.
+		if (!target)
+			return;
 
-  //Don't proceed if the target is invincible.
-  if (target->status & UnitStatus::Invincible)
-    return;
+		//Don't proceed if the target is invincible.
+		if (target->status & UnitStatus::Invincible)
+			return;
 
-  //Don't proceed if the target cannot be Consumed.
-  if (getTechUseErrorMessage(target, caster->playerId, TechId::Consume) != 0)
-    return;
+		//Don't proceed if the target cannot be Consumed.
+		if (getTechUseErrorMessage(target, caster->playerId, TechId::Consume) != 0)
+			return;
 
-  //Destroy the target unit.
-  incrementDeathScores(target, caster->playerId);
-  target->remove();
+		//Destroy the target unit.
+		incrementDeathScores(target, caster->playerId);
+		target->remove();
 
-  //Add energy to the caster if the target is not a hallucination.
-  if (!(target->status & UnitStatus::IsHallucination)) {
-    int energy = caster->energy + 12800; //50 energy
-    caster->energy = std::min<int>(energy, caster->getMaxEnergy());
-  }
-}
+		//Add energy to the caster if the target is not a hallucination.
+		if (!(target->status & UnitStatus::IsHallucination)) {
+			int energy = caster->energy + 12800; //50 energy
+			caster->energy = std::min<int>(energy, caster->getMaxEnergy());
+		}
+	}
 
 } //hooks
 
@@ -51,15 +51,15 @@ void consumeHitHook(CUnit *target, CUnit* caster) {
 
 namespace {
 
-const u32 Func_IncrementDeathScores = 0x00488AF0;
-void incrementDeathScores(const CUnit *unit, u8 player) {
-  __asm {
-    PUSHAD
-    MOV EDI, unit
-    MOVZX EDX, player
-    CALL Func_IncrementDeathScores
-    POPAD
-  }
-}
+	const u32 Func_IncrementDeathScores = 0x00488AF0;
+	void incrementDeathScores(const CUnit *unit, u8 player) {
+		__asm {
+			PUSHAD
+				MOV EDI, unit
+				MOVZX EDX, player
+				CALL Func_IncrementDeathScores
+				POPAD
+		}
+	}
 
 } //Unnamed namespace

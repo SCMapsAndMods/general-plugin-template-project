@@ -4,10 +4,10 @@
 
 namespace hooks {
 
-//This function is injected into StarCraft.
-void consumeHitHook(CUnit *target, CUnit* caster);
+	//This function is injected into StarCraft.
+	void consumeHitHook(CUnit *target, CUnit* caster);
 
-//The injector function for this hook module.
-void injectConsumeHooks();
+	//The injector function for this hook module.
+	void injectConsumeHooks();
 
 } //hooks

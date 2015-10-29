@@ -3,8 +3,8 @@
 
 namespace hooks {
 
-u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId);
+	u32 getModifiedWeaponCooldownHook(const CUnit* unit, u8 weaponId);
 
-void injectWeaponCooldownHook();
+	void injectWeaponCooldownHook();
 
 } //hooks

@@ -3,8 +3,8 @@
 
 namespace hooks {
 
-u8 getCloakingTech(const CUnit *unit);
+	u8 getCloakingTech(const CUnit *unit);
 
-void injectCloakingTechHooks();
+	void injectCloakingTechHooks();
 
 } //hooks

@@ -23,7 +23,7 @@
 /// @param  nops      Optional. The number of additional bytes to write NOPs.
 void jmpPatch(const void* target, void* position, unsigned int nops = 0);
 inline void jmpPatch(const void* target, DWORD position, unsigned int nops = 0) {
-  jmpPatch(target, (void*)position, nops);
+	jmpPatch(target, (void*)position, nops);
 }
 
 /// Injects a CALL to [target] at the [position], optionally overwriting [nops]
@@ -44,17 +44,17 @@ inline void jmpPatch(const void* target, DWORD position, unsigned int nops = 0) 
 /// @param  nops      Optional. The number of additional bytes to write NOPs.
 void callPatch(const void* target, void* position, unsigned int nops = 0);
 inline void callPatch(const void* target, DWORD position, unsigned int nops = 0) {
-  callPatch(target, (void*)position, nops);
+	callPatch(target, (void*)position, nops);
 }
 
 /// Patches the specified address with the given data using memcpy().
 template <typename T>
 void memoryPatch(const u32 address, const T& data) {
-  memoryPatch(address, (u8*)&data, sizeof(T));
+	memoryPatch(address, (u8*)&data, sizeof(T));
 }
 
 /// Inject an array of bytes, using the given size.
 void memoryPatch(void* const address, const u8* data, const size_t size);
 inline void memoryPatch(const u32 address, const u8* data, const size_t size) {
-  memoryPatch((void*)address, data, size);
+	memoryPatch((void*)address, data, size);
 }
