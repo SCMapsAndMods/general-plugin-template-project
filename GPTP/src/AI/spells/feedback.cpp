@@ -3,38 +3,38 @@
 
 namespace AI {
 
-CUnit* findBestFeedbackTarget(const CUnit *caster, bool isUnderAttack) {
-  int bounds;
-  if (isUnderAttack)
-    bounds = 32 * 9;
-  else if (isUmsMode(caster->playerId))
-    bounds = 32 * 64;
-  else
-    bounds = 32 * 32;
+	CUnit* findBestFeedbackTarget(const CUnit *caster, bool isUnderAttack) {
+		int bounds;
+		if (isUnderAttack)
+			bounds = 32 * 9;
+		else if (isUmsMode(caster->playerId))
+			bounds = 32 * 64;
+		else
+			bounds = 32 * 32;
 
-  auto feedbackTargetFinder = [&caster] (const CUnit *target) -> bool {
-    if (!isTargetWorthHitting(target, caster))
-      return false;
+		auto feedbackTargetFinder = [&caster](const CUnit *target) -> bool {
+			if (!isTargetWorthHitting(target, caster))
+				return false;
 
-    if (!target->isValidCaster())
-      return false;
+			if (!target->isValidCaster())
+				return false;
 
-    if (target->status & UnitStatus::GroundedBuilding)
-      return false;
+			if (target->status & UnitStatus::GroundedBuilding)
+				return false;
 
-    if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
-      return false;
+			if (units_dat::BaseProperty[target->id] & UnitProperty::Hero)
+				return false;
 
-    if (target->energy / 256u >= target->getCurrentLifeInGame())
-      return true;
+			if (target->energy / 256u >= target->getCurrentLifeInGame())
+				return true;
 
-    return false;
-  };
+			return false;
+		};
 
-  return scbw::UnitFinder::getNearestTarget(
-    caster->getX() - bounds, caster->getY() - bounds,
-    caster->getX() + bounds, caster->getY() + bounds,
-    caster, feedbackTargetFinder);
-}
+		return scbw::UnitFinder::getNearestTarget(
+			caster->getX() - bounds, caster->getY() - bounds,
+			caster->getX() + bounds, caster->getY() + bounds,
+			caster, feedbackTargetFinder);
+	}
 
 } //AI

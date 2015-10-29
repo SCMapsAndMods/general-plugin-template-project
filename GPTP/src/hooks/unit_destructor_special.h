@@ -2,6 +2,6 @@
 
 namespace hooks {
 
-void injectUnitDestructorSpecial();
+	void injectUnitDestructorSpecial();
 
 } //hooks

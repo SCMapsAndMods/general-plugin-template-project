@@ -2,10 +2,10 @@
 
 namespace hooks {
 
-bool gameOn();
-bool gameEnd();
-bool nextFrame();
+	bool gameOn();
+	bool gameEnd();
+	bool nextFrame();
 
-void injectGameHooks();
+	void injectGameHooks();
 
 } //hooks

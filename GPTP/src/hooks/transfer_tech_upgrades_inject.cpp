@@ -4,68 +4,68 @@
 
 namespace {
 
-void __declspec(naked) transferUnitTechToPlayerWrapper() {
-  static const CUnit *source;
-  static u8 targetPlayerId;
-  __asm {
-    PUSHAD
-    MOV source, EBX
-    MOV AL, [ESP + 40]   ;// (PUSHAD saves 32) + (CALL saves 4) + 4 == 40
-    MOV targetPlayerId, AL
-    MOV EBP, ESP
-  }
+	void __declspec(naked) transferUnitTechToPlayerWrapper() {
+		static const CUnit *source;
+		static u8 targetPlayerId;
+		__asm {
+			PUSHAD
+				MOV source, EBX
+				MOV AL, [ESP + 40];// (PUSHAD saves 32) + (CALL saves 4) + 4 == 40
+			MOV targetPlayerId, AL
+				MOV EBP, ESP
+		}
 
-  hooks::transferUnitTechToPlayerHook(source, targetPlayerId);
+		hooks::transferUnitTechToPlayerHook(source, targetPlayerId);
 
-  __asm {
-    POPAD
-    RETN 8
-  }
-}
+		__asm {
+			POPAD
+				RETN 8
+		}
+	}
 
-void __declspec(naked) transferUnitUpgradesToPlayerWrapper() {
-  static const CUnit *source;
-  static u8 targetPlayerId;
-  __asm {
-    PUSHAD
-    MOV source, EBX
-    MOV AL, [ESP + 40]   ;// (PUSHAD saves 32) + (CALL saves 4) + 4 == 40
-    MOV targetPlayerId, AL
-    MOV EBP, ESP
-  }
+	void __declspec(naked) transferUnitUpgradesToPlayerWrapper() {
+		static const CUnit *source;
+		static u8 targetPlayerId;
+		__asm {
+			PUSHAD
+				MOV source, EBX
+				MOV AL, [ESP + 40];// (PUSHAD saves 32) + (CALL saves 4) + 4 == 40
+			MOV targetPlayerId, AL
+				MOV EBP, ESP
+		}
 
-  hooks::transferUnitUpgradesToPlayerHook(source, targetPlayerId);
+		hooks::transferUnitUpgradesToPlayerHook(source, targetPlayerId);
 
-  __asm {
-    POPAD
-    RETN 8
-  }
-}
+		__asm {
+			POPAD
+				RETN 8
+		}
+	}
 
-void __declspec(naked) applyUnitUpgradeFlagsToAllFriendlyUnitsWrapper() {
-  static CUnit *unit;
-  __asm {
-    PUSHAD
-    MOV unit, EBX
-    MOV EBP, ESP
-  }
+	void __declspec(naked) applyUnitUpgradeFlagsToAllFriendlyUnitsWrapper() {
+		static CUnit *unit;
+		__asm {
+			PUSHAD
+				MOV unit, EBX
+				MOV EBP, ESP
+		}
 
-  hooks::applyUnitUpgradeFlagsToAllFriendlyUnitsHook(unit);
+		hooks::applyUnitUpgradeFlagsToAllFriendlyUnitsHook(unit);
 
-  __asm {
-    POPAD
-    RETN 8
-  }
-}
+		__asm {
+			POPAD
+				RETN 8
+		}
+	}
 
 } //Unnamed namespace
 
 namespace hooks {
 
-void injectTransferTechAndUpgradesHooks() {
-  callPatch(transferUnitTechToPlayerWrapper, 0x0047CA04);
-  callPatch(transferUnitUpgradesToPlayerWrapper, 0x0047CA0F);
-  callPatch(applyUnitUpgradeFlagsToAllFriendlyUnitsWrapper, 0x0047CABD);
-}
+	void injectTransferTechAndUpgradesHooks() {
+		callPatch(transferUnitTechToPlayerWrapper, 0x0047CA04);
+		callPatch(transferUnitUpgradesToPlayerWrapper, 0x0047CA0F);
+		callPatch(applyUnitUpgradeFlagsToAllFriendlyUnitsWrapper, 0x0047CABD);
+	}
 
 } //hooks

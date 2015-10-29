@@ -4,92 +4,92 @@
 
 namespace GPTP {
 
-GameLogger logger;
+	GameLogger logger;
 
-bool GameLogger::startGame() {
+	bool GameLogger::startGame() {
 
-  #ifdef GPTP_LOGGING_ENABLED
+#ifdef GPTP_LOGGING_ENABLED
 
-  if (checkLogFile()) {
-    time_t currentTime;
-    time(&currentTime);
+		if (checkLogFile()) {
+			time_t currentTime;
+			time(&currentTime);
 
-    logFile << "Game started on " << ctime(&currentTime) << std::endl;
-  }
+			logFile << "Game started on " << ctime(&currentTime) << std::endl;
+		}
 
-  lastUpdatedFrame = -1;  //So logging is possible on frame 0
+		lastUpdatedFrame = -1;  //So logging is possible on frame 0
 
-  #endif
+#endif
 
-  return true;
-}
+		return true;
+	}
 
-bool GameLogger::endGame() {
+	bool GameLogger::endGame() {
 
-  #ifdef GPTP_LOGGING_ENABLED
+#ifdef GPTP_LOGGING_ENABLED
 
-  if (checkLogFile()) {
-    time_t currentTime;
-    time(&currentTime);
-    logFile << "Game ended on " << ctime(&currentTime) << std::endl;
-  }
-  
-  #endif
+		if (checkLogFile()) {
+			time_t currentTime;
+			time(&currentTime);
+			logFile << "Game ended on " << ctime(&currentTime) << std::endl;
+		}
 
-  return true;
-}
+#endif
 
-GameLogger& GameLogger::operator<<(std::ostream& (*func)(std::ostream&)) {
+		return true;
+	}
 
-  #ifdef GPTP_LOGGING_ENABLED
+	GameLogger& GameLogger::operator<<(std::ostream& (*func)(std::ostream&)) {
 
-  if (checkLogFile())
-    if (updateFrame())
-      logFile << func;
+#ifdef GPTP_LOGGING_ENABLED
 
-  #endif
+		if (checkLogFile())
+			if (updateFrame())
+				logFile << func;
 
-  return *this;
-}
+#endif
 
-bool GameLogger::checkLogFile() {
+		return *this;
+	}
 
-  #ifdef GPTP_LOGGING_ENABLED
+	bool GameLogger::checkLogFile() {
 
-  if (logFile.is_open())
-    return true;
+#ifdef GPTP_LOGGING_ENABLED
 
-  time_t currentTime;
-  time(&currentTime);
+		if (logFile.is_open())
+			return true;
 
-  char buffer[100];
-  strftime(buffer, sizeof(buffer), "Game %Y-%m-%d %Hh %Mm %Ss.log",
-    localtime(&currentTime));
+		time_t currentTime;
+		time(&currentTime);
 
-  logFile.open(buffer);
-  return !logFile.fail();
+		char buffer[100];
+		strftime(buffer, sizeof(buffer), "Game %Y-%m-%d %Hh %Mm %Ss.log",
+			localtime(&currentTime));
 
-  #else
+		logFile.open(buffer);
+		return !logFile.fail();
 
-  return true;
+#else
 
-  #endif
-}
+		return true;
 
-bool GameLogger::updateFrame() {
+#endif
+	}
 
-  #ifdef GPTP_LOGGING_ENABLED
+	bool GameLogger::updateFrame() {
 
-  const int currentFrame = *elapsedTimeFrames;
-    
-  if (currentFrame > lastUpdatedFrame) {
-    lastUpdatedFrame = currentFrame;
-    logFile << "Frame " << currentFrame << ":\n";
-  }
+#ifdef GPTP_LOGGING_ENABLED
 
-  #endif
+		const int currentFrame = *elapsedTimeFrames;
 
-  return true;
-}
+		if (currentFrame > lastUpdatedFrame) {
+			lastUpdatedFrame = currentFrame;
+			logFile << "Frame " << currentFrame << ":\n";
+		}
+
+#endif
+
+		return true;
+	}
 
 } //GPTP

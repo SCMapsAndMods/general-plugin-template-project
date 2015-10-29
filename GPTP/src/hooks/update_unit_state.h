@@ -3,8 +3,8 @@
 
 namespace hooks {
 
-void updateUnitStateHook(CUnit* unit);
+	void updateUnitStateHook(CUnit* unit);
 
-void injectUpdateUnitState();
+	void injectUpdateUnitState();
 
 } //hooks

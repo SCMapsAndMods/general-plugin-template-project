@@ -3,9 +3,9 @@
 
 namespace hooks {
 
-void useStimPacksHook(CUnit *unit);
-bool canUseStimPacksHook(const CUnit *unit);
+	void useStimPacksHook(CUnit *unit);
+	bool canUseStimPacksHook(const CUnit *unit);
 
-void injectStimPacksHooks();
+	void injectStimPacksHooks();
 
 } //hooks

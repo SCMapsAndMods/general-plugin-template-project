@@ -3,9 +3,9 @@
 
 namespace hooks {
 
-CUnit* findBestSpiderMineTargetHook(const CUnit *mine);
-u8 getSpiderMineBurrowTimeHook(const CUnit *spiderMine);
+	CUnit* findBestSpiderMineTargetHook(const CUnit *mine);
+	u8 getSpiderMineBurrowTimeHook(const CUnit *spiderMine);
 
-void injectSpiderMineHooks();
+	void injectSpiderMineHooks();
 
 } //hooks

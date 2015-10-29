@@ -11,27 +11,27 @@
 
 namespace GPTP {
 
-class GameLogger {
-  public:
-    /// Writes a "game start" message to the log file and resets the internal
-    /// frame timer.
-    bool startGame();
+	class GameLogger {
+	public:
+		/// Writes a "game start" message to the log file and resets the internal
+		/// frame timer.
+		bool startGame();
 
-    /// Writes a "game end" message to the log file.
-    bool endGame();
-    
-    template <typename T>
-    GameLogger& operator<<(const T& t);
-    GameLogger& operator<<(std::ostream& (*func)(std::ostream&));
+		/// Writes a "game end" message to the log file.
+		bool endGame();
 
-  private:
-    bool checkLogFile();
-    bool updateFrame();
-    std::ofstream logFile;
-    int lastUpdatedFrame;
-};
+		template <typename T>
+		GameLogger& operator<<(const T& t);
+		GameLogger& operator<<(std::ostream& (*func)(std::ostream&));
 
-extern GameLogger logger;
+	private:
+		bool checkLogFile();
+		bool updateFrame();
+		std::ofstream logFile;
+		int lastUpdatedFrame;
+	};
+
+	extern GameLogger logger;
 
 } //GPTP
 
@@ -40,19 +40,19 @@ extern GameLogger logger;
 
 namespace GPTP {
 
-template <typename T>
-GameLogger& GameLogger::operator<<(const T& t) {
+	template <typename T>
+	GameLogger& GameLogger::operator<<(const T& t) {
 
-  #ifdef GPTP_LOGGING_ENABLED
+#ifdef GPTP_LOGGING_ENABLED
 
-  if (checkLogFile())
-    if (updateFrame())
-      logFile << t;
+		if (checkLogFile())
+			if (updateFrame())
+				logFile << t;
 
-  #endif
+#endif
 
-  return *this;
-}
+		return *this;
+	}
 
 } //GPTP
 
