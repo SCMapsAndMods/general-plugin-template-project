@@ -471,6 +471,7 @@ UpgradeDat=0x1145c0
 75VarType=1
 76Change=0xeb1e
 76Entry=Abilities,Target,Repair,Remove race restriction
+76Hint=Must be used along with modifications to the Repair and Repair (Obscured) entries in orders.dat, check on Flag "Use Weapon Targeting"
 76Offset=0x67456
 76Size=2
 76Type=Code
